@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "UserPages" do
+describe "Patient Pages" do
   subject { page }
 
   describe 'Signup page' do
