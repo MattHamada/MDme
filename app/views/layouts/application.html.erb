@@ -12,7 +12,7 @@
   <meta name="author" content="">
   <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-  <title>MyMD & Me</title>
+  <title>MyMD & Me | <%= yield :title %></title>
 
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -23,6 +23,10 @@
 </head>
 <body>
 <%= render 'layouts/header' %>
+
+<% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+<% end %>
 
 <%= yield %>
 
