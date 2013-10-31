@@ -12,6 +12,10 @@
       <li><%= link_to 'About', about_path %></li>
       <li><a href="#">Our Doctors</a></li>
       <li><%= link_to 'About', contact_path %></li>
-      <li><a href="#">Sign In</a></li>
+      <% if signed_in? %>
+      <li><%= link_to 'Sign out', signout_path, method: :delete %></li>
+      <% else %>
+      <li><a href="/signin">Sign in</a></li>
+      <% end %>
     </ul>
   </div>

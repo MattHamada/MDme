@@ -1,25 +1,38 @@
 require 'spec_helper'
 
 describe Patient do
-  before { @patient = Patient.new(name: "Example User", email: "user@example.com", password: 'foobar', password_confirmation: 'foobar') }
+  before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'foobar', password_confirmation: 'foobar') }
 
   subject { @patient }
 
-  it { should respond_to(:name) }
+  it { should respond_to(:first_name) }
+  it { should respond_to(:last_name) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
+  it { should respond_to(:authenticate) }
 
   it { should be_valid }
 
-  describe 'when name is not present' do
-    before { @patient.name = ' ' }
+  describe 'when first name is not present' do
+    before { @patient.first_name = ' ' }
     it { should_not be_valid }
   end
 
-  describe 'when name to long' do
-    before { @patient.name = 'a'*51 }
+  describe 'when last name not present' do
+    before { @patient.last_name = ' '}
+    it { should_not be_valid }
+  end
+
+  describe 'when first name to long' do
+    before { @patient.first_name = 'a'*51 }
+    it { should_not be_valid }
+  end
+
+  describe 'when last name to long' do
+    before { @patient.last_name = 'a'*51 }
     it { should_not be_valid }
   end
 
@@ -54,12 +67,12 @@ describe Patient do
   end
 
   describe 'when password not present' do
-    before { @patient = Patient.new(name: "Example User", email: "user@example.com", password: '', password_confirmation: '') }
+    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: '', password_confirmation: '') }
     it { should_not be_valid }
   end
 
   describe 'when password != password confirmation' do
-    before { @patient = Patient.new(name: "Example User", email: "user@example.com", password: 'fizzbuzz', password_confirmation: 'foobar') }
+    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'fizzbuzz', password_confirmation: 'foobar') }
     it { should_not be_valid }
   end
 
@@ -80,6 +93,11 @@ describe Patient do
       let(:patient_invalid_password) { found_patient.authenticate('invalid') }
       it { should_not eq patient_invalid_password }
       specify { expect(patient_invalid_password).to be_false }
+    end
+
+    describe 'remmeber token' do
+      before { @patient.save }
+      its(:remember_token) { should_not be_blank }
     end
   end
 

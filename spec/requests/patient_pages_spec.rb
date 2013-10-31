@@ -27,6 +27,15 @@ describe "Patient Pages" do
         it 'should create a patient' do
           expect { click_button 'Create my account' }.to change(Patient, :count).by(1)
         end
+
+        describe 'after creating the patient' do
+          before { click_button 'Create my accunt' }
+          let(:patient) { Patient.find_by(email: 'user@example.com') }
+
+          it { should have_link('Sign out') }
+          it { should have_title(full_name(patient)) }
+          it { should have_selector('div.alert.alert-success', text: 'Account created') }
+        end
       end
     end
 
