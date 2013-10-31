@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<% if request.subdomain != 'doctors' %>
+<% if request.subdomain.blank?  %>
 <%= render 'layouts/header' %>
 <% end %>
 
