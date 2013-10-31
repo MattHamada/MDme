@@ -2,16 +2,16 @@ MDme::Application.routes.draw do
 
   require 'domains'
 
-  constraints(Subdomain) do
-    constraints subdomain: 'doctors' do
-      namespace :doctors, path: '/' do
-        root 'doctors#home'
-      end
-    end
-  end
+  #constraints(Subdomain) do
+   # constraints subdomain: 'doctors' do
+    #    root 'doctors#home'
+    #end
+  #end
 
-  constraints(RootDomain) do
-    constraints subdomain: false do
+  match '/', to: 'doctors#home', via: 'get', constraints: { subdomain: 'doctors' }
+
+  #constraints(RootDomain) do
+    #constraints subdomain: false do
     root 'static_pages#home'
     match '/signup',    to: 'patients#new',           via: 'get'
     match '/help',      to: 'static_pages#help',      via: 'get'
@@ -22,8 +22,7 @@ MDme::Application.routes.draw do
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]
-    end
-    end
+   # end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
