@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030210320) do
+ActiveRecord::Schema.define(version: 20131031005030) do
+
+  create_table "doctors", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "password_digest"
+    t.string   "remember_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
+  add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token"
 
   create_table "patients", force: true do |t|
     t.string   "first_name"

@@ -1,15 +1,30 @@
 MDme::Application.routes.draw do
 
-  root 'static_pages#home'
-  match '/signup',    to: 'patients#new',           via: 'get'
-  match '/help',      to: 'static_pages#help',      via: 'get'
-  match '/about',     to: 'static_pages#about',     via: 'get'
-  match '/contact',   to: 'static_pages#contact',   via: 'get'
-  match '/signin',    to: 'sessions#new',           via: 'get'
-  match '/signout',   to: 'sessions#destroy',       via: 'delete'
+  require 'domains'
 
-  resources :patients
-  resources :sessions, only: [:new, :create, :destroy]
+  constraints(Subdomain) do
+    constraints subdomain: 'doctors' do
+      namespace :doctors, path: '/' do
+        root 'doctors#home'
+      end
+    end
+  end
+
+  constraints(RootDomain) do
+    constraints subdomain: false do
+    root 'static_pages#home'
+    match '/signup',    to: 'patients#new',           via: 'get'
+    match '/help',      to: 'static_pages#help',      via: 'get'
+    match '/about',     to: 'static_pages#about',     via: 'get'
+    match '/contact',   to: 'static_pages#contact',   via: 'get'
+    match '/signin',    to: 'sessions#new',           via: 'get'
+    match '/signout',   to: 'sessions#destroy',       via: 'delete'
+
+    resources :patients
+    resources :sessions, only: [:new, :create, :destroy]
+    end
+    end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
