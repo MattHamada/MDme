@@ -23,8 +23,8 @@
 </head>
 <body>
 
-<% if request.subdomain.blank?  %>
-<%= render 'layouts/header' %>
+<% if request.subdomain == 'www' || request.subdomain.blank?  %>
+<%= render 'static_pages/header' %>
 <% end %>
 
 <% flash.each do |key, value| %>
