@@ -6,7 +6,7 @@ class PatientsController < ApplicationController
   def create
     @patient = Patient.new(user_params)
     if @patient.save
-      sign_in @patient
+      sign_in(@patient, :patient)
       flash[:success] = 'Account Created'
       redirect_to @patient
     else

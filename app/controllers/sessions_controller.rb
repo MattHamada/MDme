@@ -4,19 +4,34 @@ class SessionsController < ApplicationController
   end
 
   def create
-    patient = Patient.find_by(email: params[:session][:email].downcase)
-    if patient && patient.authenticate(params[:session][:password])
-      sign_in patient
-      redirect_to patient
+    if request.subdomain == 'doctors'
+      doctor = Doctor.find_by(email: params[:session][:email].downcase)
+      if doctor && doctor.authenticate(params[:session][:password])
+        sign_in doctor, :doctor
+        redirect_to doctor
+      else
+        flash.now[:danger] = 'Invalid email/password combination'
+        render 'doctors/home'
+      end
     else
-      #use flash.now since rendering not redirecting
-      flash.now[:danger] = 'Invalid email/password combination'
-      render 'new'
+      patient = Patient.find_by(email: params[:session][:email].downcase)
+      if patient && patient.authenticate(params[:session][:password])
+        sign_in patient, :patient
+        redirect_to patient
+      else
+        flash.now[:danger] = 'Invalid email/password combination'
+        render 'new'
+      end
     end
   end
 
   def destroy
-    sign_out
+    if request.subdomain == 'doctors'
+      sign_out :doctor
+    else
+      sign_out :patient
+    end
     redirect_to root_url
   end
+
 end

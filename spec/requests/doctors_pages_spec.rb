@@ -4,28 +4,29 @@ describe "DoctorsPages" do
   subject { page }
   before { switch_to_subdomain('doctors') }
 
-  describe 'signin page' do
+  describe 'Doctor signin page' do
     before { visit root_path }
-    it { should have_title 'Doctor Sign In'}
-    it { should have_content('doctors login') }
-  end
+    it { should have_title "Doctor's Sign In"}
+    it { should have_content("Doctor's Sign in") }
 
-  describe 'signing in' do
-    describe 'with invalid information' do
-      before { click_button 'Sign in' }
-      it { should have_title 'Doctor Sign In' }
-      it { should have_selector 'div.alert.alert-danger', text: 'invalid login' }
-    end
 
-    describe 'with valid information' do
-      before do
-        @doctor = Doctor.create(fname: 'doc', lname: 'meds', email: 'doctor@example.com',
-                                password: 'foobar', password_confirmation: 'foobar')
-        fill_in 'Email', 'doctor@example.com'
-        fill_in 'Password', 'foobar'
-        click_button 'Log in'
+    describe 'Doctor signing in' do
+      describe 'with invalid information' do
+        before { click_button 'Sign in' }
+        it { should have_title "Doctor's Sign In" }
+        it { should have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination' }
       end
-      it { should have_title(full_name(@doctor)) }
-end
+
+      describe 'with valid information' do
+        before do
+          @doctor = Doctor.create(first_name: 'doc', last_name: 'meds', email: 'doctor@example.com',
+                                  password: 'foobar', password_confirmation: 'foobar')
+          fill_in 'Email', with: 'doctor@example.com'
+          fill_in 'Password', with: 'foobar'
+          click_button 'Sign in'
+        end
+        it { should have_title(full_name(@doctor)) }
+      end
+    end
   end
 end

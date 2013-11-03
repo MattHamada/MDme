@@ -29,7 +29,7 @@ describe "Patient Pages" do
         end
 
         describe 'after creating the patient' do
-          before { click_button 'Create my accunt' }
+          before { click_button 'Create my account' }
           let(:patient) { Patient.find_by(email: 'user@example.com') }
 
           it { should have_link('Sign out') }
