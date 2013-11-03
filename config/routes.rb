@@ -12,7 +12,7 @@ MDme::Application.routes.draw do
 
   #constraints(RootDomain) do
     #constraints subdomain: false do
-    root 'static_pages#home', constraints: { subdomain: false }
+    root 'static_pages#home', constraints: { subdomain: 'www' }
     match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: false }
     match '/help',      to: 'static_pages#help',      via: 'get',    constraints: { subdomain: false }
     match '/about',     to: 'static_pages#about',     via: 'get',    constraints: { subdomain: false }
