@@ -1,0 +1,13 @@
+<%= provide(:title, "Doctor's Sign In") %>
+
+
+<div class='container'>
+    <div class='row'>
+      <div class='col-md-10'>
+        <h1>Doctor's Sign in</h1>
+        <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal', role: 'form' }) do |f| %>
+            <%= render 'shared/signin', f: f %>
+        <% end %>
+      </div>
+    </div>
+</div>
