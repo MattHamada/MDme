@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104175101) do
+ActiveRecord::Schema.define(version: 20131104190955) do
+
+  create_table "admins", force: true do |t|
+    t.string   "email"
+    t.string   "remember_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "admins", ["email"], name: "index_admins_on_email"
+  add_index "admins", ["remember_token"], name: "index_admins_on_remember_token"
 
   create_table "appointments", force: true do |t|
     t.integer  "doctor_id"
