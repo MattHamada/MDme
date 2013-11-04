@@ -27,7 +27,9 @@ MDme::Application.routes.draw do
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]
-    resources :admins
+    resources :admins do
+      resources :appointments
+    end
    # end
 
   # The priority is based upon order of creation: first created -> highest priority.
