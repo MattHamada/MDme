@@ -11,7 +11,16 @@ class SessionsController < ApplicationController
         redirect_to doctor
       else
         flash.now[:danger] = 'Invalid email/password combination'
-        render 'doctors/home'
+        render 'doctors/signin'
+      end
+    elsif request.subdomain == 'admin'
+      admin = Admin.find_by(email: params[:session][:email].downcase)
+      if admin && admin.authenticate(params[:session][:password])
+        sign_in admin, :admin
+        redirect_to admin
+      else
+        flash.now[:danger] = 'invalid email/password combination'
+        render 'admin/signin'
       end
     else
       patient = Patient.find_by(email: params[:session][:email].downcase)

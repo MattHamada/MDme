@@ -11,7 +11,14 @@ module SessionsHelper
       cookies.permanent[:remember_token] = remember_token
       user.update_attribute(:remember_token, Patient.encrypt(remember_token))
       self.current_doctor = user
+
+    elsif type == :admin
+      remember_token = Patient.new_remember_token
+      cookies.permanent[:remember_token] = remember_token
+      user.update_attribute(:remember_token, Patient.encrypt(remember_token))
+      self.current_admin = user
     end
+
   end
 
   def sign_out(type)
@@ -20,6 +27,8 @@ module SessionsHelper
       self.current_patient = nil
     elsif type == :doctor
       self.current_doctor = nil
+    elsif type == :admin
+      self.current_admin = nil
     end
   end
 
@@ -27,9 +36,13 @@ module SessionsHelper
     @current_patient = patient
   end
 
-    def current_doctor=(doctor)
-      @current_doctor = doctor
-    end
+  def current_doctor=(doctor)
+    @current_doctor = doctor
+  end
+
+  def current_admin=(admin)
+    @current_admin = admin
+  end
 
   def current_patient
     remember_token = Patient.encrypt(cookies[:remember_token])
@@ -41,11 +54,20 @@ module SessionsHelper
     @current_doctor ||= Doctor.find_by(remember_token: remember_token)
   end
 
+  def current_admin
+    remember_token = Patient.encrypt(cookies[:remember_token])
+    @current_admin ||= Admin.find_by(remember_token: remember_token)
+  end
+
   def patient_signed_in?
     !current_patient.nil?
   end
 
   def doctor_signed_in?
     !current_doctor.nil?
+  end
+
+  def admin_signed_in?
+    !current_admin.nil?
   end
 end

@@ -8,8 +8,12 @@ MDme::Application.routes.draw do
     #end
   #end
 
-  match '/', to: 'doctors#home', via: 'get', constraints: { subdomain: 'doctors' }
+  #doctor subdomain
+  match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
 
+
+  #admin subdomain
+  match '/',     to: 'admins#signin',           via: 'get',    constraints: { subdomain: 'admin' }
   #constraints(RootDomain) do
     #constraints subdomain: false do
     root 'static_pages#home', constraints: { subdomain: 'www' }
@@ -20,8 +24,10 @@ MDme::Application.routes.draw do
     match '/signin',    to: 'sessions#new',           via: 'get',    constraints: { subdomain: 'www' }
     match '/signout',   to: 'sessions#destroy',       via: 'delete', constraints: { subdomain: 'www' }
 
+
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]
+    resources :admins
    # end
 
   # The priority is based upon order of creation: first created -> highest priority.
