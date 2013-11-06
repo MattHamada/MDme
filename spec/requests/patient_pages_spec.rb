@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "Patient Pages" do
   subject { page }
+  before { switch_to_subdomain('www') }
 
   describe 'Signup page' do
     before { visit signup_path }

@@ -7,6 +7,6 @@ class Appointment < ActiveRecord::Base
   belongs_to :doctor
   belongs_to :patient
 
-  scope :today, where(appointment_time: Date.today...Date.tomorrow)
+  scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
 
 end

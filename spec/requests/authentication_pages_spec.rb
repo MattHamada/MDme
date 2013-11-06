@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "AuthenticationPages" do
   subject { page }
+  before { switch_to_subdomain('www') }
 
   describe 'signin page' do
     before { visit signin_path }

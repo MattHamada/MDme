@@ -13,7 +13,7 @@ class AdminsController < ApplicationController
 
 
   def index
-    @appointments = Appointment.today.order('appointment_time ASC').all
+    @appointments = Appointment.today.order('appointment_time ASC').load
   end
 
   private
