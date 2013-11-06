@@ -4,14 +4,15 @@ class AdminsController < ApplicationController
 
 
   def signin
+    if admin_signed_in?
+      redirect_to admins_path
+    end
 
   end
+
+
 
   def index
-  end
-
-
-  def show
     @appointments = Appointment.today.order('appointment_time ASC').all
   end
 
