@@ -1,4 +1,12 @@
 module SessionsHelper
+
+  def require_admin_login
+    unless admin_signed_in?
+      redirect_to root_path
+    end
+  end
+
+
   def sign_in(user, type)
     if type == :patient
     remember_token = Patient.new_remember_token
