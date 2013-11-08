@@ -9,4 +9,8 @@ class Appointment < ActiveRecord::Base
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
 
+  def self.given_date(date)
+    Appointment.where(appointment_time: date...date.at_end_of_day)
+  end
+
 end

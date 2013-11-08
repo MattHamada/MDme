@@ -25,6 +25,11 @@ describe "AdminPages" do
           click_button 'Sign in'
         end
         it { should have_content("Today's Appointments")}
+
+        describe 'creating appointments page' do
+          before { click_link 'Manage Appointments' }
+
+        end
       end
     end
 

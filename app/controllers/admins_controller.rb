@@ -16,10 +16,5 @@ class AdminsController < ApplicationController
     @appointments = Appointment.today.order('appointment_time ASC').load
   end
 
-  private
-    def require_admin_login
-      unless admin_signed_in?
-        redirect_to root_path
-      end
-    end
+
 end

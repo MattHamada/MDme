@@ -24,12 +24,14 @@ MDme::Application.routes.draw do
     match '/signin',    to: 'sessions#new',           via: 'get',    constraints: { subdomain: 'www' }
     match '/signout',   to: 'sessions#destroy',       via: 'delete', constraints: { subdomain: 'www' }
 
+    get 'appointments/:year/:month/:day' => 'appointments#day', as: :day_appointments
+    get 'appointments/browse' => 'appointments#browse', as: :appointments_browse
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]
-    resources :admins do
-      resources :appointments
-    end
+    resources :admins
+    resources :appointments
+
    # end
 
   # The priority is based upon order of creation: first created -> highest priority.
