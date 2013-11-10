@@ -1,14 +1,80 @@
-<div class='row'>
-  <div class='col-md-8'>
-<%= form_for(@appointment, remote: true, html: { class: "form-inline", role: "form" }) do |f| %>
-        <div class="form-group">
-          <% #TODO wrap each generated datetime select in form-group %>
-          <%= select_datetime(Time.now, {}, {class: 'form-control'}) %>
-        </div>
 
-    <%= f.submit 'Create', class: 'btn btn-success' %>
+<%= form_for(@appointment, remote: true, html: { class: "form-inline", role: "form" }) do |f| %>
+    <%= f.label(:datetime, "Select Appointment Time") %>
+    <div class='form-group'>
+        <%= select_year(Time.now, {start_time: Time.now-2.years, end_time: Time.now+5.years}, {class: 'form-control'}) %>
+      </div>
+      <div class='form-group'>
+        <%= select_month(Time.now, {}, { class: 'form-control'}) %>
+      </div>
+      <div class='form-group'>
+         <%= select_day(Time.now, {ampm: true}, { class: 'form-control'}) %>
+      </div> &mdash;
+      <div class='form-group'>
+        <select class="form-control" id="date_hour" name="date[hour]">
+            <option value="00">12 AM</option>
+            <option value="01">01 AM</option>
+            <option value="02">02 AM</option>
+            <option value="03">03 AM</option>
+            <option value="04">04 AM</option>
+            <option value="05">05 AM</option>
+            <option value="06">06 AM</option>
+            <option value="07">07 AM</option>
+            <option selected="selected" value="08">08 AM</option>
+            <option value="09">09 AM</option>
+            <option value="10">10 AM</option>
+            <option value="11">11 AM</option>
+            <option value="12">12 PM</option>
+            <option value="13">01 PM</option>
+            <option value="14">02 PM</option>
+            <option value="15">03 PM</option>
+            <option value="16">04 PM</option>
+            <option value="17">05 PM</option>
+            <option value="18">06 PM</option>
+            <option value="19">07 PM</option>
+            <option value="20">08 PM</option>
+            <option value="21">09 PM</option>
+            <option value="22">10 PM</option>
+            <option value="23">11 PM</option>
+        </select>
+      </div> :
+
+      <div class= 'form-group'>
+        <select class="form-group form-control" id="date_minute" name="date[:minute]">
+            <option selected='selected' value="00">00</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="45">45</option>
+        </select>
+      </div>
+      <br/>
+      <br/>
+      <div class='form-group'>
+        <%= f.label(:doctor, "Select Doctor") %>
+        <%= collection_select(:doctor, :doctor_id, Doctor.all, :id, :full_name, {}, { class: 'form-control'}) %>
+      </div>
+      <div class='form-group'>
+        <%= f.label(:patient, "Select patient") %>
+        <%= collection_select(:patient, :patient_id, Patient.all, :id, :full_name, {}, { class: 'form-control'}) %>
+      </div>
+      <br/>
+      <br/>
+      <div class='form-group'>
+        <%= f.label(:description, 'Notes') %>
+        <%= f.text_area(:description, class: 'form-control', placeholder: 'Appointment notes', rows: '5') %>
+      </div>
+      </br>
+      </br>
+
+
+
+        <%= f.submit 'Create', class: 'btn btn-success' %>
 
 <% end %>
 
- </div>
-</div>
+</br>
+
+
+
+
+
