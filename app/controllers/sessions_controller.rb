@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
         sign_in admin, :admin
         redirect_to admins_path
       else
-        flash.now[:danger] = 'Invalid email/password combination'
+        flash.now[:danger] = 'Access Denied'
         render 'admins/signin'
       end
     else
