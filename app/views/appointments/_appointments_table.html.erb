@@ -1,0 +1,22 @@
+<table class='table table-striped table-bordered table-condensed'>
+  <thread>
+    <tr>
+      <th>#</th>
+      <th>Time</th>
+      <th>Doctor</th>
+      <th>Patient</th>
+      <th>Edit</th>
+    </tr>
+    <tbody>
+    <% @appointments.each_with_index do |appointment, index| %>
+        <tr>
+          <td><%= index %></td>
+          <td><%= appointment.appointment_time %></td>
+          <td><%= full_name(Doctor.find(appointment.doctor_id)) %></td>
+          <td><%= full_name(Patient.find(appointment.patient_id)) %></td>
+          <td><%= link_to "Edit", edit_appointment_path(appointment) %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </thread>
+</table>
