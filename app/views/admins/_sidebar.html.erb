@@ -9,9 +9,11 @@
 
       <ul class="nav nav-pills nav-stacked">
         <li><%= link_to "<i class='fa fa-calendar-o'></i> Today's Appointments".html_safe, admins_path %></li>
+        <li><%= link_to "<i class='fa fa-book'></i> Browse Appointments".html_safe, appointments_path %></li>
+        <li><%= link_to "<i class='fa fa-book'></i> Add Appointment".html_safe, new_appointment_path %></li>
+
         <li><a href="#"><i class="fa fa-user-md"></i> Manage Doctors</a></li>
         <li><a href="#"><i class="fa fa-users"></i> Manage Patients</a></li>
-        <li><%= link_to "<i class='fa fa-book'></i> Manage Appointments".html_safe, appointments_path %></li>
       </ul>
 
       <hr>
