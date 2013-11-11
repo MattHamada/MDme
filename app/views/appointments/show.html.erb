@@ -1,0 +1,19 @@
+<%= render 'admins/sidebar' %>
+
+<div class="col-md-9">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Appointment Details</h4></div>
+        <div class="panel-body">
+          Doctor: <%= @appointment.doctor.full_name %> <br/>
+          Patient: <%= @appointment.patient.full_name %> <br/>
+          Time: <%= @appointment.appointment_time.strftime("%F %I:%M%p").to_s %> <br/>
+          Notes: <%= @appointment.description %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
