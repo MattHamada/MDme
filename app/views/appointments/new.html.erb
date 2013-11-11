@@ -10,14 +10,8 @@
             <%= form_for(@appointment, html: { class: "form-inline", role: "form" }) do |f| %>
                 <%= f.label(:datetime, "Select Appointment Time") %>
                 <div class='form-group'>
-                    <%= select_year(Time.now, {start_time: Time.now-2.years, end_time: Time.now+5.years}, {class: 'form-control'}) %>
-                  </div>
-                  <div class='form-group'>
-                    <%= select_month(Time.now, {}, { class: 'form-control'}) %>
-                  </div>
-                  <div class='form-group'>
-                     <%= select_day(Time.now, {ampm: true}, { class: 'form-control'}) %>
-                  </div> &mdash;
+                  <%= text_field :date, :day, class: 'form-control' %>
+                </div>
                   <div class='form-group'>
                     <select class="form-control" id="date_hour" name="date[hour]">
                         <option value="00">12 AM</option>
@@ -48,7 +42,7 @@
                   </div> :
 
                   <div class= 'form-group'>
-                    <select class="form-group form-control" id="date_minute" name="date[:minute]">
+                    <select class="form-group form-control" id="date_minute" name="date[minute]">
                         <option selected='selected' value="00">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
