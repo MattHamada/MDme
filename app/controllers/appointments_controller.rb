@@ -26,11 +26,29 @@ class AppointmentsController < ApplicationController
 
 
   def edit
+    @appointment = Appointment.find(params[:id])
+  end
 
+  def update
+    @appointment = Appointment.find(params[:id])
+    day = params[:date][:day]
+    hour   = params[:date][:hour]
+    minute = params[:date][:minute]
+    date = DateTime.parse("#{day} #{hour}:#{minute}")
+    if @appointment.update_attributes(doctor_id: params[:doctor][:doctor_id],
+                                      patient_id: params[:patient][:patient_id],
+                                      appointment_time: date,
+                                      description: params[:appointment][:description])
+      flash[:success] = "Appointment was successfully updated."
+      redirect_to admins_path
+    else
+      render 'edit'
+    end
   end
 
   def show
     @appointment = Appointment.find(params[:id])
+    render(partial: 'ajax_show', object: @appointment) if request.xhr?
   end
 
   def index
@@ -45,7 +63,10 @@ class AppointmentsController < ApplicationController
 
 
   def destroy
-
+    @appointment = Appointment.find(params[:id])
+    @appointment.destroy!
+    flash[:notice] = "Appointment deleted"
+    redirect_to admins_path
   end
 
 end

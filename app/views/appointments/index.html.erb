@@ -15,12 +15,26 @@
                 <%= f.text_field(:date, class: "form-control" ) %>
               </div>
             <div class='form-group' id="submit">
-              <%= f.submit 'Submit', class: 'btn btn-large btn-primary' %>
+              <%= f.submit 'Submit', class: 'btn btn-large btn-primary', id: 'submit_button' %>
             </div>
          <% end %>
         </div>
         <div id='day_appointments'>
 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-2">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Options</h4></div>
+        <div class="panel-body">
+          <%= link_to "Add Appointment", new_appointment_path %>
         </div>
       </div>
     </div>
