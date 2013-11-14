@@ -29,12 +29,14 @@ group :test do
   gem 'selenium-webdriver', '2.35.1'
   #gem 'ZenTest'
   gem 'capybara', '2.1.0'
+  gem 'capybara-webkit'
   gem 'factory_girl_rails', '4.2.0'
   gem 'cucumber-rails', '1.4.0', :require => false
   gem 'cucumber-rails-training-wheels' #premade stepdefs
   gem 'database_cleaner', github: 'bmabey/database_cleaner' #reset cucumber db after test
   gem 'libnotify', '0.8.0'
   gem 'launchy' #debug tool for user stories
+  gem 'simplecov', :require => false
 end
 
 group :production do
