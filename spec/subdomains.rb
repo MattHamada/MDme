@@ -12,7 +12,7 @@ DEFAULT_PORT = 3000
 
 RSpec.configure do |config|
   Capybara.default_host = "http://#{DEFAULT_HOST}"
-  Capybara.server_port = DEFAULT_PORT
+  Capybara.server_port = 3000 #DEFAULT_PORT
   Capybara.app_host = "http://#{DEFAULT_HOST}:#{Capybara.server_port}"
 end
 
