@@ -1,9 +1,13 @@
+#require 'simplecov'
+#SimpleCov.start
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'subdomains'
+require 'helper_methods'
 #require 'factory_girl_rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -43,7 +47,24 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Capybara::DSL
+  Capybara.javascript_driver = :webkit
 
   #add helpers from app
   config.include ApplicationHelper
+
+  #below needed for db transactions to stick with capybara :webkit testing
+  config.use_transactional_fixtures = false
+
+  config.before :each do
+    if Capybara.current_driver == :rack_test
+      DatabaseCleaner.strategy = :transaction
+    else
+      DatabaseCleaner.strategy = :truncation
+    end
+    DatabaseCleaner.start
+  end
+
+  config.after do
+    DatabaseCleaner.clean
+  end
 end
