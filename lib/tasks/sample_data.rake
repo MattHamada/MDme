@@ -49,7 +49,8 @@ namespace :db do
       appointment_time = rand_time(3.days.from_now)
       Appointment.create!(patient_id: patient_id,
                           doctor_id: doctor_id,
-                          appointment_time: appointment_time)
+                          appointment_time: appointment_time,
+                          description: Faker::Lorem.paragraph(4))
     end
 
   end
