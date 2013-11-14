@@ -7,6 +7,14 @@ FactoryGirl.define do
     password_confirmation 'foobar'
   end
 
+  factory :doctor do
+    first_name            'healthy'
+    last_name             'doctor'
+    email                 'doctor@example.com'
+    password              'foobar'
+    password_confirmation 'foobar'
+  end
+
   factory :admin do
     email                 'admin@example.com'
     password              'foobar'
@@ -16,7 +24,7 @@ FactoryGirl.define do
   factory :appointment do
     doctor_id     '1'
     patient_id    '1'
-    appointment_time          DateTime.new(2013, 11, 23, 5, 55, 00)
+    appointment_time          DateTime.new(2013, 11, 23, 5, 45, 00)
     description   'test'
   end
 end
