@@ -23,7 +23,9 @@ describe "AdministrationPages" do
 
       describe 'with valid information' do
         let(:admin) { FactoryGirl.create(:admin) }
-        let (:appointment) { FactoryGirl.create(:appointment) }
+        let(:appointment) { FactoryGirl.create(:appointment) }
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:patient) { FactoryGirl.create(:patient) }
 
         before do
           fill_in 'Email', with: admin.email
@@ -35,33 +37,52 @@ describe "AdministrationPages" do
         it { should_not have_title 'Admin Sign In'}
 
         describe 'Admin Index Page' do
-          it { should have_content 'Browse Appointments'}
-          it { should have_content 'Add Appointment'}
+          it { should have_content 'Manage Appointments'}
           it { should have_content 'Manage Doctors' }
           it { should have_content 'Manage Patients'}
           it { should have_content "Today's Appointments" }
 
-
-
-
-          describe 'Browse appointments' do
+          describe 'test' do
             before do
-              click_link "Browse Appointments"
-              select appointment.appointment_time.year, from: "date[year]"
-              select Date::MONTHNAMES[appointment.appointment_time.month], from: "date[month]"
-              select appointment.appointment_time.day, from: "date[day]"
-              click_button 'Submit'
+              click_link "Manage Appointments"
+
             end
+            it { should have_selector('#day_appointments') }
             it { should have_content "Select Date" }
-
-            it { should have content full_name(Doctor.first) }
-
           end
-
-
         end
       end
     end
   end
 
+  describe 'Browse appointments', :js => true do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let(:appointment) { FactoryGirl.create(:appointment) }
+    let(:doctor) { FactoryGirl.create(:doctor) }
+    let(:patient) { FactoryGirl.create(:patient) }
+    before do
+      doctor.save!
+      patient.save!
+      appointment.save!
+      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'foobar', password_confirmation: 'foobar')
+
+      visit root_path
+      fill_in 'Email', with: @admin.email
+      fill_in 'Password', with: @admin.password
+      click_button 'Sign in'
+
+      click_link "Manage Appointments"
+      fill_in 'appointments_date', with: '2013-11-23'
+      click_button 'Submit'
+      #wait_until { find('#day_appointments') }
+
+    end
+
+    it { should have_selector('#day_appointments') }
+    it { should have_content "Select Date" }
+
+    it { should have_content Doctor.first.full_name }
+
+  end
 end
+
