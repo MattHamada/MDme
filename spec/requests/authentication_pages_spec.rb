@@ -27,7 +27,7 @@ describe "AuthenticationPages" do
       end
 
       it { should have_title(full_name(patient)) }
-      it { should have_link('My Account', href: patient_path(patient)) }
+      #it { should have_link('My Account', href: patient_path(patient)) }
       it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
 

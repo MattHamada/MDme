@@ -1,6 +1,7 @@
 class Appointment < ActiveRecord::Base
 
   validates :appointment_time, presence: true, uniqueness: true
+  validate :appointment_time_in_future
   validates :doctor_id, presence: true
   validates :patient_id, presence:true
 
@@ -11,6 +12,14 @@ class Appointment < ActiveRecord::Base
 
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
+  end
+
+  def appointment_time_in_future
+    if appointment_time.nil?
+      errors.add(:appointment_time, "No Date/time entered")
+    else
+      errors.add(:appointment_time, "Time must be set in the future") if appointment_time < DateTime.now
+    end
   end
 
 end

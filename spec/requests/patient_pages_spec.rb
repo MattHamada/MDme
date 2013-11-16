@@ -35,7 +35,7 @@ describe "Patient Pages" do
 
           it { should have_link('Sign out') }
           it { should have_title(full_name(patient)) }
-          it { should have_selector('div.alert.alert-success', text: 'Account created') }
+          it { should have_selector('div.alert.alert-success', text: 'Account Created') }
         end
       end
     end
@@ -47,7 +47,7 @@ describe "Patient Pages" do
 
     before { visit patient_path(patient) }
 
-    it { should have_content full_name(patient) }
+    it { should have_content patient.full_name }
     it { should have_content patient.email }
   end
 end

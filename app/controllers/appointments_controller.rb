@@ -50,6 +50,7 @@ class AppointmentsController < ApplicationController
       flash[:success] = "Appointment was successfully updated."
       redirect_to admins_path
     else
+      flash[:danger] = "Invalid parameters in update"
       render 'edit'
     end
   end
@@ -73,7 +74,7 @@ class AppointmentsController < ApplicationController
   def destroy
     @appointment = Appointment.find(params[:id])
     @appointment.destroy!
-    flash[:notice] = "Appointment deleted"
+    flash[:warning] = "Appointment deleted"
     redirect_to admins_path
   end
 

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
       if doctor && doctor.authenticate(params[:session][:password])
         sign_in doctor, :doctor
-        redirect_to doctor
+        redirect_to doctors_path
       else
         flash.now[:danger] = 'Invalid email/password combination'
         render 'doctors/signin'

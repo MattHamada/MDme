@@ -6,4 +6,8 @@ class DoctorsController < ApplicationController
   def signin
 
   end
+
+  def index
+
+  end
 end

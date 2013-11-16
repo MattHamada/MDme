@@ -1,3 +1,4 @@
+<%= provide(:title, "Edit Appointment") %>
 <%= render 'admins/sidebar' %>
 
 <div class="col-md-8">
@@ -73,7 +74,7 @@
               <%= f.submit 'Update', class: 'btn btn-success' %>
 
           <% end %> <br/>
-          <%= link_to 'Delete Appointment', appointment_path(@appointment), method: :delete, data: {confirm: "Are you sure?"} %>
+          <%= link_to 'Delete Appointment', appointment_path(@appointment), method: :delete %>
 
         </div>
       </div>
