@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+a:link {
+  color: #0000ff;
+
+}
+
+a:visited {
+  color: #000064;
+}
+
 
 
 #error_explanation {
@@ -37,3 +46,10 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#919191', endColorstr='#c9c9c9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
 }
+
+
+panel-body {
+  background-color: #ededed;
+}
+
+
