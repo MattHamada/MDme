@@ -42,13 +42,38 @@ describe "AdministrationPages" do
           it { should have_content 'Manage Patients'}
           it { should have_content "Today's Appointments" }
 
-          describe 'test' do
+          describe 'invalid appointment creation' do
             before do
               click_link "Manage Appointments"
-
+              click_link "Add Appointment"
+              click_button 'Create'
             end
-            it { should have_selector('#day_appointments') }
-            it { should have_content "Select Date" }
+            it { should have_selector('div.alert.alert-danger', text: 'Error creating appointment') }
+            it { should have_title('New Appointment')}
+          end
+
+          describe 'create appointment' do
+            before do
+              doctor.save!
+              patient.save!
+              click_link "Manage Appointments"
+              click_link "Add Appointment"
+              fill_in('date_day', with: '2013-11-05')
+              select('08 AM', from: 'date_hour')
+              select('00', from: 'date_minute')
+              select(doctor.full_name, from: "doctor_doctor_id")
+              select(patient.full_name, from: 'patient_patient_id')
+              fill_in('desc_text', with: 'test')
+            end
+            it 'should create an appointment' do
+              expect { click_button('Create') }.to change(Appointment, :count).by(1)
+            end
+            describe 'After creating appointment' do
+              before { click_button 'Create' }
+              it { should have_selector('div.alert.alert-success', text: 'Appointment Created') }
+              it { should have_title 'Browse Appointments' }
+            end
+
           end
         end
       end

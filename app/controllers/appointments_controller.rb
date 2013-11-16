@@ -11,16 +11,24 @@ class AppointmentsController < ApplicationController
     hour   = params[:date][:hour]
     minute = params[:date][:minute]
     date = DateTime.parse("#{day} #{hour}:#{minute}")
-    @appointment = Appointment.new(doctor_id: params[:doctor][:doctor_id],
-                                   patient_id: params[:patient][:patient_id],
-                                   appointment_time: date,
-                                   description: params[:appointment][:description])
-    if @appointment.save
-      flash[:success] = "Appointment Created"
-      redirect_to appointments_path
-    else
+
+    if !params.has_key?(:doctor) || !params.has_key?(:patient)
       flash[:danger] = "Error creating appointment"
       redirect_to new_appointment_url
+    else
+
+
+      @appointment = Appointment.new(doctor_id: params[:doctor][:doctor_id],
+                                     patient_id: params[:patient][:patient_id],
+                                     appointment_time: date,
+                                     description: params[:appointment][:description])
+      if @appointment.save
+        flash[:success] = "Appointment Created"
+        redirect_to appointments_path
+      else
+        flash[:danger] = "Error creating appointment"
+        redirect_to new_appointment_url
+      end
     end
   end
 
