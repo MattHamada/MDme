@@ -108,6 +108,23 @@ describe "AdministrationPages" do
 
     it { should have_content Doctor.first.full_name }
 
+    describe 'show appointment' do
+      before { click_link('0') }
+      it { should have_text(appointment.description) }
+
+      describe 'editing appointment' do
+        before  do
+          click_link('Edit Appointment')
+          fill_in 'desc_text', with: 'updated description'
+          click_button('Update')
+        end
+        it { should have_selector('div.alert.alert-success', text: 'Appointment was successfully updated.') }
+        describe 'verify edited appointment' do
+          before { visit appointment_path(appointment) }
+          it { should have_text('updated description') }
+        end
+      end
+    end
   end
 end
 
