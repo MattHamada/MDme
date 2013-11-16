@@ -13,6 +13,7 @@ FactoryGirl.define do
     email                 'doctor@example.com'
     password              'foobar'
     password_confirmation 'foobar'
+    department_id            '1'
   end
 
   factory :admin do
@@ -26,5 +27,9 @@ FactoryGirl.define do
     patient_id    '1'
     appointment_time          DateTime.new(2013, 11, 23, 5, 45, 00)
     description   'test'
+  end
+
+  factory :department do
+    name 'Oncology'
   end
 end
