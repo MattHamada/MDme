@@ -1,4 +1,7 @@
 class DoctorsController < ApplicationController
+  before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index]
+
+
   def home
 
   end
@@ -8,6 +11,6 @@ class DoctorsController < ApplicationController
   end
 
   def index
-
+    @doctors = Doctor.all
   end
 end

@@ -86,6 +86,24 @@ describe "AdministrationPages" do
             end
 
           end
+
+          describe 'admin doctors pages' do
+            describe 'browse doctors' do
+              let(:department) { FactoryGirl.create(:department) }
+              let(:doctor) { FactoryGirl.create(:doctor) }
+              before do
+                department.save!
+                doctor.save!
+                click_link 'Manage Doctors'
+
+              end
+              it { should have_title('Doctors') }
+              it { should have_link('Add Doctor') }
+              it { should have_content(doctor.full_name) }
+              it { should have_content(doctor.department.name)}
+            end
+          end
+
         end
       end
     end
