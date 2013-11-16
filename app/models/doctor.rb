@@ -11,6 +11,7 @@ class Doctor < ActiveRecord::Base
 
   has_many :appointments
   has_many :patients
+  belongs_to :department
 
   has_secure_password
 
