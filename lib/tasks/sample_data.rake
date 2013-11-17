@@ -9,14 +9,20 @@ namespace :db do
                     email: 'user@example.com',
                     password: 'foobar',
                     password_confirmation: 'foobar')
+    Department.create!(name: 'Pediatrics')
+    Department.create!(name: 'Anaesthesia')
+    Department.create!(name: 'Internal Medicine')
+    Department.create!(name: 'Oncology')
     Doctor.create!(first_name: 'healthy',
                    last_name: 'doctor',
                    email: 'doctor@example.com',
                    password: 'foobar',
-                   password_confirmation: 'foobar')
+                   password_confirmation: 'foobar',
+                   department_id: 1)
     Appointment.create!(patient_id: 1,
                         doctor_id: 1,
-                        appointment_time: Time.now)
+                        appointment_time: Time.now + 30.minutes)
+
 
     #fill with other sample patients
     60.times do |n|
@@ -35,11 +41,13 @@ namespace :db do
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
       password = "password"
+      department_id = rand_int(1,4)
       Doctor.create!(first_name: name[0],
                      last_name: name[1],
                      email: email,
                      password: password,
-                     password_confirmation: password)
+                     password_confirmation: password,
+                     department_id: department_id)
     end
 
     #sample appointments
@@ -64,7 +72,7 @@ def rand_price(from, to)
   rand_in_range(from, to).round(2)
 end
 
-def rand_time(endTime, startTime=Time.now)
+def rand_time(endTime, startTime=Time.now+3.hours)
   Time.at(rand_in_range(startTime.to_f, endTime.to_f))
 end
 
