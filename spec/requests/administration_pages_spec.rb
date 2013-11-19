@@ -100,15 +100,42 @@ describe "AdministrationPages" do
               it { should have_title('Doctors') }
               it { should have_link('Add Doctor') }
               it { should have_content(doctor.full_name) }
-              it { should have_content(doctor.department.name)}
+              it { should have_content(doctor.department.name) }
+            end
+
+            describe 'Add Doctor' do
+              before  do
+                click_link 'Manage Doctors'
+                click_link 'Add Doctor'
+              end
+              describe 'with invalid information' do
+                before { click_button 'Create' }
+                it { should have_selector('div.alert.alert-danger', text: 'Invalid Parameters Entered') }
+                it { should have_text('The form contains 4 errors') }
+                it { should have_selector('div.field_with_errors') }
+                it { should have_title('New Doctor') }
+              end
+
+              describe 'with valid information' do
+                before do
+                  fill_in 'doctor_first_name', with: 'Boo'
+                  fill_in 'doctor_last_name', with: 'Radley'
+                  fill_in 'doctor_email', with: 'boo@radley.com'
+                end
+                it 'should create a new doctor' do
+                  expect do
+                    click_button 'Create'
+                  end.to change(Doctor, :count).by(1)
+                end
+              end
             end
           end
-
         end
       end
     end
   end
 
+  #separated due to swtich to webkit from rack
   describe 'Browse appointments', :js => true do
     let(:admin) { FactoryGirl.create(:admin) }
     let(:appointment) { FactoryGirl.create(:appointment) }
