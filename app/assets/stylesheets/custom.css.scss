@@ -1,3 +1,9 @@
+.field_with_errors {
+  @extend .has-error;
+}
+
+@import "bootstrap";
+
 @mixin box_sizing {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -23,10 +29,6 @@ a:visited {
   }
 }
 
-.field_with_errors {
-  @extend .control-group;
-  @extend .danger;
-}
 
 .img-logo {
   width: auto;
@@ -52,6 +54,7 @@ panel-body {
   background-color: #ededed;
 }
 
+/*
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(even) > th {
   background-color: #a4a4a4; }
@@ -68,9 +71,11 @@ panel-body {
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px; }
-
+*/
 .container {
   background-color: #EFEFEF;
 }
+
+
 
 
