@@ -9,31 +9,7 @@
         <div class="panel-body">
 
           <%= form_for(@doctor, html: { class: "form-horizontal", role: "form" }) do |f| %>
-              <div class='form-group'>
-                <div class="col-md-7">
-                  <%= f.label(:first_name, "First Name") %>
-                  <%= f.text_field(:first_name, class: 'form-control') %>
-                </div>
-              </div>
-              <div class='form-group'>
-                <div class="col-md-7">
-                  <%= f.label(:last_name, "Last Name") %>
-                  <%= f.text_field(:last_name, class: 'form-control') %>
-                </div>
-              </div>
-
-              <div class='form-group'>
-                <div class="col-md-7">
-                  <%= f.label(:email, "email") %>
-                  <%= f.text_field(:email, class: 'form-control') %>
-                </div>
-              </div>
-              <div class='form-group'>
-                <div class="col-md-7">
-                  <%= f.label(:department, "Select Department") %>
-                  <%= collection_select(:department, :department_id, Department.all, :id, :name, {}, { class: 'form-control'}) %>
-                </div>
-              </div>
+              <%= render 'new_edit_form', f: f %>
 
               <%= f.submit 'Create', class: 'btn btn-success' %>
 

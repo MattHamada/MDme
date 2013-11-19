@@ -1,0 +1,27 @@
+<%= render 'shared/error_messages', object: @doctor %>
+
+<div class='form-group'>
+  <div class='col-md-7'>
+    <%= f.label(:doctor, 'First Name') %>
+    <%= text_field :doctor, :first_name, class: 'form-control' %>
+  </div>
+</div>
+
+<div class='form-group'>
+  <div class='col-md-7'>
+    <%= f.label(:doctor, 'Last Name') %>
+    <%= text_field(:doctor, :last_name, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, "Email") %>
+    <%= text_field(:doctor, :email, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, 'Department') %>
+    <%= collection_select(:doctor, :department_id, Department.all, :id, :name, {}, { class: 'form-control'}) %>
+  </div>
+</div>
