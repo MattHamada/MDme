@@ -53,4 +53,11 @@ class DoctorsController < ApplicationController
   def doctor_params
     params.require(:doctor).permit(:first_name, :last_name, :email, :department_id, :password, :password_confirmation)
   end
+
+  def destroy
+    @doctor = Doctor.find(params[:id])
+    @doctor.destroy!
+    flash[:warning] = 'Doctor Successfully Deleted'
+    redirect_to admins_path
+  end
 end
