@@ -27,9 +27,7 @@
 <%= render 'static_pages/header' %>
 <% end %>
 
-<% flash.each do |key, value| %>
-    <div class="alert alert-<%= key %>"><%= value %></div>
-<% end %>
+
 
 <%= yield %>
 
