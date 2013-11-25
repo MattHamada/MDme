@@ -1,9 +1,7 @@
 <div class="container" id="main-content">
   <div class="navbar  navbar-static-top">
     <div class="container">
-      <% flash.each do |key, value| %>
-          <div class="alert alert-<%= key %>"><%= value %></div>
-      <% end %>
+      <%= render 'shared/flash' %>
       <div class="navbar-header">
         <a class="navbar-brand" href="#"><img src="<%= asset_path( 'MDME_banner.png' ) %>" /></a>
       </div>

@@ -19,8 +19,8 @@ class SessionsController < ApplicationController
         sign_in admin, :admin
         redirect_to admins_path
       else
-        flash.now[:danger] = 'Access Denied'
-        render 'admins/signin'
+        flash[:danger] = 'Access Denied'
+        redirect_to root_path
       end
     else
       patient = Patient.find_by(email: params[:session][:email].downcase)
