@@ -8,7 +8,8 @@ namespace :db do
                     last_name: 'patient',
                     email: 'user@example.com',
                     password: 'foobar',
-                    password_confirmation: 'foobar')
+                    password_confirmation: 'foobar',
+                    doctor_id: '1')
     Department.create!(name: 'Pediatrics')
     Department.create!(name: 'Anaesthesia')
     Department.create!(name: 'Internal Medicine')
@@ -29,11 +30,13 @@ namespace :db do
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
       password = "password"
+      doctor_id = rand_int(1,6)
       Patient.create!(first_name: name[0],
                       last_name: name[1],
                       email: email,
                       password: password,
-                      password_confirmation: password)
+                      password_confirmation: password,
+                      doctor_id: doctor_id)
     end
 
     #sample doctors

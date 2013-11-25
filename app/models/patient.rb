@@ -8,7 +8,7 @@ class Patient < ActiveRecord::Base
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 
-  has_one  :doctor
+  belongs_to  :doctor
   has_many :appointments
 
   has_secure_password

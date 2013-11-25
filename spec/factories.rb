@@ -5,6 +5,7 @@ FactoryGirl.define do
     email                 'patient@example.com'
     password              'foobar'
     password_confirmation 'foobar'
+    doctor_id             '1'
   end
 
   factory :doctor do
