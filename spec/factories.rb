@@ -25,7 +25,7 @@ FactoryGirl.define do
   factory :appointment do
     doctor_id     '1'
     patient_id    '1'
-    appointment_time          DateTime.new(2013, 11, 23, 5, 45, 00)
+    appointment_time          DateTime.now + 3.days
     description   'test'
   end
 

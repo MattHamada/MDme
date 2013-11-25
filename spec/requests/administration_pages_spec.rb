@@ -130,6 +130,12 @@ describe "AdministrationPages" do
               end
             end
           end
+
+          describe 'admin patient pages' do
+            before { click_link 'Manage Patients' }
+            it { should have_title 'Patients' }
+
+          end
         end
       end
     end
@@ -153,7 +159,7 @@ describe "AdministrationPages" do
       click_button 'Sign in'
 
       click_link "Manage Appointments"
-      fill_in 'appointments_date', with: '2013-11-23'
+      fill_in 'appointments_date', with: (Date.today + 3.days).strftime("%F")
       click_button 'Submit'
       #wait_until { find('#day_appointments') }
 
