@@ -132,9 +132,45 @@ describe "AdministrationPages" do
           end
 
           describe 'admin patient pages' do
-            before { click_link 'Manage Patients' }
-            it { should have_title 'Patients' }
+            before do
+              patient.save
+              doctor.save
+              click_link 'Manage Patients'
+            end
 
+            it { should have_title 'Patients' }
+            it { should have_content patient.full_name }
+            it { should have_content patient.doctor.full_name }
+
+            describe 'Adding a patient' do
+              before { click_link 'Add Patient' }
+              describe 'with invalid information' do
+                before { click_button 'Create' }
+                it { should have_title 'Create Patient' }
+                it { should have_selector 'div.alert.alert-danger', text: 'Error Creating Patient'}
+              end
+              describe 'with valid information' do
+                before do
+                  fill_in 'patient_first_name', with: 'Boo'
+                  fill_in 'patient_last_name',  with: 'Radley'
+                  fill_in 'patient_email', with: 'boo@radley.com'
+                  select doctor.full_name, from: 'doctor_doctor_id'
+                end
+                it 'should create a patient' do
+                  expect do
+                    click_button 'Create'
+                  end.to change(Patient, :count).by(1)
+                end
+
+                describe 'after creating patient' do
+                  before { click_button 'Create' }
+
+                  it { should have_title('Patients') }
+                  it { should have_content 'Boo Radley' }
+                  it { should have_selector('div.alert.alert-success', text: 'Patient Created') }
+                end
+              end
+            end
           end
         end
       end
@@ -159,7 +195,7 @@ describe "AdministrationPages" do
       click_button 'Sign in'
 
       click_link "Manage Appointments"
-      fill_in 'appointments_date', with: (Date.today + 3.days).strftime("%F")
+      fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
       click_button 'Submit'
       #wait_until { find('#day_appointments') }
 
@@ -167,6 +203,7 @@ describe "AdministrationPages" do
 
     it { should have_selector('#day_appointments') }
     it { should have_content "Select Date" }
+    it { should have_content 'Time' }
 
     it { should have_content Doctor.first.full_name }
 

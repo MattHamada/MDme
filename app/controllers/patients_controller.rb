@@ -1,15 +1,21 @@
 class PatientsController < ApplicationController
+  before_filter :require_admin_login, :only => [:new, :destroy, :index]
+
   def new
     @patient = Patient.new
   end
 
   def create
-    @patient = Patient.new(user_params)
+    p = patient_params
+    p[:password] = 'temppass'
+    p[:password_confirmation] = 'temppass'
+    p[:doctor_id] = params[:doctor][:doctor_id]
+    @patient = Patient.new(p)
     if @patient.save
-      sign_in(@patient, :patient)
-      flash[:success] = 'Account Created'
-      redirect_to @patient
+      flash[:success] = 'Patient Created'
+      redirect_to patients_path
     else
+      flash.now[:danger] = 'Error Creating Patient'
       render 'new'
     end
   end
@@ -18,9 +24,13 @@ class PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
   end
 
+  def index
+    @patients = Patient.all.reorder("last_name")
+  end
 
 
-  def user_params
-    params.require(:patient).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+
+  def patient_params
+    params.require(:patient).permit(:first_name, :last_name, :email, :password, :password_confirmation, :doctor_id)
   end
 end
