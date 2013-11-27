@@ -3,7 +3,9 @@ class Patient < ActiveRecord::Base
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
   validates :email, presence: true, uniqueness: {case_sensitive: false}, format: {with: VALID_EMAIL_REGEX}
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
+
+  attr_accessor :is_admin_applying_update
 
   before_save { self.email = email.downcase }
   before_create :create_remember_token

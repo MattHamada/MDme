@@ -168,7 +168,40 @@ describe "AdministrationPages" do
                   it { should have_title('Patients') }
                   it { should have_content 'Boo Radley' }
                   it { should have_selector('div.alert.alert-success', text: 'Patient Created') }
+
+                  describe 'editing patient' do
+                    before do
+                      click_link '0'
+                      fill_in 'patient_first_name', with: 'Joseph'
+                      fill_in 'patient_last_name', with: 'Smith'
+                      click_button 'Update'
+                    end
+                    it { should have_title('Patients') }
+                    it { should have_content('Joseph Smith') }
+                    it { should have_selector('div.alert.alert-success', text: 'Patient Successfully Updated') }
+                  end
+
+                  describe 'deleting patient' do
+                    before { click_link '0' }
+
+                    it 'should delete the patient' do
+                      expect do
+                        click_link 'Delete Patient'
+                      end.to change(Patient, :count).by(-1)
+
+                    end
+                    describe 'after deleting patient' do
+                      before { click_link 'Delete Patient' }
+
+                      it { should have_title 'Patients' }
+                      it { should_not have_content 'Boo Radley' }
+                      it { should have_selector('div.alert.alert-warning', text: 'Patient Deleted') }
+                    end
+                  end
+
                 end
+
+
               end
             end
           end
