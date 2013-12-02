@@ -60,4 +60,8 @@ class DoctorsController < ApplicationController
     flash[:warning] = 'Doctor Successfully Deleted'
     redirect_to admins_path
   end
+
+  def show
+    @appointments = Appointment.given_date(Date.today).with_doctor(params[:id]).order('appointment_time ASC').load
+  end
 end

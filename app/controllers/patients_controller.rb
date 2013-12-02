@@ -22,6 +22,7 @@ class PatientsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
+    render 'doctors/patient_show' if request.subdomain == 'doctors'
   end
 
   def index

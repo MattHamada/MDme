@@ -14,6 +14,10 @@ class Appointment < ActiveRecord::Base
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
+  def self.with_doctor(doctor_id)
+    Appointment.where(doctor_id: doctor_id)
+  end
+
   def appointment_time_in_future
     if appointment_time.nil?
       errors.add(:appointment_time, "No Date/time entered")
