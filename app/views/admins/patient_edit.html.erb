@@ -8,7 +8,7 @@
         <div class="panel-heading"><h4>Update Patient</h4></div>
         <div class="panel-body">
           <%= form_for @patient, method: :put do |f| %>
-              <%= render 'new_edit_form', f: f %>
+              <%= render 'patients/new_edit_form', f: f %>
 
               <%= f.submit 'Update', class: 'btn btn-success' %>
           <% end %>

@@ -9,7 +9,7 @@
         <div class="panel-body">
 
           <%= form_for(@doctor, method: :put, html: { class: "form-horizontal", role: "form" }) do |f| %>
-             <%= render 'new_edit_form', f: f %>
+              <%= render 'doctors/new_edit_form', f: f %>
 
               <%= f.submit 'Update', class: 'btn btn-success' %>
 
