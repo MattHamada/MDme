@@ -3,6 +3,7 @@ class PatientsController < ApplicationController
 
   def new
     @patient = Patient.new
+    render 'admins/patient_new'
   end
 
   def create
@@ -16,21 +17,27 @@ class PatientsController < ApplicationController
       redirect_to patients_path
     else
       flash.now[:danger] = 'Error Creating Patient'
-      render 'new'
+      render 'admins/patient_new'
     end
   end
 
   def show
     @patient = Patient.find(params[:id])
-    render 'doctors/patient_show' if request.subdomain == 'doctors'
+
   end
 
   def index
     @patients = Patient.all.reorder("last_name")
+    render 'admins/patient_index'
   end
 
   def edit
     @patient = Patient.find(params[:id])
+    if request.subdomain == 'admin'
+      render 'admins/patient_edit'
+    else
+      render 'edit'
+    end
   end
 
   def update
@@ -42,7 +49,11 @@ class PatientsController < ApplicationController
       redirect_to patients_path
     else
       flash.now[:danger] = 'Invalid Parameters Entered'
-      render 'new'
+      if request.subdomain == 'admin'
+        render 'admins/patient_edit'
+      else
+        render 'edit'
+      end
     end
   end
 
