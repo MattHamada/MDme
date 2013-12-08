@@ -7,7 +7,7 @@ describe "DoctorsPages" do
   describe 'Doctor signin page' do
     before { visit root_path }
     it { should have_title "Doctor's Sign In"}
-    it { should have_content("Doctor's Sign in") }
+    it { should have_content("Sign in") }
 
 
     describe 'Doctor signing in' do
