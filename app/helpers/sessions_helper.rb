@@ -6,6 +6,12 @@ module SessionsHelper
     end
   end
 
+  def require_doctor_login
+    unless doctor_signed_in?
+      redirect_to root_path
+    end
+  end
+
 
   def sign_in(user, type)
     if type == :patient

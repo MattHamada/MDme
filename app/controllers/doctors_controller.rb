@@ -1,14 +1,8 @@
 class DoctorsController < ApplicationController
   before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index]
+  before_filter :require_doctor_login, :only => [:edit, :show, :appointments]
 
 
-  def home
-
-  end
-
-  def signin
-
-  end
 
   def index
     @doctors = Doctor.all
@@ -73,6 +67,11 @@ class DoctorsController < ApplicationController
   end
 
   def show
+    @doctor = Doctor.find(params[:id])
+  end
+
+  def appointments
+    @doctor = Doctor.find(params[:id])
     @appointments = Appointment.given_date(Date.today).with_doctor(params[:id]).order('appointment_time ASC').load
   end
 end
