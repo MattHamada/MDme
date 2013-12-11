@@ -56,7 +56,8 @@ class DoctorsController < ApplicationController
   end
 
   def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id, :password, :password_confirmation)
+    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id,
+                                   :password, :password_confirmation, :avatar)
   end
 
   def destroy

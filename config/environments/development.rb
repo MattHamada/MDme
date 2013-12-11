@@ -26,4 +26,7 @@ MDme::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  #for paperclip to use imagemagick
+  Paperclip.options[:command_path] = "/usr/bin/"
 end

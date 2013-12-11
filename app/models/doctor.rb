@@ -6,6 +6,8 @@ class Doctor < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
 
   attr_accessor :is_admin_applying_update
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+
 
   before_save { self.email = email.downcase }
   before_create :create_remember_token

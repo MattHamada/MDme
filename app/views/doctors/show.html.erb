@@ -7,7 +7,9 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Personal Information</h4></div>
         <div class="panel-body">
-            <b>First Name:</b> <%= @doctor.first_name %><br/>
+          <%= image_tag @doctor.avatar.url(:medium) %>
+
+          <b>First Name:</b> <%= @doctor.first_name %><br/>
             <b>Last Name:</b> <%= @doctor.last_name %><br/>
 
         </div>
