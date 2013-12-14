@@ -25,3 +25,9 @@
     <%= collection_select(:doctor, :department_id, Department.all, :id, :name, {}, { class: 'form-control'}) %>
   </div>
 </div>
+
+<div class="form-group">
+  <div class="col-md-7">
+    <%= f.file_field :avatar %>
+  </div>
+</div>

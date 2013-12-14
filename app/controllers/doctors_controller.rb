@@ -1,8 +1,14 @@
 class DoctorsController < ApplicationController
-  before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index]
-  before_filter :require_doctor_login, :only => [:edit, :show, :appointments]
+  before_filter :require_admin_login, :only => [:new,  :destroy, :index]
+  before_filter :require_doctor_login, :only => [:appointments]
+  before_filter :require_admin_or_doctor_login, :only => [:edit, :show]
 
 
+  def signin
+    if doctor_signed_in?
+      redirect_to doctor_path(current_doctor)
+    end
+  end
 
   def index
     @doctors = Doctor.all

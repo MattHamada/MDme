@@ -7,7 +7,17 @@ module SessionsHelper
   end
 
   def require_doctor_login
-    unless doctor_signed_in?
+    if doctor_signed_in?
+      unless current_doctor == Doctor.find(params[:id])
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
+  def require_admin_or_doctor_login
+    unless admin_signed_in? or doctor_signed_in?
       redirect_to root_path
     end
   end
