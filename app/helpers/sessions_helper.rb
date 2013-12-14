@@ -17,7 +17,11 @@ module SessionsHelper
   end
 
   def require_admin_or_doctor_login
-    unless admin_signed_in? or doctor_signed_in?
+    if admin_signed_in? or doctor_signed_in?
+      if doctor_signed_in?
+        require_doctor_login
+      end
+    else
       redirect_to root_path
     end
   end
