@@ -6,7 +6,7 @@ class DoctorsController < ApplicationController
 
   def signin
     if doctor_signed_in?
-      redirect_to doctor_path(current_doctor)
+      redirect_to doctors_appointments_path(current_doctor)
     end
   end
 
