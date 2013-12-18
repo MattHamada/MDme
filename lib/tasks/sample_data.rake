@@ -19,7 +19,11 @@ namespace :db do
                    email: 'doctor@example.com',
                    password: 'foobar',
                    password_confirmation: 'foobar',
-                   department_id: 1)
+                   department_id: 1,
+                   degree: 'MD',
+                   alma_mater: 'Harvard',
+                   phone_number: '121-124-6722',
+                   description: Faker::Lorem.paragraph(4))
     Appointment.create!(patient_id: 1,
                         doctor_id: 1,
                         appointment_time: Time.now + 30.minutes)
@@ -40,17 +44,27 @@ namespace :db do
     end
 
     #sample doctors
+    schools = ['Harvard', 'Yale', 'UCLA', 'UofA', 'Midwestern University', 'Tufts']
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
       password = "password"
       department_id = rand_int(1,4)
-      Doctor.create!(first_name: name[0],
+      phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
+                     rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +
+                     rand_int(0,9).to_s + rand_int(0,9).to_s
+      degree = rand_int(0,1) == 1 ? 'DO': 'MD'
+      alma_mater = schools[rand_int(0,5)]
+          Doctor.create!(first_name: name[0],
                      last_name: name[1],
                      email: email,
                      password: password,
                      password_confirmation: password,
-                     department_id: department_id)
+                     department_id: department_id,
+                     phone_number: phone_number,
+                     degree: degree,
+                     alma_mater: alma_mater,
+                     description: Faker::Lorem.paragraph(4))
     end
 
     #sample appointments

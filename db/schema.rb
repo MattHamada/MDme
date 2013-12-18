@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131211003116) do
+ActiveRecord::Schema.define(version: 20131218170340) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -54,6 +54,10 @@ ActiveRecord::Schema.define(version: 20131211003116) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "phone_number"
+    t.string   "degree"
+    t.string   "alma_mater"
+    t.text     "description"
   end
 
   add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
