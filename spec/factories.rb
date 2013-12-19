@@ -15,6 +15,10 @@ FactoryGirl.define do
     password              'foobar'
     password_confirmation 'foobar'
     department_id            '1'
+    degree                'DO'
+    alma_mater            'Midwestern University'
+    description            Faker::Lorem.paragraph(4)
+    phone_number          '123-456-7890'
   end
 
   factory :admin do

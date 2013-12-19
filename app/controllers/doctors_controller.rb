@@ -3,6 +3,7 @@ class DoctorsController < ApplicationController
   before_filter :require_doctor_login, :only => [:appointments]
   before_filter :require_admin_or_doctor_login, :only => [:edit, :show]
 
+  #TODO allow doctor to change password
 
   def signin
     if doctor_signed_in?
@@ -43,27 +44,41 @@ class DoctorsController < ApplicationController
   def update
     @doctor = Doctor.find(params[:id])
     @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
-    @doctor.attributes = doctor_params
-    if @doctor.save
-      flash[:success] = "Doctor Successfully Updated"
-      if request.subdomain == 'admin'
-        redirect_to admins_path
-      else
-        redirect_to doctor_path(@doctor)
-      end
+    if @doctor.authenticate(params[:verify][:verify_password]) == false
+      flash[:danger] = 'Invalid password entered.'
+      redirect_to edit_doctor_path(@doctor)
     else
-      flash.now[:danger] = 'Invalid Parameters Entered'
-      if request.subdomain == 'doctors'
-        render 'edit'
-      elsif request.subdomain == 'admin'
-        render 'admins/doctors_edit'
+      dp = doctor_params
+      puts dp
+      dp[:password] = params[:verify][:verify_password]
+      dp[:password_confirmation] = params[:verify][:verify_password]
+      puts 'ssssssss'
+      @doctor.attributes = dp
+      puts dp
+      puts @doctor.attributes
+
+      if @doctor.save
+        flash[:success] = "Doctor Successfully Updated"
+        if request.subdomain == 'admin'
+          redirect_to admins_path
+        else
+          redirect_to doctor_path(@doctor)
+        end
+      else
+        flash.now[:danger] = 'Invalid Parameters Entered'
+        if request.subdomain == 'doctors'
+          render 'edit'
+        elsif request.subdomain == 'admin'
+          render 'admins/doctors_edit'
+        end
       end
     end
+
   end
 
   def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id,
-                                   :password, :password_confirmation, :avatar)
+    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id, :phone_number, :degree,
+                                   :alma_mater, :description, :password, :password_confirmation, :avatar)
   end
 
   def destroy

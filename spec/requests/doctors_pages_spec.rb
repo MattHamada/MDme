@@ -18,9 +18,11 @@ describe "DoctorsPages" do
       end
 
       describe 'with valid information' do
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:department) { FactoryGirl.create(:department) }
         before do
-          @doctor = Doctor.create(first_name: 'doc', last_name: 'meds', email: 'doctor@example.com',
-                                  password: 'foobar', password_confirmation: 'foobar')
+          doctor.save!
+          department.save!
           fill_in 'Email', with: 'doctor@example.com'
           fill_in 'Password', with: 'foobar'
           click_button 'Sign in'
@@ -34,18 +36,33 @@ describe "DoctorsPages" do
 
         describe 'Profile view page' do
           before { click_link 'My Profile' }
-          it { should have_content @doctor.first_name }
-          it { should have_content @doctor.last_name }
-          it { should have_content @doctor.email }
-          it { should have_content @doctor.phone_number }
-          it { should have_content @doctor.degree }
-          it { should have_content @doctor.alma_mater }
-          it { should have_content @doctor.description }
+          it { should have_content doctor.first_name }
+          it { should have_content doctor.last_name }
+          it { should have_content doctor.email }
+          it { should have_content doctor.phone_number }
+          it { should have_content doctor.degree }
+          it { should have_content doctor.alma_mater }
+          it { should have_content doctor.description }
 
+          describe 'Edit Profile' do
+            before { click_link 'Edit Profile' }
+            describe 'with invalid password' do
+              before do
+                fill_in 'doctor_phone_number', with: '000-000-0000'
+                click_button 'Update'
+              end
+              it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered.'}
+            end
 
-
-
-
+            describe 'with valid password' do
+              before do
+                fill_in 'doctor_phone_number', with: '000-000-0000'
+                fill_in 'verify_verify_password', with: 'foobar'
+                click_button 'Update'
+              end
+              it { should have_content '000-000-0000'}
+            end
+          end
         end
 
       end

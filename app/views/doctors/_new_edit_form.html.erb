@@ -15,8 +15,32 @@
 </div>
 <div class='form-group'>
   <div class="col-md-7">
-    <%= f.label(:doctor, "Email") %>
+    <%= f.label(:doctor, 'Email') %>
     <%= text_field(:doctor, :email, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, 'Phone Number') %>
+    <%= text_field(:doctor, :phone_number, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, 'Degree') %>
+    <%= text_field(:doctor, :degree, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, 'Alma Mater') %>
+    <%= text_field(:doctor, :alma_mater, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class="col-md-7">
+    <%= f.label(:doctor, 'Description') %>
+    <%= text_area(:doctor, :description, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
@@ -28,6 +52,6 @@
 
 <div class="form-group">
   <div class="col-md-7">
-    <%= f.file_field :avatar %>
+   <b>Picture:</b> <%= f.file_field :avatar %>
   </div>
 </div>
