@@ -29,4 +29,5 @@ MDme::Application.configure do
 
   #for paperclip to use imagemagick
   Paperclip.options[:command_path] = "/usr/bin/"
+
 end

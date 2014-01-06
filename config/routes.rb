@@ -35,6 +35,12 @@ MDme::Application.routes.draw do
     resources :appointments
     resources :doctors
 
+  #api routes
+  namespace :api, :version => 1 do
+    resources :patients, :only => [:index, :show]
+  end
+
+
    # end
 
   # The priority is based upon order of creation: first created -> highest priority.
