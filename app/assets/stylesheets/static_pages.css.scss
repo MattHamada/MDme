@@ -2,3 +2,24 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#nav-break
+{
+  display:block;
+  border:none;
+  color:white;
+  height:3px;
+  background:black;
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 350, from(#005B9A), to(#8C8984));
+  background:    -moz-linear-gradient(left, rgb(140,137,152) 0%, rgb(0,91,154) 50%, rgb(140,137,152) 100%);
+  background:     -ms-linear-gradient(left, rgb(140,137,152) 0%, rgb(0,91,154) 50%, rgb(140,137,152) 100%);
+  background:      -o-linear-gradient(left, rgb(140,137,152) 0%, rgb(0,91,154) 50%, rgb(140,137,152) 100%);
+  background:         linear-gradient(left, rgb(140,137,152) 0%, rgb(0,91,154) 50%, rgb(140,137,152) 100%);
+
+}
+
+#static-links
+{
+  font-size: 16px;
+}
+
+
