@@ -20,6 +20,10 @@
 #static-links
 {
   font-size: 16px;
+  position:relative;
+  top:80%;
+  height:10em;
+  margin-top:-5em;
 }
 
 #main-heading
@@ -28,7 +32,7 @@
   text-size: 30px;
 }
 
-#main-text
+.main-text
 {
   font-size: 25px;
   text-align: center;
@@ -39,4 +43,22 @@
   text-align: center;
   background-color: #E6E6E6;
   font-size: 18px;
+
+}
+
+.dashboard-panel-6
+{
+  width: 49%;
+
+}
+
+
+.fixedheight {
+  height: 100px; position:relative;
+}
+.bottom-aligned {
+  position:relative;
+  top:80%;
+  height:10em;
+  margin-top:-5em;
 }
