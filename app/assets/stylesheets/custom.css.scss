@@ -73,8 +73,16 @@ panel-body {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px; }
 */
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+    background-color: #fdfdfd;
+  }
+}
 .container {
   background-color: #EFEFEF;
+  width: 1200px !important;
 }
 
 #main-content {
