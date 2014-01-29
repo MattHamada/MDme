@@ -20,12 +20,12 @@
 #static-links
 {
   font-size: 16px;
-  position:relative;
+  position: relative;
+  bottom: 0;
   top:80%;
   height:10em;
   margin-top:-5em;
   white-space: nowrap;
-
 }
 
 #main-heading
@@ -60,7 +60,10 @@
 .fixedheight {
   height: 100px;
   position:relative;
+  
 }
+
+
 
 .bottom-aligned {
   position:relative;
@@ -69,6 +72,11 @@
   margin-top:-5em;
 }
 
+/* needed to make logo clickable while keeping links aligned */
+#logo {
+  position: relative;
+  z-index: 1;
+}
 
 
 
