@@ -1,12 +1,12 @@
 <% provide(:title, ' | Sign in') %>
 <div class="container" id="main-content">
-  <%= render 'shared/flash' %>
   <div class="row fixedheight">
     <div class="col-xs-5" id="logo">
       <%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
     </div>
   </div>
   <hr id="nav-break"/>
+  <%= render 'shared/flash' %>
 
   <div class="row">
   <div class="col-xs-6 col-xs-offset-3">

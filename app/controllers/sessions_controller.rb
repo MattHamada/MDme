@@ -37,6 +37,8 @@ class SessionsController < ApplicationController
   def destroy
     if request.subdomain == 'doctors'
       sign_out :doctor
+    elsif request.subdomain =='admin'
+      sign_out :admin
     else
       sign_out :patient
     end

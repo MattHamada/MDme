@@ -22,7 +22,7 @@ MDme::Application.routes.draw do
     match '/about',     to: 'static_pages#about',     via: 'get',    constraints: { subdomain: 'www' }
     match '/contact',   to: 'static_pages#contact',   via: 'get',    constraints: { subdomain: 'www' }
     match '/signin',    to: 'sessions#new',           via: 'get',    constraints: { subdomain: 'www' }
-    match '/signout',   to: 'sessions#destroy',       via: 'delete', constraints: { subdomain: 'www' }
+    match '/signout',   to: 'sessions#destroy',       via: 'delete'
 
     #get 'appointments/:year/:month/:day' => 'appointments#day', as: :day_appointments
     get 'appointments/browse' => 'appointments#browse', as: :appointments_browse
