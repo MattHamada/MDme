@@ -74,13 +74,9 @@ panel-body {
   border-bottom-width: 2px; }
 */
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 1200px;
-    background-color: #fdfdfd;
-  }
-}
+
 .container {
+  max-width: 1200px;
   background-color: #EFEFEF;
 }
 
