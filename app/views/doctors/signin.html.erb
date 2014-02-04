@@ -1,17 +1,27 @@
-<%= provide(:title, "Sign In") %>
-
-
-<div class='container'>
+<% provide(:title, ' | Sign in') %>
+<div class="container" id="main-content">
   <%= render 'shared/flash' %>
-  <div class="col-md-5">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading"><h4>Sign In</h4></div>
-          <div class="panel-body">
-
-            <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal', role: 'form' }) do |f| %>
-                <%= render 'shared/signin', f: f %>
-            <% end %>
-      </div>
+  <div class="row fixedheight">
+    <div class="col-xs-5" id="logo">
+      <%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
     </div>
+  </div>
+  <hr id="nav-break"/>
+
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center">
+          <strong>Doctor's Sign In</strong>
+        </div>
+        <div class="panel-body">
+          <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', role: 'form' }) do |f| %>
+
+              <%= render '/shared/signin', f: f %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
