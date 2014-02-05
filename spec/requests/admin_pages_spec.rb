@@ -6,13 +6,13 @@ describe "AdminPages" do
 
   describe 'Signin page' do
     before { visit root_path }
-    it { should have_title 'Admin Sign In' }
+    it { should have_title 'Sign In' }
     it { should have_content 'Admin Sign In' }
 
     describe 'signing in' do
       describe 'with invalid information' do
         before { click_button 'Sign in' }
-        it { should have_title 'Admin Sign In' }
+        it { should have_title 'Sign In' }
         it { should have_selector 'div.alert.alert-danger', text: 'Access Denied' }
       end
 

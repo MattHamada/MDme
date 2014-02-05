@@ -7,7 +7,7 @@ describe "AdministrationPages" do
   describe 'root signin page' do
     before { visit root_path }
 
-    it { should have_title('Admin Sign In')}
+    it { should have_title('Sign In')}
     it { should have_content('Admin Sign In')}
 
     describe 'signing in' do
@@ -17,7 +17,7 @@ describe "AdministrationPages" do
           fill_in 'Password', with: 'baddpass'
           click_button 'Sign in'
         end
-        it { should have_title('Admin Sign In') }
+        it { should have_title('Sign In') }
         it { should have_selector('div.alert.alert-danger', text: 'Access Denied')}
       end
 
