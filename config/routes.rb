@@ -17,7 +17,7 @@ MDme::Application.routes.draw do
   #constraints(RootDomain) do
     #constraints subdomain: false do
     root 'static_pages#home', constraints: { subdomain: 'www' }
-    match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
+    #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
     match '/help',      to: 'static_pages#help',      via: 'get',    constraints: { subdomain: 'www' }
     match '/about',     to: 'static_pages#about',     via: 'get',    constraints: { subdomain: 'www' }
     match '/contact',   to: 'static_pages#contact',   via: 'get',    constraints: { subdomain: 'www' }
@@ -26,9 +26,12 @@ MDme::Application.routes.draw do
 
     #get 'appointments/:year/:month/:day' => 'appointments#day', as: :day_appointments
     get 'appointments/browse' => 'appointments#browse', as: :appointments_browse
+    get 'patient/:id/appointments/browse' => 'appointments#open_appointments', as: :open_appointments_browse
 
     get 'doctors/:id/appointments' => 'doctors#appointments', as: :doctors_appointments
     get 'doctors/:id/patients' => 'doctors#patient_index', as: :doctors_patients
+
+    get 'patients/:id/appointments/request' => 'appointments#patient_request', as: :request_appointment
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]

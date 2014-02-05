@@ -1,6 +1,7 @@
 class AppointmentsController < ApplicationController
 
   before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index]
+  before_filter :require_patient_login, :only => [:patient_request]
 
   def new
     @appointment = Appointment.new
@@ -68,6 +69,16 @@ class AppointmentsController < ApplicationController
     date = Date.parse(params[:appointments][:date])
     @appointments = Appointment.given_date(date).order('appointment_time ASC').load
 
+  end
+
+  def patient_request
+    @patient = Patient.find(params[:id])
+  end
+
+  def open_appointments
+    @patient = Patient.find(params[:id])
+    date = Date.parse(params[:appointments][:date])
+    @open_times = Doctor.find(params[:doctor][:doctor_id]).open_appointment_times(date)
   end
 
 

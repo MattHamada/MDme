@@ -3,51 +3,71 @@ require 'spec_helper'
 describe "Patient Pages" do
   subject { page }
   before { switch_to_subdomain('www') }
+  let(:patient) { FactoryGirl.create(:patient) }
 
-  describe 'Signup page' do
-    before { visit signup_path }
-
-    it { should have_title('Sign up') }
-    it { should have_content('Sign up') }
-
-    describe 'signing up' do
-      describe 'with invalid info' do
-        it 'should not create a patient' do
-          expect { click_button 'Create my account' }.not_to change(Patient, :count)
-        end
-      end
-
-      describe 'with valid info' do
-        before do
-            fill_in 'First name',       with: 'example'
-            fill_in 'Last name',        with: 'patient'
-            fill_in 'Email',            with: 'user@example.com'
-            fill_in 'Password',         with: 'foobar'
-            fill_in "Confirm Password", with: "foobar"
-        end
-        it 'should create a patient' do
-          expect { click_button 'Create my account' }.to change(Patient, :count).by(1)
-        end
-
-        describe 'after creating the patient' do
-          before { click_button 'Create my account' }
-          let(:patient) { Patient.find_by(email: 'user@example.com') }
-
-          it { should have_link('Sign out') }
-          it { should have_title(full_name(patient)) }
-          it { should have_selector('div.alert.alert-success', text: 'Account Created') }
-        end
-      end
+  describe 'signing in' do
+    before { visit signin_path }
+    describe 'with invalid information' do
+      before { click_button 'Sign in' }
+      it { should have_title 'Sign In' }
+      it { should have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
     end
 
+    describe 'with valid information' do
+      before do
+        fill_in 'Email',    with: patient.email
+        fill_in 'Password', with: 'foobar'
+        click_button 'Sign in'
+      end
+      it { should_not have_title 'Sign in' }
+    end
   end
+
 
   describe 'Profile page' do
-    let(:patient) { FactoryGirl.create(:patient) }
-
-    before { visit patient_path(patient) }
-
-    it { should have_content patient.full_name }
-    it { should have_content patient.email }
+    describe 'need to be logged in as patient to view profile' do
+      before { visit patient_path(patient) }
+      it { should_not have_content patient.email }
+    end
   end
 end
+
+
+#describe 'Signup page' do
+  #  before { visit signup_path }
+  #
+  #  it { should have_title('Sign up') }
+  #  it { should have_content('Sign up') }
+  #
+  #  describe 'signing up' do
+  #    describe 'with invalid info' do
+  #      it 'should not create a patient' do
+  #        expect { click_button 'Create my account' }.not_to change(Patient, :count)
+  #      end
+  #    end
+  #
+  #    describe 'with valid info' do
+  #      before do
+  #          fill_in 'First name',       with: 'example'
+  #          fill_in 'Last name',        with: 'patient'
+  #          fill_in 'Email',            with: 'user@example.com'
+  #          fill_in 'Password',         with: 'foobar'
+  #          fill_in "Confirm Password", with: "foobar"
+  #      end
+  #      it 'should create a patient' do
+  #        expect { click_button 'Create my account' }.to change(Patient, :count).by(1)
+  #      end
+  #
+  #      describe 'after creating the patient' do
+  #        before { click_button 'Create my account' }
+  #        let(:patient) { Patient.find_by(email: 'user@example.com') }
+  #
+  #        it { should have_link('Sign out') }
+  #        it { should have_title(full_name(patient)) }
+  #        it { should have_selector('div.alert.alert-success', text: 'Account Created') }
+  #      end
+  #    end
+  #  end
+  #
+  #end
+

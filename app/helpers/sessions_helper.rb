@@ -6,6 +6,16 @@ module SessionsHelper
     end
   end
 
+  def require_patient_login
+    if patient_signed_in?
+      unless current_patient == Patient.find(params[:id])
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
   def require_doctor_login
     if doctor_signed_in?
       unless current_doctor == Doctor.find(params[:id])

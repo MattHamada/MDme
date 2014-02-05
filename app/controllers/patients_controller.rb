@@ -1,5 +1,6 @@
 class PatientsController < ApplicationController
   before_filter :require_admin_login, :only => [:new, :destroy, :index]
+  before_filter :require_patient_login, :only => [:show, :edit]
 
   def new
     @patient = Patient.new
@@ -23,7 +24,6 @@ class PatientsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
-
   end
 
   def index

@@ -23,6 +23,25 @@ class Doctor < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def open_appointment_times(date)
+    appointments = self.appointments.given_date(date)
+    times = []
+    (9..16).each do |h|
+      (0..45).step(15) do |m|
+        times.append("#{h}:#{m}")
+      end
+    end
+    appointments.each do |appt|
+      hour = appt.appointment_time.hour
+      minute = appt.appointment_time.min
+      if times.include?("#{hour}:#{minute}")
+        times.delete("#{hour}:#{minute}")
+      end
+
+    end
+    times
+  end
+
   private
 
     def create_remember_token
