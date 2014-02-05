@@ -28,6 +28,7 @@ MDme::Application.routes.draw do
     get 'appointments/browse' => 'appointments#browse', as: :appointments_browse
 
     get 'doctors/:id/appointments' => 'doctors#appointments', as: :doctors_appointments
+    get 'doctors/:id/patients' => 'doctors#patient_index', as: :doctors_patients
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]

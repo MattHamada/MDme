@@ -96,4 +96,9 @@ class DoctorsController < ApplicationController
     @doctor = Doctor.find(params[:id])
     @appointments = Appointment.given_date(Date.today).with_doctor(params[:id]).order('appointment_time ASC').load
   end
+
+  def patient_index
+    @doctor = Doctor.find(params[:id])
+    @patients = Doctor.find(params[:id]).patients
+  end
 end
