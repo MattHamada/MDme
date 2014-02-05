@@ -12,8 +12,7 @@
           <ul class="nav nav-pills nav-stacked">
             <li><%= link_to "<i class='fa fa-calendar-o'></i> My Profile".html_safe, doctor_path(@doctor) %></li>
             <li><%= link_to "<i class='fa fa-book'></i> Manage Appointments".html_safe, doctors_appointments_path %></li>
-            <li><%= link_to "<i class='fa fa-user-md'></i> Manage Doctors".html_safe, doctors_path %></li>
-            <li><%= link_to "<i class='fa fa-users'></i> Manage Patients".html_safe, patients_path %></li>
+            <li><%= link_to "<i class='fa fa-users'></i> Manage Patients".html_safe, doctors_patients_path %></li>
             <li><%= link_to "<i class='fa fa-minus-circle'></i> Sign Out".html_safe, signout_path, method: :delete %></li>
 
           </ul>
