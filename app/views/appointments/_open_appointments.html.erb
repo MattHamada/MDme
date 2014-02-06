@@ -2,16 +2,14 @@
 <table class='table table-striped table-bordered table-hover'>
   <thread>
     <tr>
-      <th>#</th>
       <th>Time</th>
 
     </tr>
     <tbody>
-    <% @open_times.each_with_index do |time, index| %>
+    <% @open_times.each do |time| %>
+        <% time %>
         <tr>
-          <td><%="#{index}"%></td>
           <td><%= time %></td>
-
         </tr>
     <% end %>
     </tbody>

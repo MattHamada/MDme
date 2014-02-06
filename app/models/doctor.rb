@@ -28,16 +28,48 @@ class Doctor < ActiveRecord::Base
     times = []
     (9..16).each do |h|
       (0..45).step(15) do |m|
-        times.append("#{h}:#{m}")
+
+        ampm = ''
+        if h < 12
+          ampm = 'AM'
+        else
+          ampm = 'PM'
+        end
+
+        hr = ''
+        if h != 12
+          hr = h % 12
+        else
+          hr = h
+        end
+        min = ''
+        if m == 0
+          min = '00'
+        else
+          min = m
+        end
+        #h = h % 12 if h != 12
+
+        times.append("#{hr}:#{min} #{ampm}")
       end
     end
     appointments.each do |appt|
-      hour = appt.appointment_time.hour
+      hour = appt.appointment_time.in_time_zone('Eastern Time (US & Canada)').hour
       minute = appt.appointment_time.min
-      if times.include?("#{hour}:#{minute}")
-        times.delete("#{hour}:#{minute}")
-      end
 
+      minute = '00' if minute == 0
+
+      ampm = ''
+      if hour < 12
+        ampm = 'AM'
+      else
+        ampm = 'PM'
+      end
+      hour = hour % 12 if hour != 12
+      if times.include?("#{hour}:#{minute} #{ampm}")
+        puts 'included'
+        times.delete("#{hour}:#{minute} #{ampm}")
+      end
     end
     times
   end
