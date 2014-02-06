@@ -72,6 +72,8 @@ namespace :db do
       patient_id = n+1
       doctor_id = rand_int(1, 7)
       appointment_time = rand_time(3.days.from_now)
+      appointment_time.change(hour: (9..16).to_a.sample)
+      appointment_time.change(min: [00, 15, 30, 45].sample)
       Appointment.create!(patient_id: patient_id,
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
