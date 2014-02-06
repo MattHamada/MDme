@@ -7,6 +7,7 @@ require "action_mailer/railtie"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
@@ -25,6 +26,10 @@ module MDme
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
+
+    #set default time zone - used for appointments
+    config.time_zone = 'Arizona'
+
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
   end
