@@ -71,13 +71,15 @@ namespace :db do
     60.times do |n|
       patient_id = n+1
       doctor_id = rand_int(1, 7)
-      appointment_time = rand_time(3.days.from_now)
-      appointment_time.change(hour: (9..16).to_a.sample)
-      appointment_time.change(min: [00, 15, 30, 45].sample)
-      Appointment.create!(patient_id: patient_id,
+      appointment_time = rand_time_with_intervals(3.days.from_now)
+      #appointment_time.change(hour: (9..16).to_a.sample)
+      #appointment_time.change(min: [00, 15, 30, 45].sample)
+      puts "#{appointment_time.hour}:#{appointment_time.min}"
+      Appointment.create(patient_id: patient_id,
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
                           description: Faker::Lorem.paragraph(4))
+      puts Appointment.last.appointment_time
     end
 
   end
@@ -93,6 +95,13 @@ end
 
 def rand_time(endTime, startTime=Time.now+3.hours)
   Time.at(rand_in_range(startTime.to_f, endTime.to_f))
+end
+
+def rand_time_with_intervals(endTime, startTime=Time.now+3.hours)
+  t = Time.at(rand_in_range(startTime.to_f, endTime.to_f))
+  t = t.change(hour: (9..16).to_a.sample)
+  t = t.change(min: [00, 15, 30, 45].sample)
+  t
 end
 
 def rand_in_range(from, to)
