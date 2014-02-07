@@ -2,24 +2,33 @@
 
 
 <%= form_for(@appointment, html: { class: "form-inline", role: "form" }) do |f| %>
-  <%= f.label(:datetime, "Select Appointment Time") %>
   <div class='form-group'>
-    <select class="form-control" id="time" name="time">
+    <div class="col-xs-12">
+      <%= f.label(:datetime, "Select Appointment Time") %> <br/>
+
+      <select class="form-control" id="time" name="time">
       <% @open_times.each do |time| %>
           <option value="<%= time %>"><%= time %></option>
       <% end %>
     </select>
+      </div>
   </div>
+    <br/><br/>
   <div class='form-group'>
-    <%= f.label(:description, 'Notes') %>
-    <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5') %>
+    <div class="col-xs-3">
+      <%= f.label(:description, 'Notes') %>
+      <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5') %>
+    </div>
   </div>
   <%= f.hidden_field :doctor_id, value: @doctor.id %>
   <%= f.hidden_field :date, value: @date %>
   <%= f.hidden_field :patient_id, value: params[:id] %>
   <%= f.hidden_field :request, value: 'true' %>
+      <br/><br/>
+    <div style="text-align: center">
   <%= f.submit 'Request', class: 'btn btn-success' %>
-
+    </div>
+    <br/><br/>
 <% end %>
 
 

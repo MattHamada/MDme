@@ -1,22 +1,17 @@
 <%= render 'patients/sidebar' %>
 
-<div class="col-xs-7">
+<div class="col-xs-8">
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Select Date</h4></div>
         <div class="panel-body">
 
-        <%= form_for(:appointments, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-group', role: 'form' }) do |f| %>
-            <div class="form-group">
-              <div class="col-xs-7">
+          <%= form_for(:appointments, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
+              <div class="col-xs-4">
                 <%= f.label(:date, "Select Date") %>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-7">
+
                 <%= f.text_field(:date, class: "form-control" ) %>
-              </div>
             </div>
             <div class='form-group'>
               <div class="col-xs-7">
@@ -24,16 +19,14 @@
                 <%= collection_select(:doctor, :doctor_id, Doctor.all.reorder('last_name'), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
             </div>
-              <br/><br/><br/><br/><br/><br/><br/><br/>
-            <div class='form-group' id="submit">
-              <div class="col-xs-7">
-                <%= f.submit 'Submit', class: 'btn btn-large btn-primary', id: 'submit_button' %>
-              </div>
+            <div class='form-group' id="submit" style="vertical-align: bottom">
+                <%= f.submit 'Find', class: 'btn btn-large btn-primary', id: 'submit_button' %>
+
             </div>
-        <% end %>
-          </div>
-          <div id="open_appointment_results">
-          </div>
+          <% end %>
+        </div>
+        <div id="open_appointment_results">
+        </div>
 
         </div>
       </div>
