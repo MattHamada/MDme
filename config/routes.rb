@@ -31,7 +31,8 @@ MDme::Application.routes.draw do
     get 'doctors/:id/appointments' => 'doctors#appointments', as: :doctors_appointments
     get 'doctors/:id/patients' => 'doctors#patient_index', as: :doctors_patients
 
-    get 'patients/:id/appointments/request' => 'appointments#patient_request', as: :request_appointment
+    get 'patients/:id/appointments/request'    => 'appointments#patient_request', as: :request_appointment
+    get 'patients/:id/appointmets/new_request' => 'appointments#new_request',     as: :new_request_appointment
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]

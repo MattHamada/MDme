@@ -7,6 +7,17 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  def new_request
+    @appointment = Appointment.new
+    time = params[:time]
+    date = Time.parse(params[:date] + " " + params[:time])
+    @appointment.appointment_time = date
+    @appointment.patient_id = params[:id]
+    @appointment.doctor_id = params[:doctor]
+
+
+  end
+
   def create
     day = params[:date][:day]
     hour   = params[:date][:hour]
@@ -77,8 +88,10 @@ class AppointmentsController < ApplicationController
 
   def open_appointments
     @patient = Patient.find(params[:id])
-    date = Date.parse(params[:appointments][:date])
-    @open_times = Doctor.find(params[:doctor][:doctor_id]).open_appointment_times(date)
+    @date = Date.parse(params[:appointments][:date])
+    @doctor = Doctor.find(params[:doctor][:doctor_id])
+    @open_times = @doctor.open_appointment_times(@date)
+
   end
 
 

@@ -1,0 +1,41 @@
+<%= provide(:title, "New Appointment") %>
+<%= render 'admins/sidebar' %>
+
+<div class="col-xs-8">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Add Appointment</h4></div>
+        <div class="panel-body">
+
+          <%= form_for(@appointment, html: { class: "form-inline", role: "form" }) do |f| %>
+              <%= @appointment.appointment_time %>
+              <%= full_name(Doctor.find(@appointment.doctor_id)) %>
+              <br/>
+              <br/>
+
+              <div class='form-group'>
+                <%= f.label(:description, 'Notes') %>
+                <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5') %>
+              </div>
+              </br>
+              </br>
+
+
+
+              <%= f.submit 'Create', class: 'btn btn-success' %>
+
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+

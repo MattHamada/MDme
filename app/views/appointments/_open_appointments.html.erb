@@ -9,7 +9,7 @@
     <% @open_times.each do |time| %>
         <% time %>
         <tr>
-          <td><%= time %></td>
+          <td><%= link_to time, new_request_appointment_path(@patient, date: @date, time: time, doctor: @doctor.id) %></td>
         </tr>
     <% end %>
     </tbody>
