@@ -231,8 +231,8 @@ describe "AdministrationPages" do
       fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
       click_button 'Submit'
       #wait_until { find('#day_appointments') }
-
     end
+
 
     it { should have_selector('#day_appointments') }
     it { should have_content "Select Date" }

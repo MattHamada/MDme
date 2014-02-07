@@ -30,6 +30,45 @@ describe "Patient Pages" do
       it { should_not have_content patient.email }
     end
   end
+
+  #separated due to swtich to webkit from rack
+  describe 'Request an appointment', :js => true do
+    let(:appointment) { FactoryGirl.create(:appointment_request) }
+    let(:doctor)  { FactoryGirl.create(:doctor) }
+    let(:patient) { FactoryGirl.create(:patient) }
+
+    before do
+      doctor.save!
+      patient.save!
+      appointment.save!
+
+      visit root_path
+      click_link 'sign in'
+      fill_in 'Email', with: patient.email
+      fill_in 'Password', with: 'foobar'
+      click_button 'Sign in'
+      click_link 'Request an Appointment'
+    end
+    describe 'with invalid (past) date' do
+      before do
+        fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
+        click_button 'Find'
+        click_button 'Request'
+      end
+      it { should have_selector 'div.alert.alert-danger', text: 'Time must be set in the future' }
+    end
+
+    describe 'with valid date' do
+      before do
+        fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+        click_button 'Find'
+        click_button 'Request'
+      end
+      it { should have_selector 'div.alert.alert-success', text: 'Appointment Requested'}
+    end
+
+
+  end
 end
 
 
