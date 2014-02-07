@@ -19,29 +19,70 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    day = params[:date][:day]
-    hour   = params[:date][:hour]
-    minute = params[:date][:minute]
-    date = DateTime.parse("#{day} #{hour}:#{minute}")
-
-    if !params.has_key?(:doctor) || !params.has_key?(:patient)
+    date = DateTime.parse("#{params[:appointment][:date]} #{params[:appointment][:time]}")
+    if !params[:appointment].has_key?(:doctor_id) || !params[:appointment].has_key?(:patient_id)
+      puts 'missing key'
+      puts params
       flash[:danger] = "Error creating appointment"
       redirect_to new_appointment_url
     else
-
-
-      @appointment = Appointment.new(doctor_id: params[:doctor][:doctor_id],
-                                     patient_id: params[:patient][:patient_id],
+      @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
+                                     patient_id: params[:appointment][:patient_id],
                                      appointment_time: date,
-                                     description: params[:appointment][:description])
+                                     description: params[:appointment][:description],
+                                     request: params[:appointment][:request].to_bool)
       if @appointment.save
-        flash[:success] = "Appointment Created"
-        redirect_to appointments_path
+        if params[:appointment][:request].to_bool
+          req = "Requested"
+        else
+          req = "Created"
+        end
+        flash[:success] = "Appointment #{req}"
+        if request.subdomain == 'www'
+          puts 'worked patient path'
+          redirect_to patient_path(Patient.find(params[:appointment][:patient_id]))
+        else
+          puts 'worked appoitnment path'
+          redirect_to appointments_path
+        end
       else
-        flash[:danger] = "Error creating appointment"
-        redirect_to new_appointment_url
+      #flash[:danger] = "Error Encountered"
+      @appointment.errors.each do |attribute, message|
+        flash[:danger] = message
+      end
+        if request.subdomain == 'www'
+          puts 'broke patient request'
+          redirect_to request_appointment_path(Patient.find(params[:appointment][:patient_id]))
+        else
+          puts 'broke new app'
+          redirect_to new_appointment_url
+        end
       end
     end
+
+  #  day = params[:date][:day]
+  #  hour   = params[:date][:hour]
+  #  minute = params[:date][:minute]
+  #  date = DateTime.parse("#{day} #{hour}:#{minute}")
+  #
+  #  if !params.has_key?(:doctor_id) || !params.has_key?(:patient_id)
+  #    flash[:danger] = "Error creating appointment"
+  #    redirect_to new_appointment_url
+  #  else
+  #
+  #
+  #    @appointment = Appointment.new(doctor_id: params[:doctor][:doctor_id],
+  #                                   patient_id: params[:patient][:patient_id],
+  #                                   appointment_time: date,
+  #                                   description: params[:appointment][:description])
+  #    if @appointment.save
+  #      flash[:success] = "Appointment Created"
+  #      redirect_to appointments_path
+  #    else
+  #      flash[:danger] = "Error creating appointment"
+  #      redirect_to new_appointment_url
+  #    end
+  #  end
   end
 
 
@@ -91,6 +132,7 @@ class AppointmentsController < ApplicationController
     @date = Date.parse(params[:appointments][:date])
     @doctor = Doctor.find(params[:doctor][:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
+    @appointment = Appointment.new
 
   end
 
