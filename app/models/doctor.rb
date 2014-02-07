@@ -67,7 +67,6 @@ class Doctor < ActiveRecord::Base
       end
       hour = hour % 12 if hour != 12
       if times.include?("#{hour}:#{minute} #{ampm}")
-        puts 'included'
         times.delete("#{hour}:#{minute} #{ampm}")
       end
     end

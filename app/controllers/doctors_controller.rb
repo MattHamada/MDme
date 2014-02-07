@@ -49,13 +49,11 @@ class DoctorsController < ApplicationController
       redirect_to edit_doctor_path(@doctor)
     else
       dp = doctor_params
-      puts dp
       dp[:password] = params[:verify][:verify_password]
       dp[:password_confirmation] = params[:verify][:verify_password]
-      puts 'ssssssss'
+
       @doctor.attributes = dp
-      puts dp
-      puts @doctor.attributes
+
 
       if @doctor.save
         flash[:success] = "Doctor Successfully Updated"

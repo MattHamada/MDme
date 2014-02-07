@@ -21,8 +21,6 @@ class AppointmentsController < ApplicationController
   def create
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:appointment][:time]}")
     if !params[:appointment].has_key?(:doctor_id) || !params[:appointment].has_key?(:patient_id)
-      puts 'missing key'
-      puts params
       flash[:danger] = "Error creating appointment"
       redirect_to new_appointment_url
     else
@@ -39,10 +37,8 @@ class AppointmentsController < ApplicationController
         end
         flash[:success] = "Appointment #{req}"
         if request.subdomain == 'www'
-          puts 'worked patient path'
           redirect_to patient_path(Patient.find(params[:appointment][:patient_id]))
         else
-          puts 'worked appoitnment path'
           redirect_to appointments_path
         end
       else
@@ -51,10 +47,8 @@ class AppointmentsController < ApplicationController
         flash[:danger] = message
       end
         if request.subdomain == 'www'
-          puts 'broke patient request'
           redirect_to request_appointment_path(Patient.find(params[:appointment][:patient_id]))
         else
-          puts 'broke new app'
           redirect_to new_appointment_url
         end
       end
