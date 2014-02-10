@@ -17,7 +17,7 @@ class AppointmentsController < ApplicationController
   def new_request
     @appointment = Appointment.new
     time = params[:time]
-    date = Time.parse(params[:date] + " " + params[:time])
+    date = DateTime.parse(params[:date] + " " + params[:time])
     @appointment.appointment_time = date
     @appointment.patient_id = params[:id]
     @appointment.doctor_id = params[:doctor]
@@ -38,7 +38,8 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    date = DateTime.parse("#{params[:appointment][:date]} #{params[:appointment][:time]}")
+    date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
+
     #if !params[:appointment].has_key?(:doctor_id) ||
     #    (!params[:appointment].has_key?(:patient_id) || !params[:patient].has_key?(:patient_id))
     #  flash[:danger] = "Error creating appointment"

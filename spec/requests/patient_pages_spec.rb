@@ -67,6 +67,21 @@ describe "Patient Pages" do
       it { should have_selector 'div.alert.alert-success', text: 'Appointment Requested'}
     end
 
+    #describe 'cannot make appointments on taken times' do
+    #  before do
+    #    fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+    #    click_button 'Find open times'
+    #    click_button 'Request'
+    #    click_link 'Request an Appointment'
+    #    fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+    #    click_button 'Find open times'
+    #  end
+    #  it 'should not create an appointment' do
+    #    expect{click_button 'Request'}.not_to change(Appointment, :count).by(1)
+    #  end
+    #end
+
+
 
   end
 end

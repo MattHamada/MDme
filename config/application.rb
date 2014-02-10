@@ -28,7 +28,7 @@ module MDme
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
     #set default time zone - used for appointments
-    config.time_zone = 'Arizona'
+    #config.time_zone = 'Arizona'
 
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
