@@ -16,6 +16,8 @@
 /tmp
 /coverage*
 
+/public
+
 database.yml
 doc/
 *.swp
