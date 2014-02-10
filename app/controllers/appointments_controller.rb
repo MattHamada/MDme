@@ -7,6 +7,13 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  def admin_new_browse
+    @date = Date.parse(params[:appointments][:date])
+    @doctor = Doctor.find(params[:doctor][:doctor_id])
+    @open_times = @doctor.open_appointment_times(@date)
+    @appointment = Appointment.new
+  end
+
   def new_request
     @appointment = Appointment.new
     time = params[:time]
@@ -14,18 +21,39 @@ class AppointmentsController < ApplicationController
     @appointment.appointment_time = date
     @appointment.patient_id = params[:id]
     @appointment.doctor_id = params[:doctor]
+  end
 
+  def patient_request
+    @patient = Patient.find(params[:id])
+  end
+
+  #for patients
+  def open_appointments
+    @patient = Patient.find(params[:id])
+    @date = Date.parse(params[:appointments][:date])
+    @doctor = Doctor.find(params[:doctor][:doctor_id])
+    @open_times = @doctor.open_appointment_times(@date)
+    @appointment = Appointment.new
 
   end
 
   def create
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:appointment][:time]}")
-    if !params[:appointment].has_key?(:doctor_id) || !params[:appointment].has_key?(:patient_id)
-      flash[:danger] = "Error creating appointment"
-      redirect_to new_appointment_url
+    #if !params[:appointment].has_key?(:doctor_id) ||
+    #    (!params[:appointment].has_key?(:patient_id) || !params[:patient].has_key?(:patient_id))
+    #  flash[:danger] = "Error creating appointment"
+    #  redirect_to new_appointment_url
+    #else
+    pid = 0
+    if !params[:appointment][:patient_id].nil?
+      pid = params[:appointment][:patient_id]
     else
+      pid = params[:patient][:patient_id]
+    end
+    puts '-----------'
+    puts pid
       @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
-                                     patient_id: params[:appointment][:patient_id],
+                                     patient_id: pid,
                                      appointment_time: date,
                                      description: params[:appointment][:description],
                                      request: params[:appointment][:request].to_bool)
@@ -47,12 +75,14 @@ class AppointmentsController < ApplicationController
         flash[:danger] = message
       end
         if request.subdomain == 'www'
-          redirect_to request_appointment_path(Patient.find(params[:appointment][:patient_id]))
+          puts '-----------'
+          puts pid
+          redirect_to request_appointment_path(Patient.find(pid))
         else
           redirect_to new_appointment_url
         end
       end
-    end
+    #end
 
   #  day = params[:date][:day]
   #  hour   = params[:date][:hour]
@@ -117,18 +147,7 @@ class AppointmentsController < ApplicationController
 
   end
 
-  def patient_request
-    @patient = Patient.find(params[:id])
-  end
 
-  def open_appointments
-    @patient = Patient.find(params[:id])
-    @date = Date.parse(params[:appointments][:date])
-    @doctor = Doctor.find(params[:doctor][:doctor_id])
-    @open_times = @doctor.open_appointment_times(@date)
-    @appointment = Appointment.new
-
-  end
 
 
   def destroy
