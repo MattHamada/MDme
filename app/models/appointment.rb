@@ -20,9 +20,9 @@ class Appointment < ActiveRecord::Base
 
   def appointment_time_in_future
     if appointment_time.nil?
-      errors.add(:appointment_time, "No Date/time entered")
+      errors.add(:appointment_time, "No Date/time entered.")
     else
-      errors.add(:appointment_time, "Time must be set in the future") if appointment_time < DateTime.now
+      errors.add(:appointment_time, "Date/Time must be set in the future.") if appointment_time < DateTime.now
     end
   end
 

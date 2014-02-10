@@ -42,50 +42,7 @@ describe "AdministrationPages" do
           it { should have_content 'Manage Patients'}
           it { should have_content "Today's Appointments" }
 
-          describe 'invalid appointment creation' do
-            before do
-              click_link "Manage Appointments"
-              click_link "Add Appointment"
-              click_button 'Create'
-            end
-            it { should have_selector('div.alert.alert-danger', text: 'Error creating appointment') }
-            it { should have_title('New Appointment')}
-          end
 
-          describe 'invalid appointment creation - date/time' do
-            before do
-              doctor.save!
-              patient.save!
-              click_link "Manage Appointments"
-              click_link "Add Appointment"
-              select(doctor.full_name, from: "doctor_doctor_id")
-              select(patient.full_name, from: 'patient_patient_id')
-              click_button 'Create'
-            end
-            it { should have_selector('div.alert.alert-danger', text: 'Error creating appointment') }
-            it { should have_title('New Appointment')}
-          end
-
-          describe 'create appointment' do
-            before do
-              doctor.save!
-              patient.save!
-              click_link "Manage Appointments"
-              click_link "Add Appointment"
-              fill_in('date_day', with: 3.days.from_now.strftime('%F'))
-              select('08 AM', from: 'date_hour')
-              select('00', from: 'date_minute')
-              select(doctor.full_name, from: "doctor_doctor_id")
-              select(patient.full_name, from: 'patient_patient_id')
-              fill_in('desc_text', with: 'test')
-            end
-            describe 'After creating appointment' do
-              before { click_button 'Create' }
-              it { should have_selector('div.alert.alert-success', text: 'Appointment Created') }
-              it { should have_title 'Browse Appointments' }
-            end
-
-          end
 
           describe 'admin doctors pages' do
             describe 'browse doctors' do
@@ -278,6 +235,52 @@ describe "AdministrationPages" do
         end
       end
     end
+  end
+
+  #separated for webkit -> rack
+
+  describe 'Creating Appointments' do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let(:appointment) { FactoryGirl.create(:appointment) }
+    let(:doctor) { FactoryGirl.create(:doctor) }
+    let(:patient) { FactoryGirl.create(:patient) }
+    before do
+      doctor.save!
+      patient.save!
+      appointment.save!
+      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'foobar', password_confirmation: 'foobar')
+
+      visit root_path
+      fill_in 'Email', with: @admin.email
+      fill_in 'Password', with: @admin.password
+      click_button 'Sign in'
+
+      click_link "Manage Appointments"
+      click_link "Add Appointment"
+
+    end
+    describe 'invalid appointment creation - date in past' do
+      before do
+        fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
+        click_button 'Find open times'
+        click_button 'Schedule'
+      end
+      it { should have_selector('div.alert.alert-danger', text: 'Date/Time must be set in the future.') }
+      it { should have_title('New Appointment')}
+    end
+
+
+    describe 'valid appointment creation' do
+      before do
+        fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+        click_button 'Find open times'
+        click_button 'Schedule'
+      end
+      it { should have_selector('div.alert.alert-success', text: 'Appointment Created') }
+      it { should have_title 'Browse Appointments' }
+
+    end
+
   end
 end
 

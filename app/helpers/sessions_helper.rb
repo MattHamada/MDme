@@ -16,6 +16,16 @@ module SessionsHelper
     end
   end
 
+  def require_admin_or_patient_login
+    if admin_signed_in? or patient_signed_in?
+      if patient_signed_in?
+        require_patient_login
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
   def require_doctor_login
     if doctor_signed_in?
       unless current_doctor == Doctor.find(params[:id])

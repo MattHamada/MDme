@@ -52,7 +52,7 @@ describe "Patient Pages" do
     describe 'with invalid (past) date' do
       before do
         fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
-        click_button 'Find'
+        click_button 'Find open times'
         click_button 'Request'
       end
       it { should have_selector 'div.alert.alert-danger', text: 'Time must be set in the future' }
@@ -61,7 +61,7 @@ describe "Patient Pages" do
     describe 'with valid date' do
       before do
         fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
-        click_button 'Find'
+        click_button 'Find open times'
         click_button 'Request'
       end
       it { should have_selector 'div.alert.alert-success', text: 'Appointment Requested'}

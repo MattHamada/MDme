@@ -8,12 +8,12 @@ describe "AuthenticationPages" do
     before { visit signin_path }
 
     it { should have_content('Sign in') }
-    it { should have_title('Sign in') }
+    it { should have_title('Sign In') }
 
     describe 'with invalid information' do
       before { click_button 'Sign in' }
 
-      it { should have_title('Sign in') }
+      it { should have_title('Sign In') }
       it { should have_selector('div.alert.alert-danger', text: 'Invalid') }
     end
 
@@ -28,11 +28,11 @@ describe "AuthenticationPages" do
 
       it { should have_title(full_name(patient)) }
       #it { should have_link('My Account', href: patient_path(patient)) }
-      it { should have_link('sign out', href: signout_path) }
+      it { should have_link('Sign Out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
 
       describe 'signing out' do
-        before { click_link 'sign out' }
+        before { click_link 'Sign Out' }
         it { should have_link('sign in') }
       end
     end

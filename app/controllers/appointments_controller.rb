@@ -50,15 +50,20 @@ class AppointmentsController < ApplicationController
     else
       pid = params[:patient][:patient_id]
     end
-    puts '-----------'
-    puts pid
+
+    #see if admin made an appt or patient requested it
+    if request.subdomain == 'www'
+      is_req = true
+    else
+      is_req = false
+    end
       @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
                                      patient_id: pid,
                                      appointment_time: date,
                                      description: params[:appointment][:description],
-                                     request: params[:appointment][:request].to_bool)
+                                     request: is_req)
       if @appointment.save
-        if params[:appointment][:request].to_bool
+        if is_req
           req = "Requested"
         else
           req = "Created"
@@ -75,8 +80,6 @@ class AppointmentsController < ApplicationController
         flash[:danger] = message
       end
         if request.subdomain == 'www'
-          puts '-----------'
-          puts pid
           redirect_to request_appointment_path(Patient.find(pid))
         else
           redirect_to new_appointment_url

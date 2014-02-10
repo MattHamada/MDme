@@ -32,7 +32,11 @@
   <%= f.hidden_field :request, value: 'true' %>
       <br/><br/>
     <div style="text-align: center">
-  <%= f.submit 'Request', class: 'btn btn-success' %>
+    <% if request.subdomain == 'www' %>
+      <%= f.submit 'Request', class: 'btn btn-success' %>
+    <% else %>
+      <%= f.submit 'Schedule', class: 'btn btn-success' %>
+    <% end %>
     </div>
     <br/><br/>
 <% end %>
