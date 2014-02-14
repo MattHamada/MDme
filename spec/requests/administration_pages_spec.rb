@@ -162,6 +162,17 @@ describe "AdministrationPages" do
               end
             end
           end
+
+          describe 'Accepting appointments' do
+
+            before do
+              appointment.save!
+              click_link 'Manage Appointments'
+
+            end
+            it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval'}
+
+          end
         end
       end
     end
