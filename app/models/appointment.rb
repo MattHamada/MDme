@@ -9,6 +9,7 @@ class Appointment < ActiveRecord::Base
   belongs_to :patient
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
+  scope :requests, -> { where(request: true) }
 
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)

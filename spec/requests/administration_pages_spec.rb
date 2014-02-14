@@ -164,14 +164,21 @@ describe "AdministrationPages" do
           end
 
           describe 'Accepting appointments' do
-
+            let(:appointment_request) {FactoryGirl.create(:appointment_request)}
             before do
-              appointment.save!
+              patient.save!
+              doctor.save!
+              appointment_request.save!
               click_link 'Manage Appointments'
 
             end
-            it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval'}
+            it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval.'}
+            it { should have_link 'Appointment Requests' }
 
+            describe 'appointment approval page' do
+              before { click_link 'Appointment Requests' }
+              it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+            end
           end
         end
       end

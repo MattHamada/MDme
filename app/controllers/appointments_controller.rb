@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
 
-  before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index]
+  before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index, :approval]
   before_filter :require_patient_login, :only => [:patient_request]
 
   def new
@@ -34,6 +34,11 @@ class AppointmentsController < ApplicationController
     @doctor = Doctor.find(params[:doctor][:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
     @appointment = Appointment.new
+
+  end
+
+  def approval
+    @appointments = Appointment.requests
 
   end
 
@@ -142,7 +147,9 @@ class AppointmentsController < ApplicationController
   end
 
   def index
-
+    if Appointment.requests.any?
+      flash.now[:warning] = "Appointments waiting for approval."
+    end
   end
 
   def browse
@@ -150,8 +157,6 @@ class AppointmentsController < ApplicationController
     @appointments = Appointment.given_date(date).order('appointment_time ASC').load
 
   end
-
-
 
 
   def destroy

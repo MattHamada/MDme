@@ -28,12 +28,14 @@ MDme::Application.routes.draw do
     get 'appointments/browse' => 'appointments#browse', as: :appointments_browse
     get 'patient/:id/appointments/browse' => 'appointments#open_appointments', as: :open_appointments_browse
     get 'appointments/new/browse' => 'appointments#admin_new_browse', as: :admin_open_appointments_browse
+    get 'patients/:id/appointments/request'    => 'appointments#patient_request', as: :request_appointment
+    get 'patients/:id/appointmets/new_request' => 'appointments#new_request',     as: :new_request_appointment
+    get 'appointments/approval' => 'appointments#approval', as: :appointment_approval
 
     get 'doctors/:id/appointments' => 'doctors#appointments', as: :doctors_appointments
     get 'doctors/:id/patients' => 'doctors#patient_index', as: :doctors_patients
 
-    get 'patients/:id/appointments/request'    => 'appointments#patient_request', as: :request_appointment
-    get 'patients/:id/appointmets/new_request' => 'appointments#new_request',     as: :new_request_appointment
+
 
     resources :patients
     resources :sessions, only: [:new, :create, :destroy]
