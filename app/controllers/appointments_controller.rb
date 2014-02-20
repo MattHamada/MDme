@@ -146,6 +146,13 @@ class AppointmentsController < ApplicationController
     render(partial: 'ajax_show', object: @appointment) if request.xhr?
   end
 
+  def show_on_date
+    @date = Date.parse(params[:date])
+    @doctor = Doctor.find(params[:doctor_id]).full_name
+    @appointments = Appointment.given_date(@date).with_doctor(params[:doctor_id]).order('appointment_time ASC').load
+    render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
+  end
+
   def index
     if Appointment.requests.any?
       flash.now[:warning] = "Appointments waiting for approval."

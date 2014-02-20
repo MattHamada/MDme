@@ -17,7 +17,7 @@ APTS.setup = ->
 
   #add div to end of page
   $("<div id=\"ajaxAptInfo\"></div>").hide().appendTo $("body")
-  $("#day_appointments").on "click", "a", APTS.getInfo
+  $(".day_appointments").on "click", "a", APTS.getInfo
   false
 
 APTS.getInfo = ->
