@@ -26,8 +26,10 @@
                                                                   doctor_id: appointment.doctor_id)) %></td>
                     <td><%= full_name(Doctor.find(appointment.doctor_id)) %></td>
                     <td><%= full_name(Patient.find(appointment.patient_id)) %></td>
-                    <td class="button_links"><%= link_to 'Approve', root_path, class: 'btn btn-mini btn-primary' %>
-                        <%= link_to 'Deny', root_path, class: 'btn btn-mini btn-danger' %></td>
+                    <td class="button_links"><%= link_to 'Approve', appointment_approval_path(
+                            approve: true, appointment_id: appointment.id), class: 'btn btn-mini btn-primary approve' %>
+                        <%= link_to 'Deny', appointment_approval_path(deny: true, appointment_id: appointment.id),
+                                    class: 'btn btn-mini btn-danger deny' %></td>
                   </tr>
               <% end %>
               </tbody>

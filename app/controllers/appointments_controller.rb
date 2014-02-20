@@ -38,6 +38,13 @@ class AppointmentsController < ApplicationController
   end
 
   def approval
+    if params.has_key?(:approve)
+      appointment =  Appointment.find(params[:appointment_id])
+      appointment.request = false
+      appointment.save!
+    elsif params.has_key?(:deny)
+      Appointment.delete(Appointment.find(params[:appointment_id]))
+    end
     @appointments = Appointment.requests
 
   end
@@ -149,7 +156,7 @@ class AppointmentsController < ApplicationController
   def show_on_date
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
-    @appointments = Appointment.given_date(@date).with_doctor(params[:doctor_id]).order('appointment_time ASC').load
+    @appointments = Appointment.given_date(@date).confirmed.with_doctor(params[:doctor_id]).order('appointment_time ASC').load
     render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
   end
 
@@ -161,7 +168,7 @@ class AppointmentsController < ApplicationController
 
   def browse
     date = Date.parse(params[:appointments][:date])
-    @appointments = Appointment.given_date(date).order('appointment_time ASC').load
+    @appointments = Appointment.given_date(date).confirmed.order('appointment_time ASC').load
 
   end
 

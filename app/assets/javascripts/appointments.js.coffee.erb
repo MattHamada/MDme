@@ -18,6 +18,11 @@ APTS.setup = ->
   #add div to end of page
   $("<div id=\"ajaxAptInfo\"></div>").hide().appendTo $("body")
   $(".day_appointments").on "click", "a", APTS.getInfo
+
+  #for confirm/deny buttons
+  $(".approve").on "click", "a", ATPS.getApproveInfo
+  $(".deny").on "click", "a", ATPS.getApproveInfo
+
   false
 
 APTS.getInfo = ->
@@ -30,6 +35,16 @@ APTS.getInfo = ->
       alert "Error loading appointment"
 
   false
+
+APTS.getApproveInfo = ->
+    $.ajax
+      type: "GET"
+      url: $(this).attr("href")
+      timeout: 5000
+      error: ->
+          alert "Error processing request"
+
+    false
 
 
 #data is ajax return obj
