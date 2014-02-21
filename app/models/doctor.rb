@@ -56,7 +56,6 @@ class Doctor < ActiveRecord::Base
     appointments.each do |appt|
       hour = appt.appointment_time.hour + 7
       minute = appt.appointment_time.min
-      puts "doctor times: #{hour}: #{minute}"
 
 
       minute = '00' if minute == 0
@@ -69,8 +68,7 @@ class Doctor < ActiveRecord::Base
       end
       hour = hour % 12 if hour != 12
 
-      puts '--------------'
-      puts "doctor times: #{hour}: #{minute} #{ampm}"
+
 
       if times.include?("#{hour}:#{minute} #{ampm}")
         times.delete("#{hour}:#{minute} #{ampm}")
