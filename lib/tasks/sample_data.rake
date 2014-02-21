@@ -91,10 +91,12 @@ namespace :db do
       appointment_time = rand_time_with_intervals(5.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
+      request = (rand_int(0,2) == 1) ? true : false
       Appointment.create(patient_id: patient_id,
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
-                         description: Faker::Lorem.paragraph(4))
+                         description: Faker::Lorem.paragraph(4),
+                         request: request)
     end
 
   end
