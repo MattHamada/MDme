@@ -79,7 +79,6 @@ namespace :db do
       appointment_time = rand_time_with_intervals(3.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
-      puts "#{n+1} -- #{appointment_time}"
       request = (rand_int(0,2) == 1) ? true : false
       Appointment.create(patient_id: patient_id,
                           doctor_id: doctor_id,
