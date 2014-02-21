@@ -8,12 +8,11 @@
 class Doctor < ActiveRecord::Base
 
   # accept valid email addresses only
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
 
   # cannot register multiple doctors under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, format: {with: VALID_EMAIL_REGEX}
+  validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
 
   # passwords must be length of 6
   # skips validation if admin is updating doctor info

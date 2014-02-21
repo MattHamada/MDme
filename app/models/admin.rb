@@ -7,10 +7,8 @@
 
 class Admin < ActiveRecord::Base
 
-  # accept valid email addresses only
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   # cannot register multiple admins under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, format: {with: VALID_EMAIL_REGEX}
+  validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
 
   # passwords must be length of 6
   #TODO increase password strength
