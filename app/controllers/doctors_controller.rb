@@ -92,7 +92,7 @@ class DoctorsController < ApplicationController
 
   def appointments
     @doctor = Doctor.find(params[:id])
-    @appointments = Appointment.given_date(Date.today).with_doctor(params[:id]).order('appointment_time ASC').load
+    @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
   end
 
   def patient_index
