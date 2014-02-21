@@ -93,6 +93,10 @@ class Doctor < ActiveRecord::Base
     times
   end
 
+  def to_param
+    "#{id} #{full_name}".parameterize
+  end
+
   private
 
     def create_remember_token

@@ -45,6 +45,10 @@ class Patient < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
 
+  def to_param
+    "#{id} #{full_name}".parameterize
+  end
+
   private
 
     def create_remember_token
