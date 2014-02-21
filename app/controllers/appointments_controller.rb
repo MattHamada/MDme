@@ -45,7 +45,7 @@ class AppointmentsController < ApplicationController
     elsif params.has_key?(:deny)
       Appointment.delete(Appointment.find(params[:appointment_id]))
     end
-    @appointments = Appointment.requests
+    @appointments = Appointment.requests.order('appointment_time ASC').load
 
   end
 
