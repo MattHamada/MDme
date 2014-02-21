@@ -69,7 +69,7 @@ class Doctor < ActiveRecord::Base
         times.append("#{hr}:#{min} #{ampm}")
       end
     end
-    appointments.each do |appt|
+    appointments.find_each do |appt|
       hour = appt.appointment_time.hour + 7
       minute = appt.appointment_time.min
 
