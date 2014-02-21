@@ -1,12 +1,15 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Routing file
+#
+
+
 MDme::Application.routes.draw do
 
   require 'domains'
 
-  #constraints(Subdomain) do
-   # constraints subdomain: 'doctors' do
-    #    root 'doctors#home'
-    #end
-  #end
+
 
   #doctor subdomain
   match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
