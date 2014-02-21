@@ -26,7 +26,12 @@ namespace :db do
                    description: Faker::Lorem.paragraph(4))
     Appointment.create!(patient_id: 1,
                         doctor_id: 1,
-                        appointment_time: Time.now + 30.minutes)
+                        request: false,
+                        appointment_time: rand_time_with_intervals(1.day.from_now))
+
+    Admin.create!(email: 'admin@example.com',
+                  password: 'foobar',
+                  password_confirmation: 'foobar')
 
 
     #fill with other sample patients
@@ -74,9 +79,12 @@ namespace :db do
       appointment_time = rand_time_with_intervals(3.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
+      puts "#{n+1} -- #{appointment_time}"
+      request = (rand_int(0,2) == 1) ? true : false
       Appointment.create(patient_id: patient_id,
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
+                          request: request,
                           description: Faker::Lorem.paragraph(4))
     end
 
@@ -86,7 +94,7 @@ namespace :db do
 
         #sample appointments
     100.times do |n|
-      patient_id = n+1
+      patient_id = rand_int(1,61)
       doctor_id = rand_int(1, 7)
       appointment_time = rand_time_with_intervals(5.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
@@ -114,11 +122,12 @@ def rand_time(endTime, startTime=Time.now+3.hours)
   Time.at(rand_in_range(startTime.to_f, endTime.to_f))
 end
 
-def rand_time_with_intervals(endTime, startTime=Time.now+3.hours)
-  t = Time.at(rand_in_range(startTime.to_f, endTime.to_f))
-  t = t.change(hour: (9..16).to_a.sample)
-  t = t.change(min: [00, 15, 30, 45].sample)
-  t
+def rand_time_with_intervals(endDate, startDate=Date.tomorrow )
+  day = (startDate..endDate).to_a.sample
+  hour = (9..17).to_a.sample
+  min = [00, 15, 30, 45].sample
+  datetime = DateTime.new(day.year, day.month, day.day, hour, min)
+  datetime
 end
 
 def rand_in_range(from, to)
