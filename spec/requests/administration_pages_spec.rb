@@ -178,6 +178,21 @@ describe "AdministrationPages" do
             describe 'appointment approval page' do
               before { click_link 'Appointment Requests' }
               it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+
+              describe 'approving the appointment' do
+                before { click_link 'Approve' }
+                it { should_not have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+
+              end
+
+              describe 'Denying the appointment' do
+                before { click_link 'Deny' }
+                it { should_not have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+              end
+
+              describe 'Denying appointment deletes record' do
+                it { expect { click_link 'Deny'}.to change(Appointment, :count) }
+              end
             end
           end
         end
@@ -209,7 +224,7 @@ describe "AdministrationPages" do
     end
 
 
-    it { should have_selector('#day_appointments') }
+    it { should have_selector('.day_appointments') }
     it { should have_content "Select Date" }
     it { should have_content 'Time' }
 
