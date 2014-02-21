@@ -182,7 +182,9 @@ describe "AdministrationPages" do
               describe 'approving the appointment' do
                 before { click_link 'Approve' }
                 it { should_not have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
-
+                it 'should set request attribute to false' do
+                  appointment_request.reload.request.should eq(false)
+                end
               end
 
               describe 'Denying the appointment' do
