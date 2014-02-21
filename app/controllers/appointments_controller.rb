@@ -1,5 +1,15 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Controller for handling appointments
+# Most methods accessed from admin subdomain
+#
+
 class AppointmentsController < ApplicationController
 
+  # Only admins can create/edit/destroy/approve appointments
+  # Patients can request
+  #TODO Allow patients to edit appointments before they are confirmed
   before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index, :approval]
   before_filter :require_patient_login, :only => [:patient_request]
 
@@ -7,6 +17,7 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  # ajax load when creating new appointment to see open times when given a date on admin site
   def admin_new_browse
     @date = Date.parse(params[:appointments][:date])
     @doctor = Doctor.find(params[:doctor][:doctor_id])
@@ -14,20 +25,15 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
-  def new_request
-    @appointment = Appointment.new
-    time = params[:time]
-    date = DateTime.parse(params[:date] + " " + params[:time])
-    @appointment.appointment_time = date
-    @appointment.patient_id = params[:id]
-    @appointment.doctor_id = params[:doctor]
-  end
 
+
+
+  # intial request page where patient enters date and doctor
   def patient_request
     @patient = Patient.find(params[:id])
   end
 
-  #for patients
+  # ajax load when creating new appointment to see open times when given a date
   def open_appointments
     @patient = Patient.find(params[:id])
     @date = Date.parse(params[:appointments][:date])
@@ -37,6 +43,7 @@ class AppointmentsController < ApplicationController
 
   end
 
+  # run when admin hits approve or deny on approval page
   def approval
     if params.has_key?(:approve)
       appointment =  Appointment.find(params[:appointment_id])
@@ -49,14 +56,11 @@ class AppointmentsController < ApplicationController
 
   end
 
+  # creates appointments, sets as a request if made from patient site, but not if from admin site.
   def create
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
 
-    #if !params[:appointment].has_key?(:doctor_id) ||
-    #    (!params[:appointment].has_key?(:patient_id) || !params[:patient].has_key?(:patient_id))
-    #  flash[:danger] = "Error creating appointment"
-    #  redirect_to new_appointment_url
-    #else
+    # params slightly different based on if appointment made on patient or admin oage
     pid = 0
     if !params[:appointment][:patient_id].nil?
       pid = params[:appointment][:patient_id]
@@ -75,54 +79,28 @@ class AppointmentsController < ApplicationController
                                      appointment_time: date,
                                      description: params[:appointment][:description],
                                      request: is_req)
-      if @appointment.save
-        if is_req
-          req = "Requested"
-        else
-          req = "Created"
-        end
-        flash[:success] = "Appointment #{req}"
-        if request.subdomain == 'www'
-          redirect_to patient_path(Patient.find(params[:appointment][:patient_id]))
-        else
-          redirect_to appointments_path
-        end
+    if @appointment.save
+      if is_req
+        req = "Requested"
       else
-      #flash[:danger] = "Error Encountered"
-      @appointment.errors.each do |attribute, message|
-        flash[:danger] = message
+        req = "Created"
       end
-        if request.subdomain == 'www'
-          redirect_to request_appointment_path(Patient.find(pid))
-        else
-          redirect_to new_appointment_url
-        end
+      flash[:success] = "Appointment #{req}"
+      if request.subdomain == 'www'
+        redirect_to patient_path(Patient.find(params[:appointment][:patient_id]))
+      else
+        redirect_to appointments_path
       end
-    #end
-
-  #  day = params[:date][:day]
-  #  hour   = params[:date][:hour]
-  #  minute = params[:date][:minute]
-  #  date = DateTime.parse("#{day} #{hour}:#{minute}")
-  #
-  #  if !params.has_key?(:doctor_id) || !params.has_key?(:patient_id)
-  #    flash[:danger] = "Error creating appointment"
-  #    redirect_to new_appointment_url
-  #  else
-  #
-  #
-  #    @appointment = Appointment.new(doctor_id: params[:doctor][:doctor_id],
-  #                                   patient_id: params[:patient][:patient_id],
-  #                                   appointment_time: date,
-  #                                   description: params[:appointment][:description])
-  #    if @appointment.save
-  #      flash[:success] = "Appointment Created"
-  #      redirect_to appointments_path
-  #    else
-  #      flash[:danger] = "Error creating appointment"
-  #      redirect_to new_appointment_url
-  #    end
-  #  end
+    else
+    @appointment.errors.each do |attribute, message|
+      flash[:danger] = message
+    end
+      if request.subdomain == 'www'
+        redirect_to request_appointment_path(Patient.find(pid))
+      else
+        redirect_to new_appointment_url
+      end
+    end
   end
 
 
@@ -153,19 +131,24 @@ class AppointmentsController < ApplicationController
     render(partial: 'ajax_show', object: @appointment) if request.xhr?
   end
 
+  # allows admin to see what appointments are already on a specific date with a specific
+  # doctor before Accepting/denying request
   def show_on_date
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
-    @appointments = Appointment.given_date(@date).confirmed.with_doctor(params[:doctor_id]).order('appointment_time ASC').load
+    @appointments = Appointment.given_date(@date).confirmed.with_doctor(
+        params[:doctor_id]).order('appointment_time ASC').load
     render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
   end
 
+  # accessed from admin page under manage appointments
   def index
     if Appointment.requests.any?
       flash.now[:warning] = "Appointments waiting for approval."
     end
   end
 
+  # shows all confirmed appointments on a given date for admin
   def browse
     date = Date.parse(params[:appointments][:date])
     @appointments = Appointment.given_date(date).confirmed.order('appointment_time ASC').load

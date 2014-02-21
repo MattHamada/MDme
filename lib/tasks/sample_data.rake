@@ -1,3 +1,10 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Populates database with users, doctors, appointments, used for testing
+# Appointments made for 1-5 days ahead of when script run
+# usage: rake db:populate and rake db:populate_appointments for additional appointments
+#
 
 
 namespace :db do

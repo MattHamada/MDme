@@ -1,3 +1,12 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+#This file used for various javascript powered ajax calls on appointments sites
+#will show a calendar for date picking
+#Will shows ajax popup windows for appointment and user info
+#
+
+#calendars for picking date
 jQuery ->
   $('#appointments_date').datepicker
     dateFormat: 'yy-mm-dd'
@@ -11,7 +20,7 @@ jQuery ->
 
 
 
-
+#used for popup windows
 APTS = {}
 APTS.setup = ->
 
@@ -25,6 +34,7 @@ APTS.setup = ->
 
   false
 
+#ajax call for appointment details
 APTS.getInfo = ->
   $.ajax
     type: "GET"
@@ -36,6 +46,7 @@ APTS.getInfo = ->
 
   false
 
+#ajax calls for approving/denying appointments
 APTS.getApproveInfo = ->
     $.ajax
       type: "GET"

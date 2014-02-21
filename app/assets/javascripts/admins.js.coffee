@@ -2,6 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# This file used to generate ajax popup windows for appointment info
+
 APTS = {}
 APTS.setup = ->
 

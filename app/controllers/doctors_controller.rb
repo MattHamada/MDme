@@ -1,3 +1,10 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Controller for handing doctor subdomain
+#
+
+
 class DoctorsController < ApplicationController
   before_filter :require_admin_login, :only => [:new,  :destroy, :index]
   before_filter :require_doctor_login, :only => [:appointments]
@@ -90,11 +97,13 @@ class DoctorsController < ApplicationController
     @doctor = Doctor.find(params[:id])
   end
 
+  # shows doctor's confirmed appointments
   def appointments
     @doctor = Doctor.find(params[:id])
     @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
   end
 
+  # shows Doctor's patients
   def patient_index
     @doctor = Doctor.find(params[:id])
     @patients = Doctor.find(params[:id]).patients

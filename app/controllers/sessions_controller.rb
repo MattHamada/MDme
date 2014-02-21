@@ -1,3 +1,11 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Controller for Sessions; handles logging in/out
+#
+#
+
+
 class SessionsController < ApplicationController
   def new
 

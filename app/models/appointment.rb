@@ -1,7 +1,16 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Appointment model
+#
+
 class Appointment < ActiveRecord::Base
 
+  #appointments must be at a unique time in the future
   validates :appointment_time, presence: true, uniqueness: true
   validate :appointment_time_in_future
+
+  #must have a doctor and patient assigned to each appointment
   validates :doctor_id, presence: true
   validates :patient_id, presence:true
 
@@ -12,10 +21,12 @@ class Appointment < ActiveRecord::Base
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
 
+  # returns all appointments on a specific date
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
+  # returns all appointments with a given doctor
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
   end

@@ -1,4 +1,13 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Controller for handling Patient pages on default subdomain (www)
+#
+
+
 class PatientsController < ApplicationController
+
+  # Currently only administrators can create patients, they cannot sign up on their own.
   before_filter :require_admin_login, :only => [:new, :destroy, :index]
   before_filter :require_admin_or_patient_login, :only => [:show, :edit]
 
@@ -26,6 +35,7 @@ class PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
   end
 
+  # for admin page only
   def index
     @patients = Patient.all.reorder("last_name")
     render 'admins/patient_index'

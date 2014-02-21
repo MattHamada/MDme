@@ -1,3 +1,9 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# This file used for creating json api output of patient model for future use
+#
+
 module Api
 
   class PatientsController < RocketPants::Base

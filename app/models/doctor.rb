@@ -1,14 +1,29 @@
+# Author: Matt Hamada
+# Copyright MDme 2014
+#
+# Doctor model
+#
+
+
 class Doctor < ActiveRecord::Base
+
+  # accept valid email addresses only
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
+
+  # cannot register multiple doctors under one email address
   validates :email, presence: true, uniqueness: {case_sensitive: false}, format: {with: VALID_EMAIL_REGEX}
+
+  # passwords must be length of 6
+  # skips validation if admin is updating doctor info
+  #TODO increase password strength
   validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
 
   attr_accessor :is_admin_applying_update
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
-
+  # emails stored lowercase
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 
@@ -23,6 +38,8 @@ class Doctor < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  # returns string array of all open appointment times
+  # on a given day in am/pm format
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date)
     times = []
