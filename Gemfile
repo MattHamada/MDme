@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
-#ruby-gemset=railstutorial_rails_4_0
+ruby '2.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.0.3'
 
 gem 'bootstrap-sass', '3.0.3.0'
 gem 'font-awesome-rails'
