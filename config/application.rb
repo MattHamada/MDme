@@ -32,5 +32,8 @@ module MDme
 
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
+    #autoload files in /lib for use in other classes
+    config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
+
   end
 end
