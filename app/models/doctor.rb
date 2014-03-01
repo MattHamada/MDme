@@ -6,6 +6,7 @@
 
 
 class Doctor < ActiveRecord::Base
+  include CookieCrypt
 
   # accept valid email addresses only
   validates :first_name, presence: true, length: {maximum: 50}
@@ -100,7 +101,7 @@ class Doctor < ActiveRecord::Base
   private
 
     def create_remember_token
-      self.remember_token = Patient.encrypt(Patient.new_remember_token)
+      self.remember_token = encrypt(new_remember_token)
     end
 
 end

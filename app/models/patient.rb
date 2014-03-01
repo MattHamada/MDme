@@ -6,7 +6,7 @@
 
 
 class Patient < ActiveRecord::Base
-  include RocketPants::Cacheable #for future API use
+  include CookieCrypt, RocketPants::Cacheable #for future API use
 
   # accept valid email addresses only
   validates :first_name, presence: true, length: {maximum: 50}
@@ -37,13 +37,13 @@ class Patient < ActiveRecord::Base
 
 
   #TODO refactor session key encryption out of patient model
-  def Patient.new_remember_token
-    SecureRandom.urlsafe_base64
-  end
-
-  def Patient.encrypt(token)
-    Digest::SHA1.hexdigest(token.to_s)
-  end
+  #def Patient.new_remember_token
+  #  SecureRandom.urlsafe_base64
+  #end
+  #
+  #def Patient.encrypt(token)
+  #  Digest::SHA1.hexdigest(token.to_s)
+  #end
 
   def to_param
     "#{id} #{full_name}".parameterize
@@ -52,7 +52,7 @@ class Patient < ActiveRecord::Base
   private
 
     def create_remember_token
-      self.remember_token = Patient.encrypt(Patient.new_remember_token)
+      self.remember_token = encrypt(new_remember_token)
     end
 
 end

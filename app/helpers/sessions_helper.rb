@@ -1,4 +1,5 @@
 module SessionsHelper
+  include CookieCrypt
 
   def require_admin_login
     unless admin_signed_in?
@@ -49,21 +50,21 @@ module SessionsHelper
 
   def sign_in(user, type)
     if type == :patient
-    remember_token = Patient.new_remember_token
+    remember_token = new_remember_token
     cookies.permanent[:remember_token] = remember_token
-    user.update_attribute(:remember_token, Patient.encrypt(remember_token))
+    user.update_attribute(:remember_token, encrypt(remember_token))
     self.current_patient = user
 
     elsif type == :doctor
-      remember_token = Patient.new_remember_token
+      remember_token = new_remember_token
       cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, Patient.encrypt(remember_token))
+      user.update_attribute(:remember_token, encrypt(remember_token))
       self.current_doctor = user
 
     elsif type == :admin
-      remember_token = Patient.new_remember_token
+      remember_token = new_remember_token
       cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, Patient.encrypt(remember_token))
+      user.update_attribute(:remember_token, encrypt(remember_token))
       self.current_admin = user
     end
 
@@ -93,17 +94,17 @@ module SessionsHelper
   end
 
   def current_patient
-    remember_token = Patient.encrypt(cookies[:remember_token])
+    remember_token = encrypt(cookies[:remember_token])
     @current_patient ||= Patient.find_by(remember_token: remember_token)
   end
 
   def current_doctor
-    remember_token = Patient.encrypt(cookies[:remember_token])
+    remember_token = encrypt(cookies[:remember_token])
     @current_doctor ||= Doctor.find_by(remember_token: remember_token)
   end
 
   def current_admin
-    remember_token = Patient.encrypt(cookies[:remember_token])
+    remember_token = encrypt(cookies[:remember_token])
     @current_admin ||= Admin.find_by(remember_token: remember_token)
   end
 

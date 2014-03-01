@@ -6,6 +6,8 @@
 
 
 class Admin < ActiveRecord::Base
+  include CookieCrypt
+
 
   # cannot register multiple admins under one email address
   validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
@@ -22,9 +24,8 @@ class Admin < ActiveRecord::Base
 
   private
 
-  #TODO move token creation out of patient model
   def create_remember_token
-    self.remember_token = Patient.encrypt(Patient.new_remember_token)
+    self.remember_token = encrypt(new_remember_token)
   end
 
 end
