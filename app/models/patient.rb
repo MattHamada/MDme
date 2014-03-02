@@ -18,7 +18,7 @@ class Patient < ActiveRecord::Base
 
   # passwords must be length of 6
   #TODO increase password strength
-  validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
+  #validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
 
   validates :slug, uniqueness: true, presence: true
 
