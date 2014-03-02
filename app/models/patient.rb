@@ -3,6 +3,7 @@
 #
 # Patient model
 #
+require 'cookie_crypt'
 
 
 class Patient < ActiveRecord::Base
