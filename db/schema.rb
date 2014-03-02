@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140207182808) do
+ActiveRecord::Schema.define(version: 20140302003758) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -59,10 +59,12 @@ ActiveRecord::Schema.define(version: 20140207182808) do
     t.string   "degree"
     t.string   "alma_mater"
     t.text     "description"
+    t.string   "slug"
   end
 
   add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
   add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token"
+  add_index "doctors", ["slug"], name: "index_doctors_on_slug"
 
   create_table "patients", force: true do |t|
     t.string   "first_name"
@@ -73,9 +75,11 @@ ActiveRecord::Schema.define(version: 20140207182808) do
     t.string   "last_name"
     t.string   "remember_token"
     t.integer  "doctor_id"
+    t.string   "slug"
   end
 
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true
   add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
+  add_index "patients", ["slug"], name: "index_patients_on_slug"
 
 end

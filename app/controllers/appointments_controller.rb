@@ -30,12 +30,12 @@ class AppointmentsController < ApplicationController
 
   # intial request page where patient enters date and doctor
   def patient_request
-    @patient = Patient.find(params[:id])
+    @patient = Patient.find_by_slug(params[:id])
   end
 
   # ajax load when creating new appointment to see open times when given a date
   def open_appointments
-    @patient = Patient.find(params[:id])
+    @patient = Patient.find_by_slug(params[:id])
     @date = Date.parse(params[:appointments][:date])
     @doctor = Doctor.find(params[:doctor][:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)

@@ -19,7 +19,7 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    @doctors = Doctor.all
+    @doctors = Doctor.all.includes(:department)
     render 'admins/doctors_index' if request.subdomain == 'admin'
   end
 
@@ -44,12 +44,12 @@ class DoctorsController < ApplicationController
   end
 
   def edit
-    @doctor = Doctor.find(params[:id])
+    @doctor = doctor
     render 'admins/doctors_edit' if request.subdomain == 'admin'
   end
 
   def update
-    @doctor = Doctor.find(params[:id])
+    @doctor = doctor
     @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
     if @doctor.authenticate(params[:verify][:verify_password]) == false
       flash[:danger] = 'Invalid password entered.'
@@ -87,25 +87,33 @@ class DoctorsController < ApplicationController
   end
 
   def destroy
-    @doctor = Doctor.find(params[:id])
+    @doctor = doctor
     @doctor.destroy!
     flash[:warning] = 'Doctor Successfully Deleted'
     redirect_to admins_path
   end
 
   def show
-    @doctor = Doctor.find(params[:id])
+    @doctor = doctor
   end
 
   # shows doctor's confirmed appointments
   def appointments
-    @doctor = Doctor.find(params[:id])
+    @doctor = doctor
     @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
   end
 
   # shows Doctor's patients
   def patient_index
-    @doctor = Doctor.find(params[:id])
-    @patients = Doctor.find(params[:id]).patients
+    @doctor = doctor
+    @patients = @doctor.patients
   end
+
+  private
+
+  def doctor
+    @doctor ||= Doctor.find_by_slug!(params[:id])
+  end
+
+  helper_method :doctor
 end

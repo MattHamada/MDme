@@ -15,7 +15,7 @@
                 <th>Department</th>
               </tr>
               <tbody>
-              <% @doctors.each_with_index do |doctor, index| %>
+              <% @doctors.each_with_index  do |doctor, index| %>
                   <tr>
                     <td><%= link_to("#{index}", edit_doctor_path(doctor)) %></td>
                     <td><%= doctor.full_name %></td>

@@ -7,6 +7,9 @@
 
 class PatientsController < ApplicationController
 
+  #before_filter :find_patient, only: [:show, :edit, :update, :destroy]
+
+
   # Currently only administrators can create patients, they cannot sign up on their own.
   before_filter :require_admin_login, :only => [:new, :destroy, :index]
   before_filter :require_admin_or_patient_login, :only => [:show, :edit]
@@ -32,7 +35,7 @@ class PatientsController < ApplicationController
   end
 
   def show
-    @patient = Patient.find(params[:id])
+    @patient = patient
     respond_to do |format|
       format.html # show.html.erb
       format.json  { render :json => @patient, except: [:created_at,
@@ -44,12 +47,13 @@ class PatientsController < ApplicationController
 
   # for admin page only
   def index
-    @patients = Patient.all.reorder("last_name")
+    @patients = Patient.all.reorder("last_name").includes(:doctor)
     render 'admins/patient_index'
   end
 
   def edit
-    @patient = Patient.find(params[:id])
+    @patient = patient
+
     if request.subdomain == 'admin'
       render 'admins/patient_edit'
     else
@@ -58,7 +62,8 @@ class PatientsController < ApplicationController
   end
 
   def update
-    @patient = Patient.find(params[:id])
+    @patient = patient
+
     @patient.is_admin_applying_update = true if request.subdomain == 'admin'
     @patient.attributes = patient_params
     if @patient.save
@@ -75,7 +80,8 @@ class PatientsController < ApplicationController
   end
 
   def destroy
-    @patient = Patient.find(params[:id])
+    @patient = patient
+
     @patient.destroy!
     flash[:warning] = 'Patient Deleted'
     redirect_to patients_path
@@ -86,4 +92,13 @@ class PatientsController < ApplicationController
   def patient_params
     params.require(:patient).permit(:first_name, :last_name, :email, :password, :password_confirmation, :doctor_id)
   end
+
+
+  private
+
+  def patient
+    @patient ||= Patient.find_by_slug!(params[:id])
+  end
+
+  helper_method :patient
 end

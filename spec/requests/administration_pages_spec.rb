@@ -68,7 +68,7 @@ describe "AdministrationPages" do
               describe 'with invalid information' do
                 before { click_button 'Create' }
                 it { should have_selector('div.alert.alert-danger', text: 'Invalid Parameters Entered') }
-                it { should have_text('The form contains 4 errors') }
+                it { should have_text('The form contains 5 errors') }
                 it { should have_selector('div.field_with_errors') }
                 it { should have_title('New Doctor') }
               end

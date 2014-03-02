@@ -11,7 +11,7 @@ class AdminsController < ApplicationController
   # cannot visit signin page when signed in
   def signin
     if admin_signed_in?
-      redirect_to admins_path
+        redirect_to admins_path
     end
 
   end

@@ -21,6 +21,10 @@ class Doctor < ActiveRecord::Base
   #TODO increase password strength
   validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
 
+  validates :slug, uniqueness: true, presence: true
+
+  before_validation :generate_slug
+
   attr_accessor :is_admin_applying_update
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
@@ -96,7 +100,11 @@ class Doctor < ActiveRecord::Base
   end
 
   def to_param
-    "#{id} #{full_name}".parameterize
+    slug
+  end
+
+  def generate_slug
+    self.slug ||= full_name.parameterize
   end
 
   private

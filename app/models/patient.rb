@@ -20,10 +20,16 @@ class Patient < ActiveRecord::Base
   #TODO increase password strength
   validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
 
+  validates :slug, uniqueness: true, presence: true
+
+  before_validation :generate_slug
+
+
   attr_accessor :is_admin_applying_update
 
   # emails stored lowercase
   before_save { self.email = email.downcase }
+
   before_create :create_remember_token
 
   belongs_to  :doctor
@@ -36,18 +42,16 @@ class Patient < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def generate_slug
+    self.slug ||= full_name.parameterize
+  end
 
-  #TODO refactor session key encryption out of patient model
-  #def Patient.new_remember_token
-  #  SecureRandom.urlsafe_base64
-  #end
-  #
-  #def Patient.encrypt(token)
-  #  Digest::SHA1.hexdigest(token.to_s)
-  #end
+
+
 
   def to_param
-    "#{id} #{full_name}".parameterize
+    slug
+    #"#{id} #{full_name}".parameterize
   end
 
   private
