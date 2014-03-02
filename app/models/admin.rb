@@ -3,6 +3,7 @@
 #
 # Admin model
 #
+require 'cookie_crypt'
 
 
 class Admin < ActiveRecord::Base

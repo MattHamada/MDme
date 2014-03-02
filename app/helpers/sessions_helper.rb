@@ -1,3 +1,5 @@
+require 'cookie_crypt'
+
 module SessionsHelper
   include CookieCrypt
 

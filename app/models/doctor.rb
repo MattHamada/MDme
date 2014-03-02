@@ -3,6 +3,7 @@
 #
 # Doctor model
 #
+require 'cookie_crypt'
 
 
 class Doctor < ActiveRecord::Base
