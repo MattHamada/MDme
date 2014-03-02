@@ -20,6 +20,13 @@ class Doctor < ActiveRecord::Base
   # skips validation if admin is updating doctor info
   #TODO increase password strength
   validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
+  validate :password_complexity, unless: :is_admin_admin_applying_update
+
+  def password_complexity
+    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)
+      errors.add :password, "Must include at least one lowercase letter, one uppercase letter, and one digit"
+    end
+  end
 
   validates :slug, uniqueness: true, presence: true
 

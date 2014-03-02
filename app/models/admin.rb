@@ -13,9 +13,15 @@ class Admin < ActiveRecord::Base
   # cannot register multiple admins under one email address
   validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
 
-  # passwords must be length of 6
-  #TODO increase password strength
+
   validates :password, length: { minimum: 6 }
+  validate :password_complexity, unless: :is_admin_admin_applying_update
+
+  def password_complexity
+    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)
+      errors.add :password, "must include at least one lowercase letter, one uppercase letter, and one digit"
+    end
+  end
 
   # emails stored lowercase
   before_save { self.email = email.downcase }
