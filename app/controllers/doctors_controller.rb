@@ -30,17 +30,16 @@ class DoctorsController < ApplicationController
 
   def create
     p = doctor_params
-    p[:password] = 'temppass'
-    p[:password_confirmation]  = 'temppass'
-    @doctor = Doctor.new(p)
+    p[:password] =  p[:password_confirmation] = generate_random_password
+    @doctor = Doctor.new(p, is_admin_applying_update: true)
 
     if @doctor.save
       flash[:success] = 'Doctor Successfully Created.'
       redirect_to admins_path
     else
-      flash.now[:danger] = 'Invalid Parameters Entered'
       render 'admins/doctors_new'
     end
+
   end
 
   def edit

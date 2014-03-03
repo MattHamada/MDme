@@ -9,30 +9,27 @@ require 'cookie_crypt'
 class Doctor < ActiveRecord::Base
   include CookieCrypt
 
-  # accept valid email addresses only
+
+  before_validation :generate_slug
+
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
 
   # cannot register multiple doctors under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
+  validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
 
   # passwords must be length of 6
   # skips validation if admin is updating doctor info
   #TODO increase password strength
-  validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
-  validate :password_complexity, unless: :is_admin_admin_applying_update
+  validates :password, password_complexity: true, unless: :is_admin_applying_update
 
-  def password_complexity
-    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)
-      errors.add :password, "Must include at least one lowercase letter, one uppercase letter, and one digit"
-    end
-  end
 
-  validates :slug, uniqueness: true, presence: true
 
-  before_validation :generate_slug
+  validates :slug, uniqueness: true, presence: true, unless: :skip_on_create
+
 
   attr_accessor :is_admin_applying_update
+  attr_accessor :skip_on_create
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
   # emails stored lowercase
@@ -111,7 +108,11 @@ class Doctor < ActiveRecord::Base
   end
 
   def generate_slug
-    self.slug ||= full_name.parameterize
+    if !full_name.blank?
+      self.slug ||= full_name.parameterize
+    else
+      self.slug = 'no-name-entered'.parameterize
+    end
   end
 
   private

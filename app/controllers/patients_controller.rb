@@ -21,8 +21,7 @@ class PatientsController < ApplicationController
 
   def create
     p = patient_params
-    p[:password] = 'temppass'
-    p[:password_confirmation] = 'temppass'
+    p[:password] = p[:password_confirmation] = generate_random_password
     p[:doctor_id] = params[:doctor][:doctor_id]
     @patient = Patient.new(p)
     if @patient.save

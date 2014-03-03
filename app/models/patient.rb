@@ -14,17 +14,10 @@ class Patient < ActiveRecord::Base
   validates :last_name, presence: true, length: {maximum: 50}
 
   # cannot register multiple users under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
+  validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
 
 
-  validates :password, length: { minimum: 6 }, unless: :is_admin_applying_update
-  validate :password_complexity, unless: :is_admin_admin_applying_update
-
-  def password_complexity
-    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)
-      errors.add :password, "Must include at least one lowercase letter, one uppercase letter, and one digit"
-    end
-  end
+  validates :password, password_complexity: true, unless: :is_admin_applying_update
 
   validates :slug, uniqueness: true, presence: true
 

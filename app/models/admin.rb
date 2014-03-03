@@ -11,11 +11,10 @@ class Admin < ActiveRecord::Base
 
 
   # cannot register multiple admins under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, email: true
+  validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
 
 
-  validates :password, length: { minimum: 6 }
-  validate :password_complexity, unless: :is_admin_admin_applying_update
+  validates :password, password_complexity: true
 
   def password_complexity
     if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)

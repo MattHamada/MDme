@@ -121,4 +121,19 @@ module SessionsHelper
   def admin_signed_in?
     !current_admin.nil?
   end
+
+  def generate_random_password(size = 8)
+    charset = %w{ a b c d e f g h i j k l m n o p q r s t u v w x y z}
+    numset  = %w{ 0 1 2 3 4 5 6 7 8 9 }
+    capset  = %w{ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z }
+
+    pass = (0...size/2).map{ charset.to_a[rand(charset.size)] } +
+           (0...size/2).map{ numset.to_a[rand(charset.size)] }  +
+           (0...size/2).map{ capset.to_a[rand(charset.size)] }
+
+    pass = pass.shuffle.slice(0,size) + ['a','A',3]
+    pass.join
+
+
+  end
 end
