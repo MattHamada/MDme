@@ -67,8 +67,7 @@ describe "AdministrationPages" do
               end
               describe 'with invalid information' do
                 before { click_button 'Create' }
-                it { should have_selector('div.alert.alert-danger', text: 'Invalid Parameters Entered') }
-                it { should have_text('The form contains 5 errors') }
+                it { should have_text('The form contains 4 errors') }
                 it { should have_selector('div.field_with_errors') }
                 it { should have_title('New Doctor') }
               end
@@ -212,7 +211,7 @@ describe "AdministrationPages" do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'foobar', password_confirmation: 'foobar')
+      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
 
       visit root_path
       fill_in 'Email', with: @admin.email
@@ -283,7 +282,7 @@ describe "AdministrationPages" do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'foobar', password_confirmation: 'foobar')
+      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
 
       visit root_path
       fill_in 'Email', with: @admin.email

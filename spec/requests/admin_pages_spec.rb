@@ -21,7 +21,7 @@ describe "AdminPages" do
         before do
           admin.save
           fill_in 'Email',    with: admin.email
-          fill_in 'Password', with: 'foobar'
+          fill_in 'Password', with: 'Qwerty1'
           click_button 'Sign in'
         end
         it { should have_content("Today's Appointments")}

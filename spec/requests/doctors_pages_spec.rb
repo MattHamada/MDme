@@ -24,7 +24,7 @@ describe "DoctorsPages" do
           doctor.save!
           department.save!
           fill_in 'Email', with: 'doctor@example.com'
-          fill_in 'Password', with: 'foobar'
+          fill_in 'Password', with: 'Qwerty1'
           click_button 'Sign in'
         end
         it { should have_title("Today's Appointments") }
@@ -57,7 +57,7 @@ describe "DoctorsPages" do
             describe 'with valid password' do
               before do
                 fill_in 'doctor_phone_number', with: '000-000-0000'
-                fill_in 'verify_verify_password', with: 'foobar'
+                fill_in 'verify_verify_password', with: 'Qwerty1'
                 click_button 'Update'
               end
               it { should have_content '000-000-0000'}

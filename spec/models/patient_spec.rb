@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Patient do
-  before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'foobar', password_confirmation: 'foobar') }
+  before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'Qwerty1', password_confirmation: 'Qwerty1') }
 
   subject { @patient }
 
@@ -66,20 +66,43 @@ describe Patient do
     it { should_not be_valid }
   end
 
-  describe 'when password not present' do
-    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: '', password_confirmation: '') }
-    it { should_not be_valid }
+  describe 'password problems' do
+    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'Test123', password_confirmation: 'Test123') }
+
+    describe 'when password not present' do
+      before {@patient.password = @patient.password_confirmation = ''}
+      it { should_not be_valid }
+    end
+
+    describe 'when password != password confirmation' do
+      before do
+        @patient.password = 'Qwerty1'
+        @patient.password='YtrewQ1'
+      end
+      it { should_not be_valid }
+    end
+
+    describe 'when password to short' do
+      before { @patient.password = @patient.password_confirmation = 'Qwer1' }
+      it { should_not be_valid }
+    end
+
+    describe 'when password has no capital letters' do
+      before { @patient.password = @patient.password_confirmation = 'qwerty1' }
+      it { should_not be_valid }
+    end
+
+    describe 'when password is all capital' do
+      before { @patient.password = @patient.password_confirmation = 'QWERTY1' }
+      it { should_not be_valid }
+    end
+
+    describe 'when password has no numbers' do
+      before { @patient.password = @patient.password_confirmation = 'Qwertyy' }
+      it { should_not be_valid }
+    end
   end
 
-  describe 'when password != password confirmation' do
-    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'fizzbuzz', password_confirmation: 'foobar') }
-    it { should_not be_valid }
-  end
-
-  describe 'when password to short' do
-    before { @patient.password = @patient.password_confirmation = 'a'*5 }
-    it { should_not be_valid }
-  end
 
   describe 'authentication method' do
     before { @patient.save }

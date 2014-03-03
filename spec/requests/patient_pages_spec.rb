@@ -45,7 +45,7 @@ describe "Patient Pages" do
       visit root_path
       click_link 'sign in'
       fill_in 'Email', with: patient.email
-      fill_in 'Password', with: 'foobar'
+      fill_in 'Password', with: 'Qwerty1'
       click_button 'Sign in'
       click_link 'Request an Appointment'
     end

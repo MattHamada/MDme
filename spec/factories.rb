@@ -3,8 +3,8 @@ FactoryGirl.define do
     first_name            'fname'
     last_name             'lname'
     email                 'patient@example.com'
-    password              'foobar'
-    password_confirmation 'foobar'
+    password              'Qwerty1'
+    password_confirmation 'Qwerty1'
     doctor_id             '1'
   end
 
@@ -12,8 +12,8 @@ FactoryGirl.define do
     first_name            'healthy'
     last_name             'doctor'
     email                 'doctor@example.com'
-    password              'foobar'
-    password_confirmation 'foobar'
+    password              'Qwerty1'
+    password_confirmation 'Qwerty1'
     department_id            '1'
     degree                'DO'
     alma_mater            'Midwestern University'
@@ -23,8 +23,8 @@ FactoryGirl.define do
 
   factory :admin do
     email                 'admin@example.com'
-    password              'foobar'
-    password_confirmation 'foobar'
+    password              'Qwerty1'
+    password_confirmation 'Qwerty1'
   end
 
   factory :appointment do
