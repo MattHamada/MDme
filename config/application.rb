@@ -12,6 +12,14 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
+
+#load email account settings into rails ENV
+CONFIG = YAML.load(File.read(File.expand_path('../email_config.yml', __FILE__)))
+CONFIG.merge! CONFIG.fetch(Rails.env, {})
+CONFIG.each do |key, value|
+  ENV[key] = value.to_s unless value.kind_of? Hash
+end
+
 module MDme
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -34,6 +42,5 @@ module MDme
 
     #autoload files in /lib for use in other classes
     config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
-
   end
 end

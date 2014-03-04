@@ -25,3 +25,4 @@ doc/
 .project
 .idea
 .secret
+config/email_config.yml

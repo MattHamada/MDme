@@ -23,6 +23,8 @@ group :development do
   gem 'binding_of_caller'
   #monitors for database optimizations in development
   gem 'bullet'
+  #for viewing emails sent
+  gem 'letter_opener'
 end
 
 group :development, :test do

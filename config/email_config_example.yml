@@ -1,0 +1,6 @@
+EMAIL_SERVER:   stmp.example.com
+EMAIL_PORT:     100
+EMAIL_DOMAIN:   example.com
+EMAIL_USERNAME: no-reply@example.com
+EMAIL_PASSWORD: qwerty
+EMAIL_AUTHENTICATION: plain
