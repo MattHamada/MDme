@@ -1,4 +1,4 @@
-class PatientMailer < ActionMailer::Base
+class SignupMailer < ActionMailer::Base
   default from: "no-reply@mdme.us"
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -6,10 +6,10 @@ class PatientMailer < ActionMailer::Base
   #
   #   en.patient_mailer.signup_confirmation.subject
   #
-  def signup_confirmation(patient, tempPass)
+  def signup_confirmation(user, tempPass)
     @tempPass = tempPass
-    @patient = patient
+    @user = user
 
-    mail to: patient.email, subject: 'Sign Up Confirmation'
+    mail to: user.email, subject: 'Sign Up Confirmation'
   end
 end

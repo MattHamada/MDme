@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe PatientMailer do
+describe SignupMailer do
   describe "signup_confirmation" do
     let (:patient) { FactoryGirl.create(:patient) }
-    let(:mail) { PatientMailer.signup_confirmation(patient, 'aCAcdaeAD2') }
+    let(:mail) { SignupMailer.signup_confirmation(patient, 'aCAcdaeAD2') }
 
     it "renders the headers" do
       mail.subject.should eq("Sign Up Confirmation")
