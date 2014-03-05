@@ -34,6 +34,10 @@ class DoctorsController < ApplicationController
     @doctor = Doctor.new(p, is_admin_applying_update: true)
 
     if @doctor.save
+      Thread.new do
+        SignupMailer.signup_confirmation(@doctor, p[:password]).deliver
+      end
+
       flash[:success] = 'Doctor Successfully Created.'
       redirect_to admins_path
     else

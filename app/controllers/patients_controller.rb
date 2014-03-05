@@ -26,7 +26,11 @@ class PatientsController < ApplicationController
     @patient = Patient.new(p)
     if @patient.save
       flash[:success] = 'Patient Created'
-      PatientMailer.signup_confirmation(@patient, p[:password]).deliver
+
+      Thread.new do
+        SignupMailer.signup_confirmation(@patient, p[:password]).deliver
+      end
+
       redirect_to patients_path
     else
       flash.now[:danger] = 'Error Creating Patient'
