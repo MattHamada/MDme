@@ -1,0 +1,6 @@
+EMAIL_SERVER:   smtpout.secureserver.net
+EMAIL_PORT:     80
+EMAIL_DOMAIN:   mdme.us
+EMAIL_USERNAME: no-reply@mdme.us
+EMAIL_PASSWORD: 6792mfu
+EMAIL_AUTHENTICATION: plain
