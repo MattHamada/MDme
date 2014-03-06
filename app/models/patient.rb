@@ -46,7 +46,11 @@ class Patient < ActiveRecord::Base
   end
 
 
-
+  def send_password_reset_email(temppass)
+    Thread.new do
+      PasswordResetMailer.reset_email(self, temppass).deliver
+    end
+  end
 
   def to_param
     slug

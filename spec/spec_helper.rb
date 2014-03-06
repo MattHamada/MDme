@@ -67,4 +67,8 @@ RSpec.configure do |config|
   config.after do
     DatabaseCleaner.clean
   end
+
+  #include email helpers
+  config.include(MailerMacros)
+  config.before(:each) { reset_email }
 end

@@ -10,6 +10,26 @@ describe "AdministrationPages" do
     it { should have_title('Sign In')}
     it { should have_content('Admin Sign In')}
 
+    describe 'Forgot Password Page' do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before do
+        click_link 'Forgot Password'
+      end
+      it { should have_content 'Email' }
+      it { should have_title 'Forgot Password' }
+
+      describe 'resetting password' do
+        before do
+          fill_in 'Email', with: admin.email
+          click_button 'Submit'
+        end
+        it { should have_content 'An email has been sent containing your new password'}
+        it 'Email should be sent to user' do
+          last_email.to.should include(admin.email)
+        end
+      end
+    end
+
     describe 'signing in' do
       describe 'wih invalid information' do
         before do

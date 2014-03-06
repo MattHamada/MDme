@@ -18,32 +18,36 @@ MDme::Application.routes.draw do
   #admin subdomain
   match '/',     to: 'admins#signin',           via: 'get',    constraints: { subdomain: 'admin' }
   #constraints(RootDomain) do
-    #constraints subdomain: false do
-    root 'static_pages#home', constraints: { subdomain: 'www' }
-    #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
-    match '/help',      to: 'static_pages#help',      via: 'get',    constraints: { subdomain: 'www' }
-    match '/about',     to: 'static_pages#about',     via: 'get',    constraints: { subdomain: 'www' }
-    match '/contact',   to: 'static_pages#contact',   via: 'get',    constraints: { subdomain: 'www' }
-    match '/signin',    to: 'sessions#new',           via: 'get',    constraints: { subdomain: 'www' }
-    match '/signout',   to: 'sessions#destroy',       via: 'delete'
-
-    get 'appointments/browse'                  => 'appointments#browse',            as: :appointments_browse
-    get 'patient/:id/appointments/browse'      => 'appointments#open_appointments', as: :open_appointments_browse
-    get 'appointments/new/browse'              => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
-    get 'patients/:id/appointments/request'    => 'appointments#patient_request',   as: :request_appointment
-    get 'appointments/approval'                => 'appointments#approval',          as: :appointment_approval
-    get 'appointments/ondate'                  => 'appointments#show_on_date',      as: :appointment_show_on_date
-
-    get 'doctors/:id/appointments'             => 'doctors#appointments',           as: :doctors_appointments
-    get 'doctors/:id/patients'                 => 'doctors#patient_index',          as: :doctors_patients
+  #constraints subdomain: false do
+  root 'static_pages#home', constraints: { subdomain: 'www' }
+  #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
+  match '/help',      to: 'static_pages#help',      via: 'get',    constraints: { subdomain: 'www' }
+  match '/about',     to: 'static_pages#about',     via: 'get',    constraints: { subdomain: 'www' }
+  match '/contact',   to: 'static_pages#contact',   via: 'get',    constraints: { subdomain: 'www' }
+  match '/signin',    to: 'sessions#new',           via: 'get',    constraints: { subdomain: 'www' }
+  match '/signout',   to: 'sessions#destroy',       via: 'delete'
+  match '/forgot_password', to: 'password_reset#new', via: 'get', as: :forgot_password
+  match '/forgot_password', to: 'password_reset#create', via: 'post', as: :password_reset
 
 
+  get 'appointments/browse'                  => 'appointments#browse',            as: :appointments_browse
+  get 'patient/:id/appointments/browse'      => 'appointments#open_appointments', as: :open_appointments_browse
+  get 'appointments/new/browse'              => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
+  get 'patients/:id/appointments/request'    => 'appointments#patient_request',   as: :request_appointment
+  get 'appointments/approval'                => 'appointments#approval',          as: :appointment_approval
+  get 'appointments/ondate'                  => 'appointments#show_on_date',      as: :appointment_show_on_date
 
-    resources :patients
-    resources :sessions, only: [:new, :create, :destroy]
-    resources :admins
-    resources :appointments
-    resources :doctors
+  get 'doctors/:id/appointments'             => 'doctors#appointments',           as: :doctors_appointments
+  get 'doctors/:id/patients'                 => 'doctors#patient_index',          as: :doctors_patients
+
+
+
+
+  resources :patients
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :admins
+  resources :appointments
+  resources :doctors
 
   #api routes
   namespace :api, :version => 1 do

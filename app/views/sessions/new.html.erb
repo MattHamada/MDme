@@ -1,3 +1,4 @@
+<%= render 'static_pages/header' %>
 <% provide(:title, ' | Sign In') %>
   <%= render 'shared/flash' %>
   <div class="row">
@@ -10,6 +11,8 @@
           <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', role: 'form' }) do |f| %>
               <%= render '/shared/signin', f: f %>
           <% end %>
+
+          <p><%= link_to 'Forgot Password', forgot_password_path %></p>
         </div>
       </div>
 

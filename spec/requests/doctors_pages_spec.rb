@@ -10,11 +10,14 @@ describe "DoctorsPages" do
     it { should have_content("Sign In") }
 
 
+
+
     describe 'Doctor signing in' do
       describe 'with invalid information' do
         before { click_button 'Sign in' }
         it { should have_title "Sign In" }
-        it { should have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination' }
+        it { should have_selector 'div.alert.alert-danger',
+                                  text: 'Invalid email/password combination' }
       end
 
       describe 'with valid information' do
@@ -65,6 +68,27 @@ describe "DoctorsPages" do
           end
         end
 
+      end
+    end
+
+    describe 'Forgot Password Page' do
+      let (:doctor) { FactoryGirl.create(:doctor) }
+      before do
+        doctor.save!
+        click_link 'Forgot Password'
+      end
+      it { should have_content 'Email' }
+      it { should have_title 'Forgot Password' }
+
+      describe 'resetting password' do
+        before do
+          fill_in 'Email', with: doctor.email
+          click_button 'Submit'
+        end
+        it { should have_content 'An email has been sent containing your new password'}
+        it 'Email should be sent to user' do
+          last_email.to.should include(doctor.email)
+        end
       end
     end
   end

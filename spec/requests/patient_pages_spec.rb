@@ -21,6 +21,24 @@ describe "Patient Pages" do
       end
       it { should_not have_title 'Sign in' }
     end
+    describe 'Forgot Password Page' do
+      before do
+        click_link 'Forgot Password'
+      end
+      it { should have_content 'Email' }
+      it { should have_title 'Forgot Password' }
+
+      describe 'resetting password' do
+        before do
+          fill_in 'Email', with: patient.email
+          click_button 'Submit'
+        end
+        it { should have_content 'An email has been sent containing your new password'}
+        it 'Email should be sent to user' do
+          last_email.to.should include(patient.email)
+        end
+      end
+    end
   end
 
 

@@ -28,6 +28,12 @@ class Admin < ActiveRecord::Base
 
   has_secure_password
 
+  def send_password_reset_email(temppass)
+    Thread.new do
+      PasswordResetMailer.reset_email(self, temppass).deliver
+    end
+  end
+
   private
 
   def create_remember_token
