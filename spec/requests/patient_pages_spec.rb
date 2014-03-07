@@ -5,8 +5,15 @@ describe "Patient Pages" do
   before { switch_to_subdomain('www') }
   let(:patient) { FactoryGirl.create(:patient) }
 
+  describe 'need to be logged in to access patient pages' do
+    before { visit patient_path(patient) }
+    it { should have_content 'Scheduling Simplified' }
+  end
+
   describe 'signing in' do
     before { visit signin_path }
+
+
     describe 'with invalid information' do
       before { click_button 'Sign in' }
       it { should have_title 'Sign In' }
@@ -16,11 +23,27 @@ describe "Patient Pages" do
     describe 'with valid information' do
       before do
         fill_in 'Email',    with: patient.email
-        fill_in 'Password', with: 'foobar'
+        fill_in 'Password', with: 'Qwerty1'
         click_button 'Sign in'
       end
       it { should_not have_title 'Sign in' }
+      it { should have_content 'Sign Out' }
+
+      describe 'cannot view pages of another patient' do
+      before do
+        @patient2 = Patient.create!(first_name: 'bbbdb',
+                                    last_name: 'baaba',
+                                    email: 'test2@test.com',
+                                    password: 'Foobar1',
+                                    password_confirmation: 'Foobar1')
+        visit patient_path(@patient2)
+      end
+      it { should have_content 'Scheduling Simplified' }
+      end
+
     end
+
+
     describe 'Forgot Password Page' do
       before do
         click_link 'Forgot Password'

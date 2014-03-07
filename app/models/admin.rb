@@ -16,11 +16,6 @@ class Admin < ActiveRecord::Base
 
   validates :password, password_complexity: true
 
-  def password_complexity
-    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d). /)
-      errors.add :password, "must include at least one lowercase letter, one uppercase letter, and one digit"
-    end
-  end
 
   # emails stored lowercase
   before_save { self.email = email.downcase }

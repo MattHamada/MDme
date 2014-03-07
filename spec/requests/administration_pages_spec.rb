@@ -31,6 +31,10 @@ describe "AdministrationPages" do
     end
 
     describe 'signing in' do
+      describe 'need to be signed in to get to admin pages' do
+        before { visit admins_path }
+        it { should have_content 'Sign In' }
+      end
       describe 'wih invalid information' do
         before do
           fill_in 'Email', with: 'wrong@example.com'
@@ -81,7 +85,9 @@ describe "AdministrationPages" do
             end
 
             describe 'Add Doctor' do
+              let(:department) { FactoryGirl.create(:department) }
               before  do
+                department.save!
                 click_link 'Manage Doctors'
                 click_link 'Add Doctor'
               end
@@ -94,14 +100,55 @@ describe "AdministrationPages" do
 
               describe 'with valid information' do
                 before do
-                  fill_in 'doctor_first_name', with: 'Boo'
+                  fill_in 'doctor_first_name', with: 'Boos'
                   fill_in 'doctor_last_name', with: 'Radley'
                   fill_in 'doctor_email', with: 'boo@radley.com'
+                  select 'Oncology', from: 'doctor_department_id'
                 end
                 it 'should create a new doctor' do
                   expect do
                     click_button 'Create'
                   end.to change(Doctor, :count).by(1)
+                end
+
+                describe 'Editing doctor' do
+                  before  do
+                    click_button 'Create'
+                    click_link '0'
+                  end
+
+                  describe 'with invalid info' do
+                    before do
+                      fill_in 'doctor_first_name', with: ''
+                      click_button 'Update'
+                    end
+                    it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered' }
+                  end
+                  describe 'with valid info' do
+                    before do
+                      fill_in 'doctor_phone_number', with: '000-000-0000'
+                      click_button 'Update'
+                    end
+                    it { should have_content 'Doctor Successfully Updated'}
+                  end
+                end
+
+                describe 'Deleting doctor' do
+                  before do
+                    click_button 'Create'
+                    click_link '0'
+                  end
+                  it 'should delete the doctor' do
+                    expect do
+                      click_link 'Delete Doctor'
+                    end.to change(Doctor, :count).by(-1)
+                  end
+
+                  describe 'after deleting doctor' do
+                    before { click_link 'Delete Doctor' }
+                    it { should have_selector('div.alert.alert-warning', text: 'Doctor Successfully Deleted') }
+                    it { should_not have_content 'Boos Radley' }
+                  end
                 end
               end
             end
@@ -188,6 +235,10 @@ describe "AdministrationPages" do
               patient.save!
               doctor.save!
               appointment_request.save!
+              @appt = Appointment.create(doctor_id: '1', patient_id:'1',
+                                         appointment_time: appointment_request.appointment_time + 1.hour,
+                                         description:   'test',
+                                         request: false)
               click_link 'Manage Appointments'
 
             end
@@ -197,6 +248,13 @@ describe "AdministrationPages" do
             describe 'appointment approval page' do
               before { click_link 'Appointment Requests' }
               it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+
+              describe 'Seeing other appointment times' do
+                before do
+                  click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                end
+                it { should have_content @appt.doctor.full_name}
+              end
 
               describe 'approving the appointment' do
                 before { click_link 'Approve' }
@@ -216,6 +274,11 @@ describe "AdministrationPages" do
               end
             end
           end
+        end
+
+        describe 'signing out' do
+          before { click_link 'Sign Out' }
+          it { should have_content 'Scheduling Simplified' }
         end
       end
     end
@@ -250,6 +313,7 @@ describe "AdministrationPages" do
     it { should have_content 'Time' }
 
     it { should have_content Doctor.first.full_name }
+    it { should have_content appointment.appointment_time.strftime("%h")}
 
     describe 'show appointment' do
       before { click_link('0') }

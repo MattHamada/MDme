@@ -39,7 +39,7 @@ class DoctorsController < ApplicationController
       end
 
       flash[:success] = 'Doctor Successfully Created.'
-      redirect_to admins_path
+      redirect_to doctors_path
     else
       render 'admins/doctors_new'
     end
@@ -54,25 +54,36 @@ class DoctorsController < ApplicationController
   def update
     @doctor = doctor
     @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
-    if @doctor.authenticate(params[:verify][:verify_password]) == false
-      flash[:danger] = 'Invalid password entered.'
-      redirect_to edit_doctor_path(@doctor)
-    else
-      dp = doctor_params
-      dp[:password] = params[:verify][:verify_password]
-      dp[:password_confirmation] = params[:verify][:verify_password]
-
-      @doctor.attributes = dp
-
-
-      if @doctor.save
-        flash[:success] = "Doctor Successfully Updated"
-        if request.subdomain == 'admin'
-          redirect_to admins_path
-        else
-          redirect_to doctor_path(@doctor)
-        end
+    unless @doctor.is_admin_applying_update
+      if @doctor.authenticate(params[:verify][:verify_password]) == false
+        flash[:danger] = 'Invalid password entered.'
+        redirect_to edit_doctor_path(@doctor)
       else
+        #skip password validation since password checked correct
+        @doctor.is_admin_applying_update = true
+      end
+
+
+    end
+
+    dp = doctor_params
+    #dp[:password] = params[:verify][:verify_password]
+    #dp[:password_confirmation] = params[:verify][:verify_password]
+
+    @doctor.attributes = dp
+
+
+    if @doctor.save
+      flash[:success] = "Doctor Successfully Updated"
+      if request.subdomain == 'admin'
+        redirect_to doctors_path
+      else
+        redirect_to doctor_path(@doctor)
+      end
+    else
+      #check needed to avoid calling redirect above
+      # when password is invalid and render below
+      if @doctor.is_admin_applying_update
         flash.now[:danger] = 'Invalid Parameters Entered'
         if request.subdomain == 'doctors'
           render 'edit'
@@ -81,6 +92,7 @@ class DoctorsController < ApplicationController
         end
       end
     end
+
 
   end
 
@@ -93,7 +105,7 @@ class DoctorsController < ApplicationController
     @doctor = doctor
     @doctor.destroy!
     flash[:warning] = 'Doctor Successfully Deleted'
-    redirect_to admins_path
+    redirect_to doctors_path
   end
 
   def show
