@@ -35,6 +35,14 @@ FactoryGirl.define do
     request false
   end
 
+  factory :appointment_today, class: Appointment do
+    doctor_id     '1'
+    patient_id    '1'
+    appointment_time          DateTime.now + 30.minutes
+    description   'test'
+    request false
+  end
+
   factory :appointment_request, class: Appointment do
     doctor_id     '1'
     patient_id    '1'

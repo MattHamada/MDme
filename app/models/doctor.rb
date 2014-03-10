@@ -102,6 +102,14 @@ class Doctor < ActiveRecord::Base
     times
   end
 
+  def self.with_appointments_today
+    doctors = []
+    Doctor.find_each do |d|
+      doctors << d unless d.appointments.today.load.empty?
+    end
+    doctors
+  end
+
 
   def to_param
     slug

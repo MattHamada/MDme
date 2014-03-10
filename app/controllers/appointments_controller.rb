@@ -60,9 +60,9 @@ class AppointmentsController < ApplicationController
   def create
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
 
-    # params slightly different based on if appointment made on patient or admin oage
+    # params slightly different based on if appointment made on patient or admin page
     pid = 0
-    if !params[:appointment][:patient_id].nil?
+    unless params[:appointment][:patient_id].nil?
       pid = params[:appointment][:patient_id]
     else
       pid = params[:patient][:patient_id]
@@ -155,6 +155,13 @@ class AppointmentsController < ApplicationController
 
   end
 
+  def manage_delays
+    @doctors = Doctor.with_appointments_today
+  end
+
+  def add_delay
+
+  end
 
   def destroy
     @appointment = Appointment.find(params[:id])

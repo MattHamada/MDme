@@ -229,8 +229,8 @@ describe "AdministrationPages" do
             end
           end
 
-          describe 'Accepting appointments' do
-            let(:appointment_request) {FactoryGirl.create(:appointment_request)}
+          describe 'appointments' do
+            let(:appointment_request) { FactoryGirl.create(:appointment_request)}
             before do
               patient.save!
               doctor.save!
@@ -239,41 +239,87 @@ describe "AdministrationPages" do
                                          appointment_time: appointment_request.appointment_time + 1.hour,
                                          description:   'test',
                                          request: false)
-              click_link 'Manage Appointments'
-
             end
-            it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval.'}
-            it { should have_link 'Appointment Requests' }
+            describe 'Accepting appointments' do
+              before { click_link 'Manage Appointments' }
 
-            describe 'appointment approval page' do
-              before { click_link 'Appointment Requests' }
-              it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+              it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval.'}
+              it { should have_link 'Appointment Requests' }
 
-              describe 'Seeing other appointment times' do
+              describe 'appointment approval page' do
+                before { click_link 'Appointment Requests' }
+                it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+
+                describe 'Seeing other appointment times' do
+                  before do
+                    click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                  end
+                  it { should have_content @appt.doctor.full_name}
+                end
+
+                describe 'approving the appointment' do
+                  before { click_link 'Approve' }
+                  it { should_not have_content appointment_request.
+                       appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                  it 'should set request attribute to false' do
+                    appointment_request.reload.request.should eq(false)
+                  end
+                end
+
+                describe 'Denying the appointment' do
+                  before { click_link 'Deny' }
+                  it { should_not have_content appointment_request.
+                       appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                end
+
+                describe 'Denying appointment deletes record' do
+                  it { expect { click_link 'Deny'}.
+                       to change(Appointment, :count) }
+                end
+              end
+            end
+
+            describe 'Appointment delays' do
+              let(:patient2) { FactoryGirl.create(:patient,
+                                                  first_name: 'patient2',
+                                                  email: 'patient2@example.com') }
+              let(:appointment)  { FactoryGirl.create(:appointment_today) }
+              let(:appointment2) {
+                FactoryGirl.create(:appointment_today,
+                                   patient_id: 2,
+                                   appointment_time: appointment.appointment_time + 1.hour) }
+              before do
+                patient2.save!
+                appointment.save!
+                appointment2.save!
+                click_link 'Manage Appointments'
+                click_link 'Manage Delays'
+              end
+              describe 'Appointment delay page' do
+                it { should have_content appointment.appointment_delayed_time.
+                     strftime('%I:%M%p') }
+                it { should have_content appointment.doctor.full_name }
+                it { should have_button 'Update' }
+              end
+              describe 'Delaying only one appointment' do
                 before do
-                  click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                  select '15', from: 'delay_0_0'
                 end
-                it { should have_content @appt.doctor.full_name}
+                it { expect { click_button 'Update_0_0' }.
+                    to change(appointment.reload, :appointment_delayed_time) }
               end
-
-              describe 'approving the appointment' do
-                before { click_link 'Approve' }
-                it { should_not have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
-                it 'should set request attribute to false' do
-                  appointment_request.reload.request.should eq(false)
+              describe 'Delaying all subsequent appointments of the day' do
+                before do
+                  select '15', from: 'delay_0_0'
+                  check 'check_all_0_0'
                 end
+                it { expect { click_button 'Update_0_0' }.
+                    to change(appointment2.reload, :appointment_delayed_time) }
               end
 
-              describe 'Denying the appointment' do
-                before { click_link 'Deny' }
-                it { should_not have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
-              end
-
-              describe 'Denying appointment deletes record' do
-                it { expect { click_link 'Deny'}.to change(Appointment, :count) }
-              end
             end
           end
+
         end
 
         describe 'signing out' do

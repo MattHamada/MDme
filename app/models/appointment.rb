@@ -3,7 +3,6 @@
 #
 # Appointment model
 #
-
 class Appointment < ActiveRecord::Base
 
   #appointments must be at a unique time in the future
@@ -13,6 +12,9 @@ class Appointment < ActiveRecord::Base
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id, presence: true
   validates :patient_id, presence:true
+
+  before_save { self.appointment_delayed_time = appointment_time }
+
 
   belongs_to :doctor
   belongs_to :patient
