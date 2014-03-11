@@ -1,0 +1,38 @@
+<% provide(:title, ' | Forgot Password') %>
+<div class="container-non-responsive" id="main-content">
+  <%= render 'shared/flash' %>
+  <div class="row fixedheight">
+    <div class="col-xs-5" id="logo">
+      <%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
+    </div>
+  </div>
+  <hr id="nav-break"/>
+
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center">
+          <strong>Password Reset</strong>
+        </div>
+        <div class="panel-body">
+          <%= form_for(:password_reset, html: { class: 'form form-horizontal form-group', role: 'form' }) do |f| %>
+            <div class='form-group'>
+              <div class='col-xs-10 col-xs-offset-1'>
+                <%= f.label :email %>
+                <%= f.text_field :email, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="form-group">
+              <div style="text-align: center">
+                <%= f.submit 'Submit', class: 'btn btn-lg btn-primary' %>
+              </div>
+            </div>
+
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+

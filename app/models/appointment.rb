@@ -3,7 +3,6 @@
 #
 # Appointment model
 #
-
 class Appointment < ActiveRecord::Base
 
   #appointments must be at a unique time in the future
@@ -13,6 +12,9 @@ class Appointment < ActiveRecord::Base
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id, presence: true
   validates :patient_id, presence:true
+
+  before_create { self.appointment_delayed_time = appointment_time }
+
 
   belongs_to :doctor
   belongs_to :patient
@@ -26,6 +28,11 @@ class Appointment < ActiveRecord::Base
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
+  def remaining_appointments_today
+    Appointment.today.with_doctor(doctor_id).
+        where(appointment_time: appointment_time+1.minute...DateTime.tomorrow)
+  end
+
   # returns all appointments with a given doctor
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
@@ -37,6 +44,41 @@ class Appointment < ActiveRecord::Base
     else
       errors.add(:appointment_time, "Date/Time must be set in the future.") if appointment_time < DateTime.now
     end
+  end
+
+  #for calculating delays based on selection box
+  def self.get_added_time(selection)
+    case selection
+      when 1
+        return 5
+      when 2
+        return 10
+      when 3
+        return 15
+      when 4
+        return 20
+      when 5
+        return 30
+      when 6
+        return 45
+      when 7
+        return 60
+    end
+  end
+
+  def send_delay_email(new_time)
+    Thread.new do
+      PatientMailer.appointment_delayed_email(Patient.find(patient_id),
+                                             appointment_delayed_time).deliver
+    end
+  end
+
+  def update_remaining_appointments!(time_to_add)
+      remaining_appointments_today.each do |appt|
+         appt.update_attribute(:appointment_delayed_time,
+                            appt.appointment_delayed_time + time_to_add.minutes)
+         appt.send_delay_email(appt.appointment_delayed_time + time_to_add.minutes)
+      end
   end
 
 end

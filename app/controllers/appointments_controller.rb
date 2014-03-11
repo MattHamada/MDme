@@ -5,6 +5,7 @@
 # Most methods accessed from admin subdomain
 #
 
+
 class AppointmentsController < ApplicationController
 
   # Only admins can create/edit/destroy/approve appointments
@@ -60,9 +61,9 @@ class AppointmentsController < ApplicationController
   def create
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
 
-    # params slightly different based on if appointment made on patient or admin oage
+    # params slightly different based on if appointment made on patient or admin page
     pid = 0
-    if !params[:appointment][:patient_id].nil?
+    unless params[:appointment][:patient_id].nil?
       pid = params[:appointment][:patient_id]
     else
       pid = params[:patient][:patient_id]
@@ -155,6 +156,27 @@ class AppointmentsController < ApplicationController
 
   end
 
+  def manage_delays
+    @doctors = Doctor.with_appointments_today
+  end
+
+  def add_delay
+    appointment = Appointment.find(params[:appointment_id])
+    time_to_add = Appointment.get_added_time(params[:delay_time].to_i)
+    new_time = appointment.appointment_delayed_time + time_to_add.minutes
+    if appointment.update_attribute(:appointment_delayed_time, new_time)
+      flash[:success] = "Appointments updated"
+      appointment.send_delay_email(new_time)
+    else
+      flash[:warning] = "An error has occured please try again."
+    end
+
+    if params.values.include?("apply_to_all")
+      appointment.update_remaining_appointments!(time_to_add)
+    end
+
+    redirect_to manage_delays_path
+  end
 
   def destroy
     @appointment = Appointment.find(params[:id])

@@ -20,7 +20,6 @@ class Doctor < ActiveRecord::Base
 
   # passwords must be length of 6
   # skips validation if admin is updating doctor info
-  #TODO increase password strength
   validates :password, password_complexity: true, unless: :is_admin_applying_update
 
 
@@ -103,6 +102,15 @@ class Doctor < ActiveRecord::Base
     times
   end
 
+  def self.with_appointments_today
+    doctors = []
+    Doctor.find_each do |d|
+      doctors << d unless d.appointments.today.load.empty?
+    end
+    doctors
+  end
+
+
   def to_param
     slug
   end
@@ -115,10 +123,16 @@ class Doctor < ActiveRecord::Base
     end
   end
 
+  def send_password_reset_email(temppass)
+    Thread.new do
+      PasswordResetMailer.reset_email(self, temppass).deliver
+    end
+  end
+
   private
 
-    def create_remember_token
-      self.remember_token = encrypt(new_remember_token)
-    end
+  def create_remember_token
+    self.remember_token = encrypt(new_remember_token)
+  end
 
 end
