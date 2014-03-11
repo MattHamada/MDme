@@ -305,13 +305,15 @@ describe "AdministrationPages" do
                 before do
                   select '15', from: 'delay_0_0'
                 end
-                it { expect { click_button 'Update_0_0' }.
-                    to change(appointment.reload, :appointment_delayed_time) }
+                it { expect do
+                       click_button 'Update_0_0'
+                       appointment.reload
+                     end.to change(appointment, :appointment_delayed_time) }
 
                 describe 'should show changed time' do
                   before { click_button 'Update_0_0' }
-                  it { should have_content appointment.appointment_time.
-                                               strftime('%M').to_i + 15}
+                  it { should have_content (appointment.appointment_time.
+                                               strftime('%M').to_i + 15) % 60}
 
                 end
               end
@@ -320,8 +322,10 @@ describe "AdministrationPages" do
                   select '15', from: 'delay_0_0'
                   check 'check_all_0_0'
                 end
-                it { expect { click_button 'Update_0_0' }.
-                    to change(appointment2.reload, :appointment_delayed_time) }
+                it { expect do
+                       click_button 'Update_0_0'
+                       appointment2.reload
+                     end.to change(appointment2, :appointment_delayed_time) }
               end
 
             end
