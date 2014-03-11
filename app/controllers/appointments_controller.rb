@@ -5,6 +5,7 @@
 # Most methods accessed from admin subdomain
 #
 
+
 class AppointmentsController < ApplicationController
 
   # Only admins can create/edit/destroy/approve appointments
@@ -160,7 +161,18 @@ class AppointmentsController < ApplicationController
   end
 
   def add_delay
+    appointment = Appointment.find(params[:appointment_id])
+    time_to_add = Appointment.get_added_time(params[:delay_time].to_i)
+    new_time = appointment.appointment_delayed_time + time_to_add.minutes
+    if appointment.update_attribute(:appointment_delayed_time, new_time)
+      flash[:success] = "Appointments updated"
+    end
 
+    if params.values.include?("apply_to_all")
+      Appointment.update_remaining_appointments!(appointment, time_to_add)
+    end
+
+    redirect_to manage_delays_path
   end
 
   def destroy

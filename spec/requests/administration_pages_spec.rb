@@ -307,6 +307,13 @@ describe "AdministrationPages" do
                 end
                 it { expect { click_button 'Update_0_0' }.
                     to change(appointment.reload, :appointment_delayed_time) }
+
+                describe 'should show changed time' do
+                  before { click_button 'Update_0_0' }
+                  it { should have_content appointment.appointment_time.
+                                               strftime('%M').to_i + 15}
+
+                end
               end
               describe 'Delaying all subsequent appointments of the day' do
                 before do
