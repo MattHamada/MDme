@@ -166,10 +166,13 @@ class AppointmentsController < ApplicationController
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
     if appointment.update_attribute(:appointment_delayed_time, new_time)
       flash[:success] = "Appointments updated"
+      appointment.send_delay_email(new_time)
+    else
+      flash[:warning] = "An error has occured please try again."
     end
 
     if params.values.include?("apply_to_all")
-      Appointment.update_remaining_appointments!(appointment, time_to_add)
+      appointment.update_remaining_appointments!(time_to_add)
     end
 
     redirect_to manage_delays_path

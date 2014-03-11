@@ -111,6 +111,11 @@ describe "AdministrationPages" do
                   end.to change(Doctor, :count).by(1)
                 end
 
+                describe 'Sends confirmation email when creating a doctor' do
+                  before { click_button 'Create' }
+                  it { last_email.to.should include("boo@radley.com") }
+                end
+
                 describe 'Editing doctor' do
                   before  do
                     click_button 'Create'
@@ -191,6 +196,7 @@ describe "AdministrationPages" do
                   it { should have_title('Patients') }
                   it { should have_content 'Boo Radley' }
                   it { should have_selector('div.alert.alert-success', text: 'Patient Created') }
+                  it { last_email.to.should include("boo@radley.com") }
 
                   describe 'editing patient' do
                     before do
@@ -314,6 +320,10 @@ describe "AdministrationPages" do
                   before { click_button 'Update_0_0' }
                   it { should have_content (appointment.appointment_time.
                                                strftime('%M').to_i + 15) % 60}
+                #describe 'it should send an email' do
+                #  before { click_button 'Update_0_0' }
+                #  it { last_email.to.should include(appointment.patient.email) }
+                #end
 
                 end
               end

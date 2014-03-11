@@ -28,9 +28,9 @@ class Appointment < ActiveRecord::Base
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
-  def self.remaining_appointments_today(appt)
-    Appointment.today.with_doctor(appt.doctor_id).
-        where(appointment_time: appt.appointment_time+1.minute...DateTime.tomorrow)
+  def remaining_appointments_today
+    Appointment.today.with_doctor(doctor_id).
+        where(appointment_time: appointment_time+1.minute...DateTime.tomorrow)
   end
 
   # returns all appointments with a given doctor
@@ -66,10 +66,18 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  def self.update_remaining_appointments!(appointment, time_to_add)
-      remaining_appointments_today(appointment).each do |appt|
+  def send_delay_email(new_time)
+    Thread.new do
+      PatientMailer.appointment_delayed_email(Patient.find(patient_id),
+                                             appointment_delayed_time).deliver
+    end
+  end
+
+  def update_remaining_appointments!(time_to_add)
+      remaining_appointments_today.each do |appt|
          appt.update_attribute(:appointment_delayed_time,
-                               appt.appointment_time + time_to_add.minutes)
+                            appt.appointment_delayed_time + time_to_add.minutes)
+         appt.send_delay_email(appt.appointment_delayed_time + time_to_add.minutes)
       end
   end
 
