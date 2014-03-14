@@ -19,7 +19,8 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    @doctors = Doctor.all.includes(:department)
+    current_user = current_admin if request.subdomain == 'admin' else current_patient
+    @doctors = Doctor.in_clinic(current_user).includes(:department)
     render 'admins/doctors_index' if request.subdomain == 'admin'
   end
 
@@ -32,6 +33,7 @@ class DoctorsController < ApplicationController
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
     @doctor = Doctor.new(p, is_admin_applying_update: true)
+    @doctor.clinic_id = current_admin.clinic_id
 
     if @doctor.save
       Thread.new do

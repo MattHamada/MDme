@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310192658) do
+ActiveRecord::Schema.define(version: 20140313182938) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20140310192658) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
+    t.integer  "clinic_id"
   end
 
   add_index "admins", ["email"], name: "index_admins_on_email"
@@ -33,9 +34,16 @@ ActiveRecord::Schema.define(version: 20140310192658) do
     t.text     "description"
     t.boolean  "request"
     t.datetime "appointment_delayed_time"
+    t.integer  "clinic_id"
   end
 
   add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id"
+
+  create_table "clinics", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -61,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140310192658) do
     t.string   "alma_mater"
     t.text     "description"
     t.string   "slug"
+    t.integer  "clinic_id"
   end
 
   add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
@@ -77,6 +86,7 @@ ActiveRecord::Schema.define(version: 20140310192658) do
     t.string   "remember_token"
     t.integer  "doctor_id"
     t.string   "slug"
+    t.integer  "clinic_id"
   end
 
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true

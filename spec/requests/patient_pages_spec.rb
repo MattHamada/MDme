@@ -82,7 +82,6 @@ describe "Patient Pages" do
       doctor.save!
       patient.save!
       appointment.save!
-
       visit root_path
       click_link 'sign in'
       fill_in 'Email', with: patient.email

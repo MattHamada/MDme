@@ -18,6 +18,7 @@ class Appointment < ActiveRecord::Base
 
   belongs_to :doctor
   belongs_to :patient
+  belongs_to :clinic
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :requests, -> { where(request: true) }

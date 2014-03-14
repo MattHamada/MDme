@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe "AdministrationPages" do
+  let(:clinic) { FactoryGirl.create(:clinic) }
+  let(:admin) { FactoryGirl.create(:admin) }
   subject { page }
-  before { switch_to_subdomain('admin') }
+  before do
+    clinic.save!
+    admin.save!
+    switch_to_subdomain('admin')
+  end
 
   describe 'root signin page' do
     before { visit root_path }
@@ -11,7 +17,6 @@ describe "AdministrationPages" do
     it { should have_content('Admin Sign In')}
 
     describe 'Forgot Password Page' do
-      let(:admin) { FactoryGirl.create(:admin) }
       before do
         click_link 'Forgot Password'
       end
@@ -46,8 +51,8 @@ describe "AdministrationPages" do
       end
 
       describe 'with valid information' do
-        let(:admin) { FactoryGirl.create(:admin) }
         let(:appointment) { FactoryGirl.create(:appointment) }
+        let(:department) { FactoryGirl.create(:department) }
         let(:doctor) { FactoryGirl.create(:doctor) }
         let(:patient) { FactoryGirl.create(:patient) }
 
@@ -70,13 +75,10 @@ describe "AdministrationPages" do
 
           describe 'admin doctors pages' do
             describe 'browse doctors' do
-              let(:department) { FactoryGirl.create(:department) }
-              let(:doctor) { FactoryGirl.create(:doctor) }
               before do
                 department.save!
                 doctor.save!
                 click_link 'Manage Doctors'
-
               end
               it { should have_title('Doctors') }
               it { should have_link('Add Doctor') }
@@ -84,8 +86,23 @@ describe "AdministrationPages" do
               it { should have_content(doctor.department.name) }
             end
 
-            describe 'Add Doctor' do
+            describe 'can only see doctors in own clinic' do
+              let(:clinic2) { FactoryGirl.create(:clinic) }
               let(:department) { FactoryGirl.create(:department) }
+              let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
+                                              email: 'docEmailTest.@test.com',
+                                              first_name: 'healthier')}
+              before do
+                clinic2.save!
+                department.save!
+                doctor.save!
+                doctor2.save!
+                click_link 'Manage Doctors'
+              end
+              it { should_not have_content(doctor2.full_name)}
+            end
+
+            describe 'Add Doctor' do
               before  do
                 department.save!
                 click_link 'Manage Doctors'

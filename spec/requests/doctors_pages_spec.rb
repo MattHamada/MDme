@@ -54,7 +54,8 @@ describe "DoctorsPages" do
                                   first_name: 'ababa',
                                   last_name: 'aavava',
                                   password: 'Foobar1',
-                                  password_confirmation: 'Foobar1')
+                                  password_confirmation: 'Foobar1',
+                                  clinic_id: 1)
             visit doctor_path(@doc2)
           end
           it 'should not show other doctors page' do

@@ -32,6 +32,7 @@ class Patient < ActiveRecord::Base
   before_create :create_remember_token
 
   belongs_to  :doctor
+  belongs_to  :clinic
   has_many :appointments
 
   has_secure_password
