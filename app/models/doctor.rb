@@ -18,13 +18,16 @@ class Doctor < ActiveRecord::Base
   # cannot register multiple doctors under one email address
   validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
 
+  validates :clinic_id, presence: true
+
   # passwords must be length of 6
   # skips validation if admin is updating doctor info
   validates :password, password_complexity: true, unless: :is_admin_applying_update
 
 
 
-  validates :slug, uniqueness: true, presence: true, unless: :skip_on_create
+  validates :slug, presence: true, unless: :skip_on_create
+  validate :slug_unique_in_clinic
 
 
   attr_accessor :is_admin_applying_update
@@ -38,9 +41,18 @@ class Doctor < ActiveRecord::Base
 
   has_many :appointments
   has_many :patients
+  belongs_to :clinic
   belongs_to :department
 
   has_secure_password
+
+  def self.in_clinic(model)
+    if model.is_a?(Doctor)
+      Doctor.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    else
+      Doctor.where(clinic_id: model.clinic_id)
+    end
+  end
 
   def full_name
     "#{first_name} #{last_name}"
@@ -102,6 +114,15 @@ class Doctor < ActiveRecord::Base
     times
   end
 
+  def slug_unique_in_clinic
+    errors.add(:slug, "Slug: #{slug} already in use") if
+        Doctor.in_clinic(self).where(slug: slug).count !=0
+  end
+
+  def slug_unique_in_clinic?
+    Doctor.in_clinic(self).where(slug: slug).count !=0
+  end
+
   def self.with_appointments_today
     doctors = []
     Doctor.find_each do |d|
@@ -117,7 +138,16 @@ class Doctor < ActiveRecord::Base
 
   def generate_slug
     if !full_name.blank?
-      self.slug ||= full_name.parameterize
+      if Doctor.in_clinic(self).where(slug: full_name.parameterize).count !=0
+        n = 1
+        while Doctor.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+          puts n
+          n+= 1
+        end
+        self.slug ||= "#{full_name.parameterize}-#{n}"
+      else
+        self.slug ||= full_name.parameterize
+      end
     else
       self.slug = 'no-name-entered'.parameterize
     end

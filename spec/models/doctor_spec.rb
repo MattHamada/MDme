@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe Doctor do
-  before { @doctor = Doctor.new(first_name: "Example", last_name: 'Doctor', email: "user@example.com", password: 'foobar', password_confirmation: 'foobar') }
+  before { @doctor = Doctor.new(first_name: "Example",
+                                last_name: 'Doctor',
+                                email: "user@example.com",
+                                password: 'Foobar1',
+                                password_confirmation: 'Foobar1',
+                                clinic_id: 1) }
 
   subject { @doctor }
 
@@ -13,6 +18,8 @@ describe Doctor do
   it { should respond_to(:department)}
   it { should respond_to(:patients)}
   it { should respond_to(:appointments)}
+  it { should respond_to(:slug) }
+  it { should be_valid }
 
 
 
@@ -38,8 +45,13 @@ describe Doctor do
     end
 
     describe 'invalid with missing password' do
-      before { @doctor = Doctor.new(first_name: 'boo', last_name: 'radley', email: 'boo@radley.com',
-                                password: ' ', password_confirmation: ' ') }
+      before { @doctor = Doctor.new(first_name: 'boo',
+                                    last_name: 'radley',
+                                    email: 'boo@radley.com',
+                                    password: ' ',
+                                    password_confirmation: ' ',
+                                    clinic_id: 1) }
+
       it { should_not be_valid }
     end
 
@@ -54,6 +66,26 @@ describe Doctor do
     its(:full_name) { should eq "#{@doctor.first_name} #{@doctor.last_name}" }
   end
 
+  describe "slug is set to doctor's name hyphenated" do
+    before { @doctor.save }
+    its(:slug) { should eq "#{@doctor.first_name.downcase}-#{@doctor.last_name.downcase}" }
+  end
+
+  describe "A second doctor with the same name is still valid" do
+    before do
+      @doctor2 = @doctor.dup
+      @doctor.save
+      @doctor2.email = "newEmail@email.com"
+      @doctor2.save
+    end
+    it(@doctor)  { should be_valid }
+    it(@doctor2) { should be_valid }
+    its 'slug should have a unique number at the end' do
+      @doctor.slug.should eq @doctor.full_name.parameterize
+      @doctor2.slug.should eq "#{@doctor.slug}-1"
+    end
+  end
+
   describe 'updating doctor as admin bypasses password validation' do
     describe 'without admin set' do
       before do
@@ -65,7 +97,12 @@ describe Doctor do
 
     describe 'with admin set' do
       before do
-        @doctor = Doctor.new(first_name: "Example", last_name: 'Doctor', email: "user@example.com", password: '1', password_confirmation: '1')
+        @doctor = Doctor.new(first_name: "Example",
+                             last_name: 'Doctor',
+                             email: "user@example.com",
+                             password: 'Foobar1',
+                             password_confirmation: 'Foobar1',
+                             clinic_id: 1)
         @doctor.is_admin_applying_update = true
       end
       it { should be_valid }
