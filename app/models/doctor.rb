@@ -22,8 +22,8 @@ class Doctor < ActiveRecord::Base
 
   # passwords must be length of 6
   # skips validation if admin is updating doctor info
-  validates :password, password_complexity: true, unless: :is_admin_applying_update
-
+  validates :password, password_complexity: true, presence: true,
+                                unless: :is_admin_applying_update
 
 
   validates :slug, presence: true, unless: :skip_on_create

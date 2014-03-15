@@ -89,20 +89,17 @@ describe Doctor do
   describe 'updating doctor as admin bypasses password validation' do
     describe 'without admin set' do
       before do
-        @doctor.password = ''
-        @doctor.password_confirmation = ''
+        @doctor.password = 'a'
+        @doctor.password_confirmation = 'a'
       end
       it { should_not be_valid }
     end
 
     describe 'with admin set' do
       before do
-        @doctor = Doctor.new(first_name: "Example",
-                             last_name: 'Doctor',
-                             email: "user@example.com",
-                             password: 'Foobar1',
-                             password_confirmation: 'Foobar1',
-                             clinic_id: 1)
+        @doctor.save!
+        @doctor.password = 'a'
+        @doctor.password_confirmation = 'a'
         @doctor.is_admin_applying_update = true
       end
       it { should be_valid }
