@@ -31,7 +31,8 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.9'
   gem 'rspec-rails'
-  gem 'guard-rspec', '2.5.0' #rspec generation and autotest
+  gem 'guard-rspec', '2.5.1' #rspec generation and autotest
+  #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
 end
 
