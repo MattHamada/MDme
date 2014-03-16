@@ -108,6 +108,20 @@ describe "Patient Pages" do
       it { should have_selector 'div.alert.alert-success', text: 'Appointment Requested'}
     end
 
+    describe 'Can only choose doctors in same clinic' do
+      let(:doctor2) { FactoryGirl.create(:doctor,
+                                         email: 'newDoc@doc.com',
+                                         clinic_id: 2) }
+      before do
+        doctor2.save
+        click_link 'Request an Appointment'
+        puts find(:css, 'select#doctor_doctor_id').value
+      end
+      it 'should not list doctor2 in available doctors' do
+        find(:css, 'select#doctor_doctor_id').value.should_not eq 2
+      end
+    end
+
     #describe 'cannot make appointments on taken times' do
     #  before do
     #    fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")

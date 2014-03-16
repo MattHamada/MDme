@@ -137,8 +137,6 @@ describe Patient do
         @patient.save
         @patient2.email = "newEmail@email.com"
         @patient2.save
-        puts @patient.slug
-        puts @patient2.slug
       end
       it(@patient)  { should be_valid }
       it(@patient2) { should be_valid }

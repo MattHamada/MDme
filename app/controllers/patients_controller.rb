@@ -24,6 +24,7 @@ class PatientsController < ApplicationController
     p[:password] = p[:password_confirmation] = generate_random_password
     p[:doctor_id] = params[:doctor][:doctor_id]
     @patient = Patient.new(p)
+    @patient.clinic_id = current_admin.clinic_id
     if @patient.save
       flash[:success] = 'Patient Created'
 
