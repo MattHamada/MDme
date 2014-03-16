@@ -10,8 +10,9 @@ class Appointment < ActiveRecord::Base
   validate :appointment_time_in_future
 
   #must have a doctor and patient assigned to each appointment
-  validates :doctor_id, presence: true
-  validates :patient_id, presence:true
+  validates :doctor_id,  presence: true
+  validates :patient_id, presence: true
+  validates :clinic_id,  presence: true
 
   before_create { self.appointment_delayed_time = appointment_time }
 
@@ -37,6 +38,14 @@ class Appointment < ActiveRecord::Base
   # returns all appointments with a given doctor
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
+  end
+
+  def self.in_clinic(model)
+    if model.is_a?(Appointment)
+      Appointment.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    else
+      Appointment.where(clinic_id: model.clinic_id)
+    end
   end
 
   def appointment_time_in_future

@@ -53,7 +53,8 @@ class AppointmentsController < ApplicationController
     elsif params.has_key?(:deny)
       Appointment.delete(Appointment.find(params[:appointment_id]))
     end
-    @appointments = Appointment.requests.order('appointment_time ASC').load
+    @appointments = Appointment.in_clinic(current_admin).requests.
+                                order('appointment_time ASC').load
 
   end
 
@@ -72,14 +73,17 @@ class AppointmentsController < ApplicationController
     #see if admin made an appt or patient requested it
     if request.subdomain == 'www'
       is_req = true
+      current_user = current_patient
     else
       is_req = false
+      current_user = current_admin
     end
-      @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
-                                     patient_id: pid,
-                                     appointment_time: date,
-                                     description: params[:appointment][:description],
-                                     request: is_req)
+    @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
+                                   patient_id: pid,
+                                   appointment_time: date,
+                                   description: params[:appointment][:description],
+                                   request: is_req,
+                                   clinic_id: current_user.clinic_id)
     if @appointment.save
       if is_req
         req = "Requested"
@@ -137,8 +141,9 @@ class AppointmentsController < ApplicationController
   def show_on_date
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
-    @appointments = Appointment.given_date(@date).confirmed.with_doctor(
-        params[:doctor_id]).order('appointment_time ASC').load
+    @appointments = Appointment.in_clinic(current_admin).
+        given_date(@date).confirmed.with_doctor(params[:doctor_id]).
+        order('appointment_time ASC').load
     render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
   end
 
@@ -152,12 +157,19 @@ class AppointmentsController < ApplicationController
   # shows all confirmed appointments on a given date for admin
   def browse
     date = Date.parse(params[:appointments][:date])
-    @appointments = Appointment.given_date(date).confirmed.order('appointment_time ASC').load
+    if date < Date.today
+      flash[:danger] = 'Time must be set in the future'
+      redirect_to appointments_path
+    else
+      @appointments = Appointment.in_clinic(current_admin).given_date(date).
+          confirmed.order('appointment_time ASC').load
+
+    end
 
   end
 
   def manage_delays
-    @doctors = Doctor.with_appointments_today
+    @doctors = Doctor.in_clinic(current_admin).with_appointments_today
   end
 
   def add_delay

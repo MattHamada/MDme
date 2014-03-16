@@ -378,7 +378,10 @@ describe "AdministrationPages" do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
+      @admin = Admin.create!(email: 'testAdmin@example.com',
+                             password: 'Qwerty1',
+                             password_confirmation: 'Qwerty1',
+                             clinic_id: 1)
 
       visit root_path
       fill_in 'Email', with: @admin.email
@@ -450,7 +453,10 @@ describe "AdministrationPages" do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
+      @admin = Admin.create!(email: 'testAdmin@example.com',
+                             password: 'Qwerty1',
+                             password_confirmation: 'Qwerty1',
+                             clinic_id: 1)
 
       visit root_path
       fill_in 'Email', with: @admin.email
@@ -467,7 +473,8 @@ describe "AdministrationPages" do
         click_button 'Find open times'
         click_button 'Schedule'
       end
-      it { should have_selector('div.alert.alert-danger', text: 'Date/Time must be set in the future.') }
+      it { should have_selector('div.alert.alert-danger',
+                                text: 'Date/Time must be set in the future.') }
       it { should have_title('New Appointment')}
     end
 
