@@ -15,6 +15,11 @@ class AppointmentsController < ApplicationController
   before_filter :require_patient_login, :only => [:patient_request]
 
   def new
+    if request.subdomain =='www'
+      @current_user = @current_patient
+    else
+      @current_user = @current_admin
+    end
     @appointment = Appointment.new
   end
 
