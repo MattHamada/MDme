@@ -13,6 +13,8 @@ describe "Patient Pages" do
   describe 'signing in' do
     before { visit signin_path }
 
+    it { should have_content('Sign in') }
+    it { should have_title('Sign In') }
 
     describe 'with invalid information' do
       before { click_button 'Sign in' }
@@ -28,20 +30,25 @@ describe "Patient Pages" do
       end
       it { should_not have_title 'Sign in' }
       it { should have_content 'Sign Out' }
+      it { should have_title(full_name(patient)) }
+      it { should_not have_link('Sign in', href: signin_path) }
+
+
 
       describe 'cannot view pages of another patient' do
-      before do
-        @patient2 = Patient.create!(first_name: 'bbbdb',
-                                    last_name: 'baaba',
-                                    email: 'test2@test.com',
-                                    password: 'Foobar1',
-                                    password_confirmation: 'Foobar1',
-                                    clinic_id: 1)
-        visit patient_path(@patient2)
-      end
-      it { should have_content 'Scheduling Simplified' }
+        let(:patient2) { FactoryGirl.create(:patient,
+                                            email: 'test2@test.com') }
+        before do
+          patient2.save!
+          visit patient_path(patient2)
+        end
+        it { should have_content 'Scheduling Simplified' }
       end
 
+      describe 'signing out' do
+        before { click_link 'Sign Out' }
+        it { should have_link('sign in') }
+      end
     end
 
 
@@ -65,7 +72,6 @@ describe "Patient Pages" do
     end
   end
 
-
   describe 'Profile page' do
     describe 'need to be logged in as patient to view profile' do
       before { visit patient_path(patient) }
@@ -77,8 +83,6 @@ describe "Patient Pages" do
   describe 'Request an appointment', :js => true do
     let(:appointment) { FactoryGirl.create(:appointment_request) }
     let(:doctor)  { FactoryGirl.create(:doctor) }
-    let(:patient) { FactoryGirl.create(:patient) }
-
     before do
       doctor.save!
       patient.save!
@@ -115,68 +119,10 @@ describe "Patient Pages" do
       before do
         doctor2.save
         click_link 'Request an Appointment'
-        puts find(:css, 'select#doctor_doctor_id').value
       end
       it 'should not list doctor2 in available doctors' do
         find(:css, 'select#doctor_doctor_id').value.should_not eq 2
       end
     end
-
-    #describe 'cannot make appointments on taken times' do
-    #  before do
-    #    fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
-    #    click_button 'Find open times'
-    #    click_button 'Request'
-    #    click_link 'Request an Appointment'
-    #    fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
-    #    click_button 'Find open times'
-    #  end
-    #  it 'should not create an appointment' do
-    #    expect{click_button 'Request'}.not_to change(Appointment, :count).by(1)
-    #  end
-    #end
-
-
-
   end
 end
-
-
-#describe 'Signup page' do
-  #  before { visit signup_path }
-  #
-  #  it { should have_title('Sign up') }
-  #  it { should have_content('Sign up') }
-  #
-  #  describe 'signing up' do
-  #    describe 'with invalid info' do
-  #      it 'should not create a patient' do
-  #        expect { click_button 'Create my account' }.not_to change(Patient, :count)
-  #      end
-  #    end
-  #
-  #    describe 'with valid info' do
-  #      before do
-  #          fill_in 'First name',       with: 'example'
-  #          fill_in 'Last name',        with: 'patient'
-  #          fill_in 'Email',            with: 'user@example.com'
-  #          fill_in 'Password',         with: 'foobar'
-  #          fill_in "Confirm Password", with: "foobar"
-  #      end
-  #      it 'should create a patient' do
-  #        expect { click_button 'Create my account' }.to change(Patient, :count).by(1)
-  #      end
-  #
-  #      describe 'after creating the patient' do
-  #        before { click_button 'Create my account' }
-  #        let(:patient) { Patient.find_by(email: 'user@example.com') }
-  #
-  #        it { should have_link('Sign out') }
-  #        it { should have_title(full_name(patient)) }
-  #        it { should have_selector('div.alert.alert-success', text: 'Account Created') }
-  #      end
-  #    end
-  #  end
-  #
-  #end
-

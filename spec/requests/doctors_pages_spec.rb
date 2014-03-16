@@ -30,14 +30,13 @@ describe "DoctorsPages" do
       end
 
       describe 'with valid information' do
-        let(:doctor) { FactoryGirl.create(:doctor) }
         let(:department) { FactoryGirl.create(:department) }
-
+        let(:doctor) { FactoryGirl.create(:doctor) }
         before do
-          doctor.save!
           department.save!
-          fill_in 'Email', with: 'doctor@example.com'
-          fill_in 'Password', with: 'Qwerty1'
+          doctor.save!
+          fill_in 'Email', with: doctor.email
+          fill_in 'Password', with: doctor.password
           click_button 'Sign in'
         end
         it { should have_title("Today's Appointments") }
@@ -49,14 +48,11 @@ describe "DoctorsPages" do
         end
 
         describe 'cannot visit another doctors pages' do
+          let(:doctor2) { FactoryGirl.create(:doctor,
+                                             email: 'testDoctor@example.com') }
           before do
-            @doc2 = Doctor.create(email: 'testDoctor@example.com',
-                                  first_name: 'ababa',
-                                  last_name: 'aavava',
-                                  password: 'Foobar1',
-                                  password_confirmation: 'Foobar1',
-                                  clinic_id: 1)
-            visit doctor_path(@doc2)
+            doctor2.save
+            visit doctor_path(doctor2)
           end
           it 'should not show other doctors page' do
             #TODO add way to differentiate doctor pages to test difference
@@ -112,9 +108,8 @@ describe "DoctorsPages" do
     end
 
     describe 'Forgot Password Page' do
-      let (:doctor) { FactoryGirl.create(:doctor) }
+      let(:doctor) { FactoryGirl.create(:doctor) }
       before do
-        doctor.save!
         click_link 'Forgot Password'
       end
       it { should have_content 'Email' }

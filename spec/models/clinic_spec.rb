@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe Clinic do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before { @clinic = Clinic.new(name: "Hospital") }
+  subject { @clinic }
+
+  it { should respond_to :name }
+  it { should be_valid }
 end
