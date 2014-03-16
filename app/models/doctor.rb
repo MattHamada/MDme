@@ -26,7 +26,7 @@ class Doctor < ActiveRecord::Base
                                 unless: :is_admin_applying_update
 
 
-  validates :slug, presence: true, unless: :skip_on_create
+  validates :slug, presence: true #unless: :skip_on_create
   validate :slug_unique_in_clinic
 
 
@@ -93,8 +93,6 @@ class Doctor < ActiveRecord::Base
     appointments.find_each do |appt|
       hour = appt.appointment_time.hour + 7
       minute = appt.appointment_time.min
-
-
       minute = '00' if minute == 0
 
       ampm = ''
@@ -104,9 +102,6 @@ class Doctor < ActiveRecord::Base
         ampm = 'PM'
       end
       hour = hour % 12 if hour != 12
-
-
-
       if times.include?("#{hour}:#{minute} #{ampm}")
         times.delete("#{hour}:#{minute} #{ampm}")
       end
@@ -115,12 +110,12 @@ class Doctor < ActiveRecord::Base
   end
 
   def slug_unique_in_clinic
-    errors.add(:slug, "Slug: #{slug} already in use") if
-        Doctor.in_clinic(self).where(slug: slug).count !=0
+    errors.add(:slug, "Slug: #{slug} already in use") unless
+        slug_unique_in_clinic?
   end
 
   def slug_unique_in_clinic?
-    Doctor.in_clinic(self).where(slug: slug).count !=0
+    Doctor.in_clinic(self).where(slug: slug).count == 0
   end
 
   def self.with_appointments_today
@@ -138,10 +133,9 @@ class Doctor < ActiveRecord::Base
 
   def generate_slug
     if !full_name.blank?
-      if Doctor.in_clinic(self).where(slug: full_name.parameterize).count !=0
+      if Doctor.in_clinic(self).where(slug: full_name.parameterize).count != 0
         n = 1
         while Doctor.where(slug: "#{full_name.parameterize}-#{n}").count != 0
-          puts n
           n+= 1
         end
         self.slug ||= "#{full_name.parameterize}-#{n}"

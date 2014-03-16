@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe Patient do
-  before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'Qwerty1', password_confirmation: 'Qwerty1') }
+  before { @patient = Patient.new(first_name: "Example",
+                                  last_name: 'patient',
+                                  email: "user@example.com",
+                                  password: 'Qwerty1',
+                                  password_confirmation: 'Qwerty1',
+                                  clinic_id: 1) }
 
   subject { @patient }
 
@@ -13,6 +18,7 @@ describe Patient do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:slug) }
 
   it { should be_valid }
 
@@ -67,8 +73,6 @@ describe Patient do
   end
 
   describe 'password problems' do
-    before { @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'Test123', password_confirmation: 'Test123') }
-
     describe 'when password not present' do
       before {@patient.password = @patient.password_confirmation = ''}
       it { should_not be_valid }
@@ -103,7 +107,6 @@ describe Patient do
     end
   end
 
-
   describe 'authentication method' do
     before { @patient.save }
     let(:found_patient) { Patient.find_by(email: @patient.email) }
@@ -124,7 +127,25 @@ describe Patient do
     end
   end
 
+  describe "Slug is set to patients name hyphenated" do
+    before { @patient.save }
+    its(:slug) { should eq "#{@patient.first_name.downcase}-#{@patient.last_name.downcase}" }
 
-
-
+    describe 'A second patient with the same name stil has a valid slug' do
+      before do
+        @patient2 = @patient.dup
+        @patient.save
+        @patient2.email = "newEmail@email.com"
+        @patient2.save
+        puts @patient.slug
+        puts @patient2.slug
+      end
+      it(@patient)  { should be_valid }
+      it(@patient2) { should be_valid }
+      its 'slug should have a unique number at the end' do
+        @patient.slug.should eq @patient.full_name.parameterize
+        @patient2.slug.should eq "#{@patient.slug}-1"
+      end
+    end
+  end
 end

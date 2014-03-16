@@ -35,7 +35,8 @@ describe "Patient Pages" do
                                     last_name: 'baaba',
                                     email: 'test2@test.com',
                                     password: 'Foobar1',
-                                    password_confirmation: 'Foobar1')
+                                    password_confirmation: 'Foobar1',
+                                    clinic_id: 1)
         visit patient_path(@patient2)
       end
       it { should have_content 'Scheduling Simplified' }
