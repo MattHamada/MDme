@@ -9,34 +9,30 @@ require 'cookie_crypt'
 class Patient < ActiveRecord::Base
   include CookieCrypt, RocketPants::Cacheable #for future API use
 
-  # accept valid email addresses only
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
-
-  # cannot register multiple users under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
-  validates :clinic_id, presence: true
-
-  validates :password, password_complexity: true, unless: :is_admin_applying_update
-
-  validates :slug, presence: true
-  validate :slug_unique_in_clinic
-
-  before_validation :generate_slug
-
-
-  attr_accessor :is_admin_applying_update
-
-  # emails stored lowercase
-  before_save { self.email = email.downcase }
-
-  before_create :create_remember_token
-
   belongs_to  :doctor
   belongs_to  :clinic
   has_many :appointments
 
+  # accept valid email addresses only
+  validates :first_name, presence: true, length: {maximum: 50}
+  validates :last_name, presence: true, length: {maximum: 50}
+  validates :email, presence: true, uniqueness: {case_sensitive: false},
+            email_format: true
+  validates :clinic_id, presence: true
+  validates :password, password_complexity: true,
+            unless: :is_admin_applying_update
+  validates :slug, presence: true
+  validate :slug_unique_in_clinic
+
+  before_validation :generate_slug
+  before_save { self.email = email.downcase }
+  before_create :create_remember_token
+
+  attr_accessor :is_admin_applying_update
+
   has_secure_password
+
+  scope :ordered_last_name, -> { order(last_name: :asc)}
 
 
   def full_name

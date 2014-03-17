@@ -9,54 +9,37 @@ require 'cookie_crypt'
 class Doctor < ActiveRecord::Base
   include CookieCrypt
 
-
-  before_validation :generate_slug
-
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
-
-  # cannot register multiple doctors under one email address
-  validates :email, presence: true, uniqueness: {case_sensitive: false}, email_format: true
-
-  validates :clinic_id, presence: true
-
-  # passwords must be length of 6
-  # skips validation if admin is updating doctor info
-  validates :password, password_complexity: true, presence: true,
-                                unless: :is_admin_applying_update
-
-
-  validates :slug, presence: true #unless: :skip_on_create
-  validate :slug_unique_in_clinic
-
-
-  attr_accessor :is_admin_applying_update
-  attr_accessor :skip_on_create
-  has_attached_file :avatar, :styles => { :medium => "300x300>",
-                                          :thumb => "100x100>" },
-                    :default_url => "/images/:style/missing.png"
-
-  # emails stored lowercase
-  before_save { self.email = email.downcase }
-  before_create :create_remember_token
-
-
   has_many :appointments
   has_many :patients
   belongs_to :clinic
   belongs_to :department
 
-  has_secure_password
-
   delegate :name, to: :department, prefix: true
 
-  def doctor_full_name
-    doctor.full_name
-  end
+  validates :first_name, presence: true, length: {maximum: 50}
+  validates :last_name, presence: true, length: {maximum: 50}
+  validates :email, presence: true, uniqueness: {case_sensitive: false},
+            email_format: true
+  validates :clinic_id, presence: true
+  validates :password, password_complexity: true, presence: true,
+                                unless: :is_admin_applying_update
+  validates :slug, presence: true #unless: :skip_on_create
+  validate :slug_unique_in_clinic
 
-  def patient_full_name
-    patient.full_name
-  end
+  before_validation :generate_slug
+  before_save { self.email = email.downcase }
+  before_create :create_remember_token
+
+  attr_accessor :is_admin_applying_update
+  attr_accessor :skip_on_create
+
+  has_secure_password
+
+  has_attached_file :avatar, :styles => { :medium => "300x300>",
+                                          :thumb => "100x100>" },
+                    :default_url => "/images/:style/missing.png"
+
+  scope :ordered_last_name, -> { order(last_name: :asc) }
 
   def self.in_clinic(model)
     if model.is_a?(Doctor)
@@ -141,7 +124,6 @@ class Doctor < ActiveRecord::Base
   def appointments_today
     appointments.today.order('appointment_time ASC')
   end
-
 
   def to_param
     slug

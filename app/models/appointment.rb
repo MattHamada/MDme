@@ -3,12 +3,22 @@
 #
 # Appointment model
 #
+
+require 'appointment_time_formatting'
+
 class Appointment < ActiveRecord::Base
+  include AppointmentTimeFormatting
+
+  belongs_to :doctor
+  belongs_to :patient
+  belongs_to :clinic
+
+  delegate :full_name, to: :doctor, prefix: true
+  delegate :full_name, to: :patient, prefix: true
 
   #appointments must be at a unique time in the future
   validates :appointment_time, presence: true, uniqueness: true
   validate :appointment_time_in_future
-
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
@@ -16,42 +26,15 @@ class Appointment < ActiveRecord::Base
 
   before_create { self.appointment_delayed_time = appointment_time }
 
-
-  belongs_to :doctor
-  belongs_to :patient
-  belongs_to :clinic
-
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
 
-  delegate :full_name, to: :doctor, prefix: true
-  delegate :full_name, to: :patient, prefix: true
 
 
-  def date
-    appointment_time.strftime("%F")
-  end
 
-  def date_time_ampm
-    appointment_time.strftime("%F %I:%M%p")
-  end
 
-  def delayed_date_time_ampm
-    appointment_delayed_time.strftime("%F %I:%M%p")
-  end
 
-  def time_am_pm
-    appointment_time.strftime("%I:%M%p")
-  end
-
-  def appointment_time_hour
-    appointment_time.hour
-  end
-
-  def appointment_time_minute
-    appointment_time.min
-  end
 
 
   # returns all appointments on a specific date

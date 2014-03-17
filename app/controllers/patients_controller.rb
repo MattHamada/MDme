@@ -54,7 +54,7 @@ class PatientsController < ApplicationController
 
   # for admin page only
   def index
-    @patients = Patient.all.reorder("last_name").includes(:doctor)
+    @patients = Patient.in_clinic(current_admin).ordered_last_name.includes(:doctor)
     render 'admins/patient_index'
   end
 
