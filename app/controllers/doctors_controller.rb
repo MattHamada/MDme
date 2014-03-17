@@ -117,7 +117,8 @@ class DoctorsController < ApplicationController
   # shows doctor's confirmed appointments
   def appointments
     @doctor = doctor
-    @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
+    @appointments = Appointment.given_date(Date.today).confirmed.
+        with_doctor(params[:id]).order('appointment_time ASC').load
   end
 
   # shows Doctor's patients

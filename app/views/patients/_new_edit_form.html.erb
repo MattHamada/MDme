@@ -22,7 +22,7 @@
 <div class='form-group'>
   <div class="col-xs-7">
     <%= f.label(:patient, 'Doctor') %>
-    <%= collection_select(:doctor, :doctor_id, Doctor.all.reorder('last_name'), :id, :full_name, {}, { class: 'form-control'}) %>
+    <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(@current_user).reorder('last_name'), :id, :full_name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 

@@ -32,7 +32,9 @@ class Doctor < ActiveRecord::Base
 
   attr_accessor :is_admin_applying_update
   attr_accessor :skip_on_create
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+  has_attached_file :avatar, :styles => { :medium => "300x300>",
+                                          :thumb => "100x100>" },
+                    :default_url => "/images/:style/missing.png"
 
   # emails stored lowercase
   before_save { self.email = email.downcase }
@@ -45,6 +47,16 @@ class Doctor < ActiveRecord::Base
   belongs_to :department
 
   has_secure_password
+
+  delegate :name, to: :department, prefix: true
+
+  def doctor_full_name
+    doctor.full_name
+  end
+
+  def patient_full_name
+    patient.full_name
+  end
 
   def self.in_clinic(model)
     if model.is_a?(Doctor)
@@ -91,8 +103,8 @@ class Doctor < ActiveRecord::Base
       end
     end
     appointments.find_each do |appt|
-      hour = appt.appointment_time.hour + 7
-      minute = appt.appointment_time.min
+      hour = appt.appointment_time_hour + 7
+      minute = appt.appointment_time_minute
       minute = '00' if minute == 0
 
       ampm = ''
@@ -124,6 +136,10 @@ class Doctor < ActiveRecord::Base
       doctors << d unless d.appointments.today.load.empty?
     end
     doctors
+  end
+
+  def appointments_today
+    appointments.today.order('appointment_time ASC')
   end
 
 

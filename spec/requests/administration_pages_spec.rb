@@ -76,7 +76,7 @@ describe "AdministrationPages" do
               it { should have_title('Doctors') }
               it { should have_link('Add Doctor') }
               it { should have_content(doctor.full_name) }
-              it { should have_content(doctor.department.name) }
+              it { should have_content(doctor.department_name) }
             end
 
             describe 'can only see doctors in own clinic' do
@@ -262,11 +262,11 @@ describe "AdministrationPages" do
 
               describe 'appointment approval page' do
                 before { click_link 'Appointment Requests' }
-                it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                it { should have_content appointment_request.date_time_ampm }
 
                 describe 'Seeing other appointment times' do
                   before do
-                    click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                    click_link appointment_request.date_time_ampm
                   end
                   it { should have_content appointment2.doctor.full_name}
                 end
@@ -306,6 +306,7 @@ describe "AdministrationPages" do
                 patient2.save!
                 appointment.save!
                 appointment2.save!
+                clinic.save!
                 click_link 'Manage Appointments'
                 click_link 'Manage Delays'
               end
@@ -366,16 +367,13 @@ describe "AdministrationPages" do
       patient.save!
       appointment.save!
       admin.save!
-
       visit root_path
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
       click_button 'Sign in'
-
       click_link "Manage Appointments"
       fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
       click_button 'Submit'
-      #wait_until { find('#day_appointments') }
     end
 
 

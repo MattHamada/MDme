@@ -21,11 +21,11 @@
                   <tr>
                       <td class="day_appointments"><%= link_to("#{index}", appointment) %></td>
 
-                    <td class="day_appointments"><%= link_to("#{appointment.appointment_time.strftime('%m-%e-%y %I:%M%p')}",
+                    <td class="day_appointments"><%= link_to("#{appointment.date_time_ampm }",
                                     appointment_show_on_date_path(date: appointment.appointment_time,
                                                                   doctor_id: appointment.doctor_id)) %></td>
-                    <td><%= full_name(Doctor.find(appointment.doctor_id)) %></td>
-                    <td><%= full_name(Patient.find(appointment.patient_id)) %></td>
+                    <td><%= appointment.doctor_full_name %></td>
+                    <td><%= appointment.patient_full_name %></td>
                     <td class="button_links"><%= link_to 'Approve', appointment_approval_path(
                             approve: true, appointment_id: appointment.id), class: 'btn btn-mini btn-primary approve' %>
                         <%= link_to 'Deny', appointment_approval_path(deny: true, appointment_id: appointment.id),

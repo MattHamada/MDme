@@ -15,6 +15,7 @@ class AppointmentsController < ApplicationController
   before_filter :require_patient_login, :only => [:patient_request]
 
   def new
+    #TODO Load only open times on admin page similar to patient page
     if request.subdomain =='www'
       @current_user = @current_patient
     else
@@ -59,8 +60,8 @@ class AppointmentsController < ApplicationController
       Appointment.delete(Appointment.find(params[:appointment_id]))
     end
     @appointments = Appointment.in_clinic(current_admin).requests.
-                                order('appointment_time ASC').load
-
+                                order('appointment_time ASC').load.
+                                includes(:doctor, :patient)
   end
 
   # creates appointments, sets as a request if made from patient site, but not if from admin site.

@@ -25,6 +25,35 @@ class Appointment < ActiveRecord::Base
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
 
+  delegate :full_name, to: :doctor, prefix: true
+  delegate :full_name, to: :patient, prefix: true
+
+
+  def date
+    appointment_time.strftime("%F")
+  end
+
+  def date_time_ampm
+    appointment_time.strftime("%F %I:%M%p")
+  end
+
+  def delayed_date_time_ampm
+    appointment_delayed_time.strftime("%F %I:%M%p")
+  end
+
+  def time_am_pm
+    appointment_time.strftime("%I:%M%p")
+  end
+
+  def appointment_time_hour
+    appointment_time.hour
+  end
+
+  def appointment_time_minute
+    appointment_time.min
+  end
+
+
   # returns all appointments on a specific date
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
@@ -52,7 +81,8 @@ class Appointment < ActiveRecord::Base
     if appointment_time.nil?
       errors.add(:appointment_time, "No Date/time entered.")
     else
-      errors.add(:appointment_time, "Date/Time must be set in the future.") if appointment_time < DateTime.now
+      errors.add(:appointment_time, "Date/Time must be set in the future.") if
+          appointment_time < DateTime.now
     end
   end
 
@@ -78,7 +108,7 @@ class Appointment < ActiveRecord::Base
 
   def send_delay_email(new_time)
     Thread.new do
-      PatientMailer.appointment_delayed_email(Patient.find(patient_id),
+      PatientMailer.appointment_delayed_email(patient,
                                              appointment_delayed_time).deliver
     end
   end

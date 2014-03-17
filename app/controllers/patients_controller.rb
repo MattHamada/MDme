@@ -15,6 +15,7 @@ class PatientsController < ApplicationController
   before_filter :require_admin_or_patient_login, :only => [:show, :edit]
 
   def new
+    @current_user = current_admin
     @patient = Patient.new
     render 'admins/patient_new'
   end
@@ -23,6 +24,7 @@ class PatientsController < ApplicationController
     p = patient_params
     p[:password] = p[:password_confirmation] = generate_random_password
     p[:doctor_id] = params[:doctor][:doctor_id]
+    @current_user = current_admin
     @patient = Patient.new(p)
     @patient.clinic_id = current_admin.clinic_id
     if @patient.save
@@ -57,6 +59,7 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    @current_user = patient
     @patient = patient
 
     if request.subdomain == 'admin'
@@ -95,7 +98,12 @@ class PatientsController < ApplicationController
 
 
   def patient_params
-    params.require(:patient).permit(:first_name, :last_name, :email, :password, :password_confirmation, :doctor_id)
+    params.require(:patient).permit(:first_name,
+                                    :last_name,
+                                    :email,
+                                    :password,
+                                    :password_confirmation,
+                                    :doctor_id)
   end
 
 

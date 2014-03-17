@@ -1,7 +1,6 @@
 <%= provide(:title, " | Browse Appointments") %>
 <%= render 'admins/sidebar' %>
 <div>
-  <%= render 'shared/flash' %>
 
 </div>
 <% @doctors.each_with_index do |doctor, doc_index| %>
@@ -28,12 +27,12 @@
 
                   </tr>
                   <tbody>
-                  <% doctor.appointments.today.order('appointment_time ASC').each_with_index do |appointment, appt_index| %>
+                  <% doctor.appointments_today.each_with_index do |appointment, appt_index| %>
                     <tr>
                       <td class="day_appointments"><%= link_to("#{doc_index}", appointment) %></td>
-                      <td class="day_appointments"><%= appointment.appointment_time.strftime('%I:%M%p') %></td>
-                      <td class="day_appointments"><%= appointment.appointment_delayed_time.strftime('%I:%M%p') %></td>
-                      <td><%= full_name(Patient.find(appointment.patient_id)) %></td>
+                      <td class="day_appointments"><%= appointment.date_time_ampm %></td>
+                      <td class="day_appointments"><%= appointment.delayed_date_time_ampm %></td>
+                      <td><%= appointment.patient_full_name %></td>
                       <%= form_tag(url: add_delay_path, method: :post, html: { role: 'form' }) do %>
                         <%= hidden_field_tag(:doctor_id, doctor.id) %>
                         <%= hidden_field_tag(:appointment_id, appointment.id) %>
