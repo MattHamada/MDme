@@ -107,7 +107,7 @@ class DoctorsController < ApplicationController
   # shows doctor's confirmed appointments
   def appointments
     @doctor = doctor
-    @appointments = Appointment.confirmed_today_with_doctor(params[:id])
+    @appointments = Appointment.confirmed_today_with_doctor(doctor.id)
   end
 
   # shows Doctor's patients
