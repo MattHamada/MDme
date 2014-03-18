@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe "AdministrationPages" do
+  let(:clinic) { FactoryGirl.create(:clinic) }
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:appointment) { FactoryGirl.create(:appointment) }
+  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:department) { FactoryGirl.create(:department) }
+  let(:patient) { FactoryGirl.create(:patient) }
   subject { page }
   before { switch_to_subdomain('admin') }
 
@@ -11,7 +17,6 @@ describe "AdministrationPages" do
     it { should have_content('Admin Sign In')}
 
     describe 'Forgot Password Page' do
-      let(:admin) { FactoryGirl.create(:admin) }
       before do
         click_link 'Forgot Password'
       end
@@ -46,11 +51,6 @@ describe "AdministrationPages" do
       end
 
       describe 'with valid information' do
-        let(:admin) { FactoryGirl.create(:admin) }
-        let(:appointment) { FactoryGirl.create(:appointment) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
-        let(:patient) { FactoryGirl.create(:patient) }
-
         before do
           fill_in 'Email', with: admin.email
           fill_in 'Password', with: admin.password
@@ -66,26 +66,35 @@ describe "AdministrationPages" do
           it { should have_content 'Manage Patients'}
           it { should have_content "Today's Appointments" }
 
-
-
           describe 'admin doctors pages' do
             describe 'browse doctors' do
-              let(:department) { FactoryGirl.create(:department) }
-              let(:doctor) { FactoryGirl.create(:doctor) }
               before do
                 department.save!
                 doctor.save!
                 click_link 'Manage Doctors'
-
               end
               it { should have_title('Doctors') }
               it { should have_link('Add Doctor') }
               it { should have_content(doctor.full_name) }
-              it { should have_content(doctor.department.name) }
+              it { should have_content(doctor.department_name) }
+            end
+
+            describe 'can only see doctors in own clinic' do
+              let(:clinic2) { FactoryGirl.create(:clinic) }
+              let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
+                                              email: 'docEmailTest.@test.com',
+                                              first_name: 'healthier')}
+              before do
+                clinic2.save!
+                department.save!
+                doctor.save!
+                doctor2.save!
+                click_link 'Manage Doctors'
+              end
+              it { should_not have_content(doctor2.full_name)}
             end
 
             describe 'Add Doctor' do
-              let(:department) { FactoryGirl.create(:department) }
               before  do
                 department.save!
                 click_link 'Manage Doctors'
@@ -237,14 +246,13 @@ describe "AdministrationPages" do
 
           describe 'appointments' do
             let(:appointment_request) { FactoryGirl.create(:appointment_request)}
+            let(:appointment2) { FactoryGirl.create(:appointment,
+             appointment_time: appointment_request.appointment_time + 1.hour, )}
             before do
               patient.save!
               doctor.save!
               appointment_request.save!
-              @appt = Appointment.create(doctor_id: '1', patient_id:'1',
-                                         appointment_time: appointment_request.appointment_time + 1.hour,
-                                         description:   'test',
-                                         request: false)
+              appointment2.save
             end
             describe 'Accepting appointments' do
               before { click_link 'Manage Appointments' }
@@ -254,13 +262,13 @@ describe "AdministrationPages" do
 
               describe 'appointment approval page' do
                 before { click_link 'Appointment Requests' }
-                it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                it { should have_content appointment_request.date_time_ampm }
 
                 describe 'Seeing other appointment times' do
                   before do
-                    click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                    click_link appointment_request.date_time_ampm
                   end
-                  it { should have_content @appt.doctor.full_name}
+                  it { should have_content appointment2.doctor.full_name}
                 end
 
                 describe 'approving the appointment' do
@@ -298,6 +306,7 @@ describe "AdministrationPages" do
                 patient2.save!
                 appointment.save!
                 appointment2.save!
+                clinic.save!
                 click_link 'Manage Appointments'
                 click_link 'Manage Delays'
               end
@@ -353,25 +362,18 @@ describe "AdministrationPages" do
 
   #separated due to swtich to webkit from rack
   describe 'Browse appointments', :js => true do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let(:appointment) { FactoryGirl.create(:appointment) }
-    let(:doctor) { FactoryGirl.create(:doctor) }
-    let(:patient) { FactoryGirl.create(:patient) }
     before do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
-
+      admin.save!
       visit root_path
-      fill_in 'Email', with: @admin.email
-      fill_in 'Password', with: @admin.password
+      fill_in 'Email', with: admin.email
+      fill_in 'Password', with: admin.password
       click_button 'Sign in'
-
       click_link "Manage Appointments"
       fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
       click_button 'Submit'
-      #wait_until { find('#day_appointments') }
     end
 
 
@@ -425,19 +427,15 @@ describe "AdministrationPages" do
   #separated for webkit -> rack
 
   describe 'Creating Appointments' do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let(:appointment) { FactoryGirl.create(:appointment) }
-    let(:doctor) { FactoryGirl.create(:doctor) }
-    let(:patient) { FactoryGirl.create(:patient) }
     before do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com', password: 'Qwerty1', password_confirmation: 'Qwerty1')
+      admin.save!
 
       visit root_path
-      fill_in 'Email', with: @admin.email
-      fill_in 'Password', with: @admin.password
+      fill_in 'Email', with: admin.email
+      fill_in 'Password', with: admin.password
       click_button 'Sign in'
 
       click_link "Manage Appointments"
@@ -450,7 +448,8 @@ describe "AdministrationPages" do
         click_button 'Find open times'
         click_button 'Schedule'
       end
-      it { should have_selector('div.alert.alert-danger', text: 'Date/Time must be set in the future.') }
+      it { should have_selector('div.alert.alert-danger',
+                                text: 'Date/Time must be set in the future.') }
       it { should have_title('New Appointment')}
     end
 

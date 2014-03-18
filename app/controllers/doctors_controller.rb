@@ -19,7 +19,8 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    @doctors = Doctor.all.includes(:department)
+    current_user = current_admin if request.subdomain == 'admin' else current_patient
+    @doctors = Doctor.in_clinic(current_user).includes(:department)
     render 'admins/doctors_index' if request.subdomain == 'admin'
   end
 
@@ -32,12 +33,9 @@ class DoctorsController < ApplicationController
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
     @doctor = Doctor.new(p, is_admin_applying_update: true)
+    @doctor.clinic_id = current_admin.clinic_id
 
     if @doctor.save
-      Thread.new do
-        SignupMailer.signup_confirmation(@doctor, p[:password]).deliver
-      end
-
       flash[:success] = 'Doctor Successfully Created.'
       redirect_to doctors_path
     else
@@ -62,17 +60,9 @@ class DoctorsController < ApplicationController
         #skip password validation since password checked correct
         @doctor.is_admin_applying_update = true
       end
-
-
     end
-
     dp = doctor_params
-    #dp[:password] = params[:verify][:verify_password]
-    #dp[:password_confirmation] = params[:verify][:verify_password]
-
     @doctor.attributes = dp
-
-
     if @doctor.save
       flash[:success] = "Doctor Successfully Updated"
       if request.subdomain == 'admin'
@@ -97,8 +87,10 @@ class DoctorsController < ApplicationController
   end
 
   def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password, :password_confirmation, :avatar)
+    params.require(:doctor).permit(:first_name, :last_name, :email,
+                                   :department_id, :phone_number, :degree,
+                                   :alma_mater, :description, :password,
+                                   :password_confirmation, :avatar)
   end
 
   def destroy
@@ -115,7 +107,7 @@ class DoctorsController < ApplicationController
   # shows doctor's confirmed appointments
   def appointments
     @doctor = doctor
-    @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
+    @appointments = Appointment.confirmed_today_with_doctor(params[:id])
   end
 
   # shows Doctor's patients

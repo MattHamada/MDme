@@ -6,6 +6,7 @@ FactoryGirl.define do
     password              'Qwerty1'
     password_confirmation 'Qwerty1'
     doctor_id             '1'
+    clinic_id             '1'
   end
 
   factory :doctor do
@@ -19,39 +20,49 @@ FactoryGirl.define do
     alma_mater            'Midwestern University'
     description            Faker::Lorem.paragraph(4)
     phone_number          '123-456-7890'
+    clinic_id             '1'
   end
 
   factory :admin do
     email                 'admin@example.com'
     password              'Qwerty1'
     password_confirmation 'Qwerty1'
+    clinic_id             '1'
   end
 
   factory :appointment do
-    doctor_id     '1'
-    patient_id    '1'
-    appointment_time          DateTime.now + 3.days
-    description   'test'
-    request false
+    doctor_id             '1'
+    patient_id            '1'
+    appointment_time      DateTime.now + 3.days
+    description           'test'
+    request               false
+    clinic_id             '1'
+
   end
 
   factory :appointment_today, class: Appointment do
-    doctor_id     '1'
-    patient_id    '1'
-    appointment_time          DateTime.now + 30.minutes
-    description   'test'
+    doctor_id             '1'
+    patient_id            '1'
+    appointment_time      DateTime.now + 30.minutes
+    description           'test'
     request false
+    clinic_id             '1'
   end
 
   factory :appointment_request, class: Appointment do
-    doctor_id     '1'
-    patient_id    '1'
-    appointment_time          DateTime.now + 3.days
-    description   'test'
+    doctor_id             '1'
+    patient_id            '1'
+    appointment_time      DateTime.now + 3.days
+    description           'test'
     request true
+    clinic_id             '1'
   end
 
   factory :department do
-    name 'Oncology'
+    name                  'Oncology'
+  end
+
+  factory :clinic do
+    name                  'MyClinic'
   end
 end

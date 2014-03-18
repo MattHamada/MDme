@@ -11,54 +11,54 @@
           <%= form_for(@appointment, method: :put, html: { class: "form-inline", role: "form" }) do |f| %>
               <%= f.label(:datetime, "Select Appointment Time") %>
               <div class='form-group'>
-                <%= text_field :date, :day, class: 'form-control', value: @appointment.appointment_time.strftime('%F') %>
+                <%= text_field :date, :day, class: 'form-control', value: @appointment.date %>
               </div>
               <div class='form-group'>
                 <select class="form-control" id="date_hour" name="date[hour]">
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 0  %> value="00">12 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 1  %> value="01">01 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 2  %> value="02">02 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 3  %> value="03">03 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 4  %> value="04">04 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 5  %> value="05">05 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 6  %> value="06">06 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 7  %> value="07">07 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 8  %> value="08">08 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 9  %> value="09">09 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 10 %> value="10">10 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 11 %> value="11">11 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 12 %> value="12">12 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 13 %> value="13">01 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 14 %> value="14">02 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 15 %> value="15">03 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 16 %> value="16">04 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 17 %> value="17">05 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 18 %> value="18">06 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 19 %> value="19">07 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 20 %> value="20">08 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 21 %> value="21">09 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 22 %> value="22">10 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.hour == 23 %> value="23">11 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 0  %> value="00">12 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 1  %> value="01">01 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 2  %> value="02">02 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 3  %> value="03">03 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 4  %> value="04">04 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 5  %> value="05">05 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 6  %> value="06">06 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 7  %> value="07">07 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 8  %> value="08">08 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 9  %> value="09">09 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 10 %> value="10">10 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 11 %> value="11">11 AM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 12 %> value="12">12 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 13 %> value="13">01 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 14 %> value="14">02 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 15 %> value="15">03 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 16 %> value="16">04 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 17 %> value="17">05 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 18 %> value="18">06 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 19 %> value="19">07 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 20 %> value="20">08 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 21 %> value="21">09 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 22 %> value="22">10 PM</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 23 %> value="23">11 PM</option>
                 </select>
               </div> :
 
               <div class= 'form-group'>
                 <select class="form-group form-control" id="date_minute" name="date[minute]">
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.min == 0  %> value="00">00</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.min == 15 %> value="15">15</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.min == 30 %> value="30">30</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time.min == 45 %> value="45">45</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 0  %> value="00">00</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 15 %> value="15">15</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 30 %> value="30">30</option>
+                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 45 %> value="45">45</option>
                 </select>
               </div>
               <br/>
               <br/>
               <div class='form-group'>
                 <%= f.label(:doctor, "Select Doctor") %>
-                <%= collection_select(:doctor, :doctor_id, Doctor.all, :id, :full_name, {selected: @appointment.doctor.id}, { class: 'form-control'}) %>
+                <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(@appointment), :id, :full_name, {selected: @appointment.doctor.id}, { class: 'form-control'}) %>
               </div>
               <div class='form-group'>
                 <%= f.label(:patient, "Select patient") %>
-                <%= collection_select(:patient, :patient_id, Patient.all, :id, :full_name, {selected: @appointment.patient.id}, { class: 'form-control'}) %>
+                <%= collection_select(:patient, :patient_id, Patient.in_clinic(@appointment), :id, :full_name, {selected: @appointment.patient.id}, { class: 'form-control'}) %>
               </div>
               <br/>
               <br/>

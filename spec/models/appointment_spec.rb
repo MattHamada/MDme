@@ -1,16 +1,21 @@
 require 'spec_helper'
 
 describe Appointment do
+  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:patient) { FactoryGirl.create(:patient) }
   before do
-    @doctor = Doctor.new(first_name: "Example", last_name: 'Doctor', email: "user@example.com", password: 'foobar', password_confirmation: 'foobar')
-    @patient = Patient.new(first_name: "Example", last_name: 'patient', email: "user@example.com", password: 'foobar', password_confirmation: 'foobar')
-    @appointment = Appointment.new(doctor_id: @doctor.id, patient_id: @patient.id, appointment_time: "2013-12-20 10:30:00")
+    @appointment = Appointment.new(doctor_id: doctor.id,
+                                   patient_id: patient.id,
+                                   appointment_time: DateTime.now + 30.minutes,
+                                   clinic_id: 1)
   end
 
   subject { @appointment }
   it { should respond_to(:doctor_id) }
   it { should respond_to(:patient_id) }
   it { should respond_to(:appointment_time) }
+  it { should respond_to(:clinic_id) }
+  it { should be_valid }
 
   describe 'when doctor_id is missing' do
     before { @appointment.doctor_id = nil }
@@ -34,6 +39,16 @@ describe Appointment do
     end
 
     it { should_not be_valid }
+  end
+
+  it 'should show up in given date of today' do
+    Appointment.given_date(DateTime.now + 30.minutes).should
+                                     match_array([@appointment])
+  end
+
+  it 'should show up in appointments with same doctor' do
+    Appointment.with_doctor(@appointment.doctor_id).should
+                                    match_array([@appointment])
   end
 end
 

@@ -54,11 +54,11 @@
               <br/>
               <div class='form-group'>
                 <%= f.label(:doctor, "Select Doctor") %>
-                <%= collection_select(:doctor, :doctor_id, Doctor.all, :id, :full_name, {}, { class: 'form-control'}) %>
+                <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
               <div class='form-group'>
                 <%= f.label(:patient, "Select patient") %>
-                <%= collection_select(:patient, :patient_id, Patient.all, :id, :full_name, {}, { class: 'form-control'}) %>
+                <%= collection_select(:patient, :patient_id, Patient.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
               <br/>
               <br/>

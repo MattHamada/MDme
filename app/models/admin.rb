@@ -23,6 +23,8 @@ class Admin < ActiveRecord::Base
 
   has_secure_password
 
+  belongs_to :clinic
+
   def send_password_reset_email(temppass)
     Thread.new do
       PasswordResetMailer.reset_email(self, temppass).deliver
