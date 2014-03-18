@@ -31,12 +31,6 @@ class Appointment < ActiveRecord::Base
   scope :confirmed, -> { where(request: false) }
 
 
-
-
-
-
-
-
   # returns all appointments on a specific date
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
