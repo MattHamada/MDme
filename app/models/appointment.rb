@@ -52,6 +52,11 @@ class Appointment < ActiveRecord::Base
     Appointment.where(doctor_id: doctor_id)
   end
 
+  def self.confirmed_today_with_doctor(doctor_id)
+    Appointment.given_date(Date.today).confirmed.
+        with_doctor(doctor_id).order('appointment_time ASC').load
+  end
+
   def self.in_clinic(model)
     if model.is_a?(Appointment)
       Appointment.where(clinic_id: model.clinic_id).where.not(id: model.id)

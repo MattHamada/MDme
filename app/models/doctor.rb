@@ -29,6 +29,7 @@ class Doctor < ActiveRecord::Base
   before_validation :generate_slug
   before_save { self.email = email.downcase }
   before_create :create_remember_token
+  after_create :send_confirmation_email
 
   attr_accessor :is_admin_applying_update
   attr_accessor :skip_on_create
@@ -152,6 +153,12 @@ class Doctor < ActiveRecord::Base
   end
 
   private
+
+  def send_confirmation_email
+    Thread.new do
+      SignupMailer.signup_confirmation(self, password).deliver
+    end
+  end
 
   def create_remember_token
     self.remember_token = encrypt(new_remember_token)

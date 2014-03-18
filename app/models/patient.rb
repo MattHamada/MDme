@@ -27,6 +27,7 @@ class Patient < ActiveRecord::Base
   before_validation :generate_slug
   before_save { self.email = email.downcase }
   before_create :create_remember_token
+  after_create :send_confirmation_email
 
   attr_accessor :is_admin_applying_update
 
@@ -73,6 +74,8 @@ class Patient < ActiveRecord::Base
   end
 
 
+
+
   def send_password_reset_email(temppass)
     Thread.new do
       PasswordResetMailer.reset_email(self, temppass).deliver
@@ -84,6 +87,12 @@ class Patient < ActiveRecord::Base
   end
 
   private
+
+  def send_confirmation_email
+    Thread.new do
+      SignupMailer.signup_confirmation(self, password).deliver
+    end
+  end
 
     def create_remember_token
       self.remember_token = encrypt(new_remember_token)
