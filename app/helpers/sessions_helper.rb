@@ -29,6 +29,11 @@ module SessionsHelper
     end
   end
 
+  def require_login
+    redirect_to root_path unless
+        admin_signed_in? or patient_signed_in? or doctor_signed_in?
+  end
+
   def require_doctor_login
     if doctor_signed_in?
       unless current_doctor == Doctor.find_by_slug!(params[:id])
