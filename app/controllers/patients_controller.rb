@@ -12,7 +12,8 @@ class PatientsController < ApplicationController
 
   # Currently only administrators can create patients, they cannot sign up on their own.
   before_filter :require_admin_login, :only => [:new, :destroy, :index]
-  before_filter :require_admin_or_patient_login, :only => [:show, :edit]
+  before_filter :require_admin_or_patient_login, :only => [:edit]
+  before_filter :require_login, :only => [:show]
 
   def new
     @current_user = current_admin
