@@ -26,10 +26,11 @@
                                                                   doctor_id: appointment.doctor_id)) %></td>
                     <td><%= appointment.doctor_full_name %></td>
                     <td><%= appointment.patient_full_name %></td>
-                    <td class="button_links"><%= link_to 'Approve', appointment_approval_path(
-                            approve: true, appointment_id: appointment.id), class: 'btn btn-mini btn-primary approve' %>
-                        <%= link_to 'Deny', appointment_approval_path(deny: true, appointment_id: appointment.id),
-                                    class: 'btn btn-mini btn-danger deny' %></td>
+                    <td class="button_links"><%= link_to 'Approve', appointment_approve_deny_path(
+                            approve: true, appointment_id: appointment.id), method: :post, class: 'btn btn-mini btn-primary approve' %>
+                      <%= link_to 'Deny', appointment_approve_deny_path(
+                              deny: true, appointment_id: appointment.id), method: :post, class: 'btn btn-mini btn-danger deny' %>
+                        </td>
                   </tr>
               <% end %>
               </tbody>

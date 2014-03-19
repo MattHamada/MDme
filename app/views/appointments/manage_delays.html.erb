@@ -27,7 +27,7 @@
 
                   </tr>
                   <tbody>
-                  <% doctor.appointments_today.each_with_index do |appointment, appt_index| %>
+                  <% doctor.appointments_today.includes(:patient).each_with_index do |appointment, appt_index| %>
                     <tr>
                       <td class="day_appointments"><%= link_to("#{doc_index}", appointment) %></td>
                       <td class="day_appointments"><%= appointment.date_time_ampm %></td>

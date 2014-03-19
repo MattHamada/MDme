@@ -236,10 +236,7 @@ describe "AdministrationPages" do
                       it { should have_selector('div.alert.alert-warning', text: 'Patient Deleted') }
                     end
                   end
-
                 end
-
-
               end
             end
           end
@@ -257,7 +254,7 @@ describe "AdministrationPages" do
             describe 'Accepting appointments' do
               before { click_link 'Manage Appointments' }
 
-              it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval.'}
+              it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval'}
               it { should have_link 'Appointment Requests' }
 
               describe 'appointment approval page' do
@@ -272,18 +269,35 @@ describe "AdministrationPages" do
                 end
 
                 describe 'approving the appointment' do
-                  before { click_link 'Approve' }
+                  before do
+                    reset_email
+                    appointment.patient.email
+                    click_link 'Approve'
+                  end
                   it { should_not have_content appointment_request.
-                       appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                       date_time_ampm }
                   it 'should set request attribute to false' do
                     appointment_request.reload.request.should eq(false)
+                  end
+                  it 'should send an email' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
                   end
                 end
 
                 describe 'Denying the appointment' do
-                  before { click_link 'Deny' }
+                  before do
+                    appointment.patient.email
+                    click_link 'Deny'
+                  end
                   it { should_not have_content appointment_request.
                        appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                  it 'should send an email' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
+                  end
                 end
 
                 describe 'Denying appointment deletes record' do
@@ -303,6 +317,7 @@ describe "AdministrationPages" do
                                    patient_id: 2,
                                    appointment_time: appointment.appointment_time + 1.hour) }
               before do
+                patient.save!
                 patient2.save!
                 appointment.save!
                 appointment2.save!
@@ -329,11 +344,24 @@ describe "AdministrationPages" do
                   before { click_button 'Update_0_0' }
                   it { should have_content (appointment.appointment_time.
                                                strftime('%M').to_i + 15) % 60}
-                #describe 'it should send an email' do
-                #  before { click_button 'Update_0_0' }
-                #  it { last_email.to.should include(appointment.patient.email) }
-                #end
-
+                  describe 'it should send an email' do
+                    before do
+                      reset_email
+                      click_button 'Update_0_0'
+                      appointment.patient.email
+                    end
+                   it ' should send an email to affected patient' do
+                      email_thread = appointment.send_delay_email
+                      email_thread.join
+                      all_emails_to.should include([appointment.patient.email])
+                   end
+                  end
+                  describe 'not checking box should not delay other appointment' do
+                    it { expect do
+                      click_button 'Update_0_0'
+                      appointment2.reload
+                    end.to change(appointment2, :appointment_delayed_time) }
+                  end
                 end
               end
               describe 'Delaying all subsequent appointments of the day' do
@@ -344,12 +372,33 @@ describe "AdministrationPages" do
                 it { expect do
                        click_button 'Update_0_0'
                        appointment2.reload
-                     end.to change(appointment2, :appointment_delayed_time) }
-              end
+                end.to change(appointment2, :appointment_delayed_time) }
+                it { expect do
+                  click_button 'Update_0_0'
+                  appointment.reload
+                end.to change(appointment, :appointment_delayed_time) }
 
+                describe 'should email all patients affects' do
+                  before do
+                    reset_email
+                    click_button 'Update_0_0'
+                    appointment.patient.email
+                    appointment2.patient.email
+                  end
+                  it ' should send an email to changed patient' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
+                  end
+                  it ' should send an email to other patient patient' do
+                    email_thread = appointment2.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment2.patient.email])
+                  end
+                end
+              end
             end
           end
-
         end
 
         describe 'signing out' do
