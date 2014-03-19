@@ -20,7 +20,7 @@ class AdminsController < ApplicationController
   # index page shows a list of all confirmed appointments for the current day
   def index
     @appointments = Appointment.in_clinic(current_admin).
-        today.confirmed.order('appointment_time ASC').load
+        today.confirmed.order('appointment_time ASC').load.includes([:patient, :doctor])
   end
 
 
