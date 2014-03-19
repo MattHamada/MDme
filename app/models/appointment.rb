@@ -17,6 +17,7 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :patient, prefix: true
 
   #appointments must be at a unique time in the future
+  #TODO make appointment_time uniqueness based on clinic
   validates :appointment_time, presence: true, uniqueness: true
   validate :appointment_time_in_future
   #must have a doctor and patient assigned to each appointment
@@ -36,6 +37,11 @@ class Appointment < ActiveRecord::Base
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
+  def self.not_past
+    Appointment.where(Appointment.arel_table[:appointment_time].
+                          gt(DateTime.now)).all
+  end
+
   def remaining_appointments_today
     Appointment.today.with_doctor(doctor_id).
         where(appointment_time: appointment_time+1.minute...DateTime.tomorrow)
@@ -49,6 +55,10 @@ class Appointment < ActiveRecord::Base
   def self.confirmed_today_with_doctor(doctor_id)
     Appointment.given_date(Date.today).confirmed.
         with_doctor(doctor_id).order('appointment_time ASC').load
+  end
+
+  def self.order_by_time
+    Appointment.order('appointment_time ASC').load
   end
 
   def self.in_clinic(model)

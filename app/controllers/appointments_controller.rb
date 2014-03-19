@@ -50,18 +50,36 @@ class AppointmentsController < ApplicationController
 
   end
 
-  # run when admin hits approve or deny on approval page
-  def approval
+  def approve_deny
+    appointment = Appointment.find(params[:appointment_id]) unless params[:appointment_id].nil?
     if params.has_key?(:approve)
-      appointment =  Appointment.find(params[:appointment_id])
       appointment.request = false
       appointment.save!
+      appointment.patient.email_confirmation_to_patient(appointment, :approve)
     elsif params.has_key?(:deny)
-      Appointment.delete(Appointment.find(params[:appointment_id]))
+      appointment.patient.email_confirmation_to_patient(appointment, :deny)
+      appointment.destroy
     end
+    redirect_to appointment_approval_path
+  end
+
+  # run when admin hits approve or deny on approval page
+  def approval
     @appointments = Appointment.in_clinic(current_admin).requests.
-                                order('appointment_time ASC').load.
-                                includes(:doctor, :patient)
+                      order_by_time.includes(:doctor, :patient).not_past
+    # if params.has_key?(:approve)
+    #   appointment =  Appointment.find(params[:appointment_id])
+    #   appointment.request = false
+    #   appointment.save!
+    #   appointment.patient.email_confirmation_to_patient(appointment, :approve)
+    # elsif params.has_key?(:deny)
+    #   appointment =  Appointment.find(params[:appointment_id])
+    #   appointment.patient.email_confirmation_to_patient(appointment, :deny)
+    #   Appointment.delete(params[:appointment_id])
+    # end
+    # @appointments = Appointment.in_clinic(current_admin).requests.
+    #     order_by_time.includes(:doctor, :patient).not_past
+
   end
 
   # creates appointments, sets as a request if made from patient site, but not if from admin site.
