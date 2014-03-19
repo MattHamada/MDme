@@ -55,9 +55,9 @@ class AppointmentsController < ApplicationController
     if params.has_key?(:approve)
       appointment.request = false
       appointment.save!
-      appointment.patient.email_confirmation_to_patient(appointment, :approve)
+      appointment.email_confirmation_to_patient(:approve)
     elsif params.has_key?(:deny)
-      appointment.patient.email_confirmation_to_patient(appointment, :deny)
+      appointment.email_confirmation_to_patient(:deny)
       appointment.destroy
     end
     redirect_to appointment_approval_path
@@ -202,7 +202,7 @@ class AppointmentsController < ApplicationController
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
     if appointment.update_attribute(:appointment_delayed_time, new_time)
       flash[:success] = "Appointments updated"
-      appointment.send_delay_email(new_time)
+      appointment.send_delay_email
     else
       flash[:warning] = "An error has occured please try again."
     end

@@ -98,7 +98,19 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  def send_delay_email(new_time)
+  def email_confirmation_to_patient(choice)
+    if choice == :approve
+        PatientMailer.appointment_confirmation_email(self).deliver
+
+    elsif choice == :deny
+      Thread.new do
+        PatientMailer.appointment_deny_email(self).deliver
+      end
+    end
+
+  end
+
+  def send_delay_email
     Thread.new do
       PatientMailer.appointment_delayed_email(patient,
                                              appointment_delayed_time).deliver
@@ -109,7 +121,7 @@ class Appointment < ActiveRecord::Base
       remaining_appointments_today.each do |appt|
          appt.update_attribute(:appointment_delayed_time,
                             appt.appointment_delayed_time + time_to_add.minutes)
-         appt.send_delay_email(appt.appointment_delayed_time + time_to_add.minutes)
+         appt.send_delay_email
       end
   end
 

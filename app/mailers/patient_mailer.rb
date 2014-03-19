@@ -12,4 +12,20 @@ class PatientMailer < ActionMailer::Base
 
     mail to: @patient.email, subject: 'Appointment time changed'
   end
+
+  def appointment_confirmation_email(appointment)
+    @patient = appointment.patient
+    @appointment_new_time = appointment.date_time_ampm
+
+    mail to: @patient.email, subject: 'Appointment approved'
+  end
+
+
+  def appointment_deny_email(appointment)
+    @patient = appointment.patient
+    @appointment_new_time = appointment.date_time_ampm
+
+    mail to: @patient.email, subject: 'Appointment denied'
+
+  end
 end
