@@ -39,7 +39,7 @@ class Appointment < ActiveRecord::Base
 
   def self.not_past
     Appointment.where(Appointment.arel_table[:appointment_time].
-                          gt(DateTime.now)).all
+                          gt(DateTime.now)).load
   end
 
   def remaining_appointments_today
