@@ -49,3 +49,4 @@ module MDme
     config.action_mailer.logger = nil
   end
 end
+

@@ -24,15 +24,5 @@ class Patient < ActiveRecord::Base
 
   scope :ordered_last_name, -> { order(last_name: :asc)}
 
-
-
-
-
-  # def send_password_reset_email(temppass)
-  #   Thread.new do
-  #     PasswordResetMailer.reset_email(self, temppass).deliver
-  #   end
-  # end
-
-
 end
+
