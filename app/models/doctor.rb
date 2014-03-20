@@ -4,32 +4,35 @@
 # Doctor model
 #
 require 'cookie_crypt'
+require 'user_common_instance'
+require 'user_common_class'
 
 
 class Doctor < ActiveRecord::Base
-  include CookieCrypt
+  extend UserCommonClass
+  include CookieCrypt, UserCommonInstance
 
   has_many :appointments
   has_many :patients
-  belongs_to :clinic
+  #belongs_to :clinic
   belongs_to :department
 
   delegate :name, to: :department, prefix: true
 
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
-  validates :email, presence: true, uniqueness: {case_sensitive: false},
-            email_format: true
-  validates :clinic_id, presence: true
-  validates :password, password_complexity: true, presence: true,
-                                unless: :is_admin_applying_update
-  validates :slug, presence: true #unless: :skip_on_create
-  validate :slug_unique_in_clinic
+  # validates :email, presence: true, uniqueness: {case_sensitive: false},
+  #           email_format: true
+  # validates :clinic_id, presence: true
+  # validates :password, password_complexity: true, presence: true,
+  #                               unless: :is_admin_applying_update
+  # validates :slug, presence: true #unless: :skip_on_create
+  # validate :slug_unique_in_clinic
 
-  before_validation :generate_slug
-  before_save { self.email = email.downcase }
-  before_create :create_remember_token
-  after_create :send_confirmation_email
+  # before_validation :generate_slug
+  # before_save { self.email = email.downcase }
+  # before_create :create_remember_token
+  # after_create :send_confirmation_email
 
   attr_accessor :is_admin_applying_update
   attr_accessor :skip_on_create
@@ -42,17 +45,17 @@ class Doctor < ActiveRecord::Base
 
   scope :ordered_last_name, -> { order(last_name: :asc) }
 
-  def self.in_clinic(model)
-    if model.is_a?(Doctor)
-      Doctor.where(clinic_id: model.clinic_id).where.not(id: model.id)
-    else
-      Doctor.where(clinic_id: model.clinic_id)
-    end
-  end
-
-  def full_name
-    "#{first_name} #{last_name}"
-  end
+  # def self.in_clinic(model)
+  #   if model.is_a?(Doctor)
+  #     Doctor.where(clinic_id: model.clinic_id).where.not(id: model.id)
+  #   else
+  #     Doctor.where(clinic_id: model.clinic_id)
+  #   end
+  # end
+  #
+  # def full_name
+  #   "#{first_name} #{last_name}"
+  # end
 
   # returns string array of all open appointment times
   # on a given day in am/pm format
@@ -105,14 +108,14 @@ class Doctor < ActiveRecord::Base
     times
   end
 
-  def slug_unique_in_clinic
-    errors.add(:slug, "Slug: #{slug} already in use") unless
-        slug_unique_in_clinic?
-  end
-
-  def slug_unique_in_clinic?
-    Doctor.in_clinic(self).where(slug: slug).count == 0
-  end
+  # def slug_unique_in_clinic
+  #   errors.add(:slug, "Slug: #{slug} already in use") unless
+  #       slug_unique_in_clinic?
+  # end
+  #
+  # def slug_unique_in_clinic?
+  #   Doctor.in_clinic(self).where(slug: slug).count == 0
+  # end
 
   def self.with_appointments_today
     doctors = []
@@ -126,25 +129,25 @@ class Doctor < ActiveRecord::Base
     appointments.today.order('appointment_time ASC')
   end
 
-  def to_param
-    slug
-  end
+  # def to_param
+  #   slug
+  # end
 
-  def generate_slug
-    if !full_name.blank?
-      if Doctor.in_clinic(self).where(slug: full_name.parameterize).count != 0
-        n = 1
-        while Doctor.where(slug: "#{full_name.parameterize}-#{n}").count != 0
-          n+= 1
-        end
-        self.slug ||= "#{full_name.parameterize}-#{n}"
-      else
-        self.slug ||= full_name.parameterize
-      end
-    else
-      self.slug = 'no-name-entered'.parameterize
-    end
-  end
+  # def generate_slug
+  #   if !full_name.blank?
+  #     if Doctor.in_clinic(self).where(slug: full_name.parameterize).count != 0
+  #       n = 1
+  #       while Doctor.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+  #         n+= 1
+  #       end
+  #       self.slug ||= "#{full_name.parameterize}-#{n}"
+  #     else
+  #       self.slug ||= full_name.parameterize
+  #     end
+  #   else
+  #     self.slug = 'no-name-entered'.parameterize
+  #   end
+  # end
 
   def send_password_reset_email(temppass)
     Thread.new do
@@ -154,14 +157,14 @@ class Doctor < ActiveRecord::Base
 
   private
 
-  def send_confirmation_email
-    Thread.new do
-      SignupMailer.signup_confirmation(self, password).deliver
-    end
-  end
-
-  def create_remember_token
-    self.remember_token = encrypt(new_remember_token)
-  end
+  # def send_confirmation_email
+  #   Thread.new do
+  #     SignupMailer.signup_confirmation(self, password).deliver
+  #   end
+  # end
+  #
+  # def create_remember_token
+  #   self.remember_token = encrypt(new_remember_token)
+  # end
 
 end

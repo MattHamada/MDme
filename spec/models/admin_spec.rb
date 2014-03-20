@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Admin do
   before { @admin = Admin.new(email: 'admin@example.com',
                               password: 'Qwerty1',
-                              password_confirmation: 'Qwerty1') }
+                              password_confirmation: 'Qwerty1',
+                              clinic_id: 1) }
 
   subject { @admin }
 
