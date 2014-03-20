@@ -7,4 +7,5 @@
 
 class Department < ActiveRecord::Base
   has_many :doctors
+  has_many :clinics, through: :doctors
 end
