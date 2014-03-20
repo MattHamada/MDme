@@ -36,10 +36,6 @@ class DoctorsController < ApplicationController
     @doctor.clinic_id = current_admin.clinic_id
 
     if @doctor.save
-      Thread.new do
-        SignupMailer.signup_confirmation(@doctor, p[:password]).deliver
-      end
-
       flash[:success] = 'Doctor Successfully Created.'
       redirect_to doctors_path
     else
@@ -64,17 +60,9 @@ class DoctorsController < ApplicationController
         #skip password validation since password checked correct
         @doctor.is_admin_applying_update = true
       end
-
-
     end
-
     dp = doctor_params
-    #dp[:password] = params[:verify][:verify_password]
-    #dp[:password_confirmation] = params[:verify][:verify_password]
-
     @doctor.attributes = dp
-
-
     if @doctor.save
       flash[:success] = "Doctor Successfully Updated"
       if request.subdomain == 'admin'
@@ -99,8 +87,10 @@ class DoctorsController < ApplicationController
   end
 
   def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email, :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password, :password_confirmation, :avatar)
+    params.require(:doctor).permit(:first_name, :last_name, :email,
+                                   :department_id, :phone_number, :degree,
+                                   :alma_mater, :description, :password,
+                                   :password_confirmation, :avatar)
   end
 
   def destroy
@@ -117,7 +107,7 @@ class DoctorsController < ApplicationController
   # shows doctor's confirmed appointments
   def appointments
     @doctor = doctor
-    @appointments = Appointment.given_date(Date.today).confirmed.with_doctor(params[:id]).order('appointment_time ASC').load
+    @appointments = Appointment.confirmed_today_with_doctor(doctor.id)
   end
 
   # shows Doctor's patients

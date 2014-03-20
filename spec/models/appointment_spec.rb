@@ -4,8 +4,6 @@ describe Appointment do
   let(:doctor) { FactoryGirl.create(:doctor) }
   let(:patient) { FactoryGirl.create(:patient) }
   before do
-    doctor.save
-    patient.save
     @appointment = Appointment.new(doctor_id: doctor.id,
                                    patient_id: patient.id,
                                    appointment_time: DateTime.now + 30.minutes,

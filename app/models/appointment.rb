@@ -3,12 +3,23 @@
 #
 # Appointment model
 #
+
+require 'appointment_time_formatting'
+
 class Appointment < ActiveRecord::Base
+  include AppointmentTimeFormatting
+
+  belongs_to :doctor
+  belongs_to :patient
+  belongs_to :clinic
+
+  delegate :full_name, to: :doctor, prefix: true
+  delegate :full_name, to: :patient, prefix: true
 
   #appointments must be at a unique time in the future
+  #TODO make appointment_time uniqueness based on clinic
   validates :appointment_time, presence: true, uniqueness: true
   validate :appointment_time_in_future
-
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
@@ -16,18 +27,19 @@ class Appointment < ActiveRecord::Base
 
   before_create { self.appointment_delayed_time = appointment_time }
 
-
-  belongs_to :doctor
-  belongs_to :patient
-  belongs_to :clinic
-
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
 
+
   # returns all appointments on a specific date
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
+  end
+
+  def self.not_past
+    Appointment.where(Appointment.arel_table[:appointment_time].
+                          gt(DateTime.now)).load
   end
 
   def remaining_appointments_today
@@ -38,6 +50,15 @@ class Appointment < ActiveRecord::Base
   # returns all appointments with a given doctor
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
+  end
+
+  def self.confirmed_today_with_doctor(doctor_id)
+    Appointment.given_date(Date.today).confirmed.
+        with_doctor(doctor_id).order('appointment_time ASC').load
+  end
+
+  def self.order_by_time
+    Appointment.order('appointment_time ASC').load
   end
 
   def self.in_clinic(model)
@@ -52,7 +73,8 @@ class Appointment < ActiveRecord::Base
     if appointment_time.nil?
       errors.add(:appointment_time, "No Date/time entered.")
     else
-      errors.add(:appointment_time, "Date/Time must be set in the future.") if appointment_time < DateTime.now
+      errors.add(:appointment_time, "Date/Time must be set in the future.") if
+          appointment_time < DateTime.now
     end
   end
 
@@ -76,9 +98,21 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  def send_delay_email(new_time)
+  def email_confirmation_to_patient(choice)
+    if choice == :approve
+        PatientMailer.appointment_confirmation_email(self).deliver
+
+    elsif choice == :deny
+      Thread.new do
+        PatientMailer.appointment_deny_email(self).deliver
+      end
+    end
+
+  end
+
+  def send_delay_email
     Thread.new do
-      PatientMailer.appointment_delayed_email(Patient.find(patient_id),
+      PatientMailer.appointment_delayed_email(patient,
                                              appointment_delayed_time).deliver
     end
   end
@@ -87,7 +121,7 @@ class Appointment < ActiveRecord::Base
       remaining_appointments_today.each do |appt|
          appt.update_attribute(:appointment_delayed_time,
                             appt.appointment_delayed_time + time_to_add.minutes)
-         appt.send_delay_email(appt.appointment_delayed_time + time_to_add.minutes)
+         appt.send_delay_email
       end
   end
 

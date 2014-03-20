@@ -39,7 +39,7 @@ MDme::Application.routes.draw do
   get 'appointments/ondate'                  => 'appointments#show_on_date',      as: :appointment_show_on_date
   get 'appointments/delays'                  => 'appointments#manage_delays',     as: :manage_delays
   post 'appointments/delays'                 => 'appointments#add_delay',         as: :add_delay
-
+  post 'appointments/approvedeny'            => 'appointments#approve_deny',      as: :appointment_approve_deny
   get 'doctors/:id/appointments'             => 'doctors#appointments',           as: :doctors_appointments
   get 'doctors/:id/patients'                 => 'doctors#patient_index',          as: :doctors_patients
 

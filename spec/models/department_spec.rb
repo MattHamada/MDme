@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe Department do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before { @department = Department.new(name: "Oncology") }
+  subject { @department }
+
+  it { should respond_to :name }
+  it { should be_valid }
 end

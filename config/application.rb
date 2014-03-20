@@ -41,6 +41,12 @@ module MDme
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     #autoload files in /lib for use in other classes
-    config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
+    #config.autoload_paths += Dir["#{config.root}/lib", "#{config.root}/lib/**/"]
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
+    #prevent email from being logged
+    config.action_mailer.logger = nil
   end
 end
+

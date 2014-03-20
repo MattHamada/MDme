@@ -110,7 +110,8 @@ namespace :db do
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         request: request)
+                         request: request,
+                         clinic_id: 1)
     end
 
   end

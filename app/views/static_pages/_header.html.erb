@@ -4,7 +4,6 @@
     <div class="col-xs-5" id="logo">
       <%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
     </div>
-    <% if not patient_signed_in? %>
         <div id="static-links">
           <div class="col-xs-1 col-xs-offset-2">
             <%= link_to 'about us', about_path %>
@@ -20,13 +19,12 @@
           </div>
           <div class="col-xs-1">
             <% if patient_signed_in? %>
-              <%= link_to 'sign out', signout_path, method: :delete %>
+              <%= link_to 'my account', patient_path(current_patient) %>
             <% else %>
               <a href="/signin">sign in</a>
             <% end %>
           </div>
         </div>
-    <% end %>
   </div>
   <hr id="nav-break"/>
 

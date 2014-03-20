@@ -16,7 +16,7 @@
   <% if request.subdomain == 'admin' %>
     <div class='form-group'>
       <%= f.label(:patient, "Select patient") %>
-      <%= collection_select(:patient, :patient_id, Patient.all, :id, :full_name, {}, { class: 'form-control'}) %>
+      <%= collection_select(:patient, :patient_id, Patient.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
     </div>
   <% end %>
     <br/><br/>

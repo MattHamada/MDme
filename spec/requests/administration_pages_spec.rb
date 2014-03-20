@@ -3,12 +3,12 @@ require 'spec_helper'
 describe "AdministrationPages" do
   let(:clinic) { FactoryGirl.create(:clinic) }
   let(:admin) { FactoryGirl.create(:admin) }
+  let(:appointment) { FactoryGirl.create(:appointment) }
+  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:department) { FactoryGirl.create(:department) }
+  let(:patient) { FactoryGirl.create(:patient) }
   subject { page }
-  before do
-    clinic.save!
-    admin.save!
-    switch_to_subdomain('admin')
-  end
+  before { switch_to_subdomain('admin') }
 
   describe 'root signin page' do
     before { visit root_path }
@@ -51,11 +51,6 @@ describe "AdministrationPages" do
       end
 
       describe 'with valid information' do
-        let(:appointment) { FactoryGirl.create(:appointment) }
-        let(:department) { FactoryGirl.create(:department) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
-        let(:patient) { FactoryGirl.create(:patient) }
-
         before do
           fill_in 'Email', with: admin.email
           fill_in 'Password', with: admin.password
@@ -71,8 +66,6 @@ describe "AdministrationPages" do
           it { should have_content 'Manage Patients'}
           it { should have_content "Today's Appointments" }
 
-
-
           describe 'admin doctors pages' do
             describe 'browse doctors' do
               before do
@@ -83,12 +76,11 @@ describe "AdministrationPages" do
               it { should have_title('Doctors') }
               it { should have_link('Add Doctor') }
               it { should have_content(doctor.full_name) }
-              it { should have_content(doctor.department.name) }
+              it { should have_content(doctor.department_name) }
             end
 
             describe 'can only see doctors in own clinic' do
               let(:clinic2) { FactoryGirl.create(:clinic) }
-              let(:department) { FactoryGirl.create(:department) }
               let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
                                               email: 'docEmailTest.@test.com',
                                               first_name: 'healthier')}
@@ -244,55 +236,68 @@ describe "AdministrationPages" do
                       it { should have_selector('div.alert.alert-warning', text: 'Patient Deleted') }
                     end
                   end
-
                 end
-
-
               end
             end
           end
 
           describe 'appointments' do
             let(:appointment_request) { FactoryGirl.create(:appointment_request)}
+            let(:appointment2) { FactoryGirl.create(:appointment,
+             appointment_time: appointment_request.appointment_time + 1.hour, )}
             before do
               patient.save!
               doctor.save!
               appointment_request.save!
-              @appt = Appointment.create(doctor_id: '1', patient_id:'1',
-                                         appointment_time: appointment_request.appointment_time + 1.hour,
-                                         description:   'test',
-                                         request: false)
+              appointment2.save
             end
             describe 'Accepting appointments' do
               before { click_link 'Manage Appointments' }
 
-              it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval.'}
+              it { should have_selector 'div.alert.alert-warning', text: 'Appointments waiting for approval'}
               it { should have_link 'Appointment Requests' }
 
               describe 'appointment approval page' do
                 before { click_link 'Appointment Requests' }
-                it { should have_content appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                it { should have_content appointment_request.date_time_ampm }
 
                 describe 'Seeing other appointment times' do
                   before do
-                    click_link appointment_request.appointment_time.strftime('%m-%e-%y %I:%M%p')
+                    click_link appointment_request.date_time_ampm
                   end
-                  it { should have_content @appt.doctor.full_name}
+                  it { should have_content appointment2.doctor.full_name}
                 end
 
                 describe 'approving the appointment' do
-                  before { click_link 'Approve' }
+                  before do
+                    reset_email
+                    appointment.patient.email
+                    click_link 'Approve'
+                  end
                   it { should_not have_content appointment_request.
-                       appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                       date_time_ampm }
                   it 'should set request attribute to false' do
                     appointment_request.reload.request.should eq(false)
+                  end
+                  it 'should send an email' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
                   end
                 end
 
                 describe 'Denying the appointment' do
-                  before { click_link 'Deny' }
+                  before do
+                    appointment.patient.email
+                    click_link 'Deny'
+                  end
                   it { should_not have_content appointment_request.
                        appointment_time.strftime('%m-%e-%y %I:%M%p') }
+                  it 'should send an email' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
+                  end
                 end
 
                 describe 'Denying appointment deletes record' do
@@ -312,9 +317,11 @@ describe "AdministrationPages" do
                                    patient_id: 2,
                                    appointment_time: appointment.appointment_time + 1.hour) }
               before do
+                patient.save!
                 patient2.save!
                 appointment.save!
                 appointment2.save!
+                clinic.save!
                 click_link 'Manage Appointments'
                 click_link 'Manage Delays'
               end
@@ -337,11 +344,24 @@ describe "AdministrationPages" do
                   before { click_button 'Update_0_0' }
                   it { should have_content (appointment.appointment_time.
                                                strftime('%M').to_i + 15) % 60}
-                #describe 'it should send an email' do
-                #  before { click_button 'Update_0_0' }
-                #  it { last_email.to.should include(appointment.patient.email) }
-                #end
-
+                  describe 'it should send an email' do
+                    before do
+                      reset_email
+                      click_button 'Update_0_0'
+                      appointment.patient.email
+                    end
+                   it ' should send an email to affected patient' do
+                      email_thread = appointment.send_delay_email
+                      email_thread.join
+                      all_emails_to.should include([appointment.patient.email])
+                   end
+                  end
+                  describe 'not checking box should not delay other appointment' do
+                    it { expect do
+                      click_button 'Update_0_0'
+                      appointment2.reload
+                    end.to change(appointment2, :appointment_delayed_time) }
+                  end
                 end
               end
               describe 'Delaying all subsequent appointments of the day' do
@@ -352,12 +372,33 @@ describe "AdministrationPages" do
                 it { expect do
                        click_button 'Update_0_0'
                        appointment2.reload
-                     end.to change(appointment2, :appointment_delayed_time) }
-              end
+                end.to change(appointment2, :appointment_delayed_time) }
+                it { expect do
+                  click_button 'Update_0_0'
+                  appointment.reload
+                end.to change(appointment, :appointment_delayed_time) }
 
+                describe 'should email all patients affects' do
+                  before do
+                    reset_email
+                    click_button 'Update_0_0'
+                    appointment.patient.email
+                    appointment2.patient.email
+                  end
+                  it ' should send an email to changed patient' do
+                    email_thread = appointment.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment.patient.email])
+                  end
+                  it ' should send an email to other patient patient' do
+                    email_thread = appointment2.send_delay_email
+                    email_thread.join
+                    all_emails_to.should include([appointment2.patient.email])
+                  end
+                end
+              end
             end
           end
-
         end
 
         describe 'signing out' do
@@ -370,28 +411,18 @@ describe "AdministrationPages" do
 
   #separated due to swtich to webkit from rack
   describe 'Browse appointments', :js => true do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let(:appointment) { FactoryGirl.create(:appointment) }
-    let(:doctor) { FactoryGirl.create(:doctor) }
-    let(:patient) { FactoryGirl.create(:patient) }
     before do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com',
-                             password: 'Qwerty1',
-                             password_confirmation: 'Qwerty1',
-                             clinic_id: 1)
-
+      admin.save!
       visit root_path
-      fill_in 'Email', with: @admin.email
-      fill_in 'Password', with: @admin.password
+      fill_in 'Email', with: admin.email
+      fill_in 'Password', with: admin.password
       click_button 'Sign in'
-
       click_link "Manage Appointments"
       fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
       click_button 'Submit'
-      #wait_until { find('#day_appointments') }
     end
 
 
@@ -445,22 +476,15 @@ describe "AdministrationPages" do
   #separated for webkit -> rack
 
   describe 'Creating Appointments' do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let(:appointment) { FactoryGirl.create(:appointment) }
-    let(:doctor) { FactoryGirl.create(:doctor) }
-    let(:patient) { FactoryGirl.create(:patient) }
     before do
       doctor.save!
       patient.save!
       appointment.save!
-      @admin = Admin.create!(email: 'testAdmin@example.com',
-                             password: 'Qwerty1',
-                             password_confirmation: 'Qwerty1',
-                             clinic_id: 1)
+      admin.save!
 
       visit root_path
-      fill_in 'Email', with: @admin.email
-      fill_in 'Password', with: @admin.password
+      fill_in 'Email', with: admin.email
+      fill_in 'Password', with: admin.password
       click_button 'Sign in'
 
       click_link "Manage Appointments"

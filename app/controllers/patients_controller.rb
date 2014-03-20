@@ -12,9 +12,11 @@ class PatientsController < ApplicationController
 
   # Currently only administrators can create patients, they cannot sign up on their own.
   before_filter :require_admin_login, :only => [:new, :destroy, :index]
-  before_filter :require_admin_or_patient_login, :only => [:show, :edit]
+  before_filter :require_admin_or_patient_login, :only => [:edit, :show]
+  #before_filter :require_login, :only => [:show]
 
   def new
+    @current_user = current_admin
     @patient = Patient.new
     render 'admins/patient_new'
   end
@@ -23,15 +25,11 @@ class PatientsController < ApplicationController
     p = patient_params
     p[:password] = p[:password_confirmation] = generate_random_password
     p[:doctor_id] = params[:doctor][:doctor_id]
+    @current_user = current_admin
     @patient = Patient.new(p)
     @patient.clinic_id = current_admin.clinic_id
     if @patient.save
       flash[:success] = 'Patient Created'
-
-      Thread.new do
-        SignupMailer.signup_confirmation(@patient, p[:password]).deliver
-      end
-
       redirect_to patients_path
     else
       flash.now[:danger] = 'Error Creating Patient'
@@ -52,11 +50,12 @@ class PatientsController < ApplicationController
 
   # for admin page only
   def index
-    @patients = Patient.all.reorder("last_name").includes(:doctor)
+    @patients = Patient.in_clinic(current_admin).ordered_last_name.includes(:doctor)
     render 'admins/patient_index'
   end
 
   def edit
+    @current_user = patient
     @patient = patient
 
     if request.subdomain == 'admin'
@@ -95,7 +94,12 @@ class PatientsController < ApplicationController
 
 
   def patient_params
-    params.require(:patient).permit(:first_name, :last_name, :email, :password, :password_confirmation, :doctor_id)
+    params.require(:patient).permit(:first_name,
+                                    :last_name,
+                                    :email,
+                                    :password,
+                                    :password_confirmation,
+                                    :doctor_id)
   end
 
 
