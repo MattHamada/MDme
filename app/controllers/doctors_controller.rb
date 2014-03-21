@@ -96,6 +96,7 @@ class DoctorsController < ApplicationController
 
   def show
     @doctor = doctor
+    render 'admins/doctor_show' if request.subdomain == 'admin'
   end
 
   # shows doctor's confirmed appointments
