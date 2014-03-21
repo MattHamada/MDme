@@ -19,6 +19,8 @@ class Admin < ActiveRecord::Base
 
   has_secure_password
 
+  delegate :departments, to: :clinic, prefix: true
+
   belongs_to :clinic
 
   def send_password_reset_email(temppass)

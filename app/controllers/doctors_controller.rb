@@ -26,6 +26,7 @@ class DoctorsController < ApplicationController
 
   def new
     @doctor = Doctor.new
+    @doctor.department_id = params[:department_id] unless params[:department_id].nil?
     render 'admins/doctors_new'
   end
 
@@ -86,13 +87,6 @@ class DoctorsController < ApplicationController
 
   end
 
-  def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email,
-                                   :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password,
-                                   :password_confirmation, :avatar)
-  end
-
   def destroy
     @doctor = doctor
     @doctor.destroy!
@@ -114,6 +108,13 @@ class DoctorsController < ApplicationController
   def patient_index
     @doctor = doctor
     @patients = @doctor.patients
+  end
+
+  def doctor_params
+    params.require(:doctor).permit(:first_name, :last_name, :email,
+                                   :department_id, :phone_number, :degree,
+                                   :alma_mater, :description, :password,
+                                   :password_confirmation, :avatar)
   end
 
   private

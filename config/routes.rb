@@ -45,7 +45,7 @@ MDme::Application.routes.draw do
 
 
 
-
+  resources :departments
   resources :patients
   resources :sessions, only: [:new, :create, :destroy]
   resources :admins

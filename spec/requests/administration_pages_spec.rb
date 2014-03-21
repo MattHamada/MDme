@@ -64,7 +64,102 @@ describe "AdministrationPages" do
           it { should have_content 'Manage Appointments'}
           it { should have_content 'Manage Doctors' }
           it { should have_content 'Manage Patients'}
+          it { should have_content 'Manage Departments'}
           it { should have_content "Today's Appointments" }
+
+          describe 'admin department pages' do
+            before do
+              admin.save!
+              clinic.save!
+              department.save!
+              doctor.save!
+              click_link 'Manage Departments'
+            end
+            it { should have_link department.name }
+            it { should have_link 'Add Department' }
+
+            describe 'Viewing departments' do
+              before { click_link department.name }
+              it { should have_link department.doctors.first.full_name }
+            end
+
+            describe 'Should only see doctors in dept in same clinic' do
+              let(:clinic2) { FactoryGirl.create(:clinic) }
+              let(:doctor2) { FactoryGirl.create(:doctor,
+                                                 first_name: 'Billiam',
+                                                 email: 'doc2@doc2.com',
+                                                 clinic_id: 2)}
+              before do
+                clinic2.save!
+                doctor.save!
+                doctor2.save!
+                click_link department.name
+              end
+              it { should_not have_content doctor2.full_name }
+              it { should have_content doctor.full_name }
+            end
+
+            describe 'Adding Departments page' do
+              before { click_link 'Add Department' }
+              it { should have_title 'Add Department' }
+              it { should have_content 'Name' }
+              it { should have_button 'Create' }
+
+              describe 'cant add department with no name' do
+                before { click_button 'Create' }
+                it { should have_title 'Add Department' }
+                it { should have_selector 'div.alert.alert-danger',
+                     text: 'The form contains 1 error' }
+                it { should have_content "Name can't be blank"}
+              end
+
+              describe 'Adding a Department' do
+                before do
+                  fill_in 'department_name', with: 'newDept'
+                  click_button 'Create'
+                end
+                it { should have_content 'newDept' }
+
+                describe 'Deleting a department' do
+                  describe 'it should allow deleting a department with no doctors' do
+                    before do
+                      click_link 'newDept'
+                      click_link 'Delete department'
+                    end
+                    it { should_not have_content 'newDept' }
+                  end
+                  describe 'it should delete the department' do
+                    before { click_link 'newDept' }
+                    it 'should change the department count' do
+                      expect do
+                        click_link 'Delete department'
+                      end.to change(Department, :count).by(-1)
+                    end
+                  end
+                  describe 'Cannot delete departments with doctors' do
+                    before do
+                      click_link department.name
+                      click_link 'Delete department'
+                    end
+                    it { should have_selector 'div.alert.alert-danger',
+                         text: 'Cannot delete a department with doctors' }
+                    #it { should_not change(Department, count) }
+                  end
+                  describe 'it should not delete the department' do
+                    before do
+                      click_link department.name
+                      click_link 'Delete department'
+                    end
+                    it 'should change the department count' do
+                      expect do
+                        click_link 'Delete department'
+                      end.not_to change(Department, :count).by(-1)
+                    end
+                  end
+                end
+              end
+            end
+          end
 
           describe 'admin doctors pages' do
             describe 'browse doctors' do

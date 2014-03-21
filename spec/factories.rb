@@ -60,6 +60,7 @@ FactoryGirl.define do
 
   factory :department do
     name                  'Oncology'
+    clinic_id             '1'
   end
 
   factory :clinic do
