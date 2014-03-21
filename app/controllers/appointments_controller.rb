@@ -173,7 +173,7 @@ class AppointmentsController < ApplicationController
 
   # accessed from admin page under manage appointments
   def index
-    if Appointment.requests.any?
+    if Appointment.requests.in_clinic(current_admin).not_past.any?
       flash.now[:warning] = "Appointments waiting for approval."
     end
   end
