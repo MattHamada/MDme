@@ -42,7 +42,7 @@ MDme::Application.routes.draw do
   post 'appointments/approvedeny'            => 'appointments#approve_deny',      as: :appointment_approve_deny
   get 'doctors/:id/appointments'             => 'doctors#appointments',           as: :doctors_appointments
   get 'doctors/:id/patients'                 => 'doctors#patient_index',          as: :doctors_patients
-
+  get 'doctors/:id/patients/:patient_id'     => 'doctors#patient_show',           as: :doctors_patient
 
 
   resources :departments
@@ -51,6 +51,7 @@ MDme::Application.routes.draw do
   resources :admins
   resources :appointments
   resources :doctors
+
 
   #api routes
   namespace :api, :version => 1 do

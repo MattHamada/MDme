@@ -40,7 +40,10 @@ class PatientsController < ApplicationController
   def show
     @patient = patient
     respond_to do |format|
-      format.html { render 'admins/patient_show' if request.subdomain == 'admin' } # show.html.erb
+      format.html do
+        render 'admins/patient_show' if request.subdomain == 'admin'
+
+      end # show.html.erb
       format.json  { render :json => @patient, except: [:created_at,
                                                         :updated_at,
                                                         :password_digest,

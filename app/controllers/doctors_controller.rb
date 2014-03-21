@@ -107,8 +107,12 @@ class DoctorsController < ApplicationController
 
   # shows Doctor's patients
   def patient_index
-    @doctor = doctor
+    @doctor = current_doctor
     @patients = @doctor.patients
+  end
+
+  def patient_show
+    @patient = Patient.find_by_slug(params[:patient_id])
   end
 
   def doctor_params
