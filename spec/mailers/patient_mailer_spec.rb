@@ -7,6 +7,7 @@ describe PatientMailer do
     let(:appointment) { FactoryGirl.create(:appointment) }
     let(:mail) { PatientMailer.appointment_delayed_email(patient,
                                      appointment.appointment_delayed_time) }
+    before { doctor.save }
 
     it "renders the headers" do
       mail.subject.should eq("Appointment time changed")

@@ -18,7 +18,8 @@ class Appointment < ActiveRecord::Base
 
   #appointments must be at a unique time in the future
   #TODO make appointment_time uniqueness based on clinic
-  validates :appointment_time, presence: true, uniqueness: true
+  validates :appointment_time, presence: true
+  validate :appointment_unique_with_doctor_in_clinic
   validate :appointment_time_in_future
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id,  presence: true
@@ -69,14 +70,7 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  def appointment_time_in_future
-    if appointment_time.nil?
-      errors.add(:appointment_time, "No Date/time entered.")
-    else
-      errors.add(:appointment_time, "Date/Time must be set in the future.") if
-          appointment_time < DateTime.now
-    end
-  end
+
 
   #for calculating delays based on selection box
   def self.get_added_time(selection)
@@ -123,6 +117,29 @@ class Appointment < ActiveRecord::Base
                             appt.appointment_delayed_time + time_to_add.minutes)
          appt.send_delay_email
       end
+  end
+
+  def appointment_time_in_future
+    if appointment_time.nil?
+      errors.add(:appointment_time, "No Date/time entered.")
+    else
+      errors.add(:appointment_time, "Date/Time must be set in the future.") if
+          appointment_time < DateTime.now
+    end
+  end
+
+  def appointment_unique_with_doctor_in_clinic
+    times_taken = []
+    begin
+      self.doctor.appointments.confirmed.each do |appt|
+        unless appt.id == self.id
+          times_taken << appt.appointment_time
+        end
+      end
+    rescue NoMethodError
+      errors.add(:doctor_id, 'No doctor specified')
+    end
+    errors.add(:appointment_time, "Time not available") if times_taken.include?(appointment_time)
   end
 
 end
