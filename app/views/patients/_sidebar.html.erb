@@ -11,7 +11,7 @@
 
           <ul class="nav nav-pills nav-stacked">
             <li><%= link_to "<i class='fa fa-dashboard'></i> Profile".html_safe, patient_path(@patient) %></li>
-            <li><%= link_to "<i class='fa fa-book'></i> Request an Appointment".html_safe, request_appointment_path %><li>
+            <li><%= link_to "<i class='fa fa-book'></i> Appointments".html_safe, patient_appointments_path(@patient) %><li>
             <li><%= link_to "<i class='fa fa-minus-circle'></i> Sign Out".html_safe, signout_path, method: :delete %></li>
 
           </ul>

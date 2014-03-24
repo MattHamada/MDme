@@ -95,6 +95,12 @@ class PatientsController < ApplicationController
     redirect_to patients_path
   end
 
+  def appointments
+    @patient = patient
+    @appointments = Appointment.with_patient(@patient.id).confirmed.not_past.
+                  includes([:doctor])
+  end
+
 
 
   def patient_params

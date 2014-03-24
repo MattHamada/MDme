@@ -51,7 +51,7 @@ describe "Patient Pages" do
         before do
           doctor.save
           appointment.save
-          click_link 'Request an Appointment'
+          click_link 'Appointments'
           click_link 'Edit Requests'
         end
         it { should have_content appointment.date_time_ampm }
@@ -138,7 +138,8 @@ describe "Patient Pages" do
       fill_in 'Email', with: patient.email
       fill_in 'Password', with: 'Qwerty1'
       click_button 'Sign in'
-      click_link 'Request an Appointment'
+      click_link 'Appointments'
+      click_link 'New Request'
     end
     describe 'with invalid (past) date' do
       before do
@@ -164,7 +165,8 @@ describe "Patient Pages" do
                                          clinic_id: 2) }
       before do
         doctor2.save
-        click_link 'Request an Appointment'
+        click_link 'Appointments'
+        click_link 'New Request'
       end
       it 'should not list doctor2 in available doctors' do
         find(:css, 'select#doctor_doctor_id').value.should_not eq 2
