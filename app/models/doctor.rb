@@ -48,7 +48,7 @@ class Doctor < ActiveRecord::Base
   # returns string array of all open appointment times
   # on a given day in am/pm format
   def open_appointment_times(date)
-    appointments = self.appointments.given_date(date)
+    appointments = self.appointments.given_date(date).confirmed
     times = []
     (9..16).each do |h|
       (0..45).step(15) do |m|
