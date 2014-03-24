@@ -78,7 +78,7 @@ class Doctor < ActiveRecord::Base
       end
     end
     appointments.find_each do |appt|
-      hour = appt.appointment_time_hour + 7
+      hour = appt.appointment_time_hour
       minute = appt.appointment_time_minute
       minute = '00' if minute == 0
 
