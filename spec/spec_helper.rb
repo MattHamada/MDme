@@ -51,6 +51,7 @@ RSpec.configure do |config|
   #add helpers from app
   config.include ApplicationHelper
 
+
   #below needed for db transactions to stick with capybara :webkit testing
   #found http://stackoverflow.com/questions/8178120/capybara-with-js-true-causes-test-to-fail
   config.use_transactional_fixtures = false
@@ -71,4 +72,6 @@ RSpec.configure do |config|
   #include email helpers
   config.include(MailerMacros)
   config.before(:each) { reset_email }
+
+
 end

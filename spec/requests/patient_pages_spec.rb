@@ -45,6 +45,50 @@ describe "Patient Pages" do
         it { should have_content 'Scheduling Simplified' }
       end
 
+      describe 'editing requests pages' do
+        let(:appointment) { FactoryGirl.create(:appointment_request) }
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        before do
+          doctor.save
+          appointment.save
+          click_link 'Request an Appointment'
+          click_link 'Edit Requests'
+        end
+        it { should have_content appointment.date_time_ampm }
+        it { should have_content appointment.doctor.full_name }
+        it { should have_link '1' }
+
+        describe 'editing a request' do
+          before do
+            click_link '1'
+            select '4:45 PM', from: 'time'
+          end
+          it { expect do
+            click_button 'Update'
+            appointment.reload
+          end.to change(appointment, :appointment_time) }
+        end
+
+        describe 'deleting requests' do
+          before do
+            click_link '1'
+            click_link 'Delete Request'
+          end
+          it { should_not have_content appointment.date_time_ampm }
+        end
+
+        describe 'should delete appointment request' do
+          before do
+            click_link '1'
+          end
+          it 'should change appointment count' do
+            expect do
+              click_link('Delete Request')
+            end.to change(Appointment, :count).by(-1)
+          end
+        end
+      end
+
       describe 'signing out' do
         before { click_link 'Sign Out' }
         it { should have_link('sign in') }
@@ -78,6 +122,8 @@ describe "Patient Pages" do
       it { should_not have_content patient.email }
     end
   end
+
+
 
   #separated due to swtich to webkit from rack
   describe 'Request an appointment', :js => true do

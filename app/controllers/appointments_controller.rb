@@ -11,8 +11,9 @@ class AppointmentsController < ApplicationController
   # Only admins can create/edit/destroy/approve appointments
   # Patients can request
   #TODO Allow patients to edit appointments before they are confirmed
-  before_filter :require_admin_login, :only => [:new, :edit, :destroy, :index, :approval]
+  before_filter :require_admin_login, :only => [:new, :edit, :index, :approval]
   before_filter :require_patient_login, :only => [:patient_request]
+  before_filter :require_admin_or_patient_login, :only => [:destroy]
 
   def new
     #TODO Load only open times on admin page similar to patient page
@@ -132,6 +133,36 @@ class AppointmentsController < ApplicationController
     end
   end
 
+  #patient can view open requests here
+  def edit_requests
+    @patient = Patient.find_by_slug(params[:id])
+    @appointments = Appointment.with_patient(@patient.id).not_past.includes(:doctor)
+  end
+
+  def edit_request
+    @patient = Patient.find_by_slug(params[:id])
+    @appointment = Appointment.find(params[:appointment_id])
+    @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
+    @open_times << @appointment.time_selector
+  end
+
+  def update_request
+    @appointment = Appointment.find(params[:appointment_id])
+    time = Time.parse(params[:time])
+    hour = time.hour
+    minute = time.min
+    newtime = @appointment.appointment_time.change({hour: hour, min: minute})
+    if @appointment.update_attributes(description: params[:appointment][:description],
+                                      appointment_time: newtime)
+      flash[:success] = "Request updated"
+      redirect_to edit_requests_path
+    else
+      flash[:danger] = "Error"
+      render edit_requests_path
+    end
+
+  end
+
 
   def edit
     @appointment = Appointment.find(params[:id])
@@ -215,10 +246,19 @@ class AppointmentsController < ApplicationController
   end
 
   def destroy
-    @appointment = Appointment.find(params[:id])
+    if params.has_key?(:appointment_id)
+       @appointment = Appointment.find(params[:appointment_id])
+    else
+      @appointment = Appointment.find(params[:id])
+    end
     @appointment.destroy!
     flash[:warning] = "Appointment deleted"
-    redirect_to admins_path
+    if request.subdomain == 'admin'
+      redirect_to admins_path
+    else
+      redirect_to edit_requests_path
+    end
+
   end
 
 end

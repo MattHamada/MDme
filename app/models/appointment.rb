@@ -53,6 +53,10 @@ class Appointment < ActiveRecord::Base
     Appointment.where(doctor_id: doctor_id)
   end
 
+  def self.with_patient(patient_id)
+    Appointment.where(patient_id: patient_id)
+  end
+
   def self.confirmed_today_with_doctor(doctor_id)
     Appointment.given_date(Date.today).confirmed.
         with_doctor(doctor_id).order('appointment_time ASC').load
@@ -94,8 +98,9 @@ class Appointment < ActiveRecord::Base
 
   def email_confirmation_to_patient(choice)
     if choice == :approve
+      Thread.new do
         PatientMailer.appointment_confirmation_email(self).deliver
-
+      end
     elsif choice == :deny
       Thread.new do
         PatientMailer.appointment_deny_email(self).deliver
