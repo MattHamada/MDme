@@ -1,4 +1,6 @@
-<%= render 'admins/sidebar' %>
+<%= render 'admins/sidebar'if request.subdomain == 'admin' %>
+<%= render 'patients/sidebar'if request.subdomain == 'www' %>
+
 
 <div class="col-xs-9">
   <div class="row">

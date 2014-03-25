@@ -35,7 +35,8 @@ MDme::Application.routes.draw do
   get 'patients/:id/appointments/edit_requests' => 'appointments#edit_requests',     as: :edit_requests
   get 'patients/:id/appointments/:appointment_id/edit'  => 'appointments#edit_request', as: :edit_request
   post 'patients/:id/appointments/:appointment_id/update' => 'appointments#update_request', as: :update_request
-  get 'patients/:id/appointments'               => 'patients#appointments',           as: :patient_appointments
+  get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
+  get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
 
   get 'appointments/browse'                     => 'appointments#browse',            as: :appointments_browse
   get 'appointments/new/browse'                 => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse

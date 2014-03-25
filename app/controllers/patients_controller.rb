@@ -101,6 +101,13 @@ class PatientsController < ApplicationController
                   includes([:doctor])
   end
 
+  def appointment_show
+    @patient = patient
+    @appointment = Appointment.find(params[:appointment_id])
+    render(partial: 'ajax_appointment_show', object: @appointment) if request.xhr?
+
+  end
+
 
 
   def patient_params

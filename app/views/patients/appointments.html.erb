@@ -15,20 +15,17 @@
                 <th>Doctor</th>
               </tr>
               <tbody>
-              <% @appointments.each_with_index do |appointment, index| %>
-                <tr>
-                  <td><%= link_to("#{index+1}", appointment) %></td>
-                  <td><%= appointment.time_am_pm %></td>
-                  <td><%= appointment.doctor_full_name %></td>
-                </tr>
-              <% end %>
+                <% @appointments.each_with_index do |appointment, index| %>
+                  <tr>
+                    <td id="show_appointment"><%= link_to("#{index+1}", patient_appointment_path(appointment_id: appointment.id)) %></td>
+                    <td><%= appointment.time_am_pm %></td>
+                    <td><%= appointment.doctor_full_name %></td>
+                  </tr>
+                <% end %>
               </tbody>
             </thread>
           </table>
         </div>
-        <div id="open_appointment_results">
-        </div>
-
       </div>
     </div>
   </div>
