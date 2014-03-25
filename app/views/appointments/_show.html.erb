@@ -1,0 +1,7 @@
+<div class="panel-heading"><h4>Appointment Details</h4></div>
+<div class="panel-body">
+  <b>Doctor:</b> <%=  link_to @appointment.doctor_full_name, doctor_path(@appointment.doctor) %> <br/>
+  <b>Patient:</b> <%= link_to @appointment.patient_full_name, patient_path(@appointment.patient) %> <br/>
+  <b>Time:</b> <%= @appointment.date_time_ampm %> <br/>
+  <b>Notes:</b> <%= @appointment.description %>    <br/>
+  <%= link_to "Edit Appointment", edit_appointment_path(@appointment) if request.subdomain == 'admin' %> <br/>

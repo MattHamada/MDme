@@ -2,14 +2,8 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Appointment Details</h4></div>
-        <div class="panel-body">
-          <b>Doctor:</b> <%= @appointment.doctor.full_name %> <br/>
-          <b>Patient:</b> <%= @appointment.patient.full_name %> <br/>
-          <b>Time:</b> <%= @appointment.date_time_ampm %> <br/>
-          <b>Notes:</b> <%= @appointment.description %>    <br/>
-          <%= link_to "Edit Appointment", edit_appointment_path(@appointment) %> <br/>
-          <%= link_to "Close", "", { id: 'closeLink' } %>                        <br/>
+        <%= render 'show' %>
+        <%= link_to "Close", "", { id: 'closeLink' } %>                        <br/>
         </div>
       </div>
     </div>

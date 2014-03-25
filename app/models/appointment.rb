@@ -18,7 +18,8 @@ class Appointment < ActiveRecord::Base
 
   #appointments must be at a unique time in the future
   #TODO make appointment_time uniqueness based on clinic
-  validates :appointment_time, presence: true, uniqueness: true
+  validates :appointment_time, presence: true
+  validate :appointment_unique_with_doctor_in_clinic
   validate :appointment_time_in_future
   #must have a doctor and patient assigned to each appointment
   validates :doctor_id,  presence: true
@@ -39,7 +40,7 @@ class Appointment < ActiveRecord::Base
 
   def self.not_past
     Appointment.where(Appointment.arel_table[:appointment_time].
-                          gt(DateTime.now)).all
+                          gt(DateTime.now)).load
   end
 
   def remaining_appointments_today
@@ -50,6 +51,10 @@ class Appointment < ActiveRecord::Base
   # returns all appointments with a given doctor
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
+  end
+
+  def self.with_patient(patient_id)
+    Appointment.where(patient_id: patient_id)
   end
 
   def self.confirmed_today_with_doctor(doctor_id)
@@ -69,14 +74,7 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  def appointment_time_in_future
-    if appointment_time.nil?
-      errors.add(:appointment_time, "No Date/time entered.")
-    else
-      errors.add(:appointment_time, "Date/Time must be set in the future.") if
-          appointment_time < DateTime.now
-    end
-  end
+
 
   #for calculating delays based on selection box
   def self.get_added_time(selection)
@@ -95,13 +93,16 @@ class Appointment < ActiveRecord::Base
         return 45
       when 7
         return 60
+      else
+        return 0
     end
   end
 
   def email_confirmation_to_patient(choice)
     if choice == :approve
+      Thread.new do
         PatientMailer.appointment_confirmation_email(self).deliver
-
+      end
     elsif choice == :deny
       Thread.new do
         PatientMailer.appointment_deny_email(self).deliver
@@ -123,6 +124,29 @@ class Appointment < ActiveRecord::Base
                             appt.appointment_delayed_time + time_to_add.minutes)
          appt.send_delay_email
       end
+  end
+
+  def appointment_time_in_future
+    if appointment_time.nil?
+      errors.add(:appointment_time, "No Date/time entered.")
+    else
+      errors.add(:appointment_time, "Date/Time must be set in the future.") if
+          appointment_time < DateTime.now
+    end
+  end
+
+  def appointment_unique_with_doctor_in_clinic
+    times_taken = []
+    begin
+      self.doctor.appointments.confirmed.each do |appt|
+        unless appt.id == self.id
+          times_taken << appt.appointment_time
+        end
+      end
+    rescue NoMethodError
+      errors.add(:doctor_id, 'No doctor specified')
+    end
+    errors.add(:appointment_time, "Time not available") if times_taken.include?(appointment_time)
   end
 
 end

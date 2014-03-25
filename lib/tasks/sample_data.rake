@@ -45,7 +45,7 @@ namespace :db do
     60.times do |n|
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
-      password = "password"
+      password = 'password'
       doctor_id = rand_int(1,6)
       Patient.create!(first_name: name[0],
                       last_name: name[1],
@@ -60,7 +60,7 @@ namespace :db do
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
-      password = "password"
+      password = 'password'
       department_id = rand_int(1,4)
       phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
                      rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +
@@ -125,16 +125,15 @@ def rand_price(from, to)
   rand_in_range(from, to).round(2)
 end
 
-def rand_time(endTime, startTime=Time.now+3.hours)
-  Time.at(rand_in_range(startTime.to_f, endTime.to_f))
+def rand_time(end_time, start_time=Time.now+3.hours)
+  Time.at(rand_in_range(start_time.to_f, end_time.to_f))
 end
 
-def rand_time_with_intervals(endDate, startDate=Date.tomorrow )
-  day = (startDate..endDate).to_a.sample
+def rand_time_with_intervals(end_date, start_date=Date.tomorrow )
+  day = (start_date..end_date).to_a.sample
   hour = (9..17).to_a.sample
   min = [00, 15, 30, 45].sample
   datetime = DateTime.new(day.year, day.month, day.day, hour, min)
-  datetime
 end
 
 def rand_in_range(from, to)

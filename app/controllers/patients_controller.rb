@@ -40,12 +40,16 @@ class PatientsController < ApplicationController
   def show
     @patient = patient
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        render 'admins/patient_show' if request.subdomain == 'admin'
+
+      end # show.html.erb
       format.json  { render :json => @patient, except: [:created_at,
                                                         :updated_at,
                                                         :password_digest,
                                                         :remember_token] }
     end
+    #render 'admins/patient_show' if request.subdomain == 'admin'
   end
 
   # for admin page only
@@ -89,6 +93,19 @@ class PatientsController < ApplicationController
     @patient.destroy!
     flash[:warning] = 'Patient Deleted'
     redirect_to patients_path
+  end
+
+  def appointments
+    @patient = patient
+    @appointments = Appointment.with_patient(@patient.id).confirmed.not_past.
+                  includes([:doctor])
+  end
+
+  def appointment_show
+    @patient = patient
+    @appointment = Appointment.find(params[:appointment_id])
+    render(partial: 'ajax_appointment_show', object: @appointment) if request.xhr?
+
   end
 
 

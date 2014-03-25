@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Patient Pages" do
+describe 'Patient Pages' do
   subject { page }
   before { switch_to_subdomain('www') }
   let(:patient) { FactoryGirl.create(:patient) }
@@ -33,6 +33,13 @@ describe "Patient Pages" do
       it { should have_title(full_name(patient)) }
       it { should_not have_link('Sign in', href: signin_path) }
 
+      describe 'sidebar' do
+        it { should have_content 'Browse Doctors' }
+        it { should have_content 'Profile' }
+        it { should have_content 'Appointments' }
+        it { should have_content 'Sign Out' }
+      end
+
 
 
       describe 'cannot view pages of another patient' do
@@ -43,6 +50,70 @@ describe "Patient Pages" do
           visit patient_path(patient2)
         end
         it { should have_content 'Scheduling Simplified' }
+      end
+
+      describe 'browse doctor pages' do
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:department) { FactoryGirl.create(:department) }
+        before do
+          department.save
+          doctor.save
+          click_link 'Browse Doctors'
+        end
+        it { should have_content doctor.full_name }
+        it { should have_content doctor.department_name }
+
+        describe 'viewing doctor profile' do
+          before { click_link doctor.full_name }
+          it { should have_content 'Public Profile' }
+          it { should have_content doctor.full_name }
+          it { should have_content doctor.email }
+          it { should have_content doctor.phone_number }
+        end
+      end
+
+      describe 'editing requests pages' do
+        let(:appointment) { FactoryGirl.create(:appointment_request) }
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        before do
+          doctor.save
+          appointment.save
+          click_link 'Appointments'
+          click_link 'Edit Requests'
+        end
+        it { should have_content appointment.date_time_ampm }
+        it { should have_content appointment.doctor.full_name }
+        it { should have_link '1' }
+
+        describe 'editing a request' do
+          before do
+            click_link '1'
+            select '4:45 PM', from: 'time'
+          end
+          it { expect do
+            click_button 'Update'
+            appointment.reload
+          end.to change(appointment, :appointment_time) }
+        end
+
+        describe 'deleting requests' do
+          before do
+            click_link '1'
+            click_link 'Delete Request'
+          end
+          it { should_not have_content appointment.date_time_ampm }
+        end
+
+        describe 'should delete appointment request' do
+          before do
+            click_link '1'
+          end
+          it 'should change appointment count' do
+            expect do
+              click_link('Delete Request')
+            end.to change(Appointment, :count).by(-1)
+          end
+        end
       end
 
       describe 'signing out' do
@@ -79,6 +150,8 @@ describe "Patient Pages" do
     end
   end
 
+
+
   #separated due to swtich to webkit from rack
   describe 'Request an appointment', :js => true do
     let(:appointment) { FactoryGirl.create(:appointment_request) }
@@ -92,11 +165,12 @@ describe "Patient Pages" do
       fill_in 'Email', with: patient.email
       fill_in 'Password', with: 'Qwerty1'
       click_button 'Sign in'
-      click_link 'Request an Appointment'
+      click_link 'Appointments'
+      click_link 'New Request'
     end
     describe 'with invalid (past) date' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -105,7 +179,7 @@ describe "Patient Pages" do
 
     describe 'with valid date' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -118,7 +192,8 @@ describe "Patient Pages" do
                                          clinic_id: 2) }
       before do
         doctor2.save
-        click_link 'Request an Appointment'
+        click_link 'Appointments'
+        click_link 'New Request'
       end
       it 'should not list doctor2 in available doctors' do
         find(:css, 'select#doctor_doctor_id').value.should_not eq 2

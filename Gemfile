@@ -15,7 +15,7 @@ gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
-gem "rocket_pants", "~> 1.9.1" #api
+gem 'rocket_pants', '~> 1.9.1' #api
 
 group :development do
   #nicer error page
@@ -83,7 +83,7 @@ gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
 
 #for file uploads
-gem "paperclip", "~> 3.5.2"
+gem 'paperclip', '~> 3.5.2'
 
 
 group :doc do

@@ -6,9 +6,10 @@
 
 
 class DoctorsController < ApplicationController
-  before_filter :require_admin_login, :only => [:new,  :destroy, :index]
+  before_filter :require_admin_login, :only => [:new,  :destroy]
   before_filter :require_doctor_login, :only => [:appointments]
-  before_filter :require_admin_or_doctor_login, :only => [:edit, :show]
+  before_filter :require_admin_or_doctor_login, :only => [:edit]
+  before_filter :require_login, only: [:show, :index]
 
   #TODO allow doctor to change password
 
@@ -19,13 +20,21 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    current_user = current_admin if request.subdomain == 'admin' else current_patient
+    if request.subdomain == 'admin'
+      current_user = current_admin
+    elsif request.subdomain == 'doctors'
+      current_user = current_doctor
+    else
+      current_user = current_patient
+    end
     @doctors = Doctor.in_clinic(current_user).includes(:department)
     render 'admins/doctors_index' if request.subdomain == 'admin'
+    render 'patients/doctors_index' if request.subdomain == 'www'
   end
 
   def new
     @doctor = Doctor.new
+    @doctor.department_id = params[:department_id] unless params[:department_id].nil?
     render 'admins/doctors_new'
   end
 
@@ -53,7 +62,7 @@ class DoctorsController < ApplicationController
     @doctor = doctor
     @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
     unless @doctor.is_admin_applying_update
-      if @doctor.authenticate(params[:verify][:verify_password]) == false
+      unless @doctor.authenticate(params[:verify][:verify_password])
         flash[:danger] = 'Invalid password entered.'
         redirect_to edit_doctor_path(@doctor)
       else
@@ -86,13 +95,6 @@ class DoctorsController < ApplicationController
 
   end
 
-  def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email,
-                                   :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password,
-                                   :password_confirmation, :avatar)
-  end
-
   def destroy
     @doctor = doctor
     @doctor.destroy!
@@ -102,6 +104,10 @@ class DoctorsController < ApplicationController
 
   def show
     @doctor = doctor
+    render 'admins/doctor_show' if request.subdomain == 'admin'
+    render 'patients/doctor_show'if request.subdomain == 'www'
+
+
   end
 
   # shows doctor's confirmed appointments
@@ -112,8 +118,19 @@ class DoctorsController < ApplicationController
 
   # shows Doctor's patients
   def patient_index
-    @doctor = doctor
+    @doctor = current_doctor
     @patients = @doctor.patients
+  end
+
+  def patient_show
+    @patient = Patient.find_by_slug(params[:patient_id])
+  end
+
+  def doctor_params
+    params.require(:doctor).permit(:first_name, :last_name, :email,
+                                   :department_id, :phone_number, :degree,
+                                   :alma_mater, :description, :password,
+                                   :password_confirmation, :avatar)
   end
 
   private

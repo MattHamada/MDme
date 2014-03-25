@@ -30,27 +30,34 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
 
-  get 'patient/:id/appointments/browse'      => 'appointments#open_appointments', as: :open_appointments_browse
-  get 'patients/:id/appointments/request'    => 'appointments#patient_request',   as: :request_appointment
-  get 'appointments/browse'                  => 'appointments#browse',            as: :appointments_browse
+  get 'patient/:id/appointments/browse'         => 'appointments#open_appointments', as: :open_appointments_browse
+  get 'patients/:id/appointments/request'       => 'appointments#patient_request',   as: :request_appointment
+  get 'patients/:id/appointments/edit_requests' => 'appointments#edit_requests',     as: :edit_requests
+  get 'patients/:id/appointments/:appointment_id/edit'  => 'appointments#edit_request', as: :edit_request
+  post 'patients/:id/appointments/:appointment_id/update' => 'appointments#update_request', as: :update_request
+  get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
+  get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
 
-  get 'appointments/new/browse'              => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
-  get 'appointments/approval'                => 'appointments#approval',          as: :appointment_approval
-  get 'appointments/ondate'                  => 'appointments#show_on_date',      as: :appointment_show_on_date
-  get 'appointments/delays'                  => 'appointments#manage_delays',     as: :manage_delays
-  post 'appointments/delays'                 => 'appointments#add_delay',         as: :add_delay
-  post 'appointments/approvedeny'            => 'appointments#approve_deny',      as: :appointment_approve_deny
-  get 'doctors/:id/appointments'             => 'doctors#appointments',           as: :doctors_appointments
-  get 'doctors/:id/patients'                 => 'doctors#patient_index',          as: :doctors_patients
+  get 'appointments/browse'                     => 'appointments#browse',            as: :appointments_browse
+  get 'appointments/new/browse'                 => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
+  get 'appointments/approval'                   => 'appointments#approval',          as: :appointment_approval
+  get 'appointments/ondate'                     => 'appointments#show_on_date',      as: :appointment_show_on_date
+  get 'appointments/delays'                     => 'appointments#manage_delays',     as: :manage_delays
+  post 'appointments/delays'                    => 'appointments#add_delay',         as: :add_delay
+  post 'appointments/approvedeny'               => 'appointments#approve_deny',      as: :appointment_approve_deny
 
+  get 'doctors/:id/appointments'                => 'doctors#appointments',           as: :doctors_appointments
+  get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
+  get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
+  get 'doctors/:id/public'                      => 'doctors#show_public',            as: :doctor_public_show
 
-
-
+  resources :departments
   resources :patients
   resources :sessions, only: [:new, :create, :destroy]
   resources :admins
   resources :appointments
   resources :doctors
+
 
   #api routes
   namespace :api, :version => 1 do

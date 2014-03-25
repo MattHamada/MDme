@@ -17,4 +17,5 @@
 //= require jquery.turbolinks
 //= require jquery.ui.datepicker
 //= require appointments
+//= require patients
 //# require_tree .

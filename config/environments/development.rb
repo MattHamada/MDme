@@ -39,7 +39,7 @@ MDme::Application.configure do
   config.assets.debug = true
 
   #for paperclip to use imagemagick
-  Paperclip.options[:command_path] = "/usr/bin/"
+  Paperclip.options[:command_path] = '/usr/bin/'
 
   #for bullet to work - differnet types of notifications
   config.after_initialize do
