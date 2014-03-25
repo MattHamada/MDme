@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "DoctorsPages" do
+describe 'DoctorsPages' do
   subject { page }
   before { switch_to_subdomain('doctors') }
 
@@ -15,8 +15,9 @@ describe "DoctorsPages" do
   describe 'Doctor signin page' do
 
     before { visit root_path }
-    it { should have_title "Sign In"}
-    it { should have_content("Sign In") }
+    it { should have_title 'Sign In'
+    }
+    it { should have_content('Sign In') }
 
 
 
@@ -24,7 +25,7 @@ describe "DoctorsPages" do
     describe 'Doctor signing in' do
       describe 'with invalid information' do
         before { click_button 'Sign in' }
-        it { should have_title "Sign In" }
+        it { should have_title 'Sign In' }
         it { should have_selector 'div.alert.alert-danger',
                                   text: 'Invalid email/password combination' }
       end

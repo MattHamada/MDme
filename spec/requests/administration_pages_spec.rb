@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "AdministrationPages" do
+describe 'AdministrationPages' do
   let(:clinic) { FactoryGirl.create(:clinic) }
   let(:admin) { FactoryGirl.create(:admin) }
   let(:appointment) { FactoryGirl.create(:appointment) }
@@ -217,7 +217,7 @@ describe "AdministrationPages" do
 
                 describe 'Sends confirmation email when creating a doctor' do
                   before { click_button 'Create' }
-                  it { last_email.to.should include("boo@radley.com") }
+                  it { last_email.to.should include('boo@radley.com') }
                 end
 
                 describe 'Editing doctor' do
@@ -300,7 +300,7 @@ describe "AdministrationPages" do
                   it { should have_title('Patients') }
                   it { should have_content 'Boo Radley' }
                   it { should have_selector('div.alert.alert-success', text: 'Patient Created') }
-                  it { last_email.to.should include("boo@radley.com") }
+                  it { last_email.to.should include('boo@radley.com') }
 
                   describe 'editing patient' do
                     before do
@@ -521,18 +521,18 @@ describe "AdministrationPages" do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
       click_button 'Sign in'
-      click_link "Manage Appointments"
-      fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+      click_link 'Manage Appointments'
+      fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
       click_button 'Submit'
     end
 
 
     it { should have_selector('.day_appointments') }
-    it { should have_content "Select Date" }
+    it { should have_content 'Select Date' }
     it { should have_content 'Time' }
 
     it { should have_content Doctor.first.full_name }
-    it { should have_content appointment.appointment_time.strftime("%h")}
+    it { should have_content appointment.appointment_time.strftime('%h')}
 
     describe 'show appointment' do
       before { click_link('0') }
@@ -588,13 +588,13 @@ describe "AdministrationPages" do
       fill_in 'Password', with: admin.password
       click_button 'Sign in'
 
-      click_link "Manage Appointments"
-      click_link "Add Appointment"
+      click_link 'Manage Appointments'
+      click_link 'Add Appointment'
 
     end
     describe 'invalid appointment creation - date in past' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end
@@ -606,7 +606,7 @@ describe "AdministrationPages" do
 
     describe 'valid appointment creation' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end

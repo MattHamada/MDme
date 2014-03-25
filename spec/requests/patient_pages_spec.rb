@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Patient Pages" do
+describe 'Patient Pages' do
   subject { page }
   before { switch_to_subdomain('www') }
   let(:patient) { FactoryGirl.create(:patient) }
@@ -143,7 +143,7 @@ describe "Patient Pages" do
     end
     describe 'with invalid (past) date' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -152,7 +152,7 @@ describe "Patient Pages" do
 
     describe 'with valid date' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime("%F")
+        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end

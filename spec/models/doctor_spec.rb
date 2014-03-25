@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Doctor do
-  before { @doctor = Doctor.new(first_name: "Example",
+  before { @doctor = Doctor.new(first_name: 'Example',
                                 last_name: 'Doctor',
-                                email: "user@example.com",
+                                email: 'user@example.com',
                                 password: 'Foobar1',
                                 password_confirmation: 'Foobar1',
                                 clinic_id: 1) }
@@ -71,11 +71,11 @@ describe Doctor do
     its(:slug) { should eq "#{@doctor.first_name.downcase}-#{@doctor.last_name.downcase}" }
   end
 
-  describe "A second doctor with the same name is still valid" do
+  describe 'A second doctor with the same name is still valid' do
     before do
       @doctor2 = @doctor.dup
       @doctor.save
-      @doctor2.email = "newEmail@email.com"
+      @doctor2.email = 'newEmail@email.com'
       @doctor2.save
     end
     it(@doctor)  { should be_valid }

@@ -7,7 +7,7 @@
 #   visit root_path
 # end
 
-DEFAULT_HOST = "mdme.tk"
+DEFAULT_HOST = 'mdme.tk'
 DEFAULT_PORT = 7171
 
 RSpec.configure do |config|

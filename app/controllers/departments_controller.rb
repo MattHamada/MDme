@@ -56,6 +56,6 @@ class DepartmentsController < ApplicationController
       @department ||= Department.find_by_slug!(params[:id])
     end
 
-    helper_method :doctor
+    helper_method :department
 end
 

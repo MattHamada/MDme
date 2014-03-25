@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Appointments on <%= "#{@date} with Dr. #{@doctor} " %></h4></div>
+        <div class="panel-heading"><h4>Appointments on <%= "#@date with Dr. #@doctor " %></h4></div>
         <div class="panel-body">
           <%= render 'appointments/appointments_table'%> <br/>
           <%= link_to "Close", "", { id: 'closeLink' } %>                        <br/>

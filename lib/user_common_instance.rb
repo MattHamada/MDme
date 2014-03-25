@@ -26,7 +26,7 @@ module UserCommonInstance
   end
 
   def generate_slug
-    if !full_name.blank?
+    unless full_name.blank?
       if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
         n = 1
         while self.class.where(slug: "#{full_name.parameterize}-#{n}").count != 0
@@ -34,7 +34,7 @@ module UserCommonInstance
         end
         self.slug = "#{full_name.parameterize}-#{n}"
       else
-        self.slug =  full_name.parameterize
+        self.slug = full_name.parameterize
       end
     else
       slug = 'no-name-entered'.parameterize

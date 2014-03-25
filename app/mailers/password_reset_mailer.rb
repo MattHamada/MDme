@@ -6,9 +6,9 @@ class PasswordResetMailer < ActionMailer::Base
   #
   #   en.forgot_password_mailer.reset_email.subject
   #
-  def reset_email(user, tempPass)
+  def reset_email(user, temp_pass)
     @user = user
-    @tempPass = tempPass
+    @temp_pass = temp_pass
     mail to: @user.email, subject: 'Password Reset'
   end
 end

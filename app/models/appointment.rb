@@ -93,6 +93,8 @@ class Appointment < ActiveRecord::Base
         return 45
       when 7
         return 60
+      else
+        return 0
     end
   end
 
