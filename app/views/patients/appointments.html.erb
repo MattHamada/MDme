@@ -19,7 +19,7 @@
                   <tr>
                     <td id="show_appointment"><%= link_to("#{index+1}", patient_appointment_path(appointment_id: appointment.id)) %></td>
                     <td><%= appointment.time_am_pm %></td>
-                    <td><%= appointment.doctor_full_name %></td>
+                    <td><%= link_to "#{appointment.doctor_full_name}", doctor_path(appointment.doctor) %></td>
                   </tr>
                 <% end %>
               </tbody>

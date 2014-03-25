@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-10">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Public Profile</h4></div>
+        <div class="panel-heading"><h4>Public Profile for <%= @doctor.full_name %></h4></div>
         <div class="panel-body">
           <%= image_tag @doctor.avatar.url(:thumb), id: 'avatar' %>
           <br/>

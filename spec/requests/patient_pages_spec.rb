@@ -33,6 +33,13 @@ describe 'Patient Pages' do
       it { should have_title(full_name(patient)) }
       it { should_not have_link('Sign in', href: signin_path) }
 
+      describe 'sidebar' do
+        it { should have_content 'Browse Doctors' }
+        it { should have_content 'Profile' }
+        it { should have_content 'Appointments' }
+        it { should have_content 'Sign Out' }
+      end
+
 
 
       describe 'cannot view pages of another patient' do
@@ -43,6 +50,26 @@ describe 'Patient Pages' do
           visit patient_path(patient2)
         end
         it { should have_content 'Scheduling Simplified' }
+      end
+
+      describe 'browse doctor pages' do
+        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:department) { FactoryGirl.create(:department) }
+        before do
+          department.save
+          doctor.save
+          click_link 'Browse Doctors'
+        end
+        it { should have_content doctor.full_name }
+        it { should have_content doctor.department_name }
+
+        describe 'viewing doctor profile' do
+          before { click_link doctor.full_name }
+          it { should have_content 'Public Profile' }
+          it { should have_content doctor.full_name }
+          it { should have_content doctor.email }
+          it { should have_content doctor.phone_number }
+        end
       end
 
       describe 'editing requests pages' do

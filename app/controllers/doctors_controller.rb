@@ -6,9 +6,10 @@
 
 
 class DoctorsController < ApplicationController
-  before_filter :require_admin_login, :only => [:new,  :destroy, :index]
+  before_filter :require_admin_login, :only => [:new,  :destroy]
   before_filter :require_doctor_login, :only => [:appointments]
-  before_filter :require_admin_or_doctor_login, :only => [:edit, :show]
+  before_filter :require_admin_or_doctor_login, :only => [:edit]
+  before_filter :require_login, only: [:show, :index]
 
   #TODO allow doctor to change password
 
@@ -19,9 +20,16 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    current_user = current_admin if request.subdomain == 'admin' else current_patient
+    if request.subdomain == 'admin'
+      current_user = current_admin
+    elsif request.subdomain == 'doctors'
+      current_user = current_doctor
+    else
+      current_user = current_patient
+    end
     @doctors = Doctor.in_clinic(current_user).includes(:department)
     render 'admins/doctors_index' if request.subdomain == 'admin'
+    render 'patients/doctors_index' if request.subdomain == 'www'
   end
 
   def new
@@ -97,6 +105,9 @@ class DoctorsController < ApplicationController
   def show
     @doctor = doctor
     render 'admins/doctor_show' if request.subdomain == 'admin'
+    render 'patients/doctor_show'if request.subdomain == 'www'
+
+
   end
 
   # shows doctor's confirmed appointments

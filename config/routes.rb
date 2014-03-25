@@ -49,7 +49,7 @@ MDme::Application.routes.draw do
   get 'doctors/:id/appointments'                => 'doctors#appointments',           as: :doctors_appointments
   get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
   get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
-
+  get 'doctors/:id/public'                      => 'doctors#show_public',            as: :doctor_public_show
 
   resources :departments
   resources :patients
