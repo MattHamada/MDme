@@ -10,13 +10,11 @@ class AppointmentsController < ApplicationController
 
   # Only admins can create/edit/destroy/approve appointments
   # Patients can request
-  #TODO Allow patients to edit appointments before they are confirmed
   before_filter :require_admin_login, :only => [:new, :edit, :index, :approval]
   before_filter :require_patient_login, :only => [:patient_request]
   before_filter :require_admin_or_patient_login, :only => [:destroy]
 
   def new
-    #TODO Load only open times on admin page similar to patient page
     if request.subdomain =='www'
       @current_user = @current_patient
     else
