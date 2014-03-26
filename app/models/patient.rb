@@ -19,6 +19,13 @@ class Patient < ActiveRecord::Base
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
 
+  has_attached_file :avatar, :styles => { :medium => "300x300>",
+                                          :thumb => "100x100>" },
+                    :default_url => "/images/:style/missing.png"
+  validates_attachment :avatar,
+                       :content_type => { :content_type => ["image/jpg", "image/gif", "image/png"] },
+                       :size => { :in => 0..100.kilobytes }
+
 
   has_secure_password
 
