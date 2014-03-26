@@ -83,7 +83,7 @@ gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
 
 #for file uploads
-gem 'paperclip', '~> 3.5.2'
+gem 'paperclip', '~> 4.1'
 
 
 group :doc do

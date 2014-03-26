@@ -4,6 +4,8 @@ describe 'Patient Pages' do
   subject { page }
   before { switch_to_subdomain('www') }
   let(:patient) { FactoryGirl.create(:patient) }
+  let(:doctor) { FactoryGirl.create(:doctor) }
+
 
   describe 'need to be logged in to access patient pages' do
     before { visit patient_path(patient) }
@@ -24,6 +26,7 @@ describe 'Patient Pages' do
 
     describe 'with valid information' do
       before do
+        doctor.save
         fill_in 'Email',    with: patient.email
         fill_in 'Password', with: 'Qwerty1'
         click_button 'Sign in'
@@ -40,7 +43,47 @@ describe 'Patient Pages' do
         it { should have_content 'Sign Out' }
       end
 
+      describe 'profile page' do
+        it { should have_content patient.first_name }
+        it { should have_content patient.last_name }
+        it { should have_content patient.email }
+        it { should have_content patient.phone_number }
+        it { should have_link 'Edit Profile' }
 
+        describe 'edit profile page' do
+          before do
+            doctor.save
+            click_link 'Edit Profile'
+          end
+
+          describe 'with invalid password' do
+            before do
+              fill_in 'patient_phone_number', with: '000-000-0000'
+              click_button 'Update'
+            end
+            it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered'}
+          end
+
+          describe 'with valid password' do
+            describe 'with invalid information' do
+              before do
+                fill_in 'patient_first_name', with: ''
+                fill_in 'verify_verify_password', with: 'Qwerty1'
+                click_button 'Update'
+              end
+              it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered' }
+            end
+            describe 'with valid information' do
+              before do
+                fill_in 'patient_phone_number', with: '000-000-0000'
+                fill_in 'verify_verify_password', with: 'Qwerty1'
+                click_button 'Update'
+              end
+              it { should have_content '000-000-0000'}
+            end
+          end
+        end
+      end
 
       describe 'cannot view pages of another patient' do
         let(:patient2) { FactoryGirl.create(:patient,

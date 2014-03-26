@@ -9,8 +9,6 @@ module UserCommonInstance
     validates :email, presence: true, uniqueness: {case_sensitive: false},
              email_format: true, length: { maximum: 50 }
     validates :clinic_id, presence: true
-    validates :password, password_complexity: true,
-             unless: :is_admin_applying_update
     validate :slug_unique_in_clinic
 
     before_save { self.email = email.downcase }

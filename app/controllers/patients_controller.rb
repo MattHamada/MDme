@@ -59,7 +59,7 @@ class PatientsController < ApplicationController
   end
 
   def edit
-    @current_user = patient
+    @current_user = patient || current_admin
     @patient = patient
 
     if request.subdomain == 'admin'
@@ -70,13 +70,28 @@ class PatientsController < ApplicationController
   end
 
   def update
+    @current_user = patient || current_admin
     @patient = patient
 
     @patient.is_admin_applying_update = true if request.subdomain == 'admin'
+
+    #skip password validation on update if validated here
+    unless @patient.is_admin_applying_update
+      if @patient.authenticate(params[:verify][:verify_password])
+        @patient.is_admin_applying_update = true
+      else
+        flash[:danger] = 'Invalid password entered.'
+      end
+    end
+
     @patient.attributes = patient_params
     if @patient.save
       flash[:success] = 'Patient Successfully Updated'
-      redirect_to patients_path
+      if request.subdomain == 'admin'
+        redirect_to patients_path
+      else
+        redirect_to patient_path(@patient)
+      end
     else
       flash.now[:danger] = 'Invalid Parameters Entered'
       if request.subdomain == 'admin'
@@ -116,7 +131,9 @@ class PatientsController < ApplicationController
                                     :email,
                                     :password,
                                     :password_confirmation,
-                                    :doctor_id)
+                                    :doctor_id,
+                                    :phone_number,
+                                    :avatar)
   end
 
 

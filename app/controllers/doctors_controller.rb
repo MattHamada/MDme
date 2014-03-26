@@ -62,12 +62,12 @@ class DoctorsController < ApplicationController
     @doctor = doctor
     @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
     unless @doctor.is_admin_applying_update
-      unless @doctor.authenticate(params[:verify][:verify_password])
-        flash[:danger] = 'Invalid password entered.'
-        redirect_to edit_doctor_path(@doctor)
-      else
+      if @doctor.authenticate(params[:verify][:verify_password])
         #skip password validation since password checked correct
         @doctor.is_admin_applying_update = true
+      else
+        flash[:danger] = 'Invalid password entered.'
+        redirect_to edit_doctor_path(@doctor)
       end
     end
     dp = doctor_params
