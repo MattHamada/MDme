@@ -126,6 +126,29 @@ class DoctorsController < ApplicationController
     @patient = Patient.find_by_slug(params[:patient_id])
   end
 
+  def change_password
+    @doctor = doctor
+
+  end
+
+  def update_password
+    @doctor = doctor
+    if @doctor.authenticate(params[:old_password])
+      if @doctor.update_attributes(password: params[:new_password],
+                                   password_confirmation: params[:new_password_confirm])
+        flash[:success] = 'Password updated'
+        redirect_to doctor_path(@doctor)
+      else
+        flash.now[:danger] = 'Unable to change password'
+        render 'change_password'
+      end
+    else
+      flash[:danger] = 'Old password invalid'
+      render 'change_password'
+    end
+  end
+
+
   def doctor_params
     params.require(:doctor).permit(:first_name, :last_name, :email,
                                    :department_id, :phone_number, :degree,

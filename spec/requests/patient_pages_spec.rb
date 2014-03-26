@@ -49,6 +49,7 @@ describe 'Patient Pages' do
         it { should have_content patient.email }
         it { should have_content patient.phone_number }
         it { should have_link 'Edit Profile' }
+        it { should have_link 'Change Password' }
 
         describe 'edit profile page' do
           before do
