@@ -42,4 +42,10 @@ MDme::Application.configure do
 
   #dont log paperclip
   Paperclip.options[:log] = false
+
+  #set time for testing
+  config.after_initialize do
+    t = Time.local(2013, 5, 11, 8, 38)
+    Timecop.travel(t)
+  end
 end

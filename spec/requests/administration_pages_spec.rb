@@ -343,7 +343,6 @@ describe 'AdministrationPages' do
             before do
               patient.save!
               doctor.save!
-              appointment_request.save!
               appointment2.save
             end
             describe 'Accepting appointments' do

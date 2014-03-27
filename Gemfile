@@ -48,6 +48,7 @@ group :test do
   gem 'libnotify', '0.8.0'
   gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
+  gem 'timecop'
 end
 
 group :production do
