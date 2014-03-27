@@ -509,7 +509,6 @@ describe 'AdministrationPages' do
     end
   end
 
-  #TODO setup time mock gem since these dont work around 5-6pm aztime
   #separated due to swtich to webkit from rack
   describe 'Browse appointments', :js => true do
     before do
