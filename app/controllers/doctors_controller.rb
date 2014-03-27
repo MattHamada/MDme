@@ -11,8 +11,6 @@ class DoctorsController < ApplicationController
   before_filter :require_admin_or_doctor_login, :only => [:edit]
   before_filter :require_login, only: [:show, :index]
 
-  #TODO allow doctor to change password
-
   def signin
     if doctor_signed_in?
       redirect_to doctors_appointments_path(current_doctor)
