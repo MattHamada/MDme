@@ -36,4 +36,10 @@ MDme::Application.configure do
 
   #speed up tests by lowering bcrypt encryption cost
   ActiveModel::SecurePassword.min_cost = true
+
+  #for paperclip to use imagemagick
+  Paperclip.options[:command_path] = '/usr/bin/'
+
+  #dont log paperclip
+  Paperclip.options[:log] = false
 end

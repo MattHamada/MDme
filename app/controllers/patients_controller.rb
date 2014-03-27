@@ -123,6 +123,28 @@ class PatientsController < ApplicationController
 
   end
 
+  def change_password
+    @patient = patient
+
+  end
+
+  def update_password
+    @patient = patient
+    if @patient.authenticate(params[:old_password])
+      if @patient.update_attributes(password: params[:new_password],
+                                   password_confirmation: params[:new_password_confirm])
+        flash[:success] = 'Password updated'
+        redirect_to patients_path(@patient)
+      else
+        flash.now[:danger] = 'Unable to change password'
+        render 'change_password'
+      end
+    else
+      flash[:danger] = 'Old password invalid'
+      render 'change_password'
+    end
+  end
+
 
 
   def patient_params

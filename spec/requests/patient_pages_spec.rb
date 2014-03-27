@@ -49,6 +49,7 @@ describe 'Patient Pages' do
         it { should have_content patient.email }
         it { should have_content patient.phone_number }
         it { should have_link 'Edit Profile' }
+        it { should have_link 'Change Password' }
 
         describe 'edit profile page' do
           before do
@@ -80,6 +81,45 @@ describe 'Patient Pages' do
                 click_button 'Update'
               end
               it { should have_content '000-000-0000'}
+            end
+          end
+        end
+
+        describe 'Change password page' do
+          before { click_link 'Change Password' }
+          it { should have_content 'Change Password' }
+          it { should have_content 'Old password' }
+          it { should have_content 'New password' }
+          it { should have_content 'Confirm new password' }
+          it { should have_button 'Change' }
+
+          describe 'changing the password' do
+            describe 'without adding old password' do
+              before do
+                fill_in 'new_password', with: 'Boobado1'
+                fill_in 'new_password_confirm', with: 'Boobado1'
+                click_button 'Change'
+              end
+              it { should have_content 'Change Password' }
+              it { should have_content 'Old password' }
+              it { should have_selector 'div.alert.alert-danger', text: 'Old password invalid' }
+            end
+            describe 'with invalid new password format' do
+              before do
+                fill_in 'old_password', with: patient.password
+                click_button 'Change'
+              end
+              it { should have_selector 'div.alert.alert-danger',
+                                        text: 'The form contains 1 error.' }
+            end
+            describe 'with valid parameters' do
+              before do
+                fill_in 'old_password', with: patient.password
+                fill_in 'new_password', with: 'Boobado1'
+                fill_in 'new_password_confirm', with: 'Boobado1'
+                click_button 'Change'
+              end
+              it { should have_selector 'div.alert.alert-success', text: 'Password updated' }
             end
           end
         end

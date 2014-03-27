@@ -37,6 +37,9 @@ MDme::Application.routes.draw do
   post 'patients/:id/appointments/:appointment_id/update' => 'appointments#update_request', as: :update_request
   get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
   get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
+  get 'patients/:id/changepassword'             => 'patients#change_password',        as: :patient_password
+  post 'patients/:id/updatepassword'             => 'patients#update_password',        as: :patient_update_password
+
 
   get 'appointments/browse'                     => 'appointments#browse',            as: :appointments_browse
   get 'appointments/new/browse'                 => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
@@ -50,6 +53,8 @@ MDme::Application.routes.draw do
   get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
   get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
   get 'doctors/:id/public'                      => 'doctors#show_public',            as: :doctor_public_show
+  get 'doctors/:id/changepassword'              => 'doctors#change_password',        as: :doctor_password
+  post 'doctors/:id/updatepassword'             => 'doctors#update_password',        as: :doctor_update_password
 
   resources :departments
   resources :patients

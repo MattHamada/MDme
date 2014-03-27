@@ -3,22 +3,24 @@
 
 <%= render 'shared_show' %>
 
-<div class="col-xs-2">
+<div class="col-xs-3">
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Options</h4></div>
         <div class="panel-body">
-        <%= link_to 'Edit Profile', edit_doctor_path(@doctor) %>
+          <ul>
+            <li><%= link_to 'Edit Profile', edit_doctor_path(@doctor) %></li>
+            <li><%= link_to 'Change Password', doctor_password_path(@doctor) %></li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="col-xs-3">
-</div>
-<div class="col-xs-7">
+
+<div class="col-xs-6 col-xs-offset-3">
   <div class="row">
     <div class="col-xs-10">
       <div class="panel panel-default">
