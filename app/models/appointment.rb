@@ -17,7 +17,6 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :patient, prefix: true
 
   #appointments must be at a unique time in the future
-  #TODO make appointment_time uniqueness based on clinic
   validates :appointment_time, presence: true
   validate :appointment_unique_with_doctor_in_clinic
   validate :appointment_time_in_future
