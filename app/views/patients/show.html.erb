@@ -9,7 +9,10 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Options</h4></div>
         <div class="panel-body">
-          <%= link_to 'Edit Profile', edit_patient_path(@patient) %>
+          <ul>
+          <li><%= link_to 'Edit Profile', edit_patient_path(@patient) %></li>
+          <li><%= link_to 'Change Password', patient_password_path(@patient) %></li>
+
         </div>
       </div>
     </div>
