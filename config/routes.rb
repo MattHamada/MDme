@@ -49,9 +49,9 @@ MDme::Application.routes.draw do
   post 'appointments/delays'                    => 'appointments#add_delay',         as: :add_delay
   post 'appointments/approvedeny'               => 'appointments#approve_deny',      as: :appointment_approve_deny
 
-  get 'doctors/:id/appointments'                => 'doctors#appointments',           as: :doctors_appointments
-  get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
-  get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
+  #get 'doctors/:id/appointments'                => 'doctors#appointments',           as: :doctors_appointments
+  #get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
+  #get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
   get 'doctors/:id/public'                      => 'doctors#show_public',            as: :doctor_public_show
   get 'doctors/:id/changepassword'              => 'doctors#change_password',        as: :doctor_password
   post 'doctors/:id/updatepassword'             => 'doctors#update_password',        as: :doctor_update_password
@@ -63,11 +63,18 @@ MDme::Application.routes.draw do
   resources :appointments
   resources :doctors
 
+  resources :doctors do
+    resources :appointments, :only => [:index, :show], :controller => 'doctors/appointments'
+    resources :patients, :only => [:index, :show], :controller => 'doctors/patients'
+  end
+
+
+
 
   #api routes
-  namespace :api, :version => 1 do
-    resources :patients, :only => [:index, :show]
-  end
+  # namespace :api, :version => 1 do
+  #   resources :patients, :only => [:index, :show],
+  # end
 
 
    # end

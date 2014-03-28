@@ -13,7 +13,7 @@ class DoctorsController < ApplicationController
 
   def signin
     if doctor_signed_in?
-      redirect_to doctors_appointments_path(current_doctor)
+      redirect_to doctor_path(current_doctor)
     end
   end
 
@@ -106,22 +106,6 @@ class DoctorsController < ApplicationController
     render 'patients/doctor_show'if request.subdomain == 'www'
 
 
-  end
-
-  # shows doctor's confirmed appointments
-  def appointments
-    @doctor = doctor
-    @appointments = Appointment.confirmed_today_with_doctor(doctor.id)
-  end
-
-  # shows Doctor's patients
-  def patient_index
-    @doctor = current_doctor
-    @patients = @doctor.patients
-  end
-
-  def patient_show
-    @patient = Patient.find_by_slug(params[:patient_id])
   end
 
   def change_password
