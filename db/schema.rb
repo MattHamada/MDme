@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140326171722) do
+ActiveRecord::Schema.define(version: 20140327210908) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20140326171722) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
-    t.boolean  "request"
+    t.boolean  "request",                  default: true
     t.datetime "appointment_delayed_time"
     t.integer  "clinic_id"
   end
