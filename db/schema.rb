@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140328162424) do
+ActiveRecord::Schema.define(version: 20140328163205) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -38,8 +38,10 @@ ActiveRecord::Schema.define(version: 20140328162424) do
     t.integer  "clinic_id"
   end
 
+  add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time"
   add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id"
   add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id"
+  add_index "appointments", ["request"], name: "index_appointments_on_request"
 
   create_table "clinics", force: true do |t|
     t.string   "name"
