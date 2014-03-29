@@ -12,7 +12,7 @@ class Doctor < ActiveRecord::Base
   extend UserCommonClass
   include CookieCrypt, UserCommonInstance
 
-  has_many :appointments
+  has_many :appointments, dependent: :destroy
   has_many :patients
   #belongs_to :clinic
   belongs_to :department

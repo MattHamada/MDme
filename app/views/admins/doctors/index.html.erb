@@ -17,7 +17,7 @@
               <tbody>
               <% @doctors.each_with_index  do |doctor, index| %>
                   <tr>
-                    <td><%= link_to("#{index}", edit_doctor_path(doctor)) %></td>
+                    <td><%= link_to("#{index}", edit_admin_doctor_path(@admin, doctor)) %></td>
                     <td><%= doctor.full_name %></td>
                     <td><%= doctor.department_name %></td>
                   </tr>
@@ -39,7 +39,7 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Options</h4></div>
         <div class="panel-body">
-          <%= link_to "Add Doctor", new_doctor_path %>
+          <%= link_to "Add Doctor", new_admin_doctor_path(@admin) %>
         </div>
       </div>
     </div>

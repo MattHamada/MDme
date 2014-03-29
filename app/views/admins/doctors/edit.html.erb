@@ -8,13 +8,13 @@
         <div class="panel-heading"><h4>Edit Doctor</h4></div>
         <div class="panel-body">
 
-          <%= form_for(@doctor, method: :put, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
+          <%= form_for(@doctor, url: url_for(controller: 'admins/doctors', action: 'update'), method: :put, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
               <%= render 'doctors/new_edit_form', f: f %>
 
               <%= f.submit 'Update', class: 'btn btn-success' %>
 
           <% end %> <br/>
-          <%= link_to 'Delete Doctor', doctor_path(@doctor), method: :delete %>
+          <%= link_to 'Delete Doctor', admin_doctor_path(@admin, @doctor), method: :delete %>
 
         </div>
       </div>

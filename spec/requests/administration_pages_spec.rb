@@ -255,7 +255,7 @@ describe 'AdministrationPages' do
 
                   describe 'after deleting doctor' do
                     before { click_link 'Delete Doctor' }
-                    it { should have_selector('div.alert.alert-warning', text: 'Doctor Successfully Deleted') }
+                    it { should have_selector('div.alert.alert-warning', text: 'Doctor deleted') }
                     it { should_not have_content 'Boos Radley' }
                   end
                 end

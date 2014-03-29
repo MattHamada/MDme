@@ -37,20 +37,17 @@ class PatientsController < ApplicationController
   #   end
   # end
 
-  # def show
-  #   @patient = patient
-  #   respond_to do |format|
-  #     format.html do
-  #       render 'admins/patient_show' if request.subdomain == 'admin'
-  #
-  #     end # show.html.erb
-  #     format.json  { render :json => @patient, except: [:created_at,
-  #                                                       :updated_at,
-  #                                                       :password_digest,
-  #                                                       :remember_token] }
-  #   end
-  #   #render 'admins/patient_show' if request.subdomain == 'admin'
-  # end
+  def show
+    @patient = patient
+    respond_to do |format|
+      format.html
+      format.json  { render :json => @patient, except: [:created_at,
+                                                        :updated_at,
+                                                        :password_digest,
+                                                        :remember_token] }
+    end
+    #render 'admins/patient_show' if request.subdomain == 'admin'
+  end
 
   # for admin page only
   # def index
@@ -59,14 +56,7 @@ class PatientsController < ApplicationController
   # end
 
   def edit
-    @current_user = patient || c  urrent_admin
-    @patient = patient
-
-    if request.subdomain == 'admin'
-      render 'admins/patient_edit'
-    else
-      render 'edit'
-    end
+    @patient = @current_user = patient
   end
 
   def update
@@ -112,7 +102,6 @@ class PatientsController < ApplicationController
 
   def change_password
     @patient = patient
-
   end
 
   def update_password
@@ -121,7 +110,7 @@ class PatientsController < ApplicationController
       if @patient.update_attributes(password: params[:new_password],
                                    password_confirmation: params[:new_password_confirm])
         flash[:success] = 'Password updated'
-        redirect_to patients_path(@patient)
+        redirect_to patient_path(@patient)
       else
         flash.now[:danger] = 'Unable to change password'
         render 'change_password'

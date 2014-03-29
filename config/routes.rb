@@ -74,6 +74,7 @@ MDme::Application.routes.draw do
   resources :admins do
     resources :departments, controller: 'admins/departments'
     resources :patients,    controller: 'admins/patients'
+    resources :doctors,     controller: 'admins/doctors'
   end
 
 

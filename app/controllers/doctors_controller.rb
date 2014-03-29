@@ -18,92 +18,64 @@ class DoctorsController < ApplicationController
   end
 
   def index
-    if request.subdomain == 'admin'
-      current_user = current_admin
-    elsif request.subdomain == 'doctors'
-      current_user = current_doctor
-    else
-      current_user = current_patient
-    end
-    @doctors = Doctor.in_clinic(current_user).includes(:department)
-    render 'admins/doctors_index' if request.subdomain == 'admin'
-    render 'patients/doctors_index' if request.subdomain == 'www'
+    @doctor = doctor
+    @doctors = Doctor.in_clinic(@doctor).includes(:department)
   end
 
-  def new
-    @doctor = Doctor.new
-    @doctor.department_id = params[:department_id] unless params[:department_id].nil?
-    render 'admins/doctors_new'
-  end
+  # def new
+  #   @doctor = Doctor.new
+  #   @doctor.department_id = params[:department_id] unless params[:department_id].nil?
+  #   render 'admins/doctors_new'
+  # end
 
-  def create
-    p = doctor_params
-    p[:password] =  p[:password_confirmation] = generate_random_password
-    @doctor = Doctor.new(p, is_admin_applying_update: true)
-    @doctor.clinic_id = current_admin.clinic_id
-
-    if @doctor.save
-      flash[:success] = 'Doctor Successfully Created.'
-      redirect_to doctors_path
-    else
-      render 'admins/doctors_new'
-    end
-
-  end
+  # def create
+  #   p = doctor_params
+  #   p[:password] =  p[:password_confirmation] = generate_random_password
+  #   @doctor = Doctor.new(p, is_admin_applying_update: true)
+  #   @doctor.clinic_id = current_admin.clinic_id
+  #
+  #   if @doctor.save
+  #     flash[:success] = 'Doctor Successfully Created.'
+  #     redirect_to doctors_path
+  #   else
+  #     render 'admins/doctors_new'
+  #   end
+  #
+  # end
 
   def edit
-    @doctor = doctor
-    render 'admins/doctors_edit' if request.subdomain == 'admin'
+    @doctor = @current_user = doctor
   end
 
   def update
-    @doctor = doctor
-    @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
-    unless @doctor.is_admin_applying_update
-      if @doctor.authenticate(params[:verify][:verify_password])
-        #skip password validation since password checked correct
-        @doctor.is_admin_applying_update = true
-      else
-        flash[:danger] = 'Invalid password entered.'
-        redirect_to edit_doctor_path(@doctor)
-      end
+    @doctor = @current_user = doctor
+    if @doctor.authenticate(params[:verify][:verify_password])
+      #skip password validation since password checked correct
+      @doctor.is_admin_applying_update = true
+    else
+      flash[:danger] = 'Invalid password entered.'
+      #TODO stop flow here if passwrod invalid
     end
     dp = doctor_params
     @doctor.attributes = dp
     if @doctor.save
       flash[:success] = "Doctor Successfully Updated"
-      if request.subdomain == 'admin'
-        redirect_to doctors_path
-      else
-        redirect_to doctor_path(@doctor)
-      end
+      redirect_to doctor_path(@doctor)
     else
-      #check needed to avoid calling redirect above
-      # when password is invalid and render below
-      if @doctor.is_admin_applying_update
         flash.now[:danger] = 'Invalid Parameters Entered'
-        if request.subdomain == 'doctors'
-          render 'edit'
-        elsif request.subdomain == 'admin'
-          render 'admins/doctors_edit'
-        end
-      end
+        render 'edit'
     end
-
-
   end
 
-  def destroy
-    @doctor = doctor
-    @doctor.destroy!
-    flash[:warning] = 'Doctor Successfully Deleted'
-    redirect_to doctors_path
-  end
+  # def destroy
+  #   @doctor = doctor
+  #   @doctor.destroy!
+  #   flash[:warning] = 'Doctor Successfully Deleted'
+  #   redirect_to doctors_path
+  # end
 
   def show
     @doctor = doctor
-    render 'admins/doctor_show' if request.subdomain == 'admin'
-    render 'patients/doctor_show'if request.subdomain == 'www'
   end
 
   def change_password
