@@ -104,8 +104,6 @@ class DoctorsController < ApplicationController
     @doctor = doctor
     render 'admins/doctor_show' if request.subdomain == 'admin'
     render 'patients/doctor_show'if request.subdomain == 'www'
-
-
   end
 
   def change_password

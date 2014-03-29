@@ -30,13 +30,13 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
 
-  get 'patient/:id/appointments/browse'         => 'appointments#open_appointments', as: :open_appointments_browse
-  get 'patients/:id/appointments/request'       => 'appointments#patient_request',   as: :request_appointment
-  get 'patients/:id/appointments/edit_requests' => 'appointments#edit_requests',     as: :edit_requests
+  get 'patient/:patient_id/appointments/browse' => 'patients/appointments#open_appointments', as: :open_appointments_browse
+  #   get 'patients/:id/appointments/request'       => 'appointments#patient_request',   as: :request_appointment
+  get 'patients/:patient_id/appointments/open_requests' => 'patients/appointments#open_requests',     as: :open_requests
   get 'patients/:id/appointments/:appointment_id/edit'  => 'appointments#edit_request', as: :edit_request
   post 'patients/:id/appointments/:appointment_id/update' => 'appointments#update_request', as: :update_request
-  get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
-  get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
+  #get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
+  #get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
   get 'patients/:id/changepassword'             => 'patients#change_password',        as: :patient_password
   post 'patients/:id/updatepassword'             => 'patients#update_password',        as: :patient_update_password
 
@@ -64,8 +64,13 @@ MDme::Application.routes.draw do
   resources :doctors
 
   resources :doctors do
-    resources :appointments, :only => [:index, :show], :controller => 'doctors/appointments'
-    resources :patients, :only => [:index, :show], :controller => 'doctors/patients'
+    resources :appointments, only: [:index, :show], controller: 'doctors/appointments'
+    resources :patients,     only: [:index, :show], controller: 'doctors/patients'
+  end
+
+  resources :patients do
+    resources :appointments, controller: 'patients/appointments'
+    resources :doctors, only: [:index, :show], controller: 'patients/doctors'
   end
 
 

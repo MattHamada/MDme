@@ -110,18 +110,18 @@ class PatientsController < ApplicationController
     redirect_to patients_path
   end
 
-  def appointments
-    @patient = patient
-    @appointments = Appointment.with_patient(@patient.id).confirmed.not_past.
-                  includes([:doctor])
-  end
+  # def appointments
+  #   @patient = patient
+  #   @appointments = Appointment.with_patient(@patient.id).confirmed.not_past.
+  #                 includes([:doctor])
+  # end
 
-  def appointment_show
-    @patient = patient
-    @appointment = Appointment.find(params[:appointment_id])
-    render(partial: 'ajax_appointment_show', object: @appointment) if request.xhr?
-
-  end
+  # def appointment_show
+  #   @patient = patient
+  #   @appointment = Appointment.find(params[:appointment_id])
+  #   render(partial: 'ajax_appointment_show', object: @appointment) if request.xhr?
+  #
+  # end
 
   def change_password
     @patient = patient
@@ -161,9 +161,9 @@ class PatientsController < ApplicationController
 
   private
 
-  def patient
-    @patient ||= Patient.find_by_slug!(params[:id])
-  end
+    def patient
+      @patient ||= Patient.find_by_slug!(params[:id])
+    end
 
-  helper_method :patient
+    helper_method :patient
 end

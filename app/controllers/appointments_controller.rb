@@ -39,15 +39,7 @@ class AppointmentsController < ApplicationController
     @patient = Patient.find_by_slug(params[:id])
   end
 
-  # ajax load when creating new appointment to see open times when given a date
-  def open_appointments
-    @patient = Patient.find_by_slug(params[:id])
-    @date = Date.parse(params[:appointments][:date])
-    @doctor = Doctor.find(params[:doctor][:doctor_id])
-    @open_times = @doctor.open_appointment_times(@date)
-    @appointment = Appointment.new
 
-  end
 
   def approve_deny
     appointment = Appointment.find(params[:appointment_id]) unless params[:appointment_id].nil?
@@ -66,19 +58,6 @@ class AppointmentsController < ApplicationController
   def approval
     @appointments = Appointment.in_clinic(current_admin).requests.
                       order_by_time.includes(:doctor, :patient).not_past
-    # if params.has_key?(:approve)
-    #   appointment =  Appointment.find(params[:appointment_id])
-    #   appointment.request = false
-    #   appointment.save!
-    #   appointment.patient.email_confirmation_to_patient(appointment, :approve)
-    # elsif params.has_key?(:deny)
-    #   appointment =  Appointment.find(params[:appointment_id])
-    #   appointment.patient.email_confirmation_to_patient(appointment, :deny)
-    #   Appointment.delete(params[:appointment_id])
-    # end
-    # @appointments = Appointment.in_clinic(current_admin).requests.
-    #     order_by_time.includes(:doctor, :patient).not_past
-
   end
 
   # creates appointments, sets as a request if made from patient site, but not if from admin site.
@@ -124,7 +103,7 @@ class AppointmentsController < ApplicationController
       flash[:danger] = message
     end
       if request.subdomain == 'www'
-        redirect_to request_appointment_path(Patient.find(pid))
+        redirect_to new_patient_appointment_path(Patient.find(pid))
       else
         redirect_to new_appointment_url
       end
