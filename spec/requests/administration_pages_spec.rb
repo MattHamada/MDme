@@ -328,7 +328,7 @@ describe 'AdministrationPages' do
 
                       it { should have_title 'Patients' }
                       it { should_not have_content 'Boo Radley' }
-                      it { should have_selector('div.alert.alert-warning', text: 'Patient Deleted') }
+                      it { should have_selector('div.alert.alert-warning', text: 'Patient deleted') }
                     end
                   end
                 end

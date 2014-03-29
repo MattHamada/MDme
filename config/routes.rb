@@ -9,8 +9,6 @@ MDme::Application.routes.draw do
 
   require 'domains'
 
-
-
   #doctor subdomain
   match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
 
@@ -56,7 +54,7 @@ MDme::Application.routes.draw do
   get 'doctors/:id/changepassword'              => 'doctors#change_password',        as: :doctor_password
   post 'doctors/:id/updatepassword'             => 'doctors#update_password',        as: :doctor_update_password
 
-  resources :departments
+  #resources :departments
   resources :patients
   resources :sessions, only: [:new, :create, :destroy]
   resources :admins
@@ -71,6 +69,11 @@ MDme::Application.routes.draw do
   resources :patients do
     resources :appointments, controller: 'patients/appointments'
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
+  end
+
+  resources :admins do
+    resources :departments, controller: 'admins/departments'
+    resources :patients,    controller: 'admins/patients'
   end
 
 

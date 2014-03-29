@@ -14,7 +14,7 @@ class Patient < ActiveRecord::Base
 
 
   belongs_to  :doctor
-  has_many :appointments
+  has_many :appointments, dependent: :destroy
 
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}

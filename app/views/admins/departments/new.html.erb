@@ -8,7 +8,7 @@
         <div class="panel-heading"><h4>Add Department</h4></div>
         <div class="panel-body">
 
-          <%= form_for(@department, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
+          <%= form_for(@department, url: url_for(controller: 'departments', action: 'create'), method: :post,  html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
             <%= render 'shared/error_messages', object: @department %>
 
             <div class='form-group'>

@@ -34,10 +34,10 @@ class AppointmentsController < ApplicationController
 
 
 
-  # intial request page where patient enters date and doctor
-  def patient_request
-    @patient = Patient.find_by_slug(params[:id])
-  end
+  # # intial request page where patient enters date and doctor
+  # def patient_request
+  #   @patient = Patient.find_by_slug(params[:id])
+  # end
 
 
 
@@ -123,22 +123,22 @@ class AppointmentsController < ApplicationController
   #   @open_times << @appointment.time_selector
   # end
 
-  def update_request
-    @appointment = Appointment.find(params[:appointment_id])
-    time = Time.parse(params[:time])
-    hour = time.hour
-    minute = time.min
-    newtime = @appointment.appointment_time.change({hour: hour, min: minute})
-    if @appointment.update_attributes(description: params[:appointment][:description],
-                                      appointment_time: newtime)
-      flash[:success] = "Request updated"
-      redirect_to edit_requests_path
-    else
-      flash[:danger] = "Error"
-      render edit_requests_path
-    end
-
-  end
+  # def update_request
+  #   @appointment = Appointment.find(params[:appointment_id])
+  #   time = Time.parse(params[:time])
+  #   hour = time.hour
+  #   minute = time.min
+  #   newtime = @appointment.appointment_time.change({hour: hour, min: minute})
+  #   if @appointment.update_attributes(description: params[:appointment][:description],
+  #                                     appointment_time: newtime)
+  #     flash[:success] = "Request updated"
+  #     redirect_to edit_requests_path
+  #   else
+  #     flash[:danger] = "Error"
+  #     render edit_requests_path
+  #   end
+  #
+  # end
 
 
   def edit
