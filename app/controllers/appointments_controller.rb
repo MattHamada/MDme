@@ -111,17 +111,17 @@ class AppointmentsController < ApplicationController
   end
 
   #patient can view open requests here
-  def edit_requests
-    @patient = Patient.find_by_slug(params[:id])
-    @appointments = Appointment.with_patient(@patient.id).not_past.includes(:doctor)
-  end
-
-  def edit_request
-    @patient = Patient.find_by_slug(params[:id])
-    @appointment = Appointment.find(params[:appointment_id])
-    @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
-    @open_times << @appointment.time_selector
-  end
+  # def edit_requests
+  #   @patient = Patient.find_by_slug(params[:id])
+  #   @appointments = Appointment.with_patient(@patient.id).not_past.includes(:doctor)
+  # end
+  #
+  # def edit_request
+  #   @patient = Patient.find_by_slug(params[:id])
+  #   @appointment = Appointment.find(params[:appointment_id])
+  #   @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
+  #   @open_times << @appointment.time_selector
+  # end
 
   def update_request
     @appointment = Appointment.find(params[:appointment_id])

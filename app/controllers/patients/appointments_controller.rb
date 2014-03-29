@@ -38,12 +38,44 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def edit
+    @patient = patient
+    @appointment = appointment
+    @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
+    @open_times << @appointment.time_selector
+  end
 
+  def update
+    @patient = patient
+    @appointment = appointment
+    time = Time.parse(params[:time])
+    hour = time.hour
+    minute = time.min
+    newtime = @appointment.appointment_time.change({hour: hour, min: minute})
+    if @appointment.update_attributes(description: params[:appointment][:description],
+                                      appointment_time: newtime)
+      flash[:success] = "Request updated"
+      redirect_to open_requests_path(@patient)
+    else
+      flash[:danger] = "Error"
+      render edit_patient_appointment_path(@patient, @appointment)
+    end
+  end
+
+  def destroy
+    @patient = patient
+    @appointment = appointment
+    if @appointment.destroy
+      flash[:success] = "Request deleted"
+      redirect_to patient_appointments_path(@patient)
+    else
+      flash.now[:danger] = "An error has occured"
+      render open_requests_path(@patient)
+    end
   end
 
   def show
     @patient = patient
-    @appointment = Appointment.find(params[:id])
+    @appointment = appointment
     render(partial: 'appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
@@ -61,6 +93,10 @@ class Patients::AppointmentsController < ApplicationController
     def patient
       @patient ||= Patient.find_by_slug!(params[:patient_id])
     end
-
     helper_method :patient
+
+    def appointment
+      @appointment ||= Appointment.find(params[:id])
+    end
+    helper_method :appointment
 end

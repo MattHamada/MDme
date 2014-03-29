@@ -162,7 +162,7 @@ describe 'Patient Pages' do
           doctor.save
           appointment.save
           click_link 'Appointments'
-          click_link 'Edit Requests'
+          click_link 'Open Requests'
         end
         it { should have_content appointment.date_time_ampm }
         it { should have_content appointment.doctor.full_name }
@@ -170,7 +170,7 @@ describe 'Patient Pages' do
 
         describe 'editing a request' do
           before do
-            click_link '1'
+            click_link 'Edit'
             select '4:45 PM', from: 'time'
           end
           it { expect do
@@ -181,7 +181,7 @@ describe 'Patient Pages' do
 
         describe 'deleting requests' do
           before do
-            click_link '1'
+            click_link 'Edit'
             click_link 'Delete Request'
           end
           it { should_not have_content appointment.date_time_ampm }
@@ -189,7 +189,7 @@ describe 'Patient Pages' do
 
         describe 'should delete appointment request' do
           before do
-            click_link '1'
+            click_link 'Edit'
           end
           it 'should change appointment count' do
             expect do
