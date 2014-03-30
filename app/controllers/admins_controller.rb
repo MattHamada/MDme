@@ -6,7 +6,8 @@
 
 class AdminsController < ApplicationController
 
-  before_filter :require_admin_login, :except => :signin
+  before_filter :find_admin, except: [:signin]
+  before_filter :require_admin_login, except: :signin
 
   # cannot visit signin page when signed in
   def signin
@@ -19,15 +20,14 @@ class AdminsController < ApplicationController
   #TODO remove index, make show admin profile/config the default page, and admin/appointment#index be today's appointments
   # index page shows a list of all confirmed appointments for the current day
   def index
-    @admin = admin
     @appointments = Appointment.in_clinic(current_admin).
         today.confirmed.order('appointment_time ASC').load.includes([:patient, :doctor])
   end
 
   private
-    def admin
+    def find_admin
       @admin ||= current_admin
     end
-
+    helper_method :find_admin
 
 end

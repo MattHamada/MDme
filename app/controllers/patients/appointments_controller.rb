@@ -1,7 +1,9 @@
 class Patients::AppointmentsController < ApplicationController
 
+  before_filter :find_patient
+  before_filter :require_patient_login
+
   def index
-    @patient = patient
     @appointments = @patient.appointments.
                              confirmed.
                              not_past.
@@ -9,11 +11,9 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def new
-    @patient = patient
   end
 
   def create
-    @patient = patient
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
     @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
                                    patient_id: @patient.id,
@@ -33,19 +33,16 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def open_requests
-    @patient = patient
     @appointments = @patient.appointments.requests.not_past.includes(:doctor)
   end
 
   def edit
-    @patient = patient
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
     @open_times << @appointment.time_selector
   end
 
   def update
-    @patient = patient
     @appointment = appointment
     time = Time.parse(params[:time])
     hour = time.hour
@@ -62,7 +59,6 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def destroy
-    @patient = patient
     @appointment = appointment
     if @appointment.destroy
       flash[:success] = "Request deleted"
@@ -74,14 +70,12 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def show
-    @patient = patient
     @appointment = appointment
     render(partial: 'appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
   # ajax load when creating new appointment to see open times when given a date
   def open_appointments
-    @patient = Patient.find_by_slug(params[:patient_id])
     @date = Date.parse(params[:appointments][:date])
     @doctor = Doctor.find(params[:doctor][:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
@@ -90,10 +84,10 @@ class Patients::AppointmentsController < ApplicationController
 
   private
 
-    def patient
+    def find_patient
       @patient ||= Patient.find_by_slug!(params[:patient_id])
     end
-    helper_method :patient
+    helper_method :find_patient
 
     def appointment
       @appointment ||= Appointment.find(params[:id])

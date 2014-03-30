@@ -7,16 +7,11 @@
 
 class PatientsController < ApplicationController
 
-  #before_filter :find_patient, only: [:show, :edit, :update, :destroy]
+  before_filter :find_patient
 
-
-  # Currently only administrators can create patients, they cannot sign up on their own.
-  before_filter :require_admin_login, :only => [:new, :destroy, :index]
-  before_filter :require_admin_or_patient_login, :only => [:edit, :show]
-  #before_filter :require_login, :only => [:show]
+  before_filter :require_patient_login
 
   def show
-    @patient = patient
     respond_to do |format|
       format.html
       format.json  { render :json => @patient, except: [:created_at,
@@ -27,12 +22,11 @@ class PatientsController < ApplicationController
   end
 
   def edit
-    @patient = @current_user = patient
+    @current_user = @patient
   end
 
   def update
-    @current_user = patient || current_admin
-    @patient = patient
+    @current_user = @patient
     #skip password validation on update if validated here
     if @patient.authenticate(params[:verify][:verify_password])
       @patient.is_admin_applying_update = true
@@ -50,20 +44,10 @@ class PatientsController < ApplicationController
     end
   end
 
-  def destroy
-    @patient = patient
-
-    @patient.destroy!
-    flash[:warning] = 'Patient Deleted'
-    redirect_to patients_path
-  end
-
   def change_password
-    @patient = patient
   end
 
   def update_password
-    @patient = patient
     if @patient.authenticate(params[:old_password])
       if @patient.update_attributes(password: params[:new_password],
                                    password_confirmation: params[:new_password_confirm])
@@ -81,6 +65,11 @@ class PatientsController < ApplicationController
 
 
 
+
+
+
+  private
+
   def patient_params
     params.require(:patient).permit(:first_name,
                                     :last_name,
@@ -92,12 +81,9 @@ class PatientsController < ApplicationController
                                     :avatar)
   end
 
-
-  private
-
-    def patient
+    def find_patient
       @patient ||= Patient.find_by_slug!(params[:id])
     end
 
-    helper_method :patient
+    helper_method :find_patient
 end

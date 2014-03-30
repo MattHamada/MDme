@@ -1,17 +1,20 @@
 class Admins::DoctorsController < ApplicationController
 
+  before_filter :find_admin
+  before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
+  before_filter :require_admin_login
+
   def index
-    @admin = admin
     @doctors = Doctor.in_clinic(@admin).includes(:department)
   end
 
   def new
-    @admin = @current_user = admin
+    @current_user = @admin
     @doctor = Doctor.new
   end
 
   def create
-    @admin = @current_user = admin
+    @current_user = @admin
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
     @doctor = Doctor.new(p, is_admin_applying_update: true)
@@ -28,13 +31,11 @@ class Admins::DoctorsController < ApplicationController
   end
 
   def edit
-    @admin = @current_user = admin
-    @doctor = doctor
+    @current_user = @admin
   end
 
   def update
-    @admin = @current_user = admin
-    @doctor = doctor
+    @current_user = @admin
     @doctor.is_admin_applying_update = true
     dp = doctor_params
     @doctor.attributes = dp
@@ -48,14 +49,9 @@ class Admins::DoctorsController < ApplicationController
   end
 
   def show
-    @admin = admin
-    @doctor = doctor
   end
 
   def destroy
-    @admin = admin
-    @doctor = doctor
-
     if @doctor.destroy
       flash[:warning] = 'Doctor deleted'
       redirect_to admin_doctors_path(@admin)
@@ -65,21 +61,24 @@ class Admins::DoctorsController < ApplicationController
     end
   end
 
-  def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email,
-                                   :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password,
-                                   :password_confirmation, :avatar)
-  end
+
 
   private
 
-    def doctor
+    def doctor_params
+      params.require(:doctor).permit(:first_name, :last_name, :email,
+                                     :department_id, :phone_number, :degree,
+                                     :alma_mater, :description, :password,
+                                     :password_confirmation, :avatar)
+    end
+
+    def find_doctor
       @doctor ||= Doctor.find_by_slug(params[:id])
     end
-    helper_method :doctor
+    helper_method :find_doctor
 
-    def admin
+    def find_admin
       @admin ||= Admin.find(params[:admin_id])
     end
+    helper_method :find_admin
 end

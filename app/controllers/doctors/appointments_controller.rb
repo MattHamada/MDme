@@ -1,21 +1,22 @@
 #TODO implement ajax loads
 class Doctors::AppointmentsController < ApplicationController
 
+  before_filter :find_doctor
+  before_filter :require_doctor_login
+
   def index
-    @doctor = doctor
     @appointments = Appointment.confirmed_today_with_doctor(@doctor.id)
   end
 
   def show
-    @doctor = doctor
     @appointment = Appointment.find(params[:id])
   end
 
   private
 
-    def doctor
+    def find_doctor
       @doctor ||= Doctor.find_by_slug!(params[:doctor_id])
     end
 
-    helper_method :doctor
+    helper_method :find_doctor
 end

@@ -46,13 +46,12 @@ MDme::Application.routes.draw do
   post 'doctors/:id/updatepassword'                      => 'doctors#update_password',                 as: :doctor_update_password
 
   #resources :departments
-  resources :patients
+  resources :patients, except: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
-  resources :admins
-  resources :appointments
-  resources :doctors
+  resources :admins, only: [:index]
+  #resources :appointments
+  resources :doctors, except: [:new, :create, :destroy]
 
-  #TODO go through [only] actions
   resources :doctors do
     resources :appointments, only: [:index, :show], controller: 'doctors/appointments'
     resources :patients,     only: [:index, :show], controller: 'doctors/patients'

@@ -1,17 +1,17 @@
 class Admins::DepartmentsController < ApplicationController
 
+  before_filter :find_admin
+  before_filter :require_admin_login
+
   def index
-    @admin = admin
     @departments = current_admin.clinic_departments
   end
 
   def new
-    @admin = admin
     @department = Department.new
   end
 
   def create
-    @admin = admin
     @department = Department.new(department_params)
     @department.clinic_id = current_admin.clinic_id
 
@@ -25,21 +25,17 @@ class Admins::DepartmentsController < ApplicationController
   end
 
   def show
-    @admin = admin
     @department = department
     @doctors = @department.doctors.in_clinic(@department)
   end
 
   def edit
-    @admin = admin
   end
 
   def update
-    @admin = admin
   end
 
   def destroy
-    @admin = admin
     @department = department
     if @department.doctors.empty?
       @department.destroy
@@ -57,13 +53,17 @@ class Admins::DepartmentsController < ApplicationController
   end
 
   private
-  def department
-    @department ||= Department.find_by_slug!(params[:id])
-  end
-  helper_method :department
+    def department_params
+      params.require(:department).permit(:name)
+    end
 
-  def admin
-    @admin ||= Admin.find(params[:admin_id])
-  end
-  helper_method :admin
+    def department
+      @department ||= Department.find_by_slug!(params[:id])
+    end
+    helper_method :department
+
+    def find_admin
+      @admin ||= Admin.find(params[:admin_id])
+    end
+    helper_method :find_admin
 end

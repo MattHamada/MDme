@@ -1,23 +1,22 @@
 class Admins::AppointmentsController < ApplicationController
 
+  before_filter :find_admin
+  before_filter :require_admin_login
+
   def index
-    @admin = admin
     if Appointment.requests.in_clinic(@admin).not_past.any?
       flash.now[:warning] = "Appointments waiting for approval."
     end
   end
 
   def new
-    @admin = admin
   end
 
   def edit
-    @admin = admin
     @appointment = appointment
   end
 
   def update
-    @admin = admin
     @appointment = appointment
     day = params[:date][:day]
     hour   = params[:date][:hour]
@@ -36,7 +35,6 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   def destroy
-    @admin = admin
     @appointment = appointment
     if @appointment.destroy
       flash[:warning] = "Appointment deleted"
@@ -50,7 +48,6 @@ class Admins::AppointmentsController < ApplicationController
 
   #ajax load for open appointments
   def new_browse
-    @admin = admin
     @date = Date.parse(params[:appointments][:date])
     @doctor = Doctor.find(params[:doctor][:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
@@ -59,7 +56,6 @@ class Admins::AppointmentsController < ApplicationController
 
   # shows all confirmed appointments on a given date for admin on index page
   def browse
-    @admin = admin
     date = Date.parse(params[:appointments][:date])
     if date < Date.today
       flash[:danger] = 'Time must be set in the future'
@@ -71,7 +67,6 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   def create
-    @admin = admin
     date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
     # params slightly different based on if appointment made on patient or admin page
     pid = params[:patient][:patient_id]
@@ -94,7 +89,6 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   def approval
-    @admin = admin
     @appointments = Appointment.in_clinic(@admin).requests.
         order_by_time.includes(:doctor, :patient).not_past
   end
@@ -102,7 +96,6 @@ class Admins::AppointmentsController < ApplicationController
   # allows admin to see what appointments are already on a specific date with a specific
   # doctor before Accepting/denying request
   def show_on_date
-    @admin = admin
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
     @appointments = Appointment.in_clinic(current_admin).
@@ -113,7 +106,6 @@ class Admins::AppointmentsController < ApplicationController
 
   # run when admin hits approve or deny on approval page
   def approve_deny
-    @admin = admin
     appointment = Appointment.find(params[:appointment_id])
     if params.has_key?(:approve)
       appointment.request = false
@@ -127,18 +119,15 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   def show
-    @admin = admin
     @appointment = appointment
     render partial: 'ajax_show' if request.xhr?
   end
 
   def manage_delays
-    @admin = admin
     @doctors = Doctor.in_clinic(current_admin).with_appointments_today
   end
 
   def add_delay
-    @admin = admin
     appointment = Appointment.find(params[:appointment_id])
     time_to_add = Appointment.get_added_time(params[:delay_time].to_i)
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
@@ -159,10 +148,10 @@ class Admins::AppointmentsController < ApplicationController
 
 
   private
-    def admin
+    def find_admin
       @admin ||= Admin.find(params[:admin_id])
     end
-    helper_method :admin
+    helper_method :find_admin
 
     def appointment
       @appointment ||= Appointment.find(params[:id])

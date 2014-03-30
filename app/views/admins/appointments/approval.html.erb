@@ -19,7 +19,7 @@
               <tbody>
               <% @appointments.each_with_index do |appointment, index| %>
                   <tr>
-                      <td class="day_appointments"><%= link_to("#{index}", appointment) %></td>
+                      <td class="day_appointments"><%= link_to("#{index}", admin_appointment_path(@admin,appointment)) %></td>
 
                     <td class="day_appointments"><%= link_to("#{appointment.date_time_ampm }",
                                     appointment_show_on_date_path(date: appointment.appointment_time,
