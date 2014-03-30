@@ -18,14 +18,12 @@ class Admins::AppointmentsController < ApplicationController
 
   def update
     @appointment = appointment
-    day = params[:date][:day]
-    hour   = params[:date][:hour]
-    minute = params[:date][:minute]
-    date = DateTime.parse("#{day} #{hour}:#{minute}")
-    if @appointment.update_attributes(doctor_id: params[:doctor][:doctor_id],
-                                      patient_id: params[:patient][:patient_id],
+    input_params = appointment_params
+    date = DateTime.parse("#{input_params[:day]} #{input_params[:hour]}:#{input_params[:minute]}")
+    if @appointment.update_attributes(doctor_id: input_params[:doctor_id],
+                                      patient_id: input_params[:patient_id],
                                       appointment_time: date,
-                                      description: params[:appointment][:description])
+                                      description: input_params[:description])
       flash[:success] = "Appointment was successfully updated."
       redirect_to admins_path
     else
@@ -48,33 +46,33 @@ class Admins::AppointmentsController < ApplicationController
 
   #ajax load for open appointments
   def new_browse
-    @date = Date.parse(params[:appointments][:date])
-    @doctor = Doctor.find(params[:doctor][:doctor_id])
+    input = appointment_params
+    @date = Date.parse(input[:date])
+    @doctor = Doctor.find(input[:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
     @appointment = Appointment.new
   end
 
   # shows all confirmed appointments on a given date for admin on index page
   def browse
-    date = Date.parse(params[:appointments][:date])
+    input = appointment_params
+    date = Date.parse(input[:date])
     if date < Date.today
       flash[:danger] = 'Time must be set in the future'
       redirect_to appointments_path
     else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
-          confirmed.order('appointment_time ASC').load
+          confirmed.order('appointment_time ASC').load.includes([:doctor, :patient])
     end
   end
 
   def create
-    date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
-    # params slightly different based on if appointment made on patient or admin page
-    pid = params[:patient][:patient_id]
-
-    @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
-                                   patient_id: pid,
+    input = appointment_params
+    date = DateTime.parse("#{input[:date]} #{input[:time]}")
+    @appointment = Appointment.new(doctor_id: input[:doctor_id],
+                                   patient_id: input[:patient_id],
                                    appointment_time: date,
-                                   description: params[:appointment][:description],
+                                   description: input[:description],
                                    request: false,
                                    clinic_id: @admin.clinic_id)
     if @appointment.save
@@ -148,6 +146,12 @@ class Admins::AppointmentsController < ApplicationController
 
 
   private
+
+    def appointment_params
+      params.require(:appointment).
+          permit(:date, :day, :hour, :minute, :time, :doctor_id, :patient_id, :description)
+    end
+
     def find_admin
       @admin ||= Admin.find(params[:admin_id])
     end

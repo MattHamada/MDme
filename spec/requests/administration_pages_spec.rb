@@ -521,7 +521,7 @@ describe 'AdministrationPages' do
       fill_in 'Password', with: admin.password
       click_button 'Sign in'
       click_link 'Manage Appointments'
-      fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+      fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
       click_button 'Submit'
     end
 
@@ -541,7 +541,7 @@ describe 'AdministrationPages' do
         describe 'with invalid information' do
           before do
             click_link('Edit Appointment')
-            fill_in 'date_day', with: 3.days.ago.strftime('%F')
+            fill_in 'appointment_day', with: 3.days.ago.strftime('%F')
             click_button('Update')
           end
           it { should have_selector('div.alert.alert-danger', text: 'Invalid parameters in update') }
@@ -593,7 +593,7 @@ describe 'AdministrationPages' do
     end
     describe 'invalid appointment creation - date in past' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end
@@ -605,7 +605,7 @@ describe 'AdministrationPages' do
 
     describe 'valid appointment creation' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end

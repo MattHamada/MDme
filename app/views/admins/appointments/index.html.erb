@@ -8,7 +8,7 @@
         <div class="panel-heading"><h4>Select Date</h4></div>
         <div class="panel-body">
 
-          <%= form_for(:appointments, url:appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
+          <%= form_for(:appointment, url:appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
               <div class="form-group">
                 <%= f.label(:date, "Select Date") %>
               </div>

@@ -4,6 +4,7 @@ class Admins::DoctorsController < ApplicationController
   before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
   before_filter :require_admin_login
 
+  #TODO clicking doctor in list should open public profile ajax not edit page
   def index
     @doctors = Doctor.in_clinic(@admin).includes(:department)
   end
