@@ -1,0 +1,40 @@
+<%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'create'), html: { class: "form-inline", role: "form" }) do |f| %>
+<div class='form-group'>
+  <div class="col-xs-12">
+    <%= f.label(:datetime, "Select Appointment Time") %> <br/>
+
+    <select class="form-control" id="time" name="time">
+      <% @open_times.each do |time| %>
+        <option value="<%= time %>"><%= time %></option>
+      <% end %>
+    </select>
+  </div>
+</div>
+<div class='form-group'>
+  <%= f.label(:patient, "Select patient") %>
+  <%= collection_select(:patient, :patient_id, Patient.in_clinic(@admin), :id, :full_name, {}, { class: 'form-control'}) %>
+</div>
+<br/><br/>
+<div class='form-group'>
+  <div class="col-xs-3">
+    <%= f.label(:description, 'Notes') %>
+    <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5') %>
+  </div>
+</div>
+<%= f.hidden_field :doctor_id, value: @doctor.id %>
+<%= f.hidden_field :date, value: @date %>
+<%= (f.hidden_field :patient_id, value: @patient.id) if request.subdomain != 'admin' %>
+<%= f.hidden_field :request, value: 'true' %>
+<br/><br/>
+<div style="text-align: center">
+  <%= f.submit 'Schedule', class: 'btn btn-success' %>
+</div>
+<br/><br/>
+<% end %>
+
+
+
+
+
+
+

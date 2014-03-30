@@ -28,31 +28,22 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
 
-  get 'patient/:patient_id/appointments/browse' => 'patients/appointments#open_appointments', as: :open_appointments_browse
-  #   get 'patients/:id/appointments/request'       => 'appointments#patient_request',   as: :request_appointment
-  get 'patients/:patient_id/appointments/open_requests' => 'patients/appointments#open_requests',     as: :open_requests
-  #get 'patients/:id/appointments/:appointment_id/edit'  => 'appointments#edit_request', as: :edit_request
-  #post 'patients/:id/appointments/:appointment_id/update' => 'appointments#update_request', as: :update_request
-  #get 'patients/:id/appointments'               => 'patients#appointments',          as: :patient_appointments
-  #get 'patients/:id/appointments/:appointment_id' => 'patients#appointment_show',   as: :patient_appointment
-  get 'patients/:id/changepassword'             => 'patients#change_password',        as: :patient_password
-  post 'patients/:id/updatepassword'             => 'patients#update_password',        as: :patient_update_password
+  get  'patient/:patient_id/appointments/browse'         => 'patients/appointments#open_appointments', as: :open_appointments_browse
+  get  'patients/:patient_id/appointments/open_requests' => 'patients/appointments#open_requests',     as: :open_requests
+  get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
+  post 'patients/:id/updatepassword'                     => 'patients#update_password',                as: :patient_update_password
 
+  get  'admins/:admin_id/appointments/browse'            => 'admins/appointments#browse',              as: :appointments_browse
+  get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
+  get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
+  get  'admins/:admin_id/appointments/ondate'            => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
+  get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
+  post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
+  post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
 
-  get 'appointments/browse'                     => 'appointments#browse',            as: :appointments_browse
-  get 'appointments/new/browse'                 => 'appointments#admin_new_browse',  as: :admin_open_appointments_browse
-  get 'appointments/approval'                   => 'appointments#approval',          as: :appointment_approval
-  get 'appointments/ondate'                     => 'appointments#show_on_date',      as: :appointment_show_on_date
-  get 'appointments/delays'                     => 'appointments#manage_delays',     as: :manage_delays
-  post 'appointments/delays'                    => 'appointments#add_delay',         as: :add_delay
-  post 'appointments/approvedeny'               => 'appointments#approve_deny',      as: :appointment_approve_deny
-
-  #get 'doctors/:id/appointments'                => 'doctors#appointments',           as: :doctors_appointments
-  #get 'doctors/:id/patients'                    => 'doctors#patient_index',          as: :doctors_patients
-  #get 'doctors/:id/patients/:patient_id'        => 'doctors#patient_show',           as: :doctors_patient
-  get 'doctors/:id/public'                      => 'doctors#show_public',            as: :doctor_public_show
-  get 'doctors/:id/changepassword'              => 'doctors#change_password',        as: :doctor_password
-  post 'doctors/:id/updatepassword'             => 'doctors#update_password',        as: :doctor_update_password
+  get  'doctors/:id/public'                              => 'doctors#show_public',                     as: :doctor_public_show
+  get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
+  post 'doctors/:id/updatepassword'                      => 'doctors#update_password',                 as: :doctor_update_password
 
   #resources :departments
   resources :patients
@@ -61,6 +52,7 @@ MDme::Application.routes.draw do
   resources :appointments
   resources :doctors
 
+  #TODO go through [only] actions
   resources :doctors do
     resources :appointments, only: [:index, :show], controller: 'doctors/appointments'
     resources :patients,     only: [:index, :show], controller: 'doctors/patients'
@@ -72,9 +64,10 @@ MDme::Application.routes.draw do
   end
 
   resources :admins do
-    resources :departments, controller: 'admins/departments'
-    resources :patients,    controller: 'admins/patients'
-    resources :doctors,     controller: 'admins/doctors'
+    resources :departments,  controller: 'admins/departments'
+    resources :patients,     controller: 'admins/patients'
+    resources :doctors,      controller: 'admins/doctors'
+    resources :appointments, controller: 'admins/appointments'
   end
 
 

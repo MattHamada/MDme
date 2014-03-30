@@ -8,7 +8,7 @@
         <div class="panel-heading"><h4>Edit Appointment</h4></div>
         <div class="panel-body">
 
-          <%= form_for(@appointment, method: :put, html: { class: "form-inline", role: "form" }) do |f| %>
+          <%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'update'), method: :put, html: { class: "form-inline", role: "form" }) do |f| %>,
               <%= f.label(:datetime, "Select Appointment Time") %>
               <div class='form-group'>
                 <%= text_field :date, :day, class: 'form-control', value: @appointment.date %>
@@ -58,7 +58,7 @@
               <%= f.submit 'Update', class: 'btn btn-success' %>
 
           <% end %> <br/>
-          <%= link_to 'Delete Appointment', appointment_path(@appointment), method: :delete %>
+          <%= link_to 'Delete Appointment', admin_appointment_path(@admin, @appointment), method: :delete %>
 
         </div>
       </div>

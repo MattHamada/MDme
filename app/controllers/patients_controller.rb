@@ -15,28 +15,6 @@ class PatientsController < ApplicationController
   before_filter :require_admin_or_patient_login, :only => [:edit, :show]
   #before_filter :require_login, :only => [:show]
 
-  # def new
-  #   @current_user = current_admin
-  #   @patient = Patient.new
-  #   render 'admins/patient_new'
-  # end
-
-  # def create
-  #   p = patient_params
-  #   p[:password] = p[:password_confirmation] = generate_random_password
-  #   p[:doctor_id] = params[:doctor][:doctor_id]
-  #   @current_user = current_admin
-  #   @patient = Patient.new(p)
-  #   @patient.clinic_id = current_admin.clinic_id
-  #   if @patient.save
-  #     flash[:success] = 'Patient Created'
-  #     redirect_to patients_path
-  #   else
-  #     flash.now[:danger] = 'Error Creating Patient'
-  #     render 'admins/patient_new'
-  #   end
-  # end
-
   def show
     @patient = patient
     respond_to do |format|
@@ -46,14 +24,7 @@ class PatientsController < ApplicationController
                                                         :password_digest,
                                                         :remember_token] }
     end
-    #render 'admins/patient_show' if request.subdomain == 'admin'
   end
-
-  # for admin page only
-  # def index
-  #   @patients = Patient.in_clinic(current_admin).ordered_last_name.includes(:doctor)
-  #   render 'admins/patient_index'
-  # end
 
   def edit
     @patient = @current_user = patient
@@ -86,19 +57,6 @@ class PatientsController < ApplicationController
     flash[:warning] = 'Patient Deleted'
     redirect_to patients_path
   end
-
-  # def appointments
-  #   @patient = patient
-  #   @appointments = Appointment.with_patient(@patient.id).confirmed.not_past.
-  #                 includes([:doctor])
-  # end
-
-  # def appointment_show
-  #   @patient = patient
-  #   @appointment = Appointment.find(params[:appointment_id])
-  #   render(partial: 'ajax_appointment_show', object: @appointment) if request.xhr?
-  #
-  # end
 
   def change_password
     @patient = patient

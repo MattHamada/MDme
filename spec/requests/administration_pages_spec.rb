@@ -555,14 +555,14 @@ describe 'AdministrationPages' do
           end
           it { should have_selector('div.alert.alert-success', text: 'Appointment was successfully updated.') }
           describe 'verify edited appointment' do
-            before { visit appointment_path(appointment) }
+            before { visit admin_appointment_path(admin, appointment) }
             it { should have_text('updated description') }
           end
         end
 
         describe 'delete appointment' do
           before do
-            visit edit_appointment_path(appointment)
+            visit edit_admin_appointment_path(admin, appointment)
             click_link 'Delete Appointment'
           end
           it { should have_selector('div.alert.alert-warning', text: 'Appointment deleted') }

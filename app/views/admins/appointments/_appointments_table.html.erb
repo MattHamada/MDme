@@ -10,7 +10,7 @@
     <tbody>
     <% @appointments.each_with_index do |appointment, index| %>
         <tr>
-          <td><%= link_to("#{index}", appointment) %></td>
+          <td><%= link_to("#{index}", admin_appointment_path(@admin, appointment)) %></td>
           <td><%= appointment.time_am_pm %></td>
           <td><%= appointment.doctor_full_name %></td>
           <td><%= appointment.patient_full_name %></td>

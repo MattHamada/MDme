@@ -36,9 +36,9 @@
         <div class="panel-heading"><h4>Options</h4></div>
           <div class="well">
             <ul class="nav nav-pills nav-stacked">
-              <li><%= link_to "Add Appointment", new_appointment_path %></li>
-              <li><%= link_to "Appointment Requests", appointment_approval_path %></li>
-              <li><%= link_to "Manage Delays", manage_delays_path %></li>
+              <li><%= link_to "Add Appointment", new_admin_appointment_path(@admin) %></li>
+              <li><%= link_to "Appointment Requests", appointment_approval_path(@admin) %></li>
+              <li><%= link_to "Manage Delays", manage_delays_path(@admin) %></li>
             </ul>
         </div>
       </div>
