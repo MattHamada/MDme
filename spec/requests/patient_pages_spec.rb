@@ -253,7 +253,7 @@ describe 'Patient Pages' do
     end
     describe 'with invalid (past) date' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -262,7 +262,7 @@ describe 'Patient Pages' do
 
     describe 'with valid date' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -279,7 +279,7 @@ describe 'Patient Pages' do
         click_link 'New Request'
       end
       it 'should not list doctor2 in available doctors' do
-        find(:css, 'select#doctor_doctor_id').value.should_not eq 2
+        find(:css, 'select#appointment_doctor_id').value.should_not eq 2
       end
     end
   end

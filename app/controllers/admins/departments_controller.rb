@@ -4,7 +4,7 @@ class Admins::DepartmentsController < ApplicationController
   before_filter :require_admin_login
 
   def index
-    @departments = current_admin.clinic_departments
+    @departments = @admin.clinic_departments
   end
 
   def new

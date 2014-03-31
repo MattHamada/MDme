@@ -12,7 +12,7 @@
           <%= form_for(@appointment, url: patient_appointment_path, method: :patch, html: { class: "form-inline", role: "form" }) do |f| %>
             <%= f.label(:datetime, "Select Appointment Time") %>
             <div class='form-group'>
-              <select class="form-control" id="time" name="time">
+              <select class="form-control" id="time" name="appointment[time]">
                 <% @open_times.each_with_index do |time, index| %>
                   <option <%= 'selected="selected"' if index+1 == @open_times.length %>value="<%= time %>"><%= time %></option>
                 <% end %>

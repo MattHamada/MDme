@@ -14,11 +14,12 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def create
-    date = DateTime.parse("#{params[:appointment][:date]} #{params[:time]}")
-    @appointment = Appointment.new(doctor_id: params[:appointment][:doctor_id],
+    input = appointment_params
+    date = DateTime.parse("#{input[:date]} #{input[:time]}")
+    @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: @patient.id,
                                    appointment_time: date,
-                                   description: params[:appointment][:description],
+                                   description: input[:description],
                                    request: true,
                                    clinic_id: @patient.clinic_id)
     if @appointment.save
@@ -44,11 +45,12 @@ class Patients::AppointmentsController < ApplicationController
 
   def update
     @appointment = appointment
-    time = Time.parse(params[:time])
+    input = appointment_params
+    time = Time.parse(input[:time])
     hour = time.hour
     minute = time.min
     newtime = @appointment.appointment_time.change({hour: hour, min: minute})
-    if @appointment.update_attributes(description: params[:appointment][:description],
+    if @appointment.update_attributes(description: input[:description],
                                       appointment_time: newtime)
       flash[:success] = "Request updated"
       redirect_to open_requests_path(@patient)
@@ -76,13 +78,18 @@ class Patients::AppointmentsController < ApplicationController
 
   # ajax load when creating new appointment to see open times when given a date
   def open_appointments
-    @date = Date.parse(params[:appointments][:date])
-    @doctor = Doctor.find(params[:doctor][:doctor_id])
+    input = appointment_params
+    @date = Date.parse(input[:date])
+    @doctor = Doctor.find(input[:doctor_id])
     @open_times = @doctor.open_appointment_times(@date)
     @appointment = Appointment.new
   end
 
   private
+
+    def appointment_params
+      params.require(:appointment).permit(:time, :date, :doctor_id, :description)
+    end
 
     def find_patient
       @patient ||= Patient.find_by_slug!(params[:patient_id])
