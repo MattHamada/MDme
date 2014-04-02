@@ -41,6 +41,7 @@ class Patients::AppointmentsController < ApplicationController
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
     @open_times << @appointment.time_selector
+    render partial: 'patients/appointments/ajax_edit' if request.xhr?
   end
 
   def update
@@ -73,7 +74,7 @@ class Patients::AppointmentsController < ApplicationController
 
   def show
     @appointment = appointment
-    render(partial: 'appointments/ajax_show', object: @appointment) if request.xhr?
+    render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
   # ajax load when creating new appointment to see open times when given a date

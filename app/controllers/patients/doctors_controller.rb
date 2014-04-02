@@ -5,6 +5,7 @@ class Patients::DoctorsController < ApplicationController
 
   def show
     @doctor = Doctor.find_by_slug(params[:id])
+    render partial: 'patients/doctors/ajax_show' if request.xhr?
   end
 
   def index

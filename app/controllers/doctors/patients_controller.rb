@@ -9,6 +9,7 @@ class Doctors::PatientsController < ApplicationController
   #TODO implement ajax load
   def show
     @patient = Patient.find_by_slug(params[:id])
+    render partial: 'doctors/patients/ajax_show' if request.xhr?
   end
 
   private
