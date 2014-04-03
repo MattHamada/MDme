@@ -35,6 +35,7 @@ group :development, :test do
   gem 'guard-rspec', '2.5.1' #rspec generation and autotest
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
+  #gem 'json_spec', '~> 1.1.1'
 end
 
 group :test do
