@@ -73,6 +73,7 @@ MDme::Application.routes.draw do
     namespace :v1 do
       post 'sessions' => 'sessions#create', :as => 'login'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      get 'tasks' => 'tasks#index', as: 'tasks'
     end
   end
 

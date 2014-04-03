@@ -73,5 +73,10 @@ RSpec.configure do |config|
   config.include(MailerMacros)
   config.before(:each) { reset_email }
 
+  #json_spec
+  config.include JsonSpec::Helpers
+
+  config.include JsonHelpers
+
 
 end
