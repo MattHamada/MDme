@@ -31,5 +31,13 @@ class Patient < ActiveRecord::Base
 
   scope :ordered_last_name, -> { order(last_name: :asc)}
 
+  def api_authenticate(api_token)
+    if self.remember_token == encrypt(api_token)
+      true
+    else
+      false
+    end
+  end
+
 end
 
