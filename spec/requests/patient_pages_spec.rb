@@ -162,7 +162,7 @@ describe 'Patient Pages' do
           doctor.save
           appointment.save
           click_link 'Appointments'
-          click_link 'Edit Requests'
+          click_link 'Open Requests'
         end
         it { should have_content appointment.date_time_ampm }
         it { should have_content appointment.doctor.full_name }
@@ -170,7 +170,7 @@ describe 'Patient Pages' do
 
         describe 'editing a request' do
           before do
-            click_link '1'
+            click_link 'Edit'
             select '4:45 PM', from: 'time'
           end
           it { expect do
@@ -181,7 +181,7 @@ describe 'Patient Pages' do
 
         describe 'deleting requests' do
           before do
-            click_link '1'
+            click_link 'Edit'
             click_link 'Delete Request'
           end
           it { should_not have_content appointment.date_time_ampm }
@@ -189,7 +189,7 @@ describe 'Patient Pages' do
 
         describe 'should delete appointment request' do
           before do
-            click_link '1'
+            click_link 'Edit'
           end
           it 'should change appointment count' do
             expect do
@@ -253,7 +253,7 @@ describe 'Patient Pages' do
     end
     describe 'with invalid (past) date' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -262,7 +262,7 @@ describe 'Patient Pages' do
 
     describe 'with valid date' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Request'
       end
@@ -279,7 +279,7 @@ describe 'Patient Pages' do
         click_link 'New Request'
       end
       it 'should not list doctor2 in available doctors' do
-        find(:css, 'select#doctor_doctor_id').value.should_not eq 2
+        find(:css, 'select#appointment_doctor_id').value.should_not eq 2
       end
     end
   end

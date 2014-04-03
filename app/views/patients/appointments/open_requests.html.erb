@@ -1,0 +1,37 @@
+<%= render 'patients/sidebar' %>
+
+<div class="col-xs-6">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Open Request</h4></div>
+        <div class="panel-body">
+          <div class="popup-links">
+            <table class='table table-striped table-bordered table-hover'>
+              <thread>
+                <tr>
+                  <th>#</th>
+                  <th>Time</th>
+                  <th>Doctor</th>
+                  <th>Edit</th>
+                </tr>
+                <tbody>
+                <% @appointments.each_with_index do |appointment, index| %>
+                  <tr>
+                    <td><%= link_to("#{index+1}", patient_appointment_path(@patient, appointment)) %></td>
+                    <td><%= appointment.date_time_ampm %></td>
+                    <td><%= link_to "#{appointment.doctor_full_name}", patient_doctor_path(@patient, appointment.doctor) %></td>
+                    <td><%= link_to "Edit", edit_patient_appointment_path(@patient, appointment) %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </thread>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

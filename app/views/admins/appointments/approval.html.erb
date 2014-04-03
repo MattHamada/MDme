@@ -1,0 +1,47 @@
+<%= render 'admins/sidebar' %>
+
+<div class="col-xs-7">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Appointments needing approval</h4></div>
+        <div class="panel-body">
+
+          <table class='table table-striped table-bordered table-hover'>
+            <thread>
+              <tr>
+                <th>#</th>
+                <th>Date & Time</th>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Options</th>
+              </tr>
+              <tbody>
+              <% @appointments.each_with_index do |appointment, index| %>
+                  <tr>
+                      <td class="day_appointments"><%= link_to("#{index}", admin_appointment_path(@admin,appointment)) %></td>
+
+                    <td class="day_appointments"><%= link_to("#{appointment.date_time_ampm }",
+                                    appointment_show_on_date_path(date: appointment.appointment_time,
+                                                                  doctor_id: appointment.doctor_id)) %></td>
+                    <td><%= appointment.doctor_full_name %></td>
+                    <td><%= appointment.patient_full_name %></td>
+                    <td class="button_links"><%= link_to 'Approve', appointment_approve_deny_path(
+                            approve: true, appointment_id: appointment.id), method: :post, class: 'btn btn-mini btn-primary approve' %>
+                      <%= link_to 'Deny', appointment_approve_deny_path(
+                              deny: true, appointment_id: appointment.id), method: :post, class: 'btn btn-mini btn-danger deny' %>
+                        </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </thread>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

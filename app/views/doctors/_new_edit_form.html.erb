@@ -46,7 +46,7 @@
 <div class='form-group'>
   <div class="col-xs-7">
     <%= f.label(:doctor, 'Department') %>
-    <%= collection_select(:doctor, :department_id, Department.all, :id, :name, {}, { class: 'form-control'}) %>
+    <%= collection_select(:doctor, :department_id, Department.in_clinic(@current_user), :id, :name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 

@@ -1,0 +1,48 @@
+<%= provide(:title, "#{@department.name}") %>
+<%= render 'admins/sidebar' %>
+
+<div class="col-xs-7">
+  <div class="row">
+    <div class="col-xs-10">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4><%= "#{@department.name}" %></h4></div>
+        <div class="panel-body">
+          <table class='table table-striped table-bordered table-condensed'>
+            <thread>
+              <tr>
+                <th>#</th>
+                <th>Doctor</th>
+              </tr>
+              <tbody><% @doctors.each_with_index  do |doctor, index| %>
+                <tr>
+                  <td><%= "#{index+1}" %></td>
+                  <td><%=  link_to("#{doctor.full_name}", doctor_path(doctor)) %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </thread>
+          </table>
+
+          <%= link_to 'Delete department', admin_department_path(@admin, @department), method: :delete %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-xs-2">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Options</h4></div>
+        <div class="panel-body">
+          <%= link_to "Add Doctor", new_doctor_path(department_id: @department.id) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

@@ -4,55 +4,43 @@ module SessionsHelper
   include CookieCrypt
 
   def require_admin_login
-    unless admin_signed_in?
-      redirect_to root_path
-    end
+    redirect_to root_path unless find_admin == current_admin and find_admin != nil
   end
 
   def require_patient_login
-    if patient_signed_in?
-      unless current_patient == Patient.find_by_slug!(params[:id])
-        redirect_to root_path
-      end
-    else
-      redirect_to root_path
-    end
-  end
-
-  def require_admin_or_patient_login
-    if admin_signed_in? or patient_signed_in?
-      if patient_signed_in?
-        require_patient_login
-      end
-    else
-      redirect_to root_path
-    end
-  end
-
-  def require_login
-    redirect_to root_path unless
-        admin_signed_in? or patient_signed_in? or doctor_signed_in?
+    redirect_to root_path unless find_patient == current_patient and find_patient != nil
   end
 
   def require_doctor_login
-    if doctor_signed_in?
-      unless current_doctor == Doctor.find_by_slug!(params[:id])
-        redirect_to root_path
-      end
-    else
-      redirect_to root_path
-    end
+    redirect_to root_path unless find_doctor == current_doctor and find_doctor != nil
   end
 
-  def require_admin_or_doctor_login
-    if admin_signed_in? or doctor_signed_in?
-      if doctor_signed_in?
-        require_doctor_login
-      end
-    else
-      redirect_to root_path
-    end
-  end
+  # def require_admin_or_patient_login
+  #   if admin_signed_in? or patient_signed_in?
+  #     if patient_signed_in?
+  #       require_patient_login
+  #     end
+  #   else
+  #     redirect_to root_path
+  #   end
+  # end
+
+  # def require_login
+  #   redirect_to root_path unless
+  #       admin_signed_in? or patient_signed_in? or doctor_signed_in?
+  # end
+
+
+
+  # def require_admin_or_doctor_login
+  #   if admin_signed_in? or doctor_signed_in?
+  #     if doctor_signed_in?
+  #       require_doctor_login
+  #     end
+  #   else
+  #     redirect_to root_path
+  #   end
+  # end
 
 
   def sign_in(user, type)

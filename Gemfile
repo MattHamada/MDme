@@ -7,6 +7,7 @@ gem 'rails', '4.0.4'
 gem 'bootstrap-sass', '3.0.3.0'
 gem 'font-awesome-rails'
 
+
 #gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails',
 #                              :github => 'anjlab/bootstrap-rails',
 #

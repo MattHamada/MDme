@@ -6,131 +6,51 @@
 
 
 class DoctorsController < ApplicationController
-  before_filter :require_admin_login, :only => [:new,  :destroy]
-  before_filter :require_doctor_login, :only => [:appointments]
-  before_filter :require_admin_or_doctor_login, :only => [:edit]
-  before_filter :require_login, only: [:show, :index]
+
+  before_filter :find_doctor, except: [:signin]
+  before_filter :require_doctor_login, except: [:signin]
 
   def signin
     if doctor_signed_in?
-      redirect_to doctors_appointments_path(current_doctor)
+      redirect_to doctor_path(current_doctor)
     end
   end
 
   def index
-    if request.subdomain == 'admin'
-      current_user = current_admin
-    elsif request.subdomain == 'doctors'
-      current_user = current_doctor
-    else
-      current_user = current_patient
-    end
-    @doctors = Doctor.in_clinic(current_user).includes(:department)
-    render 'admins/doctors_index' if request.subdomain == 'admin'
-    render 'patients/doctors_index' if request.subdomain == 'www'
-  end
-
-  def new
-    @doctor = Doctor.new
-    @doctor.department_id = params[:department_id] unless params[:department_id].nil?
-    render 'admins/doctors_new'
-  end
-
-  def create
-    p = doctor_params
-    p[:password] =  p[:password_confirmation] = generate_random_password
-    @doctor = Doctor.new(p, is_admin_applying_update: true)
-    @doctor.clinic_id = current_admin.clinic_id
-
-    if @doctor.save
-      flash[:success] = 'Doctor Successfully Created.'
-      redirect_to doctors_path
-    else
-      render 'admins/doctors_new'
-    end
-
+    @doctors = Doctor.in_clinic(@doctor).includes(:department)
   end
 
   def edit
-    @doctor = doctor
-    render 'admins/doctors_edit' if request.subdomain == 'admin'
+    @current_user = @doctor
   end
 
   def update
-    @doctor = doctor
-    @doctor.is_admin_applying_update = true if request.subdomain == 'admin'
-    unless @doctor.is_admin_applying_update
-      if @doctor.authenticate(params[:verify][:verify_password])
-        #skip password validation since password checked correct
-        @doctor.is_admin_applying_update = true
-      else
-        flash[:danger] = 'Invalid password entered.'
-        redirect_to edit_doctor_path(@doctor)
-      end
+    @current_user = @doctor
+    if @doctor.authenticate(params[:verify][:verify_password])
+      #skip password validation since password checked correct
+      @doctor.is_admin_applying_update = true
+    else
+      flash[:danger] = 'Invalid password entered.'
+      #TODO stop flow here if passwrod invalid
     end
     dp = doctor_params
     @doctor.attributes = dp
     if @doctor.save
       flash[:success] = "Doctor Successfully Updated"
-      if request.subdomain == 'admin'
-        redirect_to doctors_path
-      else
-        redirect_to doctor_path(@doctor)
-      end
+      redirect_to doctor_path(@doctor)
     else
-      #check needed to avoid calling redirect above
-      # when password is invalid and render below
-      if @doctor.is_admin_applying_update
         flash.now[:danger] = 'Invalid Parameters Entered'
-        if request.subdomain == 'doctors'
-          render 'edit'
-        elsif request.subdomain == 'admin'
-          render 'admins/doctors_edit'
-        end
-      end
+        render 'edit'
     end
-
-
-  end
-
-  def destroy
-    @doctor = doctor
-    @doctor.destroy!
-    flash[:warning] = 'Doctor Successfully Deleted'
-    redirect_to doctors_path
   end
 
   def show
-    @doctor = doctor
-    render 'admins/doctor_show' if request.subdomain == 'admin'
-    render 'patients/doctor_show'if request.subdomain == 'www'
-
-
-  end
-
-  # shows doctor's confirmed appointments
-  def appointments
-    @doctor = doctor
-    @appointments = Appointment.confirmed_today_with_doctor(doctor.id)
-  end
-
-  # shows Doctor's patients
-  def patient_index
-    @doctor = current_doctor
-    @patients = @doctor.patients
-  end
-
-  def patient_show
-    @patient = Patient.find_by_slug(params[:patient_id])
   end
 
   def change_password
-    @doctor = doctor
-
   end
 
   def update_password
-    @doctor = doctor
     if @doctor.authenticate(params[:old_password])
       if @doctor.update_attributes(password: params[:new_password],
                                    password_confirmation: params[:new_password_confirm])
@@ -147,6 +67,10 @@ class DoctorsController < ApplicationController
   end
 
 
+
+
+  private
+
   def doctor_params
     params.require(:doctor).permit(:first_name, :last_name, :email,
                                    :department_id, :phone_number, :degree,
@@ -154,11 +78,9 @@ class DoctorsController < ApplicationController
                                    :password_confirmation, :avatar)
   end
 
-  private
-
-  def doctor
+  def find_doctor
     @doctor ||= Doctor.find_by_slug!(params[:id])
   end
 
-  helper_method :doctor
+  helper_method :find_doctor
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140326171722) do
+ActiveRecord::Schema.define(version: 20140328163205) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140326171722) do
     t.integer  "clinic_id"
   end
 
+  add_index "admins", ["clinic_id"], name: "index_admins_on_clinic_id"
   add_index "admins", ["email"], name: "index_admins_on_email"
   add_index "admins", ["remember_token"], name: "index_admins_on_remember_token"
 
@@ -32,12 +33,15 @@ ActiveRecord::Schema.define(version: 20140326171722) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
-    t.boolean  "request"
+    t.boolean  "request",                  default: true
     t.datetime "appointment_delayed_time"
     t.integer  "clinic_id"
   end
 
+  add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time"
+  add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id"
   add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id"
+  add_index "appointments", ["request"], name: "index_appointments_on_request"
 
   create_table "clinics", force: true do |t|
     t.string   "name"
@@ -77,6 +81,8 @@ ActiveRecord::Schema.define(version: 20140326171722) do
     t.integer  "clinic_id"
   end
 
+  add_index "doctors", ["clinic_id"], name: "index_doctors_on_clinic_id"
+  add_index "doctors", ["department_id"], name: "index_doctors_on_department_id"
   add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
   add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token"
   add_index "doctors", ["slug"], name: "index_doctors_on_slug"
@@ -99,6 +105,8 @@ ActiveRecord::Schema.define(version: 20140326171722) do
     t.datetime "avatar_updated_at"
   end
 
+  add_index "patients", ["clinic_id"], name: "index_patients_on_clinic_id"
+  add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true
   add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
   add_index "patients", ["slug"], name: "index_patients_on_slug"

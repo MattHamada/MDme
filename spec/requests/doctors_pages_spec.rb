@@ -40,12 +40,12 @@ describe 'DoctorsPages' do
           fill_in 'Password', with: doctor.password
           click_button 'Sign in'
         end
-        it { should have_title("Today's Appointments") }
+        it { should have_title("My Profile") }
 
 
         describe 'Visiting signin page when logged in' do
           before { visit root_path }
-          it { should have_title "Today's Appointments" }
+          it { should have_title "My Profile" }
         end
 
         describe 'cannot visit another doctors pages' do
@@ -77,7 +77,7 @@ describe 'DoctorsPages' do
                 fill_in 'doctor_phone_number', with: '000-000-0000'
                 click_button 'Update'
               end
-              it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered.'}
+              it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered'}
             end
 
             describe 'with valid password' do

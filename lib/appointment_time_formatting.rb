@@ -17,12 +17,12 @@ module AppointmentTimeFormatting
 
   def time_selector
     ampm = appointment_time.strftime('%p')
-    hour = (appointment_time_hour.hour.to_i % 12) + 1
+    hour = appointment_time_hour
     "#{hour}:#{appointment_time_minute} #{ampm}"
   end
 
   def appointment_time_hour
-    appointment_time.hour
+    appointment_time.strftime("%I").to_i
   end
 
   def appointment_time_minute

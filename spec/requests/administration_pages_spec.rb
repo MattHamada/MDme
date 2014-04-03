@@ -255,7 +255,7 @@ describe 'AdministrationPages' do
 
                   describe 'after deleting doctor' do
                     before { click_link 'Delete Doctor' }
-                    it { should have_selector('div.alert.alert-warning', text: 'Doctor Successfully Deleted') }
+                    it { should have_selector('div.alert.alert-warning', text: 'Doctor deleted') }
                     it { should_not have_content 'Boos Radley' }
                   end
                 end
@@ -328,7 +328,7 @@ describe 'AdministrationPages' do
 
                       it { should have_title 'Patients' }
                       it { should_not have_content 'Boo Radley' }
-                      it { should have_selector('div.alert.alert-warning', text: 'Patient Deleted') }
+                      it { should have_selector('div.alert.alert-warning', text: 'Patient deleted') }
                     end
                   end
                 end
@@ -521,7 +521,7 @@ describe 'AdministrationPages' do
       fill_in 'Password', with: admin.password
       click_button 'Sign in'
       click_link 'Manage Appointments'
-      fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+      fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
       click_button 'Submit'
     end
 
@@ -541,7 +541,7 @@ describe 'AdministrationPages' do
         describe 'with invalid information' do
           before do
             click_link('Edit Appointment')
-            fill_in 'date_day', with: 3.days.ago.strftime('%F')
+            fill_in 'appointment_day', with: 3.days.ago.strftime('%F')
             click_button('Update')
           end
           it { should have_selector('div.alert.alert-danger', text: 'Invalid parameters in update') }
@@ -555,14 +555,14 @@ describe 'AdministrationPages' do
           end
           it { should have_selector('div.alert.alert-success', text: 'Appointment was successfully updated.') }
           describe 'verify edited appointment' do
-            before { visit appointment_path(appointment) }
+            before { visit admin_appointment_path(admin, appointment) }
             it { should have_text('updated description') }
           end
         end
 
         describe 'delete appointment' do
           before do
-            visit edit_appointment_path(appointment)
+            visit edit_admin_appointment_path(admin, appointment)
             click_link 'Delete Appointment'
           end
           it { should have_selector('div.alert.alert-warning', text: 'Appointment deleted') }
@@ -593,7 +593,7 @@ describe 'AdministrationPages' do
     end
     describe 'invalid appointment creation - date in past' do
       before do
-        fill_in 'appointments_date', with: 3.days.ago.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end
@@ -605,7 +605,7 @@ describe 'AdministrationPages' do
 
     describe 'valid appointment creation' do
       before do
-        fill_in 'appointments_date', with: 3.days.from_now.strftime('%F')
+        fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
         click_button 'Find open times'
         click_button 'Schedule'
       end
