@@ -62,7 +62,13 @@ module SessionsHelper
       user.update_attribute(:remember_token, encrypt(remember_token))
       self.current_admin = user
     end
+  end
 
+  def api_sign_in(patient)
+    remember_token = new_remember_token
+    patient.update_attribute(:remember_token, encrypt(remember_token))
+    self.current_patient = patient
+    remember_token
   end
 
   def sign_out(type)
@@ -101,6 +107,11 @@ module SessionsHelper
   def current_admin
     remember_token = encrypt(cookies[:remember_token])
     @current_admin ||= Admin.find_by(remember_token: remember_token)
+  end
+
+  def api_current_patient(api_token)
+    remember_token = api_token
+    @current_patient ||= Patient.find_by_remember_token(encrypt(remember_token))
   end
 
   def patient_signed_in?

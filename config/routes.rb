@@ -69,6 +69,13 @@ MDme::Application.routes.draw do
     resources :appointments, controller: 'admins/appointments'
   end
 
+  namespace :api do
+    namespace :v1 do
+      post 'sessions' => 'sessions#create', :as => 'login'
+      delete 'sessions' => 'sessions#destroy', :as => 'logout'
+    end
+  end
+
 
 
 
