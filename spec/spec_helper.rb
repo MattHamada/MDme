@@ -74,8 +74,6 @@ RSpec.configure do |config|
   config.before(:each) { reset_email }
 
   #json_spec
-  config.include JsonSpec::Helpers
-
   config.include JsonHelpers
 
 
