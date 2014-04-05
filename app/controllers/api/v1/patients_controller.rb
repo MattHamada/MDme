@@ -2,28 +2,50 @@ class Api::V1::PatientsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
- def index
-   if @patient
-     render status: 200,
-            json: { success: true,
-                    info: 'Logged in',
-                    data: {
-                        tasks:[
-                                {title:'Profile'},
-                                {title:'Appointments'},
-                                {title:'Browse Doctors'},
-                                {title:'Sign Out'}
-                              ]
-                          }
-                  }
-   else
-     render status: 401,
-            json: { success: false,
-                    info: 'Access Denied - Please log in',
-                    data: {}}
+  def index
+    if @patient
+      render status: 200,
+             json: { success: true,
+                     info: 'Logged in',
+                     data: {
+                         tasks:[
+                                 {title:'Profile'},
+                                 {title:'Appointments'},
+                                 {title:'Browse Doctors'},
+                                 {title:'Sign Out'}
+                               ]
+                           }
+                   }
+    else
+      render status: 401,
+             json: { success: false,
+                     info: 'Access Denied - Please log in',
+                     data: {}}
 
-   end
- end
+    end
+  end
+
+  def show
+    if @patient
+      render status: 200,
+             json: { success: true,
+                     info: 'Profile',
+                     data: {
+                             patient: @patient.to_json(only: [:first_name,
+                                                              :last_name,
+                                                              :email,
+                                                              :phone_number],
+                                                       methods: [:avatar_thumb_url])
+                           }
+                  }
+
+    else
+      render status: 401,
+             json: { success: false,
+                     info: 'Access Denied - Please log in',
+                     data: {}}
+    end
+  end
 
 
   private

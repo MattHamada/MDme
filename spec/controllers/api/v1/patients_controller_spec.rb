@@ -26,4 +26,25 @@ describe Api::V1::PatientsController do
        expect(json['success']).to eq false
      end
    end
+
+  describe 'GET #show' do
+    it 'should have failed response with no api token' do
+      get :show, {id: patient.slug}
+      expect(response).not_to be_success
+      expect(json['success']).to eq false
+    end
+    it 'should have failed response with invalid api token' do
+      get :show, {id: patient.slug, api_token: 123}
+      expect(response).not_to be_success
+      expect(json['success']).to eq false
+    end
+    it 'should respond successfully with proper API token' do
+      get :show, {id: patient.slug, api_token: @token}
+      expect(response).to be_success
+      expect(json['success']).to eq true
+      expect(json['info']).to eq 'Profile'
+      expect(json['data'].keys.include?('patient'))
+      #expect(json['data']['patient'].keys.include?('first_name')) #['first_name']).to eq @patient.first_name
+    end
+  end
 end
