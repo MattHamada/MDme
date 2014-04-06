@@ -18,6 +18,9 @@ gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 gem 'rocket_pants', '~> 1.9.1' #api
 
+gem 'rabl'
+gem 'oj'
+
 group :development do
   #nicer error page
   gem 'better_errors'
