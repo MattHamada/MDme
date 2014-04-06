@@ -1,6 +1,6 @@
 class Api::V1::PatientsController < ApplicationController
   skip_before_filter :verify_authenticity_token
- # before_filter :verify_api_token
+  before_filter :verify_api_token
 
   def index
 
@@ -14,24 +14,6 @@ class Api::V1::PatientsController < ApplicationController
   def show
     @info = 'Profile'
     @patient = Patient.first
-    #   render status: 200,
-    #          json: { success: true,
-    #                  info: 'Profile',
-    #                  data: {
-    #                          patient: @patient.to_json(only: [:first_name,
-    #                                                           :last_name,
-    #                                                           :email,
-    #                                                           :phone_number],
-    #                                                    methods: [:avatar_thumb_url])
-    #                        }
-    #               }
-    #
-    # else
-    #   render status: 401,
-    #          json: { success: false,
-    #                  info: 'Access Denied - Please log in',
-    #                  data: {}}
-    # end
   end
 
 
