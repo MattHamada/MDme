@@ -39,5 +39,9 @@ class Patient < ActiveRecord::Base
     end
   end
 
+  def avatar_thumb_url
+    avatar.url(:thumb)
+  end
+
 end
 
