@@ -17,6 +17,7 @@ module UserCommonInstance
     after_create :send_confirmation_email
   end
 
+    #TODO rename this since used other than when admin updating
     attr_accessor :is_admin_applying_update
 
   def full_name

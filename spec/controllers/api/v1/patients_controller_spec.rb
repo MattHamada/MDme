@@ -9,31 +9,60 @@ describe Api::V1::PatientsController do
     patient.update_attribute(:remember_token, encrypt(@token))
   end
   context :json do
-   describe 'GET #index' do
-     it 'should respond successfully with proper API token' do
-       config = { format: 'json', api_token: @token }
-       get :index,  config
-       expect(response).to be_success
-       puts json
-       expect(json['success']).to eq true
-       expect(json['info']).to eq 'Logged in'
-       expect(json['data'].keys.include?('tasks'))
-     end
-     it 'should have failed response with no api token' do
-       get :index, format: 'json'
-       expect(response).not_to be_success
-       response.status.should == 401
-       expect(json['success']).to eq false
-     end
-     it 'should have failed response with invalid api token' do
-       config = { format: 'json', api_token: 123 }
-       get :index, config
-       expect(response).not_to be_success
-       response.status.should == 401
-       expect(json['success']).to eq false
-     end
-   end
-   end
+
+    describe 'PATCH #update' do
+      it 'should have failed response with no api token' do
+        patch :update, format: 'json'
+        expect(response).not_to be_success
+        response.status.should == 401
+        expect(json['success']).to eq false
+      end
+      it 'should have failed response with invalid api token' do
+        config = { format: 'json', api_token: 123 }
+        patch :update, config
+        expect(response).not_to be_success
+        response.status.should == 401
+        expect(json['success']).to eq false
+      end
+      it 'should update patient with valid api token and valid attributes' do
+        config = { format: 'json', api_token: @token, patient: {first_name: 'bill'} }
+        patch :update, config
+        expect(response).to be_success
+        expect(json['success']).to eq true
+        expect(patient.reload.first_name).to eq 'bill'
+      end
+      it 'should not update with valid api token and invalid attributes' do
+        config = { format: 'json', api_token: @token, patient: {first_name: ''} }
+        patch :update, config
+        expect(response).not_to be_success
+        response.status.should == 422
+        expect(json['success']).to eq false
+      end
+    end
+    describe 'GET #index' do
+      it 'should respond successfully with proper API token' do
+        config = { format: 'json', api_token: @token }
+        get :index,  config
+        expect(response).to be_success
+        expect(json['success']).to eq true
+        expect(json['info']).to eq 'Logged in'
+        expect(json['data'].keys.include?('tasks'))
+      end
+      it 'should have failed response with no api token' do
+        get :index, format: 'json'
+        expect(response).not_to be_success
+        response.status.should == 401
+        expect(json['success']).to eq false
+      end
+      it 'should have failed response with invalid api token' do
+        config = { format: 'json', api_token: 123 }
+        get :index, config
+        expect(response).not_to be_success
+        response.status.should == 401
+        expect(json['success']).to eq false
+      end
+    end
+  end
 
   describe 'GET #show' do
     it 'should have failed response with no api token' do

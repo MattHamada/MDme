@@ -13,11 +13,33 @@ class Api::V1::PatientsController < ApplicationController
 
   def show
     @info = 'Profile'
-    @patient = Patient.first
+  end
+
+  def update
+    @patient.is_admin_applying_update = true
+    if @patient.update_attributes(patient_params)
+      render status: 200,
+             json: { success: true,
+                     info: 'Profile Updated',
+                     data: {}}
+    else
+      render status: 422,
+             json: { success: false,
+                     info: 'Invalid Parameters',
+                     data: @patient.errors.messages}
+    end
   end
 
 
   private
+
+  def patient_params
+    params.require(:patient).permit(:first_name,
+                                    :last_name,
+                                    :email,
+                                    :phone_number,
+                                    :avatar)
+  end
   def verify_api_token
     @patient ||= Patient.find_by_remember_token(encrypt(params[:api_token]));
     if @patient.nil?
