@@ -73,8 +73,9 @@ MDme::Application.routes.draw do
     namespace :v1 do
       post 'sessions' => 'sessions#create', :as => 'login'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
-      resources :patients, controller: 'patients'
-      get 'tasks' => 'tasks#index', as: 'tasks'
+      resources :patients, controller: 'patients', only: [:index]
+      get 'patients/show' => 'patients#show', as: 'patient_profile'
+      get 'patients/update' => 'patients#update', as: 'patient_update_profile'
     end
   end
 
