@@ -23,7 +23,7 @@ class Api::V1::PatientsController < ApplicationController
                      info: 'Profile Updated',
                      data: {}}
     else
-      render status: 422,
+      render status: 202,
              json: { success: false,
                      info: 'Invalid Parameters',
                      data: @patient.errors.messages}
