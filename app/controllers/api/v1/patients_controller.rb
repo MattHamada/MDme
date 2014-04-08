@@ -18,7 +18,11 @@ class Api::V1::PatientsController < ApplicationController
 
   def update
     @patient.is_admin_applying_update = true
-    if @patient.update_attributes(:avatar => params[:avatar])
+    if params[:patient].has_key?(:avatar)
+      @patient.avatar = params[:patient][:avatar]
+      @patient.save
+    end
+    if @patient.update_attributes(patient_params)
       render status: 200,
              json: { success: true,
                      info: 'Profile Updated',
