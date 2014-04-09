@@ -23,8 +23,8 @@ class Patient < ActiveRecord::Base
                                           :thumb => "100x100>" },
                     :default_url => "/images/:style/missing.png"
   validates_attachment :avatar,
-                       :content_type => { :content_type => ["image/jpg", "image/jpeg", "image/gif", "image/png"] },
-                       :size => { :in => 0..100.kilobytes }
+                       :content_type => { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
+                       :size => { :in => 0..10.megabytes }
 
 
   has_secure_password
