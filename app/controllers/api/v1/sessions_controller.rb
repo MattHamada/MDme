@@ -21,9 +21,9 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy
-    patient = Patient.find_by_remember_token(encrypt(params[:auth_token]))
+    patient = Patient.find_by_api_key(encrypt(params[:auth_token]))
     if patient
-      patient.update_attribute(:remember_token, nil)
+      patient.update_attribute(:api_key, nil)
       sign_out :patient
       render   status: 200,
                json: { success: true,

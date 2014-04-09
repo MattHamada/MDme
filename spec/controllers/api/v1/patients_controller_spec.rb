@@ -6,7 +6,7 @@ describe Api::V1::PatientsController do
   before :each do
     patient.save
     @token = 'ca76c7a6c7a'
-    patient.update_attribute(:remember_token, encrypt(@token))
+    patient.update_attribute(:api_key, encrypt(@token))
   end
   context :json do
 
@@ -34,8 +34,7 @@ describe Api::V1::PatientsController do
       it 'should not update with valid api token and invalid attributes' do
         config = { format: 'json', api_token: @token, patient: {first_name: ''} }
         patch :update, config
-        expect(response).not_to be_success
-        response.status.should == 422
+        response.status.should == 202
         expect(json['success']).to eq false
       end
     end

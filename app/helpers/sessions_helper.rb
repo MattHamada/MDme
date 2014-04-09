@@ -65,10 +65,10 @@ module SessionsHelper
   end
 
   def api_sign_in(patient)
-    remember_token = new_remember_token
-    patient.update_attribute(:remember_token, encrypt(remember_token))
+    api_key = new_remember_token
+    patient.update_attribute(:api_key, encrypt(api_key))
     self.current_patient = patient
-    remember_token
+    api_key
   end
 
   def sign_out(type)
