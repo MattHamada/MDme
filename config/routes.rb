@@ -76,6 +76,11 @@ MDme::Application.routes.draw do
       resources :patients, controller: 'patients', only: [:index]
       get 'patients/show' => 'patients#show', as: 'patient_profile'
       put 'patients/update' => 'patients#update', as: 'patient_update_profile'
+
+      namespace :patients do
+        resources :doctors, controller: 'doctors', only: [:index]
+        get 'doctors/departments' => 'doctors#department_index', as: 'doctors_departments'
+      end
     end
   end
 
