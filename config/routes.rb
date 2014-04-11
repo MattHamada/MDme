@@ -80,6 +80,8 @@ MDme::Application.routes.draw do
       namespace :patients do
         resources :doctors, controller: 'doctors', only: [:index, :show]
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
+
+        get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
       end
     end
   end
