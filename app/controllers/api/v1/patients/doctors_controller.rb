@@ -14,7 +14,12 @@ class Api::V1::Patients::DoctorsController < ApplicationController
   end
 
   def show
-
+    @doctor = Doctor.find(params[:id])
+    rescue
+      render  status: 202,
+              json: { success: false,
+                      info: 'Doctor not found.',
+                      data: {}}
   end
 
   private
