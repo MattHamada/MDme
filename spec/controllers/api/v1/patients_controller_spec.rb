@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe Api::V1::PatientsController do
   render_views
-  let(:patient) { FactoryGirl.create(:patient) }
+  let(:patient) { FactoryGirl.build(:patient) }
   before :each do
-    patient.save
     @token = 'ca76c7a6c7a'
     patient.update_attribute(:api_key, encrypt(@token))
   end

@@ -12,6 +12,8 @@ class Patient < ActiveRecord::Base
   extend UserCommonClass
   include CookieCrypt, UserCommonInstance, RocketPants::Cacheable #for future API use
 
+  #TODO Currently only supports patient being in one clinic per account - this should be changed
+
 
   belongs_to  :doctor
   has_many :appointments, dependent: :destroy

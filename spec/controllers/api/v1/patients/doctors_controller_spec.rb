@@ -2,20 +2,15 @@ require 'spec_helper'
 
 describe Api::V1::Patients::DoctorsController do
   render_views
-  let(:patient)      { FactoryGirl.create(:patient) }
-  let(:clinic)       { FactoryGirl.create(:clinic) }
-  let(:clinic2)      { FactoryGirl.create(:clinic)}
-  let(:department)   { FactoryGirl.create(:department) }
-  let(:department2)  { FactoryGirl.create(:department, name: 'Genetics') }
-  let(:department3)  { FactoryGirl.create(:department, clinic_id: 2) }
-  let(:doctor)       { FactoryGirl.create(:doctor) }
-  let(:doctor2)      { FactoryGirl.create(:doctor, email: 'doc2@doc.com') }
-  let(:doctor3)      { FactoryGirl.create(:doctor, email: 'doc3@doc.com', clinic_id: 2) }
-  let(:doctor4)      { FactoryGirl.create(:doctor, email: 'doc4@doc.com', department_id: 2)}
+  let(:patient)      { FactoryGirl.build(:patient) }
+  let(:department)   { FactoryGirl.build(:department) }
+  let(:department2)  { FactoryGirl.build(:department, name: 'Genetics') }
+  let(:department3)  { FactoryGirl.build(:department, clinic_id: 2) }
+  let(:doctor)       { FactoryGirl.build(:doctor) }
+  let(:doctor2)      { FactoryGirl.build(:doctor, email: 'doc2@doc.com') }
+  let(:doctor3)      { FactoryGirl.build(:doctor, email: 'doc3@doc.com', clinic_id: 2) }
+  let(:doctor4)      { FactoryGirl.build(:doctor, email: 'doc4@doc.com', department_id: 2)}
   before :each do
-    patient.save
-    clinic.save
-    clinic2.save
     department.save
     department2.save
     department3.save
