@@ -76,5 +76,8 @@ RSpec.configure do |config|
   #json_spec
   config.include JsonHelpers
 
+  #for invalid api requests
+  config.include ApiHelpers
+
 
 end

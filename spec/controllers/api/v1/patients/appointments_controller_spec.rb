@@ -1,8 +1,12 @@
 require 'spec_helper'
+include ApiHelpers
 
 describe Api::V1::Patients::AppointmentsController do
   render_views
   let(:patient)      { FactoryGirl.build(:patient) }
+  let(:appointment)  { FactoryGirl.create(:appointment) }
+  let(:appointment_request)  { FactoryGirl.create(:appointment_request) }
+
   before :each do
     @token = 'ca76c7a6c7a'
     patient.update_attribute(:api_key, encrypt(@token))
@@ -10,19 +14,7 @@ describe Api::V1::Patients::AppointmentsController do
 
   context :json do
     describe 'GET #tasks' do
-      it 'should have failed response with no api token' do
-        get :tasks, format: 'json'
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
-      it 'should have failed response with invalid api token' do
-        config = { format: 'json', api_token: 123 }
-        get :tasks, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
+      get_bad_requests(:tasks)
       it 'should respond with a json array of tasks with valid api token' do
         config = { format: 'json', api_token: @token }
         get :tasks, config
@@ -34,8 +26,6 @@ describe Api::V1::Patients::AppointmentsController do
       end
     end
 
-    describe 'GET #confirmed_appointments' do
 
-    end
   end
 end

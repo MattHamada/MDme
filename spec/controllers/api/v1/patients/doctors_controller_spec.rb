@@ -1,4 +1,5 @@
 require 'spec_helper'
+include ApiHelpers
 
 describe Api::V1::Patients::DoctorsController do
   render_views
@@ -23,19 +24,7 @@ describe Api::V1::Patients::DoctorsController do
   end
   context :json do
     describe 'GET department_index' do
-      it 'should have failed response with no api token' do
-        get :department_index, format: 'json'
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
-      it 'should have failed response with invalid api token' do
-        config = { format: 'json', api_token: 123 }
-        get :department_index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
+      get_bad_requests(:department_index)
       it 'should return a list of departments in clinic with valid api token' do
         config = { format: 'json', api_token: @token }
         get :department_index, config
@@ -49,20 +38,7 @@ describe Api::V1::Patients::DoctorsController do
     end
 
     describe 'GET #index' do
-      it 'should have failed response with no api token' do
-        config = { format: 'json', name: department.name }
-        get :index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
-      it 'should have failed response with invalid api token' do
-        config = { format: 'json', api_token: 123, name: department.name }
-        get :index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
+      get_bad_requests(:index)
       it 'should return doctors in same department within same clinic' do
         config = { format: 'json', api_token: @token, name: department.name }
         get :index, config
@@ -75,20 +51,7 @@ describe Api::V1::Patients::DoctorsController do
     end
 
     describe 'GET #show' do
-      it 'should have failed response with no api token' do
-        config = { format: 'json', name: department.name }
-        get :index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
-      it 'should have failed response with invalid api token' do
-        config = { format: 'json', api_token: 123, name: department.name }
-        get :index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
+      get_bad_requests :show, { id: 1 }
       it 'should return doctors info with valid api and valid id' do
         config = { format: 'json', api_token: @token, id: doctor.id }
         get :show, config

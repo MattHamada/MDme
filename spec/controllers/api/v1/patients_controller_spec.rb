@@ -1,4 +1,5 @@
 require 'spec_helper'
+include ApiHelpers
 
 describe Api::V1::PatientsController do
   render_views
@@ -8,7 +9,6 @@ describe Api::V1::PatientsController do
     patient.update_attribute(:api_key, encrypt(@token))
   end
   context :json do
-
     describe 'PATCH #update' do
       it 'should have failed response with no api token' do
         patch :update, format: 'json'
@@ -38,6 +38,7 @@ describe Api::V1::PatientsController do
       end
     end
     describe 'GET #index' do
+      get_bad_requests :index
       it 'should respond successfully with proper API token' do
         config = { format: 'json', api_token: @token }
         get :index,  config
@@ -46,35 +47,11 @@ describe Api::V1::PatientsController do
         expect(json['info']).to eq 'Logged in'
         expect(json['data'].keys.include?('tasks'))
       end
-      it 'should have failed response with no api token' do
-        get :index, format: 'json'
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
-      it 'should have failed response with invalid api token' do
-        config = { format: 'json', api_token: 123 }
-        get :index, config
-        expect(response).not_to be_success
-        response.status.should == 401
-        expect(json['success']).to eq false
-      end
     end
   end
 
   describe 'GET #show' do
-    it 'should have failed response with no api token' do
-      config = { format: 'json', id: patient.slug }
-      get :show, config
-      expect(response).not_to be_success
-      expect(json['success']).to eq false
-    end
-    it 'should have failed response with invalid api token' do
-      config = { format: 'json', id: patient.slug, api_token: 123 }
-      get :show,  config
-      expect(response).not_to be_success
-      expect(json['success']).to eq false
-    end
+    get_bad_requests :show
     it 'should respond successfully with proper API token' do
       config = { format: 'json', id: patient.slug, api_token: @token }
       get :show, config
