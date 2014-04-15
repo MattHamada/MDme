@@ -3,8 +3,9 @@ include ApiHelpers
 
 describe Api::V1::Patients::AppointmentsController do
   render_views
-  let(:patient)      { FactoryGirl.build(:patient) }
-  let(:appointment)  { FactoryGirl.create(:appointment) }
+  let(:patient)              { FactoryGirl.build(:patient) }
+  let(:doctor)               {FactoryGirl.create(:doctor) }
+  let(:appointment)          { FactoryGirl.create(:appointment) }
   let(:appointment_request)  { FactoryGirl.create(:appointment_request) }
 
   before :each do
@@ -26,6 +27,22 @@ describe Api::V1::Patients::AppointmentsController do
       end
     end
 
-
+    describe 'GET #confirmed_appointments' do
+      before do
+        doctor.save
+        appointment.save
+        appointment_request.save
+      end
+      get_bad_requests :confirmed_appointments
+      it 'should respond with only upcomming confirmed appointments with valid request' do
+        config = { format: 'json', api_token: @token }
+        get :confirmed_appointments, config
+        expect(response).to be_success
+        puts json
+        expect(json['data']['appointments']).not_to be_empty
+        expect(json['data']['appointments'].find { |apt| apt['id'] == appointment.id }).not_to be_nil
+        expect(json['data']['appointments'].find { |apt| apt['id'] == appointment_request.id }).to be_nil
+      end
+    end
   end
 end

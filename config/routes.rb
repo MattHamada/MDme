@@ -82,6 +82,7 @@ MDme::Application.routes.draw do
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
 
         get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
+        get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
       end
     end
   end

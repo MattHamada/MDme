@@ -339,7 +339,7 @@ describe 'AdministrationPages' do
           describe 'appointments' do
             let(:appointment_request) { FactoryGirl.create(:appointment_request)}
             let(:appointment2) { FactoryGirl.create(:appointment,
-             appointment_time: appointment_request.appointment_time + 2.hours )}
+             appointment_time: appointment_request.appointment_time + 1.hours )}
             before do
               patient.save!
               doctor.save!

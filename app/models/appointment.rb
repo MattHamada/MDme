@@ -13,7 +13,7 @@ class Appointment < ActiveRecord::Base
   belongs_to :patient
   belongs_to :clinic
 
-  delegate :full_name, to: :doctor, prefix: true
+  delegate :full_name, :id, to: :doctor, prefix: true
   delegate :full_name, to: :patient, prefix: true
 
   #appointments must be at a unique time in the future
