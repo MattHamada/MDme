@@ -10,6 +10,7 @@ describe Appointment do
                                    appointment_time: DateTime.now + 30.minutes,
                                    clinic_id: 1,
                                    request: false)
+    doctor.save
   end
 
   subject { @appointment }

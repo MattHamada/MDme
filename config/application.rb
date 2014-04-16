@@ -6,7 +6,7 @@ require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'sprockets/railtie'
-require './lib/rack/restful_jsonp_middleware'
+# require './lib/rack/restful_jsonp_middleware'
 
 # require "rails/test_unit/railtie"
 
@@ -52,7 +52,7 @@ module MDme
     config.action_mailer.logger = nil
 
     #Allow jsonp non-get http requests
-    config.middleware.swap(Rack::MethodOverride,Rack::RestfulJsonpMiddleware)
+    # config.middleware.swap(Rack::MethodOverride,Rack::RestfulJsonpMiddleware)
   end
 end
 
