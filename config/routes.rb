@@ -85,6 +85,10 @@ MDme::Application.routes.draw do
         get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
       end
     end
+    namespace :v2 do
+      post 'login' => 'sessions#create', :as => 'login'
+      delete 'sessions' => 'sessions#destroy', :as => 'logout'
+    end
   end
 
 
