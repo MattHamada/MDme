@@ -19,10 +19,10 @@ MDme::Application.routes.draw do
   #constraints subdomain: false do
   root 'static_pages#home', constraints: { subdomain: 'www' }
   #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
-  match '/help',            to: 'static_pages#help',     via: 'get',    constraints: { subdomain: 'www' }
-  match '/about',           to: 'static_pages#about',    via: 'get',    constraints: { subdomain: 'www' }
-  match '/contact',         to: 'static_pages#contact',  via: 'get',    constraints: { subdomain: 'www' }
-  match '/signin',          to: 'sessions#new',          via: 'get',    constraints: { subdomain: 'www' }
+  match '/help',            to: 'static_pages#help',     via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/about',           to: 'static_pages#about',    via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/contact',         to: 'static_pages#contact',  via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/signin',          to: 'sessions#new',          via: 'get'#,    constraints: { subdomain: 'www' }
   match '/signout',         to: 'sessions#destroy',      via: 'delete'
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
@@ -87,6 +87,7 @@ MDme::Application.routes.draw do
     end
     namespace :v2 do
       post 'login' => 'sessions#create', :as => 'login'
+      post 'api_login' => 'sessions#api_login', as: 'api_login'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
   end

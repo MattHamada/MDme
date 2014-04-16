@@ -1,0 +1,53 @@
+<% provide(:title, ' | Sign In') %>
+<%= render 'shared/flash' %>
+
+<script>
+  if(localStorage.getItem("auth_token") != null) {
+    $(document).on("pageinit", "#pageid", function () {
+      $.ajax({
+        url: 'http://www.lvh.me:3000/api/v2/api_login.json',
+        data: {"token": localstorage.getItem("auth_token")},
+        success: function (data) {
+
+        }
+      });
+    });
+  }
+  else
+  {
+    alert("no token");
+  }
+</script>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <strong>Sign in</strong>
+      </div>
+      <div class="panel-body">
+        <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', action: sessions_path, role: 'form' }) do |f| %>
+          <div class='form-group'>
+            <div class='col-md-10 col-md-offset-1'>
+              <%= f.label :email %>
+              <%= f.text_field :email, class: 'form-control' %>
+            </div>
+          </div>
+          <div class='form-group'>
+            <div class='col-md-10 col-md-offset-1'>
+              <%= f.label :password %>
+              <%= f.password_field :password, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <div style="text-align: center">
+              <%= f.submit 'Sign in', class: 'btn btn-lg btn-primary', id: 'signin_button' %>
+            </div>
+          </div>
+        <% end %>
+
+        <p><%= link_to 'Forgot Password', forgot_password_path %></p>
+      </div>
+    </div>
+
+  </div>
+</div>

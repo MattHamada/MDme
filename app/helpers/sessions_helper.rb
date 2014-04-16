@@ -71,6 +71,13 @@ module SessionsHelper
     api_key
   end
 
+  # def api_sign_in(patient)
+  #   api_key = new_remember_token
+  #   patient.update_attribute(:remember_token, encrypt(api_key))
+  #   self.current_patient = patient
+  #   api_key
+  # end
+
   def sign_out(type)
     cookies.delete(:remember_token)
     if type == :patient

@@ -9,11 +9,26 @@ class Api::V2::SessionsController < ApplicationController
     if patient && patient.authenticate(params[:patient][:password])
       token = api_sign_in patient
       render json: {api_token: token},
-            callback: params[:callback]
+             callback: params[:callback]
     else
 
       render  :json => {:denied => "invalid_login"}, :callback => params[:callback]
 
+    end
+  end
+
+  def api_login
+    @patient = Patient.find_by(api_token: encrypt(params[:token]))
+    if @patient
+      sign_in @patient, :patient
+      redirect_to patient_path(@patient)
+    end
+  end
+
+  def get_token
+    @patient = current_patient
+    if @patient
+      render json: {token: @patient.api_token}
     end
   end
 
