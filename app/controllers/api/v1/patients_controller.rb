@@ -18,9 +18,6 @@ class Api::V1::PatientsController < ApplicationController
 
   def update
     @patient.is_admin_applying_update = true
-    if params[:patient].has_key?(:avatar)
-      @patient.update_attributes(avatar: params[:patient][:avatar])
-    end
     if @patient.update_attributes(patient_params)
       render status: 200,
              json: { success: true,
@@ -45,7 +42,7 @@ class Api::V1::PatientsController < ApplicationController
                                     :avatar)
   end
   def verify_api_token
-    @patient ||= Patient.find_by_remember_token(encrypt(params[:api_token]));
+    @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]));
     if @patient.nil?
       render status: 401,
              json: { success: false,

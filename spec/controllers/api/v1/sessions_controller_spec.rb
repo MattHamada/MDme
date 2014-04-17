@@ -11,7 +11,7 @@ describe Api::V1::SessionsController do
        end
      end
     describe 'with valid parameters' do
-      let(:patient) { FactoryGirl.create(:patient) }
+      let(:patient) { FactoryGirl.build(:patient) }
       before do
         patient.save
       end
@@ -26,7 +26,7 @@ describe Api::V1::SessionsController do
   end
 
   describe 'DELETE #destroy' do
-    let(:patient) { FactoryGirl.create(:patient) }
+    let(:patient) { FactoryGirl.build(:patient) }
     before :each do
       patient.save
       post :create, patient: {email: patient.email, password: patient.password}

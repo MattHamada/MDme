@@ -9,7 +9,8 @@ class Department < ActiveRecord::Base
   has_many :doctors
   has_many :clinics
 
-  validates :name, presence: true, uniqueness: {case_sensitive: false}, length: { maximum: 50 }
+  validates :name, presence: true, length: { maximum: 50 }
+  validate :name_unique_in_clinic
   validate :slug_unique_in_clinic
 
   before_validation :generate_slug
@@ -37,6 +38,15 @@ class Department < ActiveRecord::Base
 
   def slug_unique_in_clinic?
     Department.in_clinic(self).where(slug: slug).count == 0
+  end
+
+  def name_unique_in_clinic
+    errors.add(:name, "Name: #{name} already in use") unless
+        name_unique_in_clinic?
+  end
+
+  def name_unique_in_clinic?
+    Department.in_clinic(self).where(name: name).count == 0
   end
 
   def self.in_clinic(model)

@@ -53,7 +53,7 @@ FactoryGirl.define do
   factory :appointment_request, class: Appointment do
     doctor_id             '1'
     patient_id            '1'
-    appointment_time      { (DateTime.now + 3.days).change({hour: 11, minute: 15}) }
+    appointment_time      { (DateTime.now + 3.days).change({hour: 9, minute: 00}) }
     description           'test'
     request true
     clinic_id             '1'

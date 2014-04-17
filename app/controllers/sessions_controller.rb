@@ -7,8 +7,13 @@
 
 
 class SessionsController < ApplicationController
-  def new
+  skip_before_filter :verify_authenticity_token
 
+
+  def new
+    if patient_signed_in?
+      redirect_to patient_path(current_patient)
+    end
   end
 
   def create

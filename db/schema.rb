@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140328163205) do
+ActiveRecord::Schema.define(version: 20140408230538) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -103,8 +103,10 @@ ActiveRecord::Schema.define(version: 20140328163205) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "api_key"
   end
 
+  add_index "patients", ["api_key"], name: "index_patients_on_api_key"
   add_index "patients", ["clinic_id"], name: "index_patients_on_clinic_id"
   add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true

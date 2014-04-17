@@ -19,10 +19,10 @@ MDme::Application.routes.draw do
   #constraints subdomain: false do
   root 'static_pages#home', constraints: { subdomain: 'www' }
   #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
-  match '/help',            to: 'static_pages#help',     via: 'get',    constraints: { subdomain: 'www' }
-  match '/about',           to: 'static_pages#about',    via: 'get',    constraints: { subdomain: 'www' }
-  match '/contact',         to: 'static_pages#contact',  via: 'get',    constraints: { subdomain: 'www' }
-  match '/signin',          to: 'sessions#new',          via: 'get',    constraints: { subdomain: 'www' }
+  match '/help',            to: 'static_pages#help',     via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/about',           to: 'static_pages#about',    via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/contact',         to: 'static_pages#contact',  via: 'get'#,    constraints: { subdomain: 'www' }
+  match '/signin',          to: 'sessions#new',          via: 'get'#,    constraints: { subdomain: 'www' }
   match '/signout',         to: 'sessions#destroy',      via: 'delete'
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
@@ -76,6 +76,20 @@ MDme::Application.routes.draw do
       resources :patients, controller: 'patients', only: [:index]
       get 'patients/show' => 'patients#show', as: 'patient_profile'
       put 'patients/update' => 'patients#update', as: 'patient_update_profile'
+
+      namespace :patients do
+        resources :doctors, controller: 'doctors', only: [:index, :show]
+        get 'departments' => 'doctors#department_index', as: 'doctors_departments'
+
+        get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
+        get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
+      end
+    end
+    namespace :v2 do
+      post 'login' => 'sessions#create', :as => 'login'
+      post 'api_login' => 'sessions#api_login', as: 'api_login'
+      get 'get_token' => 'sessions#get_token', as: 'get_token'
+      delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
   end
 

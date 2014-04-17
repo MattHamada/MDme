@@ -1,10 +1,13 @@
 require File.expand_path('../boot', __FILE__)
 
+
 # Pick the frameworks you want:
 require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'sprockets/railtie'
+# require './lib/rack/restful_jsonp_middleware'
+
 # require "rails/test_unit/railtie"
 
 
@@ -47,6 +50,9 @@ module MDme
 
     #prevent email from being logged
     config.action_mailer.logger = nil
+
+    #Allow jsonp non-get http requests
+    # config.middleware.swap(Rack::MethodOverride,Rack::RestfulJsonpMiddleware)
   end
 end
 

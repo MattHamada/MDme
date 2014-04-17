@@ -13,7 +13,9 @@ class PatientsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html
+      format.html do |variant|
+        variant.mobile { render 'patients/mobile/menu' }
+      end
       format.json  { render :json => @patient, except: [:created_at,
                                                         :updated_at,
                                                         :password_digest,

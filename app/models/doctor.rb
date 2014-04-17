@@ -30,7 +30,9 @@ class Doctor < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
                     :default_url => "/images/:style/missing.png"
-  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+  validates_attachment :avatar,
+                       :content_type => { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
+                       :size => { :in => 0..10.megabytes }
 
   scope :ordered_last_name, -> { order(last_name: :asc) }
 
@@ -108,6 +110,22 @@ class Doctor < ActiveRecord::Base
 
   def appointments_today
     appointments.today.order('appointment_time ASC')
+  end
+
+  def self.in_department(department)
+    Doctor.where(department_id: department.id).where(clinic_id: department.clinic_id)
+  end
+
+  def avatar_thumb_url
+    avatar.url(:thumb)
+  end
+
+  def avatar_medium_url
+    avatar.url(:medium)
+  end
+
+  def education
+    "#{degree}; #{alma_mater}"
   end
 
 end

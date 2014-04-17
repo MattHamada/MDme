@@ -1,0 +1,29 @@
+<script>
+  $(document).ready(function() {
+    $.ajax({type: "GET",
+      url: 'http://www.lvh.me:3000/api/v2/get_token.json',
+      datatype: 'json',
+      success: function(data) {
+        localStorage.setItem("auth_token", data.token);
+        alert("data saved"); },
+      error: function(xhrObj, textStatus, exception) {
+        var err = eval("(" + xhr.responseText + ")");
+        alert(err.Message);}
+    });
+  });
+</script>
+<div class="row">
+  <div class="col-md-3">
+    <div class='panel panel-default'>
+      <div class="panel-heading"><strong><i class="fa fa-medkit"></i> Toolbox</strong></div>
+      <div class="well">
+        <ul class="nav nav-pills nav-stacked">
+          <li><%= link_to "<i class='fa fa-dashboard'></i> Profile".html_safe, patient_path(current_patient) %></li>
+          <li><%= link_to "<i class='fa fa-book'></i> Appointments".html_safe, patient_appointments_path(current_patient) %><li>
+          <li><%= link_to "<i class='fa fa-user-md'></i> Browse Doctors".html_safe, patient_doctors_path(current_patient) %></li>
+          <li><%= link_to "<i class='fa fa-minus-circle'></i> Sign Out".html_safe, signout_path, method: :delete %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
