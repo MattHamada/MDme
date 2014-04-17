@@ -88,6 +88,7 @@ MDme::Application.routes.draw do
     namespace :v2 do
       post 'login' => 'sessions#create', :as => 'login'
       post 'api_login' => 'sessions#api_login', as: 'api_login'
+      get 'get_token' => 'sessions#get_token', as: 'get_token'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
   end

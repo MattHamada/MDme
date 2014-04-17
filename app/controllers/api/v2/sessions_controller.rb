@@ -18,17 +18,17 @@ class Api::V2::SessionsController < ApplicationController
   end
 
   def api_login
-    @patient = Patient.find_by(api_token: encrypt(params[:token]))
+    @patient = Patient.find_by(api_key: params[:token])
     if @patient
       sign_in @patient, :patient
-      redirect_to patient_path(@patient)
+      render json:{url: patient_url(@patient) }
     end
   end
 
   def get_token
     @patient = current_patient
     if @patient
-      render json: {token: @patient.api_token}
+      render json: {token: @patient.api_key}
     end
   end
 
