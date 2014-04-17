@@ -1,13 +1,15 @@
+<script src="http://debug.phonegap.com/target/target-script-min.js#anonymous"></script>
 <script>
   $(document).ready(function() {
+    $.support.cors = true;
     $.ajax({type: "GET",
-      url: 'http://www.lvh.me:3000/api/v2/get_token.json',
+      url: <%= "'#{host_url}/api/v2/get_token.json'".html_safe %>,
       datatype: 'json',
       success: function(data) {
         localStorage.setItem("auth_token", data.token);
         alert("data saved"); },
       error: function(xhrObj, textStatus, exception) {
-        var err = eval("(" + xhr.responseText + ")");
+        var err = eval("(" + xhrObj.responseText + ")");
         alert(err.Message);}
     });
   });

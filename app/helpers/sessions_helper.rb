@@ -8,7 +8,7 @@ module SessionsHelper
   end
 
   def require_patient_login
-    redirect_to root_path unless find_patient == current_patient and find_patient != nil
+    redirect_to new_session_path unless find_patient == current_patient and find_patient != nil
   end
 
   def require_doctor_login
