@@ -6,7 +6,7 @@
     if(localStorage.getItem("auth_token") != null) {
         $.ajax({
           type: 'POST',
-          url: 'http://www.lvh.me:3000/api/v2/api_login.json',
+          url: 'http://www.mdme.us/api/v2/api_login.json',
           data: {"token": localStorage.getItem("auth_token")},
           success: function (data) {
             alert("token saved");
