@@ -86,6 +86,11 @@ class Patients::AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  #mobile
+  def menu
+    render 'patients/appointments/menu'
+  end
+
   private
 
     def appointment_params

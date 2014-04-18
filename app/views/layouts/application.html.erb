@@ -3,9 +3,12 @@
 <head>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "mobile_login" if request.variant.include? :mobile %>
   <% if request.variant.include? :mobile %>
-  <% end %>
+  <%= stylesheet_link_tag 'mobile', media: 'all', "data-turbolinks-track" => true %>
+  <%= javascript_include_tag 'mobile' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% end %>
   <%= csrf_meta_tags %>
 
 
@@ -19,13 +22,18 @@
 <body>
 
 <% if request.subdomain == 'www' || request.subdomain.blank?  %>
-<% render 'static_pages/header' %>
+  <% unless   !request.variant.include? :mobile %>
+    <% render 'static_pages/header' %>
+  <% end %>
 <% end %>
 
+<% if request.variant.include? :mobile %>
+  <%= render 'patients/mobile/header' %>
+<% end %>
 
-
-<%= yield %>
-
-<%= render 'layouts/footer' %>
+  <%= yield %>
+<% unless request.variant.include? :mobile %>
+  <%= render 'layouts/footer' %>
+<% end %>
 </body>
 </html>
