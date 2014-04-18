@@ -4,11 +4,9 @@
       <div class="panel-heading"><strong><i class="fa fa-book"></i>Appointments</strong></div>
       <div class="well">
         <ul class="nav nav-pills nav-stacked">
-          <!--confirmed appointments, new appointments, open requests  -->
-          <li class="menu-text"><%= link_to "<i class='fa fa-dashboard'></i> Profile".html_safe, patient_path(current_patient) %></li>
-          <li class="menu-text"><%= link_to "<i class='fa fa-book'></i> Appointments".html_safe, patient_appointments_path(current_patient) %><li>
-          <li class="menu-text"><%= link_to "<i class='fa fa-user-md'></i> Browse Doctors".html_safe, patient_doctors_path(current_patient) %></li>
-          <li class="menu-text"><%= link_to "<i class='fa fa-minus-circle'></i> Sign Out".html_safe, signout_path, method: :delete %></li>
+          <li class="submenu-text"><%= link_to "<i class='fa fa-book'></i> Confirmed Appointments".html_safe, patient_appointments_path(current_patient) %><li>
+          <li class="submenu-text"><%= link_to "<i class='fa fa-calendar'></i> New Request".html_safe, new_patient_appointment_path(current_patient) %></li>
+          <li class="submenu-text"><%= link_to "<i class='fa fa-eye'></i> Open Requests".html_safe, open_requests_path(current_patient) %></li>
         </ul>
       </div>
     </div>

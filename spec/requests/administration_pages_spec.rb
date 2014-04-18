@@ -503,7 +503,7 @@ describe 'AdministrationPages' do
 
         describe 'signing out' do
           before { click_link 'Sign Out' }
-          it { should have_content 'Scheduling Simplified' }
+          it { should have_content 'Sign In' }
         end
       end
     end

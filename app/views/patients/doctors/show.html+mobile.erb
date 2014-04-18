@@ -1,0 +1,20 @@
+
+<div class="row">
+  <div class="col-md-12 main-holder">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Public Profile for <%= @doctor.full_name %></h4></div>
+      <div class="panel-body">
+        <%= image_tag @doctor.avatar.url(:thumb), id: 'avatar' %>
+        <br/>
+        <b>First Name:</b> <%= @doctor.first_name %><br/>
+        <b>Last Name:</b> <%= @doctor.last_name %><br/>
+        <b>Email:</b> <%= @doctor.email %><br/>
+        <b>Phone:</b> <%= @doctor.phone_number %><br/>
+        <b>Education:</b> <%= @doctor.education %><br/>
+        <b>Department:</b> <%= @doctor.department_name %><br/>
+        <b>Description:</b> <%= @doctor.description %><br/>
+      </div>
+    </div>
+  </div>
+</div>
+

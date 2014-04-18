@@ -9,7 +9,7 @@ describe 'Patient Pages' do
 
   describe 'need to be logged in to access patient pages' do
     before { visit patient_path(patient) }
-    it { should have_content 'Scheduling Simplified' }
+    it { should have_content 'Sign In' }
   end
 
   describe 'signing in' do
@@ -132,7 +132,7 @@ describe 'Patient Pages' do
           patient2.save!
           visit patient_path(patient2)
         end
-        it { should have_content 'Scheduling Simplified' }
+        it { should have_content 'Sign In' }
       end
 
       describe 'browse doctor pages' do

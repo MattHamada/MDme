@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-12 main-holder">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Edit Appointment Request</h4></div>
+      <div class="panel-body">
+        <div class="alert alert-info">To change doctor or date, please delete and remake the request</div>
+
+        <%= form_for(@appointment, url: patient_appointment_path, method: :patch, html: { class: "form-inline", role: "form" }) do |f| %>
+          <%= f.label(:datetime, "Select Appointment Time") %>
+          <div class='form-group'>
+            <select class="form-control" id="time" name="appointment[time]">
+              <% @open_times.each_with_index do |time, index| %>
+                <option <%= 'selected="selected"' if index+1 == @open_times.length %>value="<%= time %>"><%= time %></option>
+              <% end %>
+            </select>
+          </div>
+          <br/>
+          <br/>
+
+          <div class='form-group'>
+            <div class="col-md-3">
+
+            <%= f.label(:description, 'Notes') %>
+              <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', value: @appointment.description, rows: '5', style: 'width: 25em;') %>
+            </div>
+          </div>
+          </br>
+          </br>
+          <div class="button_links">
+            <div class="col-xs-8" style="padding-left: 1em;">
+              <%= f.submit 'Update', class: 'btn btn-primary' %>
+            </div>
+
+              <% end %>
+             <div class="col-xs-1" style="padding-right: 1em;">
+
+               <%= link_to 'Delete<br/>Request'.html_safe, patient_appointment_path(@patient, @appointment), method: :delete, class: 'btn btn-large btn-danger' %> <br/>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

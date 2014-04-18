@@ -12,14 +12,12 @@
         <b>Preferred Doctor:</b> <%= @patient.doctor.full_name %><br/>
         <br/>
         <div class="button_links">
-          <row>
             <div class="col-xs-8" style="padding-left: 1em;">
                <%= link_to 'Edit<br/>Profile'.html_safe, edit_patient_path(@patient), method: :get, class: 'btn btn-large btn-primary'  %>
             </div>
             <div class="col-xs-1" style="padding-right: 1em;">
               <%= link_to 'Change<br/>Password'.html_safe, patient_password_path(@patient), method: :get, class: 'btn btn-large btn-success' %>
             </div>
-          </row>
         </div>
       </div>
     </div>
