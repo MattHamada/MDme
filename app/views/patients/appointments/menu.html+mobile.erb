@@ -2,6 +2,7 @@
   <div class="col-md-11 main-holder">
     <div class='panel panel-default'>
       <div class="panel-heading"><strong><i class="fa fa-book"></i>Appointments</strong></div>
+      <%= render 'shared/flash' %>
       <div class="well">
         <ul class="nav nav-pills nav-stacked">
           <li class="submenu-text"><%= link_to "<i class='fa fa-book'></i> Confirmed Appointments".html_safe, patient_appointments_path(current_patient) %><li>

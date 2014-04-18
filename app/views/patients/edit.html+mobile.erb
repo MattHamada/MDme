@@ -5,6 +5,7 @@
       <div class="panel-body">
 
         <%= form_for(@patient, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
+          <%= render 'shared/flash' %>
           <%= render 'shared/error_messages', object: @patient %>
 
           <div class='form-group'>
@@ -41,7 +42,7 @@
 
           <div class="form-group">
             <div class="col-md-7">
-              <b>Picture:</b> <%= f.file_field :avatar %>
+              <b>Picture:</b> <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg,image/png' %>
             </div>
           </div>
 

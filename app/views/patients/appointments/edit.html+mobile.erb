@@ -3,6 +3,8 @@
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Edit Appointment Request</h4></div>
       <div class="panel-body">
+        <%= render 'shared/flash' %>
+
         <div class="alert alert-info">To change doctor or date, please delete and remake the request</div>
 
         <%= form_for(@appointment, url: patient_appointment_path, method: :patch, html: { class: "form-inline", role: "form" }) do |f| %>

@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Select Date</h4></div>
       <div class="panel-body">
-
+        <%= render 'shared/flash' %>
         <%= form_for(:appointment, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
           <div class="col-md-4">
             <%= f.label(:date, "Select Date") %>

@@ -13,6 +13,7 @@
   <div class="col-md-11 main-holder">
     <div class='panel panel-default'>
       <div class="panel-heading"><strong><i class="fa fa-medkit"></i> Toolbox</strong></div>
+      <%= render 'shared/flash' %>
       <div class="well">
         <ul class="nav nav-pills nav-stacked">
           <li class="menu-text"><%= link_to "<i class='fa fa-dashboard'></i> Profile".html_safe, patient_path(current_patient) %></li>

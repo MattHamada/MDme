@@ -3,6 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Appointment Details</h4></div>
       <div class="panel-body">
+        <%= render 'shared/flash' %>
         <b>Doctor:</b> <%=  link_to @appointment.doctor_full_name, patient_doctor_path(@patient, @appointment.doctor) %> <br/>
         <b>Time:</b> <%= @appointment.date_time_ampm %> <br/>
         <b>Notes:</b> <%= @appointment.description %>    <br/>
