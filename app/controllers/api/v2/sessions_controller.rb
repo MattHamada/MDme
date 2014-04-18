@@ -21,7 +21,7 @@ class Api::V2::SessionsController < ApplicationController
     @patient = Patient.find_by(api_key: params[:token])
     if @patient
       sign_in @patient, :patient
-      render json:{url: patient_url(@patient) }
+      render json:{url: patient_mobile_menu_url(@patient) }
     end
   end
 

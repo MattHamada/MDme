@@ -14,7 +14,7 @@ class PatientsController < ApplicationController
   def show
     respond_to do |format|
       format.html do |variant|
-        variant.mobile { render 'patients/mobile/menu' }
+        variant.mobile { render 'patients/mobile/show' }
       end
       format.json  { render :json => @patient, except: [:created_at,
                                                         :updated_at,
@@ -65,10 +65,11 @@ class PatientsController < ApplicationController
     end
   end
 
+  #mobile stuff below
 
-
-
-
+  def menu
+    render 'patients/mobile/menu'
+  end
 
   private
 

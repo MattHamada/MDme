@@ -7,12 +7,15 @@
 
 
 class SessionsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
 
 
   def new
     if patient_signed_in?
-      redirect_to patient_path(current_patient)
+      if request.variant.include?(:mobile)
+        redirect_to patient_mobile_menu_path(current_patient)
+      else
+        redirect_to patient_path(current_patient)
+      end
     end
   end
 
@@ -39,7 +42,12 @@ class SessionsController < ApplicationController
       patient = Patient.find_by(email: params[:session][:email].downcase)
       if patient && patient.authenticate(params[:session][:password])
         sign_in patient, :patient
-        redirect_to patient
+
+        if request.variant.include? :mobile
+          redirect_to patient_mobile_menu_path(patient)
+        else
+          redirect_to patient
+        end
       else
         flash.now[:danger] = 'Invalid email/password combination'
         render 'new'
@@ -55,7 +63,7 @@ class SessionsController < ApplicationController
     else
       sign_out :patient
     end
-    redirect_to root_url
+    redirect_to '/signin'
   end
 
 
