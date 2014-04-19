@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def set_variant
     if  request.user_agent =~
-        /mobile|android|touch|webos|hpwos|iphone|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile|ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/
+        /mobile|android|touch|webos|hpwos|iphone|iPhone|iPad|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile|ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/
 
       request.variant = :mobile
     else
