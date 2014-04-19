@@ -1,6 +1,7 @@
     <div id="footer">
       <hr id="nav-break"/>
-
+      <%= "variant: #{request.variant}" %> <br/>
+      <%= "user agent: #{request.user_agent}" %>
       <p>&copy; 2014 MDME.us </p>
       <%= debug(params) if Rails.env.development? && !request.variant.include?(:mobile) %>
 
