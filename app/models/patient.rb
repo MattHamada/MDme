@@ -37,7 +37,9 @@ class Patient < ActiveRecord::Base
   validate :attachment_content_type
 
   def attachment_content_type
-    errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.include?(self.avatar_content_type)
+    unless self.avatar_content_type.nil?
+      errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.include?(self.avatar_content_type)
+    end
   end
   do_not_validate_attachment_file_type :avatar
   validates_attachment :avatar,

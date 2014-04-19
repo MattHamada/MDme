@@ -278,7 +278,7 @@ describe 'AdministrationPages' do
               before { click_link 'Add Patient' }
               describe 'with invalid information' do
                 before { click_button 'Create' }
-                it { should have_title 'Create Patient' }
+                it { should have_title 'New Patient' }
                 it { should have_selector 'div.alert.alert-danger', text: 'Error Creating Patient'}
               end
               describe 'with valid information' do
@@ -503,7 +503,7 @@ describe 'AdministrationPages' do
 
         describe 'signing out' do
           before { click_link 'Sign Out' }
-          it { should have_content 'Sign In' }
+          it { should have_content 'Sign in' }
         end
       end
     end
