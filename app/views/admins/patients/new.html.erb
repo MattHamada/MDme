@@ -1,4 +1,4 @@
-r<%= provide(:title, 'Create Patient') %>
+<%= provide(:title, "New Patient") %>
 <%= render 'admins/sidebar' %>
 
 <div class="col-xs-8">
@@ -7,10 +7,22 @@ r<%= provide(:title, 'Create Patient') %>
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Add Patient</h4></div>
         <div class="panel-body">
-          <%= form_for @patient, url: url_for(controller: 'patients', action: 'create') do |f| %>
-              <%= render 'patients/new_edit_form', f: f %>
 
-              <%= f.submit 'Create', class: 'btn btn-success' %>
+          <%= form_for @patient, url: url_for(controller: 'patients', action: 'create') do |f| %>
+            <%= render 'patients/new_edit_form', f: f %>
+
+            <%= f.submit 'Create', class: 'btn btn-success' %>
           <% end %>
+
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+

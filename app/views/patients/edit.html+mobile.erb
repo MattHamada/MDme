@@ -1,10 +1,11 @@
-<div class="row">
+<div class="row" id="main-row">
   <div class="col-md-11 main-holder">
     <div class="panel panel-default">
       <div class="panel-heading" ><h4>Edit Profile</h4></div>
       <div class="panel-body">
 
         <%= form_for(@patient, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
+          <%= render 'shared/flash' %>
           <%= render 'shared/error_messages', object: @patient %>
 
           <div class='form-group'>
@@ -41,7 +42,7 @@
 
           <div class="form-group">
             <div class="col-md-7">
-              <b>Picture:</b> <%= f.file_field :avatar %>
+              <b>Picture:</b> <%= f.file_field :avatar, accept: 'image/png,image/gif,image/jpeg,image/png' %>
             </div>
           </div>
 
@@ -54,7 +55,7 @@
           </div>
           <br/>
           <div class="button_links" style="text-align: center;">
-            <%= f.submit 'Update<br/>Profile'.html_safe, class: 'btn btn-large btn-success' %>
+            <%= f.submit 'Update Profile', class: 'btn btn-large btn-success', style: 'height: 4em;' %>
 
           </div>
 

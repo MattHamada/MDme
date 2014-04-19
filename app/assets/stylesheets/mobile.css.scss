@@ -4,7 +4,16 @@ div#mobile-header {
   height: 1.5em;
   line-height: 1.5em;
   font-size: 2em;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
+
+#main-row {
+}
+
+
 
 body {
   background: rgb(145,145,145);
@@ -12,6 +21,10 @@ body {
 
 .menu-text {
   font-size: 2em;
+}
+
+.submenu-text {
+  font-size: 1.5em;
 }
 
 .edit-button {
@@ -24,6 +37,7 @@ body {
 
 .main-holder {
   padding: 0;
+  margin-top: 50px;
 }
 
 

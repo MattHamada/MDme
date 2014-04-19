@@ -1,5 +1,4 @@
-<div id="mobile-header">
-  <div class="row">
+  <div class="row" id="mobile-header">
     <div class="col-xs-9" style="padding-left: 1.5em;">
       <%= link_to '<i class="fa fa-bars"></i>'.html_safe, patient_mobile_menu_path(current_patient) unless current_patient.nil? %>
     </div>
@@ -7,6 +6,4 @@
       <a id="refresh_button" href="#"> <i class="fa fa-refresh"></i></a>
     </div>
   </div>
-</div>
-<%= render 'shared/flash' %>
 

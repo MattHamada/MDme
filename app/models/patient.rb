@@ -24,10 +24,30 @@ class Patient < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
                     :default_url => "/images/:style/missing.png"
+
+  VALID_CONTENT_TYPES = ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"]
+
+  before_validation do |file|
+    if file.avatar_content_type == 'application/octet-stream'
+      mime_type = MIME::Types.type_for(file.avatar_file_name)
+      file.avatar_content_type = mime_type.first.content_type if mime_type.first
+    end
+  end
+
+  validate :attachment_content_type
+
+  def attachment_content_type
+    unless self.avatar_content_type.nil?
+      errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.include?(self.avatar_content_type)
+    end
+  end
+  do_not_validate_attachment_file_type :avatar
   validates_attachment :avatar,
-                       :content_type => { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
                        :size => { :in => 0..10.megabytes }
 
+  # validates_attachment_content_type :avatar,
+  #                                   :content_type =>   { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
+  #                                   :size => { :in => 0..10.megabytes }
 
   has_secure_password
 

@@ -28,6 +28,7 @@
         <strong>Sign in</strong>
       </div>
       <div class="panel-body">
+        <%= render 'shared/flash' %>
         <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', action: sessions_path, role: 'form' }) do |f| %>
           <div class='form-group'>
             <div class='col-md-10 col-md-offset-1'>

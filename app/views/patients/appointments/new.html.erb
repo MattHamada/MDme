@@ -7,21 +7,20 @@
         <div class="panel-heading"><h4>Select Date</h4></div>
         <div class="panel-body">
 
-          <%= form_for(:appointment, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
-            <div class="col-xs-4">
-              <%= f.label(:date, "Select Date") %>
-
-              <%= f.text_field(:date, class: "form-control" ) %>
-            </div>
-            <div class='form-group'>
-              <div class="col-xs-7">
-                <%= f.label(:appointment, 'Doctor') %>
-                <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
+          <%= form_for(:appointment, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-inline', role: 'form' }) do |f| %>
+                <div class="form-group">
+                  <%= f.label(:date, "Select Date", class: 'sr-only', for: 'appointment_date') %>
+                  <%= f.text_field(:date, class: "form-control", placeholder: "Date" ) %>
+                </div>
+                <div class="form-group">
+                  <%= f.label(:appointment, 'Doctor',  class: 'sr-only', for: 'appointment_doctor') %>
+                  <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
+                </div>
+              <div class="form-group">
+                <div  id="submit">
+                  <%= f.submit 'Find open times', class: 'btn btn-large btn-primary', id: 'submit_buttonW' %>
+                </div>
               </div>
-            </div>
-            <div class='form-group' id="submit">
-              <%= f.submit 'Find open times', class: 'btn btn-large btn-primary', id: 'submit_button' %>
-            </div>
           <% end %>
         </div>
         <div id="open_appointment_results">
@@ -38,7 +37,7 @@
         <div class="panel-heading"><h4>Options</h4></div>
         <div class="well">
           <ul class="nav nav-pills nav-stacked">
-            <li><a href="#">Edit Requests</li>
+            <li><a href="#">Edit Requests</a></li>
           </ul>
         </div>
       </div>
