@@ -134,9 +134,13 @@ describe Patient do
 
     describe 'A second patient with the same name stil has a valid slug' do
       before do
-        @patient2 = @patient.dup
-        @patient.save
-        @patient2.email = "newEmail@email.com"
+        clinic.save
+        @patient2 =  Patient.new(first_name: "Example",
+                                 last_name: 'patient',
+                                 email: "newEmail@email.com",
+                                 password: 'Qwerty1',
+                                 password_confirmation: 'Qwerty1',
+                                 clinics: [clinic])
         @patient2.save
       end
       it(@patient)  { should be_valid }

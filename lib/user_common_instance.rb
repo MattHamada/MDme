@@ -35,11 +35,11 @@ module UserCommonInstance
             end
             final_n = n
           end
-          if final_n == 0
-            self.slug = full_name.parameterize
-          else
-            self.slug = "#{full_name.parameterize}-#{final_n}"
-          end
+        end
+        if final_n == 0
+          self.slug = full_name.parameterize
+        else
+          self.slug = "#{full_name.parameterize}-#{final_n}"
         end
       else
         if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
