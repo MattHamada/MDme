@@ -147,4 +147,12 @@ class Doctor < ActiveRecord::Base
     "#{degree}; #{alma_mater}"
   end
 
+  def self.find_by_full_name(full_name, clinic_id)
+    first_name = full_name.match(/^([\w\-.]+)/)[0]
+    last_name = full_name.match(/(\w+)$/)[0]
+    Doctor.where(first_name: first_name,
+                 last_name: last_name,
+                 clinic_id: clinic_id).first
+  end
+
 end
