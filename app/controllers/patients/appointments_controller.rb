@@ -21,7 +21,7 @@ class Patients::AppointmentsController < ApplicationController
                                    appointment_time: date,
                                    description: input[:description],
                                    request: true,
-                                   clinic_id: @patient.clinic_id)
+                                   clinic_id: input[:clinic_id])
     if @appointment.save
       flash[:success] = "Appointment Requested"
       redirect_to patient_path(@patient)
@@ -82,6 +82,7 @@ class Patients::AppointmentsController < ApplicationController
     input = appointment_params
     @date = Date.parse(input[:date])
     @doctor = Doctor.find(input[:doctor_id])
+    @clinic_id = Clinic.find(input[:clinic_id])
     @open_times = @doctor.open_appointment_times(@date)
     @appointment = Appointment.new
   end
@@ -94,7 +95,11 @@ class Patients::AppointmentsController < ApplicationController
   private
 
     def appointment_params
-      params.require(:appointment).permit(:time, :date, :doctor_id, :description)
+      params.require(:appointment).permit(:time,
+                                          :date,
+                                          :doctor_id,
+                                          :description,
+                                          :clinic_id)
     end
 
     def find_patient

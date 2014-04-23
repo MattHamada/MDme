@@ -17,11 +17,12 @@
   <div class='form-group'>
     <div class="col-xs-3">
       <%= f.label(:description, 'Notes') %>
-      <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5') %>
+      <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 35em;') %>
     </div>
   </div>
   <%= f.hidden_field :doctor_id, value: @doctor.id %>
   <%= f.hidden_field :date, value: @date %>
+  <%= f.hidden_field :clinic_id, value: @clinic_id %>
       <br/><br/>
     <div style="text-align: center">
       <%= f.submit 'Request', class: 'btn btn-success' %>
