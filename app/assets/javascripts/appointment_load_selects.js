@@ -4,9 +4,17 @@
 
 $(document).ready(function() {
     $("select#appointment_clinic_id").change(function() {
+        var pathname = window.location.pathname;
+        var p = new RegExp('((?:[a-z][a-z]+))(-).*?(?:[a-z][a-z]+)(-?)([0-9]?)', ["i"]);
+        var m = p.exec(pathname);
+        if ( m != null)
+        {
+            var patient_slug = m[0];
+        }
+        var requestUrl = 'http://www.mdme.tk:3000/patients/' + patient_slug + '/clinics/getdoctors';
         $.ajax({
             type: "GET",
-            url: 'http://www.mdme.tk:3000/clinics/getdoctors',
+            url: requestUrl,
             dataType: 'json',
             timeout: 5000,
             data: { 'clinic': $("select#appointment_clinic_id").find(":selected").text() },

@@ -46,7 +46,7 @@ MDme::Application.routes.draw do
   get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
   post 'doctors/:id/updatepassword'                      => 'doctors#update_password',                 as: :doctor_update_password
 
-  get 'clinics/getdoctors'                               => 'clinics#getdoctors',                      as: :clinic_get_doctors
+  get 'patients/:patient_id/clinics/getdoctors'          => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
