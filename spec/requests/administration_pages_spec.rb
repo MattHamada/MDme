@@ -6,7 +6,7 @@ describe 'AdministrationPages' do
   let(:appointment) { FactoryGirl.create(:appointment) }
   let(:doctor) { FactoryGirl.create(:doctor) }
   let(:department) { FactoryGirl.create(:department) }
-  let(:patient) { FactoryGirl.create(:patient) }
+  let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
   subject { page }
   before { switch_to_subdomain('admin') }
 

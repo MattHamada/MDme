@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe Patient do
+  let(:clinic) { FactoryGirl.create(:clinic) }
   before { @patient = Patient.new(first_name: "Example",
                                   last_name: 'patient',
                                   email: "user@example.com",
                                   password: 'Qwerty1',
                                   password_confirmation: 'Qwerty1',
-                                  clinic_id: 1) }
+                                  clinics: [clinic]) }
 
   subject { @patient }
 

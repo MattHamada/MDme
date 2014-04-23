@@ -8,7 +8,6 @@ module UserCommonInstance
               unless: :is_admin_applying_update
     validates :email, presence: true, uniqueness: {case_sensitive: false},
              email_format: true, length: { maximum: 50 }
-    validates :clinic_id, presence: true
     validate :slug_unique_in_clinic
 
     before_save { self.email = email.downcase }
@@ -26,14 +25,32 @@ module UserCommonInstance
 
   def generate_slug
     unless full_name.blank?
-      if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
-        n = 1
-        while self.class.where(slug: "#{full_name.parameterize}-#{n}").count != 0
-          n+= 1
+      if self.class == Patient
+        final_n = 0
+        self.clinics.each do |clinic|
+          if clinic.patients.where(slug: full_name.parameterize).count != 0
+            n = final_n + 1
+            while clinic.patients.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+              n += 1
+            end
+            final_n = n
+          end
+          if final_n == 0
+            self.slug = full_name.parameterize
+          else
+            self.slug = "#{full_name.parameterize}-#{final_n}"
+          end
         end
-        self.slug = "#{full_name.parameterize}-#{n}"
       else
-        self.slug = full_name.parameterize
+        if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
+          n = 1
+          while self.class.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+            n+= 1
+          end
+          self.slug = "#{full_name.parameterize}-#{n}"
+        else
+          self.slug = full_name.parameterize
+        end
       end
     else
       slug = 'no-name-entered'.parameterize
@@ -47,7 +64,16 @@ module UserCommonInstance
   end
 
   def slug_unique_in_clinic?
-    self.class.in_clinic(self).where(slug: slug).count == 0
+    if self.is_a? Patient
+      self.clinics.each do |clinic|
+        if clinic.patients.where(slug: self.slug).count != 0
+          return false
+        end
+      end
+      return true
+    else
+      self.class.in_clinic(self).where(slug: slug).count == 0
+    end
   end
 
   def to_param

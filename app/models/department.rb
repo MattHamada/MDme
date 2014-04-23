@@ -52,6 +52,10 @@ class Department < ActiveRecord::Base
   def self.in_clinic(model)
     if model.is_a?(Department)
       Department.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    elsif model.is_a?(Patient)
+      clinic_ids = []
+      model.clinics.each { |c| clinic_ids << c.id }
+      self.where(clinic_id: clinic_ids)
     else
       Department.where(clinic_id: model.clinic_id)
     end

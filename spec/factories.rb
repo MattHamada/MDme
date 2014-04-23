@@ -7,7 +7,6 @@ FactoryGirl.define do
     password              'Qwerty1'
     password_confirmation 'Qwerty1'
     doctor_id             '1'
-    clinic_id             '1'
   end
 
   factory :doctor do

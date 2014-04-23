@@ -3,12 +3,15 @@ require 'spec_helper'
 describe 'Patient Pages' do
   subject { page }
   before { switch_to_subdomain('www') }
-  let(:patient) { FactoryGirl.create(:patient) }
+  let(:clinic) { FactoryGirl.create(:clinic) }
+  let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
   let(:doctor) { FactoryGirl.create(:doctor) }
 
 
   describe 'need to be logged in to access patient pages' do
-    before { visit patient_path(patient) }
+    before do
+      visit patient_path(patient)
+    end
     it { should have_content 'Sign in' }
   end
 
@@ -127,7 +130,8 @@ describe 'Patient Pages' do
 
       describe 'cannot view pages of another patient' do
         let(:patient2) { FactoryGirl.create(:patient,
-                                            email: 'test2@test.com') }
+                                            email: 'test2@test.com',
+                                            clinics: [clinic]) }
         before do
           patient2.save!
           visit patient_path(patient2)

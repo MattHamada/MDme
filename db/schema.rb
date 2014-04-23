@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408230538) do
+ActiveRecord::Schema.define(version: 20140421213814) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(version: 20140408230538) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "clinics_patients", id: false, force: true do |t|
+    t.integer "clinic_id"
+    t.integer "patient_id"
+  end
+
+  add_index "clinics_patients", ["clinic_id"], name: "index_clinics_patients_on_clinic_id"
+  add_index "clinics_patients", ["patient_id"], name: "index_clinics_patients_on_patient_id"
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -97,7 +105,6 @@ ActiveRecord::Schema.define(version: 20140408230538) do
     t.string   "remember_token"
     t.integer  "doctor_id"
     t.string   "slug"
-    t.integer  "clinic_id"
     t.string   "phone_number"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
@@ -107,7 +114,6 @@ ActiveRecord::Schema.define(version: 20140408230538) do
   end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"
-  add_index "patients", ["clinic_id"], name: "index_patients_on_clinic_id"
   add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true
   add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
