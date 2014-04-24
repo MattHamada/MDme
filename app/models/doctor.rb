@@ -5,11 +5,11 @@
 #
 require 'cookie_crypt'
 require 'user_common_instance'
-require 'user_common_class'
+#require 'user_common_class'
 
 
 class Doctor < ActiveRecord::Base
-  extend UserCommonClass
+  #extend UserCommonClass
   include CookieCrypt, UserCommonInstance
 
   has_many :appointments, dependent: :destroy
@@ -21,6 +21,8 @@ class Doctor < ActiveRecord::Base
 
   validates :first_name, presence: true, length: {maximum: 50}
   validates :last_name, presence: true, length: {maximum: 50}
+  validates :clinic_id, presence: true
+
 
   attr_accessor :is_admin_applying_update
   attr_accessor :skip_on_create
@@ -81,7 +83,7 @@ class Doctor < ActiveRecord::Base
       end
     end
     appointments.find_each do |appt|
-      hour = appt.appointment_time_hour
+      hour = appt.appointment_time_hour_24
       minute = appt.appointment_time_minute
       minute = '00' if minute == 0
 
@@ -97,6 +99,23 @@ class Doctor < ActiveRecord::Base
       end
     end
     times
+  end
+
+  def self.in_clinic(model)
+    if model.is_a?(self)
+      self.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    elsif model.is_a?(Patient)
+      clinic_ids = []
+      model.clinics.each { |c| clinic_ids << c.id }
+      #self.find_by_clinic_id(clinic_ids)
+      self.where(clinic_id: clinic_ids)
+    else
+      self.where(clinic_id: model.clinic_id)
+    end
+  end
+
+  def self.in_passed_clinic_model(clinic)
+    Doctor.where(clinic_id: clinic.id)
   end
 
 
@@ -126,6 +145,14 @@ class Doctor < ActiveRecord::Base
 
   def education
     "#{degree}; #{alma_mater}"
+  end
+
+  def self.find_by_full_name(full_name, clinic_id)
+    first_name = full_name.match(/^([\w\-.]+)/)[0]
+    last_name = full_name.match(/(\w+)$/)[0]
+    Doctor.where(first_name: first_name,
+                 last_name: last_name,
+                 clinic_id: clinic_id).first
   end
 
 end

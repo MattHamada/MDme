@@ -6,7 +6,7 @@ describe 'AdministrationPages' do
   let(:appointment) { FactoryGirl.create(:appointment) }
   let(:doctor) { FactoryGirl.create(:doctor) }
   let(:department) { FactoryGirl.create(:department) }
-  let(:patient) { FactoryGirl.create(:patient) }
+  let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
   subject { page }
   before { switch_to_subdomain('admin') }
 
@@ -594,7 +594,6 @@ describe 'AdministrationPages' do
     describe 'invalid appointment creation - date in past' do
       before do
         fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
-        click_button 'Find open times'
         click_button 'Schedule'
       end
       it { should have_selector('div.alert.alert-danger',
@@ -606,7 +605,6 @@ describe 'AdministrationPages' do
     describe 'valid appointment creation' do
       before do
         fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
-        click_button 'Find open times'
         click_button 'Schedule'
       end
       it { should have_selector('div.alert.alert-success', text: 'Appointment Created') }
