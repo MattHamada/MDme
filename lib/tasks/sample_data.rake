@@ -10,49 +10,59 @@
 namespace :db do
   desc 'Fill database with sample data'
   task populate: :environment do
-    #create first doctor and patient and appointment
-    Patient.create!(first_name: 'sickly',
+    #create first doctor and patient and appointment and clinic
+    c = Clinic.create!(name: 'MDME clinic')
+    p = Patient.create!(first_name: 'sickly',
                     last_name: 'patient',
                     email: 'user@example.com',
-                    password: 'foobar',
-                    password_confirmation: 'foobar',
+                    password: 'Qwerty1',
+                    password_confirmation: 'Qwerty1',
                     doctor_id: '1')
-    Department.create!(name: 'Pediatrics')
-    Department.create!(name: 'Anaesthesia')
-    Department.create!(name: 'Internal Medicine')
-    Department.create!(name: 'Oncology')
+    p.clinics << c
+    Department.create!(name: 'Pediatrics',
+                       clinic_id: 1)
+    Department.create!(name: 'Anaesthesia',
+                       clinic_id: 1)
+    Department.create!(name: 'Internal Medicine',
+                       clinic_id: 1)
+    Department.create!(name: 'Oncology',
+                       clinic_id: 1)
     Doctor.create!(first_name: 'healthy',
                    last_name: 'doctor',
                    email: 'doctor@example.com',
-                   password: 'foobar',
-                   password_confirmation: 'foobar',
+                   password: 'Qwerty1',
+                   password_confirmation: 'Qwerty1',
                    department_id: 1,
                    degree: 'MD',
                    alma_mater: 'Harvard',
                    phone_number: '121-124-6722',
-                   description: Faker::Lorem.paragraph(4))
+                   description: Faker::Lorem.paragraph(4),
+                   clinic_id: 1)
     Appointment.create!(patient_id: 1,
                         doctor_id: 1,
                         request: false,
-                        appointment_time: rand_time_with_intervals(1.day.from_now))
+                        appointment_time: rand_time_with_intervals(1.day.from_now),
+                        clinic_id: 1)
 
     Admin.create!(email: 'admin@example.com',
-                  password: 'foobar',
-                  password_confirmation: 'foobar')
+                  password: 'Qwerty1',
+                  password_confirmation: 'Qwerty1',
+                  clinic_id: 1)
 
 
     #fill with other sample patients
     60.times do |n|
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
-      password = 'password'
+      password = 'Qwerty1'
       doctor_id = rand_int(1,6)
-      Patient.create!(first_name: name[0],
+      p = Patient.create!(first_name: name[0],
                       last_name: name[1],
                       email: email,
                       password: password,
                       password_confirmation: password,
                       doctor_id: doctor_id)
+      p.clinics << c
     end
 
     #sample doctors
@@ -60,7 +70,7 @@ namespace :db do
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
-      password = 'password'
+      password = 'Qwerty1'
       department_id = rand_int(1,4)
       phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
                      rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +
@@ -76,7 +86,8 @@ namespace :db do
                      phone_number: phone_number,
                      degree: degree,
                      alma_mater: alma_mater,
-                     description: Faker::Lorem.paragraph(4))
+                     description: Faker::Lorem.paragraph(4),
+                     clinic_id: 1)
     end
 
     #sample appointments
@@ -91,7 +102,8 @@ namespace :db do
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
                           request: request,
-                          description: Faker::Lorem.paragraph(4))
+                          description: Faker::Lorem.paragraph(4),
+                          clinic_id: 1)
     end
 
   end
