@@ -42,11 +42,13 @@ MDme::Application.routes.draw do
   post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
   post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
 
+  get  'doctors/opentimes'                               => 'doctors#open_appointments',               as: :doctor_open_appointments
   get  'doctors/:id/public'                              => 'doctors#show_public',                     as: :doctor_public_show
   get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
   post 'doctors/:id/updatepassword'                      => 'doctors#update_password',                 as: :doctor_update_password
 
   get 'patients/:patient_id/clinics/getdoctors'          => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
+
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]

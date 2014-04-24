@@ -1,6 +1,7 @@
 class Patients::ClinicsController < ApplicationController
   #TODO verify user is logged in
   def getdoctors
+    allows_cors
     clinic = Clinic.find_by_name(params[:clinic])
     doctors = Doctor.in_passed_clinic_model(clinic)
     docnames = []

@@ -34,23 +34,36 @@ $(document).ready(function() {
     });
 
     $("input#appointment_date").change(function() {
-        var pathname = window.location.pathname;
-        var p = new RegExp('((?:[a-z][a-z]+))(-).*?(?:[a-z][a-z]+)(-?)([0-9]?)', ["i"]);
+//        var pathname = window.location.pathname;
+//        var p = new RegExp('((?:[a-z][a-z]+))(-).*?(?:[a-z][a-z]+)(-?)([0-9]?)', ["i"]);
+//        var m = p.exec(pathname);
+//        if ( m != null)
+//        {
+//            var patient_slug = m[0];
+//        }
+//        var requestUrl = 'http://www.mdme.tk:3000/patients/' + patient_slug + '/appointments/browse';
+        //error occruing on www vs admin
+        var pathname = document.URL;
+        var p = new RegExp('(\/\/)((?:[a-z][a-z]+))', ["i"]);
         var m = p.exec(pathname);
-        if ( m != null)
+        if (m != null)
         {
-            var patient_slug = m[0];
+            var subdomain = m[0].substring(2);
         }
-        var requestUrl = 'http://www.mdme.tk:3000/patients/' + patient_slug + '/appointments/browse';
+        var requestUrl = 'http://' + subdomain +'.lvh.me:3000/doctors/opentimes';
+        var clinic_id = $('#clinic_id').val();
         $.ajax({
             type: "GET",
             url: requestUrl,
-            dataType: 'json',
             timeout: 5000,
+            crossDomain: true,
+            dataType: 'text',
             data: { 'appointment': {'clinic_name': $("select#appointment_clinic_id").find(":selected").text(),
                                     'doctor_full_name': $('select#appointment_doctor_id').find(":selected").text(),
-                                    'date': $('input#appointment_date').val()}},
+                                    'date': $('input#appointment_date').val(),
+                                    'clinic_id': clinic_id}},
             success: function(data) {
+                data = JSON.parse(data);
                 var $select = $('select#date_time');
                 $select.find('option').remove();
                 var n = 1;
@@ -59,8 +72,8 @@ $(document).ready(function() {
                     n = n+1
                 })
             },
-            error: function() {
-                alert('error loading times');
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus + " " + errorThrown);
             }
         })
     })

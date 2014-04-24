@@ -84,13 +84,13 @@ class Patients::AppointmentsController < ApplicationController
 
   # ajax load when creating new appointment to see open times when given a date
   def open_appointments
-    input = appointment_params
-    @date = Date.parse(input[:date])
-    @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
-    @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
-    @open_times = @doctor.open_appointment_times(@date)
-    #@appointment = Appointment.new
-    render json: {open_times: @open_times}
+    # input = appointment_params
+    # @date = Date.parse(input[:date])
+    # @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
+    # @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
+    # @open_times = @doctor.open_appointment_times(@date)
+    # #@appointment = Appointment.new
+    # render json: {open_times: @open_times}
   end
 
   #mobile
