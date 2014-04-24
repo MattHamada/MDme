@@ -27,7 +27,21 @@ APTS.setup = ->
   $(".approve").on "click", "a", APTS.getApproveInfo
   $(".deny").on "click", "a", APTS.getApproveInfo
 
+
   false
+
+#load doctors in selectbox
+APTS.loadDoctors = ->
+    $.ajax
+      type: "GET"
+      url: "http://www.lvh.me:3000/patients/getdoctors"
+      data: $("select#appointment_clinic_id").text()
+      timeout: 5000
+      success: ->
+        alert('success')
+      error: ->
+        alert('failure')
+    false
 
 #ajax calls for approving/denying appointments
 APTS.getApproveInfo = ->

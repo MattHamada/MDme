@@ -25,6 +25,10 @@ module AppointmentTimeFormatting
     appointment_time.strftime("%I").to_i
   end
 
+  def appointment_time_hour_24
+    appointment_time.strftime("%H").to_i
+  end
+
   def appointment_time_minute
     appointment_time.min
   end

@@ -20,7 +20,7 @@ class Admins::PatientsController < ApplicationController
     p[:password] = p[:password_confirmation] = generate_random_password
     p[:doctor_id] = params[:doctor][:doctor_id]
     @patient = Patient.new(p)
-    @patient.clinic_id = @admin.clinic_id
+    @patient.clinics <<  Clinic.find(@admin.clinic_id)
     if @patient.save
       flash[:success] = 'Patient Created'
       redirect_to admin_patients_path

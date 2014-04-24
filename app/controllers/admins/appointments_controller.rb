@@ -10,6 +10,10 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   def new
+    @appointment = Appointment.new(appointment_time: DateTime.now)
+    @clinic_id = @admin.clinic_id
+    @open_times = []
+
   end
 
   def edit
@@ -68,7 +72,8 @@ class Admins::AppointmentsController < ApplicationController
 
   def create
     input = appointment_params
-    date = DateTime.parse("#{input[:date]} #{input[:time]}")
+    time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
+    date = DateTime.parse("#{input[:date]} #{time}")
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: input[:patient_id],
                                    appointment_time: date,
@@ -82,6 +87,7 @@ class Admins::AppointmentsController < ApplicationController
       @appointment.errors.each do |attribute, message|
         flash.now[:danger] = message
       end
+      @open_times = []
       render 'new'
     end
   end

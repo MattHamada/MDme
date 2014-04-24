@@ -7,8 +7,8 @@
 
 class DoctorsController < ApplicationController
 
-  before_filter :find_doctor, except: [:signin]
-  before_filter :require_doctor_login, except: [:signin]
+  before_filter :find_doctor, except: [:signin, :open_appointments]
+  before_filter :require_doctor_login, except: [:signin, :open_appointments]
 
   def signin
     if doctor_signed_in?
@@ -64,6 +64,22 @@ class DoctorsController < ApplicationController
       flash[:danger] = 'Old password invalid'
       render 'change_password'
     end
+  end
+
+  def open_appointments
+    input = params[:appointment]
+    @date = Date.parse(input[:date])
+    #clinic_name only present on patient page
+    @clinic_id = 0
+    if  !input[:clinic_name].empty?
+      @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
+    else
+      @clinic_id = input[:clinic_id]
+    end
+    @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
+    @open_times = @doctor.open_appointment_times(@date)
+    #@appointment = Appointment.new
+    render json: {open_times: @open_times}
   end
 
 

@@ -1,29 +1,41 @@
 <%= render 'patients/sidebar' %>
-
+<%= javascript_include_tag 'appointment_load_selects' %>
 <div class="col-xs-6">
   <div class="row">
     <div class="col-xs-12">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Select Date</h4></div>
+        <div class="panel-heading"><h4>Request Appointment</h4></div>
         <div class="panel-body">
 
-          <%= form_for(:appointment, url:open_appointments_browse_path, remote: true, method: :get, html: { class: 'form-inline', role: 'form' }) do |f| %>
+          <%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>
                 <div class="form-group">
-                  <%= f.label(:date, "Select Date", class: 'sr-only', for: 'appointment_date') %>
+                  <%= f.label(:date, "Select Date", for: 'appointment_date') %>
                   <%= f.text_field(:date, class: "form-control", placeholder: "Date" ) %>
                 </div>
                 <div class="form-group">
-                  <%= f.label(:appointment, 'Doctor',  class: 'sr-only', for: 'appointment_doctor') %>
-                  <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
+                  <%= f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>
+                  <%= collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-control'}) %>
                 </div>
-              <div class="form-group">
-                <div  id="submit">
-                  <%= f.submit 'Find open times', class: 'btn btn-large btn-primary', id: 'submit_buttonW' %>
+                <div class="form-group">
+                  <%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>
+                  <%= collection_select(:appointment, :doctor_id, Doctor.in_passed_clinic_model(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
                 </div>
-              </div>
-          <% end %>
-        </div>
-        <div id="open_appointment_results">
+                <div class="form-group">
+                  <%= f.label(:appointment, 'Time', for: 'date_time') %>
+                  <select class="form-control" id="date_time" name="appointment[time]">
+                    <% @open_times.each do |time| %>
+                      <option value="<%= time %>"><%= time %></option>
+                    <% end %>
+                  </select>
+                </div>
+                <div class='form-group'>
+                    <%= f.label(:description, 'Notes') %>
+                    <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 35em;') %>
+                </div>
+                <div style="text-align: center">
+                  <%= f.submit 'Request', class: 'btn btn-success' %>
+                </div>
+           <% end %>
         </div>
       </div>
     </div>
