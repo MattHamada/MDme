@@ -10,6 +10,7 @@ class Doctors::AppointmentsController < ApplicationController
 
   def show
     @appointment = Appointment.find(params[:id])
+    render partial: 'doctors/appointments/ajax_show', object: @appointment if request.xhr?
   end
 
   private

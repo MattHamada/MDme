@@ -12,7 +12,6 @@ class Api::V1::PatientsController < ApplicationController
   end
 
   def show
-    #TODO update to give 300x300 image, not thumb
     @info = 'Profile'
   end
 

@@ -17,9 +17,9 @@
               <tbody>
               <% @appointments.each_with_index do |appointment, index| %>
                 <tr>
-                  <td><%= link_to("#{index}", doctor_appointment_path(@doctor, appointment)) %></td>
+                  <td class="popup-links"><%= link_to("#{index}", doctor_appointment_path(@doctor, appointment)) %></td>
                   <td><%= appointment.time_am_pm %></td>
-                  <td><%= link_to("#{appointment.patient_full_name}", doctor_patient_path(@doctor, appointment.patient)) %></td>
+                  <td class="popup-links"><%= link_to("#{appointment.patient_full_name}", doctor_patient_path(@doctor, appointment.patient)) %></td>
                 </tr>
               <% end %>
               </tbody>
