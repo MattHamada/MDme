@@ -31,6 +31,7 @@ class Admins::PatientsController < ApplicationController
   end
 
   def show
+    render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
   end
 
   def edit

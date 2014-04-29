@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Profile</h4></div>
+      <div class="panel-body">
+        <%= image_tag @patient.avatar.url(:thumb), id: 'avatar' %>
+        <br/>
+        <b>First Name:</b> <%= @patient.first_name %><br/>
+        <b>Last Name:</b> <%= @patient.last_name %><br/>
+        <b>Email:</b> <%= @patient.email %><br/>
+        <b>Phone:</b> <%= @patient.phone_number %><br/>
+        <b>Preferred Doctor:</b> <%= @patient.doctor.full_name %><br/>
+        <%= link_to 'Edit', edit_admin_patient_path(current_admin, @patient) unless current_admin.nil? %>
+        <%= link_to "Close", "", { id: 'closeLink' } if request.xhr? %>
+      </div>
+    </div>
+  </div>
+</div>

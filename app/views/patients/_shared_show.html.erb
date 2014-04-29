@@ -11,6 +11,7 @@
           <b>Email:</b> <%= @patient.email %><br/>
           <b>Phone:</b> <%= @patient.phone_number %><br/>
           <b>Preferred Doctor:</b> <%= @patient.doctor.full_name %><br/>
+          <%= link_to 'Edit', edit_admin_patient_path(current_admin, @patient) unless current_admin.nil? %>
         </div>
       </div>
     </div>

@@ -307,6 +307,7 @@ describe 'AdministrationPages' do
                   describe 'editing patient' do
                     before do
                       click_link '0'
+                      click_link 'Edit'
                       fill_in 'patient_first_name', with: 'Joseph'
                       fill_in 'patient_last_name', with: 'Smith'
                       click_button 'Update'
@@ -317,7 +318,10 @@ describe 'AdministrationPages' do
                   end
 
                   describe 'deleting patient' do
-                    before { click_link '0' }
+                    before do
+                      click_link '0'
+                      click_link 'Edit'
+                    end
 
                     it 'should delete the patient' do
                       expect do
