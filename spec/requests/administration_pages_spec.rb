@@ -224,6 +224,7 @@ describe 'AdministrationPages' do
                   before  do
                     click_button 'Create'
                     click_link '0'
+                    click_link 'Edit'
                   end
 
                   describe 'with invalid info' do
@@ -246,6 +247,7 @@ describe 'AdministrationPages' do
                   before do
                     click_button 'Create'
                     click_link '0'
+                    click_link 'Edit'
                   end
                   it 'should delete the doctor' do
                     expect do

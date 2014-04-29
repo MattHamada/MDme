@@ -9,4 +9,6 @@
   <b>Education:</b> <%= @doctor.education %><br/>
   <b>Department:</b> <%= @doctor.department_name %><br/>
   <b>Description:</b> <%= @doctor.description %><br/>
+  <%= link_to 'Edit', edit_admin_doctor_path(current_admin, @doctor) unless current_admin.nil? %>
+  <%= link_to "Close", "", { id: 'closeLink' } if request.xhr? %>
 </div>
