@@ -4,22 +4,23 @@
  */
 
 @import "bootstrap";
+$web-fonts-protocol: "https";
 
 
 @font-face {
-  font-family: "Segoe UI";
-  src: url('/assets/segoeui.ttf');
-  font-weight: normal;
+  font-family: 'Open Sans';
   font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTaRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
 }
 
 body {
   background-color: lightgray;
-  font-family: "Segoe UI";
+  font-family: "Open Sans";
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Segoe UI";
+  font-family: "Open Sans";
 }
 
 .container {
