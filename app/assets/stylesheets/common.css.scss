@@ -3,8 +3,23 @@
  * MDme copyright 2014
  */
 
+@import "bootstrap";
+
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url('/assets/segoeui.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   background-color: lightgray;
+  font-family: "Segoe UI";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Segoe UI";
 }
 
 .container {

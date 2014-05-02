@@ -2,7 +2,6 @@
   @extend .has-error;
 }
 
-@import "bootstrap";
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -47,7 +46,6 @@ body {
   background: linear-gradient(135deg,  rgba(145,145,145,1) 0%,rgba(201,201,201,1) 86%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#919191', endColorstr='#c9c9c9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-  font: fantasy;
 }
 
 
