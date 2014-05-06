@@ -38,7 +38,7 @@ class Admins::PatientsController < ApplicationController
   end
 
   def update
-    @patient.is_admin_applying_update = true
+    @patient.bypass_password_validation = true
     @patient.attributes = patient_params
     if @patient.save
       flash[:success] = 'Patient Successfully Updated'

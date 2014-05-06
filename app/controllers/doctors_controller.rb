@@ -28,7 +28,7 @@ class DoctorsController < ApplicationController
     @current_user = @doctor
     if @doctor.authenticate(params[:verify][:verify_password])
       #skip password validation since password checked correct
-      @doctor.is_admin_applying_update = true
+      @doctor.bypass_password_validation = true
       dp = doctor_params
       @doctor.attributes = dp
       if @doctor.save

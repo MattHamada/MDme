@@ -100,7 +100,7 @@ describe Doctor do
         @doctor.save!
         @doctor.password = 'a'
         @doctor.password_confirmation = 'a'
-        @doctor.is_admin_applying_update = true
+        @doctor.bypass_password_validation = true
       end
       it { should be_valid }
     end

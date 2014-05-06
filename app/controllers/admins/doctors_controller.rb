@@ -17,7 +17,7 @@ class Admins::DoctorsController < ApplicationController
     @current_user = @admin
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
-    @doctor = Doctor.new(p, is_admin_applying_update: true)
+    @doctor = Doctor.new(p, bypass_password_validation: true)
     @doctor.clinic_id = @admin.clinic_id
 
     if @doctor.save
@@ -36,7 +36,7 @@ class Admins::DoctorsController < ApplicationController
 
   def update
     @current_user = @admin
-    @doctor.is_admin_applying_update = true
+    @doctor.bypass_password_validation = true
     dp = doctor_params
     @doctor.attributes = dp
     if @doctor.save
