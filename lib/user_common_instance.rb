@@ -16,7 +16,6 @@ module UserCommonInstance
     after_create :send_confirmation_email
   end
 
-    #TODO rename this since used other than when admin updating
     attr_accessor :bypass_password_validation
 
   def full_name
