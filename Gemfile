@@ -21,6 +21,8 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'rabl'
 gem 'oj'
 
+gem "breadcrumbs_on_rails"
+
 group :development do
   #nicer error page
   gem 'better_errors'
