@@ -29,19 +29,20 @@ class DoctorsController < ApplicationController
     if @doctor.authenticate(params[:verify][:verify_password])
       #skip password validation since password checked correct
       @doctor.is_admin_applying_update = true
-    else
-      flash[:danger] = 'Invalid password entered.'
-      #TODO stop flow here if passwrod invalid
-    end
-    dp = doctor_params
-    @doctor.attributes = dp
-    if @doctor.save
-      flash[:success] = "Doctor Successfully Updated"
-      redirect_to doctor_path(@doctor)
-    else
+      dp = doctor_params
+      @doctor.attributes = dp
+      if @doctor.save
+        flash[:success] = "Doctor Successfully Updated"
+        redirect_to doctor_path(@doctor)
+      else
         flash.now[:danger] = 'Invalid Parameters Entered'
         render 'edit'
+      end
+    else
+      flash[:danger] = 'Invalid password entered.'
+      render 'edit'
     end
+
   end
 
   def show

@@ -1,4 +1,3 @@
-#TODO implement ajax loads
 class Doctors::AppointmentsController < ApplicationController
 
   before_filter :find_doctor
