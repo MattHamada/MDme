@@ -8,7 +8,8 @@ class Api::V1::Patients::DoctorsController < ApplicationController
   end
 
   def index
-    @department = Department.in_clinic(@patient).where(name: params[:name]).first
+    clinic =  @patient.clinics.where(name: params[:name]).first
+    @department = clinic.departments.where(name: params[:name])
     @doctors = Doctor.in_department(@department)
   end
 
