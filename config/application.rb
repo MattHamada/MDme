@@ -46,7 +46,8 @@ module MDme
     }
 
     #set default time zone - used for appointments
-    #config.time_zone = 'Arizona'
+    config.time_zone = 'Arizona'
+    config.active_record.default_timezone = :local
 
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
