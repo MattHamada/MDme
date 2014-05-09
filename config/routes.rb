@@ -6,7 +6,7 @@
 
 
 MDme::Application.routes.draw do
-
+  #TODO change doctors subdomain to clinical
   require 'domains'
 
   #doctor subdomain

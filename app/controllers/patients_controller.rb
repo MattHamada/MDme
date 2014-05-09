@@ -47,6 +47,18 @@ class PatientsController < ApplicationController
 
   end
 
+  def index
+    add_breadcrumb 'Home', patients_path
+    @appointment = @patient.next_appointment
+    if @appointment.nil? || Date.parse(@appointment.date) != Date.today
+      @progress = 0
+      @appointment = nil
+    else
+
+    end
+
+  end
+
   def change_password
   end
 
@@ -86,7 +98,7 @@ class PatientsController < ApplicationController
   end
 
     def find_patient
-      @patient ||= Patient.find_by_slug!(params[:id])
+      @patient ||= current_patient || Patient.find_by_slug!(params[:id])
     end
 
     helper_method :find_patient
