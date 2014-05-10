@@ -12,10 +12,8 @@ class Patient < ActiveRecord::Base
   extend UserCommonClass
   include CookieCrypt, UserCommonInstance
 
-  #TODO Currently only supports patient being in one clinic per account - this should be changed
-
-
   belongs_to  :doctor
+  has_many :appointments, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
 
@@ -77,6 +75,10 @@ class Patient < ActiveRecord::Base
     else
       Patient.joins(:clinics).where(clinics: { id: model.clinic_id })
     end
+  end
+
+  def next_appointment
+    self.appointments.not_past.confirmed.order_by_time.first
   end
 
 end

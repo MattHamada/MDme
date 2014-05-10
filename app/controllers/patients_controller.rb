@@ -31,19 +31,32 @@ class PatientsController < ApplicationController
     @current_user = @patient
     #skip password validation on update if validated here
     if @patient.authenticate(params[:verify][:verify_password])
-      @patient.is_admin_applying_update = true
+      @patient.bypass_password_validation = true
+      @patient.attributes = patient_params
+      if @patient.save
+        flash[:success] = 'Patient Successfully Updated'
+        redirect_to patient_path(@patient)
+      else
+        flash.now[:danger] = 'Invalid Parameters Entered'
+        render 'edit'
+      end
     else
       flash[:danger] = 'Invalid password entered.'
-      #TODO redirect flow to end here if password invalid
+      render 'edit'
     end
-    @patient.attributes = patient_params
-    if @patient.save
-      flash[:success] = 'Patient Successfully Updated'
-      redirect_to patient_path(@patient)
+
+  end
+
+  def index
+    add_breadcrumb 'Home', patients_path
+    @appointment = @patient.next_appointment
+    if @appointment.nil? || Date.parse(@appointment.date) != Date.today
+      @progress = 0
+      @appointment = nil
     else
-      flash.now[:danger] = 'Invalid Parameters Entered'
-        render 'edit'
+
     end
+
   end
 
   def change_password
@@ -85,7 +98,7 @@ class PatientsController < ApplicationController
   end
 
     def find_patient
-      @patient ||= Patient.find_by_slug!(params[:id])
+      @patient ||= current_patient || Patient.find_by_slug!(params[:id])
     end
 
     helper_method :find_patient

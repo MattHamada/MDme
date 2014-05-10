@@ -35,18 +35,27 @@ describe 'Patient Pages' do
         click_button 'Sign in'
       end
       it { should_not have_title 'Sign in' }
-      it { should have_content 'Sign Out' }
-      it { should have_title(full_name(patient)) }
+      it { should have_link 'Sign Out' }
+      it { should have_title 'Home |'}
       it { should_not have_link('Sign in', href: signin_path) }
 
-      describe 'sidebar' do
-        it { should have_content 'Browse Doctors' }
-        it { should have_content 'Profile' }
-        it { should have_content 'Appointments' }
-        it { should have_content 'Sign Out' }
+      # describe 'sidebar' do
+      #   it { should have_content 'Browse Doctors' }
+      #   it { should have_content 'Profile' }
+      #   it { should have_content 'Appointments' }
+      #   it { should have_content 'Sign Out' }
+      # end
+
+      describe 'patient home page' do
+        it { should have_title 'Home |'}
+        it { should have_content "Welcome #{patient.full_name}" }
+        it { should have_content 'No upcoming appointments' }
       end
 
       describe 'profile page' do
+        before do
+          click_link 'My Profile'
+        end
         it { should have_content patient.first_name }
         it { should have_content patient.last_name }
         it { should have_content patient.email }
@@ -65,7 +74,7 @@ describe 'Patient Pages' do
               fill_in 'patient_phone_number', with: '000-000-0000'
               click_button 'Update'
             end
-            it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered'}
+            it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered.'}
           end
 
           describe 'with valid password' do

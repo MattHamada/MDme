@@ -28,20 +28,21 @@ class DoctorsController < ApplicationController
     @current_user = @doctor
     if @doctor.authenticate(params[:verify][:verify_password])
       #skip password validation since password checked correct
-      @doctor.is_admin_applying_update = true
-    else
-      flash[:danger] = 'Invalid password entered.'
-      #TODO stop flow here if passwrod invalid
-    end
-    dp = doctor_params
-    @doctor.attributes = dp
-    if @doctor.save
-      flash[:success] = "Doctor Successfully Updated"
-      redirect_to doctor_path(@doctor)
-    else
+      @doctor.bypass_password_validation = true
+      dp = doctor_params
+      @doctor.attributes = dp
+      if @doctor.save
+        flash[:success] = "Doctor Successfully Updated"
+        redirect_to doctor_path(@doctor)
+      else
         flash.now[:danger] = 'Invalid Parameters Entered'
         render 'edit'
+      end
+    else
+      flash[:danger] = 'Invalid password entered.'
+      render 'edit'
     end
+
   end
 
   def show
@@ -66,6 +67,7 @@ class DoctorsController < ApplicationController
     end
   end
 
+  #TODO this fails if first new appointment request invalid and page reloads - no clinic name or ID passed second time
   def open_appointments
     input = params[:appointment]
     @date = Date.parse(input[:date])

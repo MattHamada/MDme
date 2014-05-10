@@ -12,12 +12,11 @@ class Api::V1::PatientsController < ApplicationController
   end
 
   def show
-    #TODO update to give 300x300 image, not thumb
     @info = 'Profile'
   end
 
   def update
-    @patient.is_admin_applying_update = true
+    @patient.bypass_password_validation = true
     if @patient.update_attributes(patient_params)
       render status: 200,
              json: { success: true,

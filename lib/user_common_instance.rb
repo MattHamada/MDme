@@ -5,7 +5,7 @@ module UserCommonInstance
     belongs_to :clinic
 
     validates :password, password_complexity: true,
-              unless: :is_admin_applying_update
+              unless: :bypass_password_validation
     validates :email, presence: true, uniqueness: {case_sensitive: false},
              email_format: true, length: { maximum: 50 }
     validate :slug_unique_in_clinic
@@ -16,8 +16,7 @@ module UserCommonInstance
     after_create :send_confirmation_email
   end
 
-    #TODO rename this since used other than when admin updating
-    attr_accessor :is_admin_applying_update
+    attr_accessor :bypass_password_validation
 
   def full_name
     "#{first_name} #{last_name}"

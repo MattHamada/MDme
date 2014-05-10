@@ -17,7 +17,8 @@ $(document).ready(function() {
             url: requestUrl,
             dataType: 'json',
             timeout: 5000,
-            data: { 'clinic': $("select#appointment_clinic_id").find(":selected").text() },
+            data: { 'clinic': $("select#appointment_clinic_id").find(":selected").text(),
+                    'token':  $("#token").val() },
             success: function(data) {
                 var $select = $('select#appointment_doctor_id');
                 $select.find('option').remove();

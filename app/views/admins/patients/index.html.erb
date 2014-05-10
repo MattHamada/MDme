@@ -17,7 +17,7 @@
               <tbody>
               <% @patients.each_with_index do |patient, index| %>
                   <tr>
-                    <td><%= link_to("#{index}", edit_admin_patient_path(@admin, patient)) %></td>
+                    <td class="popup-links"><%= link_to("#{index}", admin_patient_path(@admin, patient)) %></td>
                     <td><%= patient.full_name %></td>
                     <td><%= patient.doctor.full_name %></td>
                   </tr>

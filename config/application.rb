@@ -38,8 +38,16 @@ module MDme
     # config.i18n.default_locale = :de
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
+    #for fonts
+    config.assets.precompile << Proc.new { |path|
+      if path =~ /\.(eot|svg|ttf|woff)\z/
+        true
+      end
+    }
+
     #set default time zone - used for appointments
-    #config.time_zone = 'Arizona'
+    config.time_zone = 'Arizona'
+    config.active_record.default_timezone = :local
 
     #config.assets.paths << "#{Rails}/vendor/assets/fonts"
 

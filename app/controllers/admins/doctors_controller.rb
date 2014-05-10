@@ -4,7 +4,6 @@ class Admins::DoctorsController < ApplicationController
   before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
   before_filter :require_admin_login
 
-  #TODO clicking doctor in list should open public profile ajax not edit page
   def index
     @doctors = Doctor.in_clinic(@admin).includes(:department)
   end
@@ -18,7 +17,7 @@ class Admins::DoctorsController < ApplicationController
     @current_user = @admin
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
-    @doctor = Doctor.new(p, is_admin_applying_update: true)
+    @doctor = Doctor.new(p, bypass_password_validation: true)
     @doctor.clinic_id = @admin.clinic_id
 
     if @doctor.save
@@ -37,7 +36,7 @@ class Admins::DoctorsController < ApplicationController
 
   def update
     @current_user = @admin
-    @doctor.is_admin_applying_update = true
+    @doctor.bypass_password_validation = true
     dp = doctor_params
     @doctor.attributes = dp
     if @doctor.save
@@ -50,6 +49,7 @@ class Admins::DoctorsController < ApplicationController
   end
 
   def show
+    render partial: 'admins/doctors/ajax_show', object: @doctor if request.xhr?
   end
 
   def destroy

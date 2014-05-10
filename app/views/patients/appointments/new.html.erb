@@ -5,6 +5,7 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Request Appointment</h4></div>
         <div class="panel-body">
+          <%= hidden_field_tag(:token, encrypt(current_patient.remember_token)) %>
 
           <%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>
                 <div class="form-group">

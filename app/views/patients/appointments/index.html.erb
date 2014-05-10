@@ -18,6 +18,7 @@
                 <% @appointments.each_with_index do |appointment, index| %>
                   <tr>
                     <td><%= link_to("#{index+1}", patient_appointment_path(@patient, appointment)) %></td>
+                    <td><%= appointment.clinic_name %></td>
                     <td><%= appointment.time_am_pm %></td>
                     <td><%= link_to "#{appointment.doctor_full_name}", patient_doctor_path(@patient, appointment.doctor) %></td>
                   </tr>

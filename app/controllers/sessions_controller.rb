@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       if request.variant.include?(:mobile)
         redirect_to patient_mobile_menu_path(current_patient)
       else
-        redirect_to patient_path(current_patient)
+        redirect_to patients_path
       end
     end
   end
@@ -46,7 +46,7 @@ class SessionsController < ApplicationController
         if request.variant.include? :mobile
           redirect_to patient_mobile_menu_path(patient)
         else
-          redirect_to patient
+          redirect_to patients_path
         end
       else
         flash.now[:danger] = 'Invalid email/password combination'

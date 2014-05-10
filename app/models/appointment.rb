@@ -13,8 +13,9 @@ class Appointment < ActiveRecord::Base
   belongs_to :patient
   belongs_to :clinic
 
-  delegate :full_name, to: :doctor, prefix: true
+  delegate :full_name, to: :doctor,  prefix: true
   delegate :full_name, to: :patient, prefix: true
+  delegate :name,      to: :clinic,  prefix: true
 
   #appointments must be at a unique time in the future
   validates :appointment_time, presence: true
@@ -72,8 +73,6 @@ class Appointment < ActiveRecord::Base
       Appointment.where(clinic_id: model.clinic_id)
     end
   end
-
-
 
   #for calculating delays based on selection box
   def self.get_added_time(selection)
