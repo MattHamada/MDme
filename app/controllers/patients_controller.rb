@@ -50,7 +50,7 @@ class PatientsController < ApplicationController
   def index
     add_breadcrumb 'Home', patients_path
     @appointment = @patient.next_appointment
-    if @appointment.nil? || Date.parse(@appointment.date) != Date.today
+    if @appointment.nil?
       @progress = 0
       @appointment = nil
     else
