@@ -29,6 +29,7 @@ class Appointment < ActiveRecord::Base
   before_create { self.appointment_delayed_time = appointment_time }
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
+  scope :within_24_hours, -> { where(appointment_time: DateTime.now...(DateTime.now + 24.hours)) }
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
 
