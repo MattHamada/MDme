@@ -11,6 +11,10 @@ module AppointmentTimeFormatting
     appointment_delayed_time.strftime('%F %I:%M%p')
   end
 
+  def delayed_time_ampm
+    appointment_delayed_time.strftime('%I:%M%p')
+  end
+
   def time_am_pm
     appointment_time.strftime('%I:%M %p')
   end

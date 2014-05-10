@@ -47,14 +47,35 @@ class PatientsController < ApplicationController
 
   end
 
+  #TODO test the progress bar changes
   def index
     add_breadcrumb 'Home', patients_path
-    @appointment = @patient.next_appointment
-    if @appointment.nil?
-      @progress = 0
-      @appointment = nil
-    else
-
+    @appointment = @patient.upcoming_appointment
+    unless @appointment.nil?
+      minutes_left = ((@appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+      case minutes_left
+        when 0...5
+          @color = 'danger'
+          @percent = 90
+        when 6...20
+          @color = 'warning'
+          @percent = 80
+        when 21...120
+          @color = 'success'
+          @percent = 60
+        when 121...500
+          @percent = 40
+          @color = 'success'
+        when 501...1440
+          @percent = 20
+          @color = 'success'
+      end
+        if minutes_left < 60
+          @humanized_time_left = "#{minutes_left} minutes until appointment"
+        else
+          #TODO have it say hour not hours for 1 hour
+          @humanized_time_left = "#{minutes_left / 60} hours and #{minutes_left % 60} minutes left"
+        end
     end
 
   end
