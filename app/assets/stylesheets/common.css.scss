@@ -90,10 +90,18 @@ a:visited {
 }
 
 div#logo-container {
-  text-align: center;
+}
+
+#header-progress {
+  margin-top: 3em;
+  vertical-align:middle;
 }
 img.logo {
   height: 150px;
+}
+
+.profile {
+  vertical-align: inherit;
 }
 
 //
@@ -152,6 +160,10 @@ img.logo {
   text-align: center;
 }
 
+
+.navbar-nav.nav-justified > li{
+  float:none;
+}
 
 
 

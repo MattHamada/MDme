@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-3">
       <div class="breadcrumbs">
-        <%= render_breadcrumbs  separator: '->' %>
+        <%= render_breadcrumbs  separator: ' > ' %>
       </div>
     </div>
     <div class="col-xs-3 col-xs-offset-6">
@@ -14,8 +14,41 @@
       </div>
     </div>
   </div>
-  <div id="logo-container">
-    <%= image_tag(asset_path('full_logo.png'), class: 'logo') %>
+  <div class="row">
+    <div class="col-xs-4" id="header-progress">
+      <% unless @appointment.nil? || params[:action] == 'index' %>
+        <div style="text-align: right; color: red;">
+          <%= @appointment.delayed_time_ampm %>
+        </div>
+        <div class="progress progress-striped">
+        <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
+          <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <%= @humanized_time_left %>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-xs-6">
+      <div id="logo-container">
+        <%= image_tag(asset_path('full_logo.png'), class: 'logo') %>
+      </div>
+    </div>
   </div>
+  <div class="navbar navbar-default " role="navigation">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav nav-justified" >
+        <li <%= "class=active" if @active == :home %>><%= link_to 'Home', patients_path %></li>
+        <li <%= "class=active" if @active == :profile %>><%= link_to 'My Profile', patient_path(current_patient) %></li>
+        <li <%= "class=active" if @active == :clinics %>><a href="#">Clinics</a></li>
+        <li <%= "class=active" if @active == :appointments %>><%= link_to 'Appointments', patient_appointments_path(current_patient) %></li>
+      </ul>
+    </div>
+  </div>
+
   <hr id="nav-break"/>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
 

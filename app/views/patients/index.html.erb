@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="progress progress-striped">
-        <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+        <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
           <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
         </div>
       </div>
@@ -27,6 +27,8 @@
     </div>
   </div>
 </div>
+<% else %>
+  No upcoming appointments
 <% end %>
 <div class="home-links">
 
