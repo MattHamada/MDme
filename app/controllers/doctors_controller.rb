@@ -67,7 +67,6 @@ class DoctorsController < ApplicationController
     end
   end
 
-  #TODO this fails if first new appointment request invalid and page reloads - no clinic name or ID passed second time
   def open_appointments
     input = params[:appointment]
     @date = Date.parse(input[:date])

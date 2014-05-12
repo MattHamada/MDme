@@ -53,7 +53,6 @@ class PatientsController < ApplicationController
 
   end
 
-  #TODO test the progress bar changes
   def index
     @active = :home
     add_breadcrumb 'Home', patients_path
@@ -128,8 +127,9 @@ class PatientsController < ApplicationController
       if minutes_left < 60
         @humanized_time_left = "#{minutes_left} minutes until appointment"
       else
-        #TODO have it say hour not hours for 1 hour
-        @humanized_time_left = "#{minutes_left / 60} hours and #{minutes_left % 60} minutes left"
+        hours_left = minutes_left / 60
+        if hours_left == 1 then h = 'hour' else h = 'hours' end
+        @humanized_time_left = "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
       end
     end
 
