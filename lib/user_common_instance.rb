@@ -23,37 +23,40 @@ module UserCommonInstance
   end
 
   def generate_slug
-    unless full_name.blank?
-      if self.class == Patient
-        final_n = 0
-        self.clinics.each do |clinic|
-          if clinic.patients.where(slug: full_name.parameterize).count != 0
-            n = final_n + 1
-            while clinic.patients.where(slug: "#{full_name.parameterize}-#{n}").count != 0
-              n += 1
+    unless self.slug.blank? || self.slug.nil?
+      unless full_name.blank?
+        if self.class == Patient
+          final_n = 0
+          self.clinics.each do |clinic|
+            if clinic.patients.where(slug: full_name.parameterize).count != 0
+              n = final_n + 1
+              while clinic.patients.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+                n += 1
+              end
+              final_n = n
             end
-            final_n = n
           end
-        end
-        if final_n == 0
-          self.slug = full_name.parameterize
+          if final_n == 0
+            self.slug = full_name.parameterize
+          else
+            self.slug = "#{full_name.parameterize}-#{final_n}"
+          end
         else
-          self.slug = "#{full_name.parameterize}-#{final_n}"
+          if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
+            n = 1
+            while self.class.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+              n+= 1
+            end
+            self.slug = "#{full_name.parameterize}-#{n}"
+          else
+            self.slug = full_name.parameterize
+          end
         end
       else
-        if self.class.in_clinic(self).where(slug: full_name.parameterize).count != 0
-          n = 1
-          while self.class.where(slug: "#{full_name.parameterize}-#{n}").count != 0
-            n+= 1
-          end
-          self.slug = "#{full_name.parameterize}-#{n}"
-        else
-          self.slug = full_name.parameterize
-        end
+        slug = 'no-name-entered'.parameterize
       end
-    else
-      slug = 'no-name-entered'.parameterize
     end
+
   end
 
 

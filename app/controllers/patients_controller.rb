@@ -10,13 +10,12 @@ class PatientsController < ApplicationController
   before_filter :find_patient
 
   before_filter :require_patient_login
+  before_filter :get_upcoming_appointment
 
   def show
     @active = :profile
     add_breadcrumb 'Home', patients_path
     add_breadcrumb 'My Profile', patient_path(@patient)
-    @appointment = @patient.upcoming_appointment
-    get_appointment_progress_bar(@appointment) unless @appointment.nil?
     respond_to do |format|
       format.html do |variant|
         variant.mobile { render 'patients/mobile/show' }
@@ -29,6 +28,9 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    add_breadcrumb 'Home', patients_path
+    add_breadcrumb 'My Profile', patient_path(@patient)
+    add_breadcrumb 'Edit Profile', edit_patient_path(@patient)
     @active = :profile
     @current_user = @patient
   end
@@ -53,18 +55,16 @@ class PatientsController < ApplicationController
 
   end
 
-  #TODO test the progress bar changes
   def index
     @active = :home
     add_breadcrumb 'Home', patients_path
-    @appointment = @patient.upcoming_appointment
-    unless @appointment.nil?
-      get_appointment_progress_bar(@appointment)
-    end
-
   end
 
   def change_password
+    @active = :profile
+    add_breadcrumb 'Home', patients_path
+    add_breadcrumb 'My Profile', patient_path(@patient)
+    add_breadcrumb 'Change Password', patient_password_path(@patient)
   end
 
   def update_password
@@ -105,9 +105,11 @@ class PatientsController < ApplicationController
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:id])
     end
+    helper_method :find_patient
 
-    def get_appointment_progress_bar(appointment)
-      minutes_left = ((@appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+
+  def get_appointment_progress_bar(appointment)
+      minutes_left = ((@upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
       case minutes_left
         when 0...5
           @color = 'danger'
@@ -128,11 +130,16 @@ class PatientsController < ApplicationController
       if minutes_left < 60
         @humanized_time_left = "#{minutes_left} minutes until appointment"
       else
-        #TODO have it say hour not hours for 1 hour
-        @humanized_time_left = "#{minutes_left / 60} hours and #{minutes_left % 60} minutes left"
+        hours_left = minutes_left / 60
+        if hours_left == 1 then h = 'hour' else h = 'hours' end
+        @humanized_time_left = "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
       end
     end
 
+    def get_upcoming_appointment
+      @upcoming_appointment = @patient.upcoming_appointment
+      get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
+    end
 
-    helper_method :find_patient
+
 end
