@@ -29,6 +29,9 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    add_breadcrumb 'Home', patients_path
+    add_breadcrumb 'My Profile', patient_path(@patient)
+    add_breadcrumb 'Edit Profile', edit_patient_path(@patient)
     @active = :profile
     @current_user = @patient
   end
