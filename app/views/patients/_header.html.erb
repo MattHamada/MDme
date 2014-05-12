@@ -16,9 +16,9 @@
   </div>
   <div class="row">
     <div class="col-xs-4" id="header-progress">
-      <% unless @appointment.nil? || params[:action] == 'index' %>
+      <% unless @upcoming_appointment.nil? || params[:action] == 'index' %>
         <div style="text-align: right; color: red;">
-          <%= @appointment.delayed_time_ampm %>
+          <%= @upcoming_appointment.delayed_time_ampm %>
         </div>
         <div class="progress progress-striped">
         <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
@@ -44,7 +44,7 @@
         <li <%= "class=active" if @active == :home %>><%= link_to 'Home', patients_path %></li>
         <li <%= "class=active" if @active == :profile %>><%= link_to 'My Profile', patient_path(current_patient) %></li>
         <li <%= "class=active" if @active == :clinics %>><a href="#">Clinics</a></li>
-        <li <%= "class=active" if @active == :appointments %>><%= link_to 'Appointments', patient_appointments_path(current_patient) %></li>
+        <li <%= "class=active" if @active == :appointment %>><%= link_to 'Appointments', patient_appointments_path(current_patient) %></li>
       </ul>
     </div>
   </div>

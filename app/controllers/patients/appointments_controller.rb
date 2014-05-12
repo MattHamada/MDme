@@ -2,7 +2,7 @@ class Patients::AppointmentsController < ApplicationController
 
   before_filter :find_patient, except: [:open_appointments]
   before_filter :require_patient_login
-  before_filter :set_active_navbar
+  before_filter :set_active_navbar_and_crumbs
 
   def index
     @appointments = @patient.appointments.
@@ -12,7 +12,9 @@ class Patients::AppointmentsController < ApplicationController
   end
 
   def new
-    @appointment = Appointment.new(appointment_time: Date.tomorrow)
+    add_breadcrumb 'New Appointment', new_patient_appointment_path(@patient)
+
+    @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
     @open_times = []
   end
 
@@ -111,8 +113,10 @@ class Patients::AppointmentsController < ApplicationController
                                           :doctor_full_name)
     end
 
-    def set_active_navbar
+    def set_active_navbar_and_crumbs
       @active = :appointment
+      add_breadcrumb 'Home', patients_path
+      add_breadcrumb 'Appointments', patient_appointments_path(@patient)
     end
     helper_method :set_active_navbar
 
