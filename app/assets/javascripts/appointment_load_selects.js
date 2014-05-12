@@ -51,18 +51,18 @@ $(document).ready(function() {
         {
             var subdomain = m[0].substring(2);
         }
-        var requestUrl = 'http://' + subdomain +'.lvh.me:3000/doctors/opentimes';
+        var requestUrl = 'http://' + subdomain +'.mdme.tk:3000/doctors/opentimes';
         var clinic_id = $('#clinic_id').val();
         $.ajax({
             type: "GET",
             url: requestUrl,
             timeout: 5000,
-            crossDomain: true,
             dataType: 'text',
             data: { 'appointment': {'clinic_name': $("select#appointment_clinic_id").find(":selected").text(),
                                     'doctor_full_name': $('select#appointment_doctor_id').find(":selected").text(),
                                     'date': $('input#appointment_date').val(),
                                     'clinic_id': clinic_id}},
+            crossDomain: true,
             success: function(data) {
                 data = JSON.parse(data);
                 var $select = $('select#date_time');
