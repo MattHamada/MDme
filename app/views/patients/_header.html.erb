@@ -36,6 +36,8 @@
       </div>
     </div>
   </div>
+
+  <hr id="nav-break"/>
   <div class="navbar navbar-default " role="navigation">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav nav-justified" >
@@ -47,7 +49,6 @@
     </div>
   </div>
 
-  <hr id="nav-break"/>
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
