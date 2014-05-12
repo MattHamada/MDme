@@ -12,6 +12,11 @@ class PatientsController < ApplicationController
   before_filter :require_patient_login
 
   def show
+    @active = :profile
+    add_breadcrumb 'Home', patients_path
+    add_breadcrumb 'My Profile', patient_path(@patient)
+    @appointment = @patient.upcoming_appointment
+    get_appointment_progress_bar(@appointment) unless @appointment.nil?
     respond_to do |format|
       format.html do |variant|
         variant.mobile { render 'patients/mobile/show' }
@@ -24,6 +29,7 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    @active = :profile
     @current_user = @patient
   end
 
@@ -47,14 +53,13 @@ class PatientsController < ApplicationController
 
   end
 
+  #TODO test the progress bar changes
   def index
+    @active = :home
     add_breadcrumb 'Home', patients_path
-    @appointment = @patient.next_appointment
-    if @appointment.nil?
-      @progress = 0
-      @appointment = nil
-    else
-
+    @appointment = @patient.upcoming_appointment
+    unless @appointment.nil?
+      get_appointment_progress_bar(@appointment)
     end
 
   end
@@ -100,6 +105,34 @@ class PatientsController < ApplicationController
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:id])
     end
+
+    def get_appointment_progress_bar(appointment)
+      minutes_left = ((@appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+      case minutes_left
+        when 0...5
+          @color = 'danger'
+          @percent = 90
+        when 6...20
+          @color = 'warning'
+          @percent = 80
+        when 21...120
+          @color = 'success'
+          @percent = 60
+        when 121...500
+          @percent = 40
+          @color = 'success'
+        when 501...1440
+          @percent = 20
+          @color = 'success'
+      end
+      if minutes_left < 60
+        @humanized_time_left = "#{minutes_left} minutes until appointment"
+      else
+        #TODO have it say hour not hours for 1 hour
+        @humanized_time_left = "#{minutes_left / 60} hours and #{minutes_left % 60} minutes left"
+      end
+    end
+
 
     helper_method :find_patient
 end

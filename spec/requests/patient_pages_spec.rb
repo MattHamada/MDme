@@ -46,10 +46,82 @@ describe 'Patient Pages' do
       #   it { should have_content 'Sign Out' }
       # end
 
-      describe 'patient home page' do
+      describe 'patient home page with no upcomming appointments' do
         it { should have_title 'Home |'}
-        it { should have_content "Welcome #{patient.full_name}" }
+        it { should have_content "Welcome, #{patient.full_name}" }
         it { should have_content 'No upcoming appointments' }
+      end
+
+      describe 'patient home page with upcoming appointment' do
+        describe '15 hours left on Appointment' do
+          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                           appointment_time: DateTime.now + 15.hours) }
+          before do
+            upcoming_appointment.save
+            click_link 'Home'
+          end
+          it { should have_selector 'div.appointment-progressbar'}
+          it { should have_selector 'div.progress-bar.progress-bar-success' }
+          it 'has correct percentage filled' do
+            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 20%'
+          end
+        end
+
+        describe '3 hours left on Appointment' do
+          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                          appointment_time: DateTime.now + 3.hours) }
+          before do
+            upcoming_appointment.save
+            click_link 'Home'
+          end
+          it { should have_selector 'div.appointment-progressbar'}
+          it { should have_selector 'div.progress-bar.progress-bar-success' }
+          it 'has correct percentage filled' do
+            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 40%'
+          end
+        end
+
+        describe '1 hours left on Appointment' do
+          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                          appointment_time: DateTime.now + 1.hour) }
+          before do
+            upcoming_appointment.save
+            click_link 'Home'
+          end
+          it { should have_selector 'div.appointment-progressbar'}
+          it { should have_selector 'div.progress-bar.progress-bar-success' }
+          it 'has correct percentage filled' do
+            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 60%'
+          end
+        end
+
+        describe '15 minutes left on Appointment' do
+          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                          appointment_time: DateTime.now + 15.minutes) }
+          before do
+            upcoming_appointment.save
+            click_link 'Home'
+          end
+          it { should have_selector 'div.appointment-progressbar'}
+          it { should have_selector 'div.progress-bar.progress-bar-warning' }
+          it 'has correct percentage filled' do
+            page.find('div.progress-bar.progress-bar-warning')['style'].should == 'width: 80%'
+          end
+        end
+
+        describe '3 minutes left on Appointment' do
+          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                          appointment_time: DateTime.now + 3.minutes) }
+          before do
+            upcoming_appointment.save
+            click_link 'Home'
+          end
+          it { should have_selector 'div.appointment-progressbar'}
+          it { should have_selector 'div.progress-bar.progress-bar-danger' }
+          it 'has correct percentage filled' do
+            page.find('div.progress-bar.progress-bar-danger')['style'].should == 'width: 90%'
+          end
+        end
       end
 
       describe 'profile page' do

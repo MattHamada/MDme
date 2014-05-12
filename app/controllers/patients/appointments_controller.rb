@@ -2,6 +2,7 @@ class Patients::AppointmentsController < ApplicationController
 
   before_filter :find_patient, except: [:open_appointments]
   before_filter :require_patient_login
+  before_filter :set_active_navbar
 
   def index
     @appointments = @patient.appointments.
@@ -109,6 +110,11 @@ class Patients::AppointmentsController < ApplicationController
                                           :clinic_name,
                                           :doctor_full_name)
     end
+
+    def set_active_navbar
+      @active = :appointment
+    end
+    helper_method :set_active_navbar
 
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:patient_id])
