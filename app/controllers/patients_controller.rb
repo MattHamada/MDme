@@ -107,7 +107,7 @@ class PatientsController < ApplicationController
     end
     helper_method :find_patient
 
-
+  #TODO make out of 2 hours, progress more times
   def get_appointment_progress_bar(appointment)
       minutes_left = ((@upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
       case minutes_left

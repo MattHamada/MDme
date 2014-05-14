@@ -1,9 +1,9 @@
-<div class="col-md-6">
+<div class="col-md-8 col-md-offset-3">
   <div class="row">
     <div class="col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Profile</h4></div>
-        <div class="panel-body">
+      <div class="panel panel-default ">
+        <div class="panel-heading panel-inverse"><h4><%= @patient.full_name %></h4></div>
+        <div class="panel-body panel-inverse">
           <%= image_tag @patient.avatar.url(:thumb), id: 'avatar' %>
           <br/>
           <b>First Name:</b> <%= @patient.first_name %><br/>
