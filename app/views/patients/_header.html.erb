@@ -15,41 +15,82 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4" id="header-progress">
-      <% unless @upcoming_appointment.nil? || params[:action] == 'index' %>
-        <div style="text-align: right; color: red;">
-          <%= @upcoming_appointment.delayed_time_ampm %>
-        </div>
-        <div class="progress progress-striped">
-        <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
-          <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
-        </div>
-      </div>
-      <div style="text-align: center;">
-        <%= @humanized_time_left %>
-      </div>
-      <% end %>
-    </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-md-offset-4">
       <div id="logo-container">
         <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo'), root_path %>
       </div>
     </div>
   </div>
 
-  <hr id="nav-break"/>
-  <div class="navbar navbar-default " role="navigation">
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav nav-justified" >
-        <li <%= "class=active" if @active == :home %>><%= link_to 'Home', patients_path %></li>
-        <li <%= "class=active" if @active == :profile %>><%= link_to 'My Profile', patient_path(current_patient) %></li>
-        <li <%= "class=active" if @active == :clinics %>><a href="#">Clinics</a></li>
-        <li <%= "class=active" if @active == :appointment %>><%= link_to 'Appointments', patient_appointments_path(current_patient) %></li>
-      </ul>
-    </div>
-  </div>
-
+  <!--<hr id="nav-break"/>-->
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <hr id="patient-menu-topbar"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row patient-home-menu-links ">
+        <div class="col-md-3">
+          <%= link_to 'HOME', patients_path %>
+        </div>
+        <div class="col-md-3">
+          <%= link_to 'MY PROFILE', patient_path(current_patient) %>
+        </div>
+        <div class="col-md-3">
+          <a href="#">MY RESULTS</a>
+        </div>
+        <div class="col-md-3">
+          <%= link_to 'MY APPOINTMENTS', patient_appointments_path(current_patient) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--<div class="navbar navbar-default " role="navigation">-->
+    <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+      <!--<ul class="nav navbar-nav nav-justified" >-->
+        <!--<li <%= "class=active" if @active == :home %>><%= link_to 'Home', patients_path %></li>-->
+        <!--<li <%= "class=active" if @active == :profile %>><%= link_to 'My Profile', patient_path(current_patient) %></li>-->
+        <!--<li <%= "class=active" if @active == :clinics %>><a href="#">My Results</a></li>-->
+        <!--<li <%= "class=active" if @active == :appointment %>><%= link_to 'My Appointments', patient_appointments_path(current_patient) %></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <br/><br/><br/>
+  <% unless @upcoming_appointment.nil? %>
+    <div class="appointment-progressbar">
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <div class="row">
+            <div class="col-xs-6">
+              <%= @upcoming_appointment.date %>
+            </div>
+            <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
+              <%= @upcoming_appointment.delayed_time_ampm %>
+            </div>
+          </div>
+          <div class="progress progress-striped">
+            <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
+              <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <%= @humanized_time_left %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    No upcoming appointments
+  <% end %>
+
+
+  <br/><br/><br/>
 

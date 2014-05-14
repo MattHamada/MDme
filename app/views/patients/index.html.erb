@@ -4,32 +4,7 @@
 <h2 style="text-align: center;">
   Welcome, <%= @patient.full_name %>
 </h2>
-<% unless @appointment.nil? %>
-<div class="appointment-progressbar">
-  <div class="row">
-    <div class="col-xs-8 col-xs-offset-2">
-      <div class="row">
-        <div class="col-xs-6">
-          <%= @appointment.date %>
-        </div>
-        <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
-          <%= @appointment.delayed_time_ampm %>
-        </div>
-      </div>
-      <div class="progress progress-striped">
-        <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
-          <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
-        </div>
-      </div>
-      <div style="text-align: center;">
-        <%= @humanized_time_left %>
-      </div>
-    </div>
-  </div>
-</div>
-<% else %>
-  No upcoming appointments
-<% end %>
+
 <div class="home-links">
 
 </div>

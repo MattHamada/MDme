@@ -8,7 +8,7 @@ class Patients::AppointmentsController < ApplicationController
     @appointments = @patient.appointments.
                              confirmed.
                              not_past.
-                             includes([:doctor])
+                             includes([:doctor, :clinic])
   end
 
   def new
