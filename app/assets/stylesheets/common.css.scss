@@ -24,8 +24,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .container {
-  max-width: 1200px;
-  background-color: #efefef;
+  width: 100%;
+  background-color: #383838;
 }
 
 .container-non-responsive {
@@ -100,6 +100,44 @@ img.logo {
   height: 150px;
 }
 
+
+
+.signin-button{
+  color: #383838;
+  width: 15em;
+}
+
+.center {
+  text-align:center;
+}
+
+.center form {
+  display:inline-block;
+}
+
+.forgot-password-link {
+  a:link {
+    color: 	 #FFFFFF;
+    font-weight: bold;
+
+  }
+
+  a:visited {
+    color: 	 #FFFFFF;
+  }
+
+}
+
+input, select, textarea{
+  color: #0066FF;
+  font-weight: bold;
+}
+
+textarea:focus, input:focus {
+  color: #0066FF;
+  font-weight: bold;
+}
+
 .profile {
   vertical-align: inherit;
 }
@@ -119,7 +157,7 @@ img.logo {
 
 
 .panel-body {
-  background-color: #ededed;
+  background-color: #FFFFFF;
 }
 
 /*
@@ -150,9 +188,13 @@ img.logo {
 }
 
 .button_links a:link {
-  color: #ffffff;
+  color: lightgray;
 }
 .button_links a:visited {
+  color: #d3d3d3;
+}
+
+.button_links a:hover {
   color: #ffffff;
 }
 
@@ -165,6 +207,37 @@ img.logo {
   float:none;
 }
 
+
+input.signin-form{
+  background-color: #383838;
+}
+
+.container-larger-sized {
+  height: 450px;
+}
+
+.container-smaller-sized {
+  height: 400px;
+}
+.container-white {
+  background-color: white;
+}
+
+.button_inverse {
+  background-color: #383838;
+  color: white;
+  border-color: #dbdbdb;
+  border-width: 2px;
+  width: 12em;
+
+
+
+}
+
+.home-menu-links {
+  text-align: center;
+  font-weight: bold;
+}
 
 
 

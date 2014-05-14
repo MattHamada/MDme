@@ -1,11 +1,11 @@
-<div class="container-non-responsive">
+<div class="container">
   <div class="row">
-    <div class="col-xs-3">
+    <div class="col-md-3">
       <div class="breadcrumbs">
         <%= render_breadcrumbs  separator: ' > ' %>
       </div>
     </div>
-    <div class="col-xs-3 col-xs-offset-6">
+    <div class="col-md-3 col-md-offset-6">
       <div class="top-links">
         <%= link_to 'About Us', about_path %>  |
         <a href="#">Software</a> |
@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-4" id="header-progress">
+    <div class="col-md-4" id="header-progress">
       <% unless @upcoming_appointment.nil? || params[:action] == 'index' %>
         <div style="text-align: right; color: red;">
           <%= @upcoming_appointment.delayed_time_ampm %>
@@ -30,9 +30,9 @@
       </div>
       <% end %>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
       <div id="logo-container">
-        <%= image_tag(asset_path('full_logo.png'), class: 'logo') %>
+        <%= image_tag(asset_path('full_logo_white.png'), class: 'logo') %>
       </div>
     </div>
   </div>
