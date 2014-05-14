@@ -15,7 +15,7 @@ $web-fonts-protocol: "https";
 }
 
 body {
-  background-color: lightgray;
+  background-color: #383838;
   font-family: "Open Sans";
 }
 
@@ -237,6 +237,11 @@ input.signin-form{
 .home-menu-links {
   text-align: center;
   font-weight: bold;
+}
+
+#footer {
+  color: #707070;
+  text-align: bottom;
 }
 
 

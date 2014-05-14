@@ -1,6 +1,24 @@
-<%= render 'static_pages/header' %>
+<div class="container  <%= 'container-larger-sized' if params[:action] == 'home' %> ">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="breadcrumbs">
+        <%= render_breadcrumbs  separator: ' > ' %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align: center;">
+      <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo'), root_path %>
 
-<h4 style="text-align: center; color: white; margin-top: -8em; font-style: italic">
+    </div>
+  </div>
+
+
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+
+  <h4 style="text-align: center; color: white; margin-top: -8em; font-style: italic">
   scheduling simplified
 </h4>
 <%= render 'shared/flash' %>
@@ -8,6 +26,7 @@
 <div class="row">
   <div class="col-md-12 button_links" style="text-align: center; margin-top: 10em;">
     <%= link_to 'Learn More', about_path, class:'btn btn-large button_inverse' %>
+
   </div>
 
 

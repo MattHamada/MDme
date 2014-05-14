@@ -27,7 +27,7 @@
   <!--</div>-->
   <!--<hr id="nav-break"/>-->
 
-<div class="container  <%= 'container-larger-sized' if params[:action] == 'home' %> ">
+<div class="container">
   <div class="row">
     <div class="col-md-3">
       <div class="breadcrumbs">
@@ -37,7 +37,7 @@
   </div>
   <div class="row">
     <div class="col-md-12" style="text-align: center;">
-      <%= image_tag(asset_path('full_logo_white.png'), class: 'logo') %>
+      <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo'), root_path %>
 
     </div>
   </div>
