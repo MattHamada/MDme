@@ -132,8 +132,10 @@ img.logo {
 .forgot-password-link {
   a:link {
     color: 	 #FFFFFF;
+  }
+  a:hover {
+    color: #FFFFFF;
     font-weight: bold;
-
   }
 
   a:visited {
@@ -274,6 +276,21 @@ input.signin-form{
   }
 }
 
+.top-links {
+
+  a:hover {
+    color: white;
+  }
+}
+.top-links-active {
+  a:link {
+    color: white;
+  }
+  a:visited {
+    color: white;
+  }
+
+}
 
 .patient-home-submenu-links {
   text-align: center;

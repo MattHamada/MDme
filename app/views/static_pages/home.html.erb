@@ -37,21 +37,24 @@
      <hr id="menu-topbar"/>
    </div>
  </div>
- <div class="row">
+ <<div class="row">
    <div class="col-md-8 col-md-offset-2">
      <div class="row home-menu-links">
-       <div class="col-md-4">
-         <%= link_to 'SIGN IN', signin_path %>
+       <div class="col-md-3" <%= 'top-links-active' if @active == :about %>">
+         <%= link_to 'ABOUT', about_path %>
        </div>
-       <div class="col-md-4">
+       <div class="col-md-3 <%= 'top-links-active' if @active == :services %>">
          <a href="#">SERVICES</a>
        </div>
-       <div class="col-md-4">
+       <div class="col-md-3 <%= 'top-links-active' if @active == :contact %>">
          <a href="#">CONTACT</a>
+       </div>
+       <div class="col-md-3 <%= 'top-links-active' if @active == :signin %>">
+         <%= link_to 'SIGN IN', signin_path %>
        </div>
      </div>
    </div>
-</div>
+</div>>
 
 <!--<div class="row">-->
   <!--<div class="col-xs-6">-->
