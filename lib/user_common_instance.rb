@@ -23,14 +23,14 @@ module UserCommonInstance
   end
 
   def generate_slug
-    unless self.slug.blank? || self.slug.nil?
+    if self.slug.blank? || self.slug.nil?
       unless full_name.blank?
         if self.class == Patient
           final_n = 0
           self.clinics.each do |clinic|
             if clinic.patients.where(slug: full_name.parameterize).count != 0
               n = final_n + 1
-              while clinic.patients.where(slug: "#{full_name.parameterize}-#{n}").count != 0
+              while clinic.patients.where(slug:"#{full_name.parameterize}-#{n}").count != 0
                 n += 1
               end
               final_n = n

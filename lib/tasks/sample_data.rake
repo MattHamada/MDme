@@ -12,8 +12,8 @@ namespace :db do
   task populate: :environment do
     #create first doctor and patient and appointment and clinic
     c = Clinic.create!(name: 'MDME clinic')
-    p = Patient.create!(first_name: 'sickly',
-                    last_name: 'patient',
+    p = Patient.create!(first_name: 'John',
+                    last_name: 'Doeseph',
                     email: 'user@example.com',
                     password: 'Qwerty1',
                     password_confirmation: 'Qwerty1',
@@ -27,8 +27,8 @@ namespace :db do
                        clinic_id: 1)
     Department.create!(name: 'Oncology',
                        clinic_id: 1)
-    Doctor.create!(first_name: 'healthy',
-                   last_name: 'doctor',
+    Doctor.create!(first_name: 'Healthy',
+                   last_name: 'doctorson',
                    email: 'doctor@example.com',
                    password: 'Qwerty1',
                    password_confirmation: 'Qwerty1',

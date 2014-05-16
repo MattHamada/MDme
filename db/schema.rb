@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(version: 20140516154358) do
     t.string   "work_phone"
     t.string   "home_phone"
     t.string   "mobile_phone"
-  end                                               r
+  end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"
   add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
