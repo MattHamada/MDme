@@ -358,70 +358,78 @@ input.signin-form{
     color: 	 white;
   }
   a:hover {
-    color: #383838;
+    color: #dedede;
     font-weight: bold;
   }
 }
 
+//.patient-signin_form {
+//  text-align: center;
+//  color: #0066FF;
+//  font-weight: bold;
+//  background-color: #383838;
+//  ::-webkit-input-placeholder { /* WebKit browsers */
+//    color:    #0066FF;
+//  }
+//  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+//    color:    #0066FF;
+//    opacity:  1;
+//  }
+//  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+//    color:    #0066FF;
+//    opacity:  1;
+//  }
+//  :-ms-input-placeholder { /* Internet Explorer 10+ */
+//    color:    #0066FF;
+//  }
+//
+//  *::-webkit-input-placeholder {
+//    color: red;
+//  }
+//  *:-moz-placeholder {
+//    color: red;
+//  }
+//  *:-ms-input-placeholder { /* IE10+ */
+//    color: red;
+//  }
+//
+//}
+
+//*::-webkit-input-placeholder {
+//  color: red;
+//}
+//*:-moz-placeholder {
+//  color: red;
+//}
+//*:-ms-input-placeholder { /* IE10+ */
+//  color: red;
+//}
+
+
 .patient-signin_form {
-  text-align: center;
   color: #0066FF;
   font-weight: bold;
   background-color: #383838;
-  ::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #0066FF;
-  }
-  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    #0066FF;
-    opacity:  1;
-  }
-  ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    #0066FF;
-    opacity:  1;
-  }
-  :-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #0066FF;
-  }
-
-  *::-webkit-input-placeholder {
-    color: red;
-  }
-  *:-moz-placeholder {
-    color: red;
-  }
-  *:-ms-input-placeholder { /* IE10+ */
-    color: red;
-  }
+  text-align: center;
 
 }
 
-*::-webkit-input-placeholder {
-  color: red;
-}
-*:-moz-placeholder {
-  color: red;
-}
-*:-ms-input-placeholder { /* IE10+ */
-  color: red;
+.form-inverse {
+  background-color: #383838;
+  text-align: center;
+  color: white;
 }
 
-
-.patient-signin_form {
-
-}
 
 input, select, textarea{
   .patient-signin_form {
     color: #0066FF;
-    font-weight: bold;
-    background-color: #383838;
   }
 
 }
 
 textarea:focus, input:focus {
   color: #0066FF;
-  font-weight: bold;
 }
 
 
