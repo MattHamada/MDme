@@ -5,14 +5,14 @@
 </div>
 <div class="row" style="margin-bottom: 9em;">
   <div class="col-md-8 col-md-offset-2">
-    <div class="row home-menu-links">
-      <div class="col-md-4">
+    <div class="row top-links home-menu-links">
+      <div class="col-md-4 <%= 'top-links-active' if @active == :signin %>">
         <%= link_to 'SIGN IN', signin_path %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4  <%= 'top-links-active' if @active == :services %>">
         <a href="#">SERVICES</a>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4  <%= 'top-links-active' if @active == :contact %>">
         <a href="#">CONTACT</a>
       </div>
     </div>
