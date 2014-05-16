@@ -123,7 +123,7 @@ class Patients::AppointmentsController < ApplicationController
 
     def load_upcoming_appointment
       @upcoming_appointment = @patient.upcoming_appointment
-      get_appointment_progress_bar(@upcoming_appointment)
+      get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
     end
     helper_method :load_upcoming_appointment
 
