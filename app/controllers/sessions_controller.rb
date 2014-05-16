@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
 
 
   def new
+    @active = :signin
     if patient_signed_in?
       if request.variant.include?(:mobile)
         redirect_to patient_mobile_menu_path(current_patient)
