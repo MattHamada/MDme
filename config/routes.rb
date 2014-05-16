@@ -9,7 +9,7 @@ MDme::Application.routes.draw do
   #TODO change doctors subdomain to clinical
   require 'domains'
 
-  match '/', to: 'static_pages#home', via: 'get'
+  # match '/', to: 'static_pages#home', via: 'get'
   #doctor subdomain
   match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
 
