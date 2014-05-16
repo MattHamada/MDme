@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140421213814) do
+ActiveRecord::Schema.define(version: 20140516154358) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -95,28 +95,7 @@ ActiveRecord::Schema.define(version: 20140421213814) do
   add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token"
   add_index "doctors", ["slug"], name: "index_doctors_on_slug"
 
-  create_table "patients", force: true do |t|
-    t.string   "first_name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "password_digest"
-    t.string   "last_name"
-    t.string   "remember_token"
-    t.integer  "doctor_id"
-    t.string   "slug"
-    t.string   "phone_number"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.string   "api_key"
-  end
-
-  add_index "patients", ["api_key"], name: "index_patients_on_api_key"
-  add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
-  add_index "patients", ["email"], name: "index_patients_on_email", unique: true
-  add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
-  add_index "patients", ["slug"], name: "index_patients_on_slug"
+# Could not dump table "patients" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
 end
