@@ -2,7 +2,8 @@ class AddLotsOfFieldsToPatient < ActiveRecord::Migration
   def change
     add_column :patients, :address, :string
     add_column :patients, :work_phone, :string
-    change_column :patients, :phone_number, :home_phone
-    add_column :patients, :mobile_phone, :strings
+    remove_column :patients, :phone_number
+    add_column :patients, :home_phone, :string
+    add_column :patients, :mobile_phone, :string
   end
 end
