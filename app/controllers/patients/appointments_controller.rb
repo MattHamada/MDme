@@ -3,6 +3,7 @@ class Patients::AppointmentsController < ApplicationController
   before_filter :find_patient, except: [:open_appointments]
   before_filter :require_patient_login
   before_filter :set_active_navbar_and_crumbs
+  before_filter :load_upcoming_appointment
 
   def index
     @appointments = @patient.appointments.
@@ -118,7 +119,13 @@ class Patients::AppointmentsController < ApplicationController
       add_breadcrumb 'Home', patients_path
       add_breadcrumb 'Appointments', patient_appointments_path(@patient)
     end
-    helper_method :set_active_navbar
+    helper_method :set_active_navbar_and_crumbs
+
+    def load_upcoming_appointment
+      @upcoming_appointment = @patient.upcoming_appointment
+      get_appointment_progress_bar(@upcoming_appointment)
+    end
+    helper_method :load_upcoming_appointment
 
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:patient_id])

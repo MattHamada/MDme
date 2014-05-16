@@ -108,33 +108,6 @@ class PatientsController < ApplicationController
     helper_method :find_patient
 
   #TODO make out of 2 hours, progress more times
-  def get_appointment_progress_bar(appointment)
-      minutes_left = ((@upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
-      case minutes_left
-        when 0...5
-          @color = 'danger'
-          @percent = 90
-        when 6...20
-          @color = 'warning'
-          @percent = 80
-        when 21...120
-          @color = 'success'
-          @percent = 60
-        when 121...500
-          @percent = 40
-          @color = 'success'
-        when 501...1440
-          @percent = 20
-          @color = 'success'
-      end
-      if minutes_left < 60
-        @humanized_time_left = "#{minutes_left} minutes until appointment"
-      else
-        hours_left = minutes_left / 60
-        if hours_left == 1 then h = 'hour' else h = 'hours' end
-        @humanized_time_left = "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
-      end
-    end
 
     def get_upcoming_appointment
       @upcoming_appointment = @patient.upcoming_appointment

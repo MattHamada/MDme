@@ -1,7 +1,7 @@
 <%= render 'patients/header' %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-2">
+  <div class="col-md-5 col-md-offset-3">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Confirmed Appointments</h4></div>
       <div class="panel-body panel-inverse">
@@ -32,11 +32,9 @@
   </div>
   <div class="col-md-3">
     <div class="row">
-      <div class="col-md-12">
-            <ul class=" inverse-color">
-              <li><%= link_to "New Request", new_patient_appointment_path(@patient) %></li>
-              <li><%= link_to "Open Requests", open_requests_path(@patient) %></li>
-            </ul>
+      <div class="col-md-12 inverse-color">
+        <%= link_to "New Request", new_patient_appointment_path(@patient) %>  <br/>
+        <%= link_to "Open Requests", open_requests_path(@patient) %>
       </div>
     </div>
   </div>
