@@ -98,7 +98,8 @@ class PatientsController < ApplicationController
                                     :password,
                                     :password_confirmation,
                                     :doctor_id,
-                                    :phone_number,
+                                    :home_phone,
+                                    :work_phone,
                                     :avatar)
   end
 

@@ -21,8 +21,14 @@
 </div>
 <div class='form-group'>
   <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, 'Phone Number') %>
-    <%= text_field(:patient, :phone_number, class: 'form-control') %>
+    <%= f.label(:patient, 'Home Phone #') %>
+    <%= text_field(:patient, :home_phone, class: 'form-control') %>
+  </div>
+</div>
+<div class='form-group'>
+  <div class='col-xs-6 col-xs-offset-3'>
+    <%= f.label(:patient, 'Work Phone #') %>
+    <%= text_field(:patient, :work_phone, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
