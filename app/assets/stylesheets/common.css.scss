@@ -21,7 +21,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Open Sans";
+  font-family: "helvetica";
 }
 
 .container {
@@ -227,11 +227,28 @@ input.signin-form{
 .button_inverse {
   background-color: #383838;
   color: white;
-  border-color: #dbdbdb;
+  border-color: #ffffff;
   border-width: 2px;
   width: 12em;
+}
 
+.button-blue-text {
+  color: #3276B1;
+  a:link {
+    color: #3276B1;
+  }
+  a:visited {
+    color: #3276B1;
+  }
 
+  a:hover {
+    color: #FFFFFF;
+  }
+
+  a:focus {
+    color: #FFFFFF;
+  }
+;
 
 }
 
@@ -239,12 +256,12 @@ input.signin-form{
   text-align: center;
 
   a:link {
-    color: 	 #383838;
+    color: 	 #000000;
 
   }
 
   a:visited {
-    color: 	 #383838;
+    color: 	 #000000;
   }
   a:hover {
     color: black;
@@ -292,6 +309,7 @@ input.signin-form{
 }
 
 #footer {
+  margin-top: 9em;
   color: #707070;
   text-align: bottom;
 }
@@ -425,7 +443,6 @@ input.signin-form{
   font-weight: bold;
   background-color: #383838;
   text-align: center;
-
 }
 
 .form-inverse {
@@ -446,9 +463,31 @@ input, select, textarea{
 //  color: #0066FF;
 //}
 
+#menu-topbar
+{
+  display:block;
+  border:none;
+  color: #383838;
+  height:3px;
+  background: #383838;
+}
 
+#menu-topbar-white {
+  display:block;
+  border:none;
+  color: #383838;
+  height:3px;
+  background: #383838;
+}
 
-
+#menu-topbar-black
+{
+  display:block;
+  border:none;
+  color: #000000;
+  height:3px;
+  background: #000000;
+}
 
 
 
