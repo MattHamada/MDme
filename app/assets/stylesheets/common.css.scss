@@ -355,8 +355,10 @@ input.signin-form{
   }
 }
 
-.signin_form {
+.patient-signin_form {
   text-align: center;
+  color: #0066FF;
+  font-weight: bold;
   background-color: #383838;
   ::-webkit-input-placeholder { /* WebKit browsers */
     color:    #0066FF;
@@ -373,13 +375,38 @@ input.signin-form{
     color:    #0066FF;
   }
 
+  *::-webkit-input-placeholder {
+    color: red;
+  }
+  *:-moz-placeholder {
+    color: red;
+  }
+  *:-ms-input-placeholder { /* IE10+ */
+    color: red;
+  }
+
+}
+
+*::-webkit-input-placeholder {
+  color: red;
+}
+*:-moz-placeholder {
+  color: red;
+}
+*:-ms-input-placeholder { /* IE10+ */
+  color: red;
+}
+
+
+.patient-signin_form {
+
 }
 
 input, select, textarea{
-  .signin_form {
+  .patient-signin_form {
     color: #0066FF;
     font-weight: bold;
-
+    background-color: #383838;
   }
 
 }
