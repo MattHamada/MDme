@@ -56,6 +56,14 @@ h1, h2, h3, h4, h5, h6 {
   @extend .has-error;
 }
 
+.container-black-logo {
+  background-image: url('MDME_logo.svg');
+  background-repeat: no-repeat;
+  background-position: 95% -110%;
+
+}
+
+
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
