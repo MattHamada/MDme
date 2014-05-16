@@ -237,17 +237,15 @@ input.signin-form{
 
 .home-menu-links {
   text-align: center;
-  font-weight: bold;
 
   a:link {
     color: 	 #383838;
-    font-weight: bold;
 
   }
 
   a:visited {
     color: 	 #383838;
-  }                 
+  }
   a:hover {
     color: black;
     font-weight: bold;
@@ -309,6 +307,22 @@ input.signin-form{
 
 .panel-inverse {
   background-color: #383838;
+  a:link {
+    color: 	 white;
+    font-weight: bolder;
+
+
+  }
+
+  a:visited {
+    color: 	 white;
+    font-weight: bolder;
+  }
+  a:hover {
+    color: #dedede;
+    font-weight: bolder;
+
+  }
 }
 
 .panel-heading {
@@ -427,10 +441,10 @@ input, select, textarea{
   }
 
 }
-
-textarea:focus, input:focus {
-  color: #0066FF;
-}
+//
+//textarea:focus, input:focus {
+//  color: #0066FF;
+//}
 
 
 
