@@ -40,16 +40,16 @@
  <<div class="row">
    <div class="col-md-8 col-md-offset-2">
      <div class="row home-menu-links">
-       <div class="col-md-3" <%= 'top-links-active' if @active == :about %>">
+       <div class="col-md-3">
          <%= link_to 'ABOUT', about_path %>
        </div>
-       <div class="col-md-3 <%= 'top-links-active' if @active == :services %>">
+       <div class="col-md-3">
          <a href="#">SERVICES</a>
        </div>
-       <div class="col-md-3 <%= 'top-links-active' if @active == :contact %>">
-         <a href="#">CONTACT</a>
+       <div class="col-md-3">
+         <%= link_to 'CONTACT', contact_path %>
        </div>
-       <div class="col-md-3 <%= 'top-links-active' if @active == :signin %>">
+       <div class="col-md-3">
          <%= link_to 'SIGN IN', signin_path %>
        </div>
      </div>

@@ -68,6 +68,16 @@ a:hover {
 
 }
 
+.contact-logo {
+  background-image: asset-url('contact-image.svg');
+  background-repeat: no-repeat;
+  height: 300px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
 
 
 @mixin box_sizing {

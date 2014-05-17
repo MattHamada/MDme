@@ -1,3 +1,27 @@
 <%= render 'static_pages/header' %>
-<h1>StaticPages#contact</h1>
-<p>Find me in app/views/static_pages/contact.html.erb</p>
+<div class="row">
+  <div class="col-md-5 col-md-offset-1" style="text-align: center;">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-4">
+        <div class="contact-logo"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-4">
+        55 Fruit Street<br/>
+        Boston, Ma 02114<br/><br/>
+        Telephone: 617-724-7285<br/>
+        Email: foo@bar.com
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4" style="text-align: center;">
+    <h4 style="text-decoration: underline;">EMAIL US</h4> <br/><br/>
+    <%= text_field_tag(:name, '', placeholder: 'Name', class: 'form-inverse form-control') %><br/>
+    <%= text_field_tag(:email, '', placeholder: 'Email', class: 'form-inverse form-control') %><br/>
+    <%= text_field_tag(:phone, '', placeholder: 'Telephone', class: 'form-inverse form-control') %><br/>
+    <%= text_area_tag(:comment, '', placeholder:  'Comments', class: 'form-inverse form-control') %><br/><br/>
+    <%= submit_tag('Submit', class: 'btn btn-medium btn-primary') %>
+  </div>
+</div>

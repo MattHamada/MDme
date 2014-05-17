@@ -14,9 +14,13 @@ class StaticPagesController < ApplicationController
 
   def help; end
 
-  def about; end
+  def about
+    @active = :about
+  end
 
-  def contact; end
+  def contact
+    @active = :contact
+  end
 end
 
 
