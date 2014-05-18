@@ -11,7 +11,7 @@ $(document).ready(function() {
         {
             var patient_slug = m[0];
         }
-        var requestUrl = 'http://www.mdme.us:3000/patients/' + patient_slug + '/clinics/getdoctors';
+        var requestUrl = 'http://www.mdme.us/patients/' + patient_slug + '/clinics/getdoctors';
         $.ajax({
             type: "GET",
             url: requestUrl,
@@ -51,7 +51,7 @@ $(document).ready(function() {
         {
             var subdomain = m[0].substring(2);
         }
-        var requestUrl = 'http://' + subdomain +'.mdme.us:3000/doctors/opentimes';
+        var requestUrl = 'http://' + subdomain +'.mdme.us/doctors/opentimes';
         var clinic_id = $('#clinic_id').val();
         $.ajax({
             type: "GET",
