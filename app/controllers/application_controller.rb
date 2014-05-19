@@ -28,8 +28,8 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   end
 
-  def get_appointment_progress_bar(appointment)
-    minutes_left = ((@upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+  def get_appointment_progress_bar(upcoming_appointment)
+    minutes_left = ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
     case minutes_left
       when 0...5
         @color = 'danger'
@@ -37,15 +37,21 @@ class ApplicationController < ActionController::Base
       when 6...20
         @color = 'warning'
         @percent = 80
-      when 21...120
+      when 81...120
         @color = 'success'
-        @percent = 60
-      when 121...500
-        @percent = 40
-        @color = 'success'
-      when 501...1440
         @percent = 20
+      when 70..81
         @color = 'success'
+        @percent = 40
+      when 60...69
+        @color = 'success'
+        @percent = 50
+      when 35...59
+        @color = 'success'
+        @percent = 65
+      when 21...35
+        @color = 'success'
+        @percent = 75
     end
     if minutes_left < 60
       @humanized_time_left = "#{minutes_left} minutes until appointment"
