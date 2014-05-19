@@ -31,12 +31,6 @@ class ApplicationController < ActionController::Base
   def get_appointment_progress_bar(upcoming_appointment)
     minutes_left = ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
     case minutes_left
-      when 0...5
-        @color = 'danger'
-        @percent = 90
-      when 6...20
-        @color = 'warning'
-        @percent = 80
       when 81...120
         @color = 'success'
         @percent = 20
@@ -49,9 +43,18 @@ class ApplicationController < ActionController::Base
       when 35...59
         @color = 'success'
         @percent = 65
-      when 21...35
+      when 21...34
         @color = 'success'
         @percent = 75
+      when 6...20
+        @color = 'warning'
+        @percent = 80
+      when 0...5
+        @color = 'danger'
+        @percent = 90
+      else
+        @color = 'success'
+        @percent = 0
     end
     if minutes_left < 60
       @humanized_time_left = "#{minutes_left} minutes until appointment"

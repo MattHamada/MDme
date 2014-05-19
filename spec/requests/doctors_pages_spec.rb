@@ -24,7 +24,7 @@ describe 'DoctorsPages' do
 
     describe 'Doctor signing in' do
       describe 'with invalid information' do
-        before { click_button 'Sign in' }
+        before { click_button 'SIGN IN' }
         it { should have_title 'Sign In' }
         it { should have_selector 'div.alert.alert-danger',
                                   text: 'Invalid email/password combination' }
@@ -36,9 +36,9 @@ describe 'DoctorsPages' do
         before do
           department.save!
           doctor.save!
-          fill_in 'Email', with: doctor.email
-          fill_in 'Password', with: doctor.password
-          click_button 'Sign in'
+          fill_in 'email', with: doctor.email
+          fill_in 'password', with: doctor.password
+          click_button 'SIGN IN'
         end
         it { should have_title("My Profile") }
 
@@ -143,7 +143,7 @@ describe 'DoctorsPages' do
 
         describe 'signing out' do
           before { click_link 'Sign Out' }
-          it { should have_content 'Sign in' }
+          it { should have_content 'Sign In' }
         end
       end
     end

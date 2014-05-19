@@ -68,7 +68,9 @@ module UserCommonInstance
   def slug_unique_in_clinic?
     if self.is_a? Patient
       self.clinics.each do |clinic|
-        if clinic.patients.where(slug: self.slug).count != 0
+        patients = clinic.patients.where(slug: self.slug)
+        #if there is a patient with same slug it is not self
+        if patients.count != 0 && patients.first != self
           return false
         end
       end
