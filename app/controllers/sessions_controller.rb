@@ -64,7 +64,11 @@ class SessionsController < ApplicationController
     else
       sign_out :patient
     end
-    redirect_to '/signin'
+    if request.subdomain == 'admin' || request.subdomain == 'doctors'
+      redirect_to root_path
+    else
+      redirect_to '/signin'
+    end
   end
 
 

@@ -19,15 +19,10 @@ class PasswordResetController < ApplicationController
       if user.update password: newpass, password_confirmation: newpass
         user.send_password_reset_email(newpass)
         flash[:success] = 'An email has been sent containing your new password'
-        if request.variant.include? :mobile
-          redirect_to '/signin'
-        else
-          redirect_to root_path
-        end
-
+        redirect_to '/signin'
       else
-        flash[:danger] = 'An error has occured'
-        redirect_to root_path
+        flash[:danger] = 'An error has occurred'
+        redirect_to '/signin'
 
       end
     else

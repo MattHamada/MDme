@@ -12,17 +12,17 @@ describe 'Patient Pages' do
     before do
       visit patient_path(patient)
     end
-    it { should have_content 'Sign in' }
+    it { should have_button 'SIGN IN' }
   end
 
   describe 'signing in' do
     before { visit signin_path }
 
-    it { should have_content('Sign in') }
+    it { should have_button('SIGN IN') }
     it { should have_title('Sign In') }
 
     describe 'with invalid information' do
-      before { click_button 'Sign in' }
+      before { click_button 'SIGN IN' }
       it { should have_title 'Sign In' }
       it { should have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
     end
@@ -30,9 +30,9 @@ describe 'Patient Pages' do
     describe 'with valid information' do
       before do
         doctor.save
-        fill_in 'Email',    with: patient.email
-        fill_in 'Password', with: 'Qwerty1'
-        click_button 'Sign in'
+        fill_in 'email',    with: patient.email
+        fill_in 'password', with: 'Qwerty1'
+        click_button 'SIGN IN'
       end
       it { should_not have_title 'Sign in' }
       it { should have_link 'Sign Out' }
@@ -52,46 +52,44 @@ describe 'Patient Pages' do
         it { should have_content 'No upcoming appointments' }
       end
 
+      describe '3 hours left on Appointment' do
+        let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                        appointment_time: DateTime.now + 3.hours) }
+        before do
+          upcoming_appointment.save
+          click_link 'HOME'
+        end
+        it { should have_content 'No upcoming appointments' }
+      end
+
       describe 'patient home page with upcoming appointment' do
-        describe '15 hours left on Appointment' do
+        describe '50 minutes left on Appointment' do
           let(:upcoming_appointment) { FactoryGirl.create(:appointment,
-                                                           appointment_time: DateTime.now + 15.hours) }
+                                                           appointment_time: DateTime.now + 50.minutes) }
           before do
             upcoming_appointment.save
-            click_link 'Home'
+            click_link 'HOME'
           end
           it { should have_selector 'div.appointment-progressbar'}
           it { should have_selector 'div.progress-bar.progress-bar-success' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 20%'
+            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 65%'
           end
         end
 
-        describe '3 hours left on Appointment' do
-          let(:upcoming_appointment) { FactoryGirl.create(:appointment,
-                                                          appointment_time: DateTime.now + 3.hours) }
-          before do
-            upcoming_appointment.save
-            click_link 'Home'
-          end
-          it { should have_selector 'div.appointment-progressbar'}
-          it { should have_selector 'div.progress-bar.progress-bar-success' }
-          it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 40%'
-          end
-        end
+
 
         describe '1 hours left on Appointment' do
           let(:upcoming_appointment) { FactoryGirl.create(:appointment,
                                                           appointment_time: DateTime.now + 1.hour) }
           before do
             upcoming_appointment.save
-            click_link 'Home'
+            click_link 'HOME'
           end
           it { should have_selector 'div.appointment-progressbar'}
           it { should have_selector 'div.progress-bar.progress-bar-success' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 60%'
+            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 50%'
           end
         end
 
@@ -100,7 +98,7 @@ describe 'Patient Pages' do
                                                           appointment_time: DateTime.now + 15.minutes) }
           before do
             upcoming_appointment.save
-            click_link 'Home'
+            click_link 'HOME'
           end
           it { should have_selector 'div.appointment-progressbar'}
           it { should have_selector 'div.progress-bar.progress-bar-warning' }
@@ -114,7 +112,7 @@ describe 'Patient Pages' do
                                                           appointment_time: DateTime.now + 3.minutes) }
           before do
             upcoming_appointment.save
-            click_link 'Home'
+            click_link 'HOME'
           end
           it { should have_selector 'div.appointment-progressbar'}
           it { should have_selector 'div.progress-bar.progress-bar-danger' }
@@ -126,24 +124,24 @@ describe 'Patient Pages' do
 
       describe 'profile page' do
         before do
-          click_link 'My Profile'
+          click_link 'MY PROFILE'
         end
         it { should have_content patient.first_name }
         it { should have_content patient.last_name }
         it { should have_content patient.email }
-        it { should have_content patient.phone_number }
-        it { should have_link 'Edit Profile' }
-        it { should have_link 'Change Password' }
+        it { should have_content patient.home_phone }
+        it { should have_link 'edit profile' }
+        it { should have_link 'change password' }
 
         describe 'edit profile page' do
           before do
             doctor.save
-            click_link 'Edit Profile'
+            click_link 'edit profile'
           end
 
           describe 'with invalid password' do
             before do
-              fill_in 'patient_phone_number', with: '000-000-0000'
+              fill_in 'patient_home_phone', with: '000-000-0000'
               click_button 'Update'
             end
             it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered.'}
@@ -160,7 +158,7 @@ describe 'Patient Pages' do
             end
             describe 'with valid information' do
               before do
-                fill_in 'patient_phone_number', with: '000-000-0000'
+                fill_in 'patient_home_phone', with: '000-000-0000'
                 fill_in 'verify_verify_password', with: 'Qwerty1'
                 click_button 'Update'
               end
@@ -170,7 +168,7 @@ describe 'Patient Pages' do
         end
 
         describe 'Change password page' do
-          before { click_link 'Change Password' }
+          before { click_link 'change password' }
           it { should have_content 'Change Password' }
           it { should have_content 'Old password' }
           it { should have_content 'New password' }
@@ -220,25 +218,25 @@ describe 'Patient Pages' do
         it { should have_content patient.email }
       end
 
-      describe 'browse doctor pages' do
-        let(:doctor) { FactoryGirl.create(:doctor) }
-        let(:department) { FactoryGirl.create(:department) }
-        before do
-          department.save
-          doctor.save
-          click_link 'Browse Doctors'
-        end
-        it { should have_content doctor.full_name }
-        it { should have_content doctor.department_name }
-
-        describe 'viewing doctor profile' do
-          before { click_link doctor.full_name }
-          it { should have_content 'Public Profile' }
-          it { should have_content doctor.full_name }
-          it { should have_content doctor.email }
-          it { should have_content doctor.phone_number }
-        end
-      end
+      # describe 'browse doctor pages' do
+      #   let(:doctor) { FactoryGirl.create(:doctor) }
+      #   let(:department) { FactoryGirl.create(:department) }
+      #   before do
+      #     department.save
+      #     doctor.save
+      #     click_link 'Browse Doctors'
+      #   end
+      #   it { should have_content doctor.full_name }
+      #   it { should have_content doctor.department_name }
+      #
+      #   describe 'viewing doctor profile' do
+      #     before { click_link doctor.full_name }
+      #     it { should have_content 'Public Profile' }
+      #     it { should have_content doctor.full_name }
+      #     it { should have_content doctor.email }
+      #     it { should have_content doctor.phone_number }
+      #   end
+      # end
 
       describe 'editing requests pages' do
         let(:appointment) { FactoryGirl.create(:appointment_request) }
@@ -246,7 +244,7 @@ describe 'Patient Pages' do
         before do
           doctor.save
           appointment.save
-          click_link 'Appointments'
+          click_link 'MY APPOINTMENTS'
           click_link 'Open Requests'
         end
         it { should have_content appointment.date_time_ampm }
@@ -286,14 +284,14 @@ describe 'Patient Pages' do
 
       describe 'signing out' do
         before { click_link 'Sign Out' }
-        it { should have_link('sign in') }
+        it { should have_link('SIGN IN') }
       end
     end
 
 
     describe 'Forgot Password Page' do
       before do
-        click_link 'Forgot Password'
+        click_link 'forgot password?'
       end
       it { should have_content 'Email' }
       it { should have_title 'Forgot Password' }
@@ -329,11 +327,11 @@ describe 'Patient Pages' do
       patient.save!
       appointment.save!
       visit root_path
-      click_link 'sign in'
-      fill_in 'Email', with: patient.email
-      fill_in 'Password', with: 'Qwerty1'
-      click_button 'Sign in'
-      click_link 'Appointments'
+      click_link 'SIGN IN'
+      fill_in 'email', with: patient.email
+      fill_in 'password', with: 'Qwerty1'
+      click_button 'SIGN IN'
+      click_link 'APPOINTMENTS'
       click_link 'New Request'
     end
     describe 'with invalid (past) date' do

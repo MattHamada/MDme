@@ -132,7 +132,7 @@ describe Patient do
     before { @patient.save }
     its(:slug) { should eq "#{@patient.first_name.downcase}-#{@patient.last_name.downcase}" }
 
-    describe 'A second patient with the same name stil has a valid slug' do
+    describe 'A second patient with the same name still has a valid slug' do
       before do
         clinic.save
         @patient2 =  Patient.new(first_name: "Example",
@@ -141,6 +141,7 @@ describe Patient do
                                  password: 'Qwerty1',
                                  password_confirmation: 'Qwerty1',
                                  clinics: [clinic])
+        @patient.save
         @patient2.save
       end
       it(@patient)  { should be_valid }

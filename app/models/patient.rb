@@ -78,7 +78,7 @@ class Patient < ActiveRecord::Base
   end
 
   def upcoming_appointment
-    self.appointments.within_24_hours.not_past.confirmed.order_by_time.first
+    self.appointments.within_2_hours.not_past.confirmed.order_by_time.first
   end
 
 end

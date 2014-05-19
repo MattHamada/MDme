@@ -42,9 +42,9 @@ describe 'AdministrationPages' do
       end
       describe 'wih invalid information' do
         before do
-          fill_in 'Email', with: 'wrong@example.com'
-          fill_in 'Password', with: 'baddpass'
-          click_button 'Sign in'
+          fill_in 'email', with: 'wrong@example.com'
+          fill_in 'password', with: 'baddpass'
+          click_button 'SIGN IN'
         end
         it { should have_title('Sign In') }
         it { should have_selector('div.alert.alert-danger', text: 'Access Denied')}
@@ -52,9 +52,9 @@ describe 'AdministrationPages' do
 
       describe 'with valid information' do
         before do
-          fill_in 'Email', with: admin.email
-          fill_in 'Password', with: admin.password
-          click_button 'Sign in'
+          fill_in 'email', with: admin.email
+          fill_in 'password', with: admin.password
+          click_button 'SIGN IN'
         end
 
         it { should have_title 'Admin Panel'}
@@ -372,8 +372,6 @@ describe 'AdministrationPages' do
                   before do
                     reset_email
                     appointment_request.patient.email
-                    Appointment.all.each  { |appt| puts appt.attributes }
-                    puts ''
                     click_link 'Approve'
                   end
                   it { should_not have_content appointment_request.
@@ -509,7 +507,7 @@ describe 'AdministrationPages' do
 
         describe 'signing out' do
           before { click_link 'Sign Out' }
-          it { should have_content 'Sign in' }
+          it { should have_content 'Sign In' }
         end
       end
     end
@@ -523,9 +521,9 @@ describe 'AdministrationPages' do
       appointment.save!
       admin.save!
       visit root_path
-      fill_in 'Email', with: admin.email
-      fill_in 'Password', with: admin.password
-      click_button 'Sign in'
+      fill_in 'email', with: admin.email
+      fill_in 'password', with: admin.password
+      click_button 'SIGN IN'
       click_link 'Manage Appointments'
       fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
       click_button 'Submit'
@@ -589,9 +587,9 @@ describe 'AdministrationPages' do
       admin.save!
 
       visit root_path
-      fill_in 'Email', with: admin.email
-      fill_in 'Password', with: admin.password
-      click_button 'Sign in'
+      fill_in 'email', with: admin.email
+      fill_in 'password', with: admin.password
+      click_button 'SIGN IN'
 
       click_link 'Manage Appointments'
       click_link 'Add Appointment'
