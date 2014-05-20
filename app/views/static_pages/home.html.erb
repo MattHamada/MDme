@@ -7,15 +7,18 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12" style="text-align: center;">
-      <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo'), root_path %>
-
+    <div class="col-md-6 col-md-offset-3">
+      <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo img-responsive'), root_path %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" style="text-align: center">
+      <h4 style="color: white;">
+        scheduling simplified
+      </h4>
     </div>
   </div>
 
-  <h4 style="text-align: center; color: white; margin-top: -8em">
-    scheduling simplified
-  </h4>
   <%= render 'shared/flash' %>
 
   <div class="row">
@@ -26,7 +29,7 @@
 </div>
 
 
-<div class="container container-white container-smaller-sized">
+<div class="container-fluid container-white container-smaller-sized">
  <div class="row">
    <div class="col-md-8 col-md-offset-2" style="margin-top: 10em;">
      <hr id="menu-topbar"/>
