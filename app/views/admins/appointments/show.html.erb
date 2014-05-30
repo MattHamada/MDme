@@ -1,15 +1,13 @@
-<%= render 'admins/sidebar'%>
+<%= provide :title, "Appointment | " %>
+<%= render 'admins/header'%>
 
 
-<div class="col-xs-9">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <%= render 'appointments/show' %>
-        </div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <%= render 'appointments/show' %>
       </div>
     </div>
   </div>
 </div>
 
-</div>

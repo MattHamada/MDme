@@ -1,72 +1,54 @@
-<%= provide(:title, "Edit Appointment") %>
-<%= render 'admins/sidebar' %>
+<%= provide(:title, "Edit Appointment | ") %>
+<%= render 'admins/header' %>
 
-<div class="col-xs-8">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Edit Appointment</h4></div>
-        <div class="panel-body">
-
-          <%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'update'), method: :put, html: { class: "form-inline", role: "form" }) do |f| %>,
-              <%= f.label(:datetime, "Select Appointment Time") %>
-              <div class='form-group'>
-                <%= text_field :appointment, :day, class: 'form-control', value: @appointment.date %>
-              </div>
-              <div class='form-group'>
-                <select class="form-control" id="date_hour" name="appointment[hour]">
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 9  %> value="09">09 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 10 %> value="10">10 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 11 %> value="11">11 AM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 12 %> value="12">12 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 13 %> value="13">01 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 14 %> value="14">02 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 15 %> value="15">03 PM</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_hour == 16 %> value="16">04 PM</option>
-                </select>
-              </div> :
-
-              <div class= 'form-group'>
-                <select class="form-group form-control" id="date_minute" name="appointment[minute]">
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 0  %> value="00">00</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 15 %> value="15">15</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 30 %> value="30">30</option>
-                  <option <%= 'selected="selected"' if @appointment.appointment_time_minute == 45 %> value="45">45</option>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Edit Appointment</h4></div>
+      <div class="panel-body panel-inverse">
+        <div class="alert alert-info">To change doctor or date, please delete and remake the appointment</div>
+        <%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'update'), method: :put, html: { class: "form-horizontal", role: "form" }) do |f| %>
+          <div class="row">
+            <div class='form-group'>
+              <div class="col-xs-6 col-xs-offset-3">
+                <%= f.label(:datetime, "Select Appointment Time") %>
+                <select class="form-control" id="time" name="appointment[time]">
+                  <% @open_times.each_with_index do |time, index| %>
+                    <option <%= 'selected="selected"' if index+1 == @open_times.length %>value="<%= time %>"><%= time %></option>
+                  <% end %>
                 </select>
               </div>
-              <br/>
-              <br/>
-              <div class='form-group'>
+            </div>
+            <div class='form-group'>
+              <div class="col-xs-6 col-xs-offset-3">
                 <%= f.label(:doctor, "Select Doctor") %>
                 <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@appointment), :id, :full_name, {selected: @appointment.doctor.id}, { class: 'form-control'}) %>
               </div>
-              <div class='form-group'>
+            </div>
+            <div class='form-group'>
+              <div class="col-xs-6 col-xs-offset-3">
                 <%= f.label(:patient, "Select patient") %>
                 <%= collection_select(:appointment, :patient_id, Patient.in_clinic(@appointment), :id, :full_name, {selected: @appointment.patient.id}, { class: 'form-control'}) %>
               </div>
-              <br/>
-              <br/>
-              <div class='form-group'>
+            </div>
+            <div class='form-group'>
+              <div class="col-xs-6 col-xs-offset-3">
                 <%= f.label(:description, 'Notes') %>
-                <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', value: @appointment.description, rows: '5') %>
+                <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', value: @appointment.description, rows: '5', style: 'width: 100%') %>
               </div>
-              </br>
-              </br>
-
-
-
+            </div>
+            <div class="col-xs-6 col-xs-offset-3" style="text-align: center;">
               <%= f.submit 'Update', class: 'btn btn-success' %>
+            </div>
+          </div>
+        <% end %> <br/>
+        <%= link_to 'Delete Appointment', admin_appointment_path(@admin, @appointment), method: :delete %>
 
-          <% end %> <br/>
-          <%= link_to 'Delete Appointment', admin_appointment_path(@admin, @appointment), method: :delete %>
-
-        </div>
       </div>
     </div>
   </div>
 </div>
 
-</div>
 
 
 

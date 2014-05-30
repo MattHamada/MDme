@@ -51,6 +51,7 @@ $(document).ready(function() {
         {
             var subdomain = m[0].substring(2);
         }
+
         var requestUrl = 'http://' + subdomain +'.mdme.tk:3000/doctors/opentimes';
         var clinic_id = $('#clinic_id').val();
         $.ajax({

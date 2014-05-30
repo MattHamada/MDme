@@ -2,6 +2,7 @@ class Admins::AppointmentsController < ApplicationController
 
   before_filter :find_admin
   before_filter :require_admin_login
+  before_filter :set_active_navbar
 
   def index
     if Appointment.requests.in_clinic(@admin).not_past.any?
@@ -18,12 +19,14 @@ class Admins::AppointmentsController < ApplicationController
 
   def edit
     @appointment = appointment
+    @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
+    @open_times << @appointment.time_selector
   end
 
   def update
     @appointment = appointment
     input_params = appointment_params
-    date = DateTime.parse("#{input_params[:day]} #{input_params[:hour]}:#{input_params[:minute]}")
+    date = DateTime.parse("#{@appointment.date} #{input_params[:time]}")
     if @appointment.update_attributes(doctor_id: input_params[:doctor_id],
                                       patient_id: input_params[:patient_id],
                                       appointment_time: date,
@@ -60,10 +63,10 @@ class Admins::AppointmentsController < ApplicationController
   # shows all confirmed appointments on a given date for admin on index page
   def browse
     input = appointment_params
-    date = Date.parse(input[:date])
+    date = Date.parse(input[:day])
     if date < Date.today
       flash[:danger] = 'Time must be set in the future'
-      redirect_to appointments_path
+      redirect_to admin_appointments_path(@admin)
     else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
           confirmed.order('appointment_time ASC').load.includes([:doctor, :patient])
@@ -165,5 +168,9 @@ class Admins::AppointmentsController < ApplicationController
 
     def appointment
       @appointment ||= Appointment.find(params[:id])
+    end
+
+    def set_active_navbar
+      @active = :appointments
     end
 end
