@@ -1,48 +1,39 @@
 <%= provide(:title, " | Browse Appointments") %>
-<%= render 'admins/sidebar' %>
+<%= render 'admins/header' %>
 
-<div class="col-xs-6">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Select Date</h4></div>
-        <div class="panel-body">
+<div class="row">
+  <div class="col-md-5 col-md-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Select Date</h4></div>
+      <div class="panel-body panel-inverse">
 
-          <%= form_for(:appointment, url:appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
-              <div class="form-group">
-                <%= f.label(:date, "Select Date") %>
-              </div>
-              <div class="form-group">
-                <%= f.text_field(:date, class: "form-control" ) %>
-              </div>
-            <div class='form-group' id="submit">
-              <%= f.submit 'Submit', class: 'btn btn-large btn-primary', id: 'submit_button' %>
+        <%= form_for(:appointment, url:appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
+            <div class="form-group">
+              <%= f.label(:day, "Select Date") %>
             </div>
-         <% end %>
-        </div>
-        <div class='day_appointments'>
+            <div class="form-group">
+              <%= f.text_field(:day, class: "form-control" ) %>
+            </div>
+          <div class='form-group' id="submit">
+            <%= f.submit 'Submit' , class: 'btn btn-large btn-primary', id: 'submit_button' %>
+          </div>
+       <% end %>
+      </div>
+      <div class='day_appointments'>
 
-        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<div class="col-xs-3">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Options</h4></div>
-          <div class="well">
-            <ul class="nav nav-pills nav-stacked">
-              <li><%= link_to "Add Appointment", new_admin_appointment_path(@admin) %></li>
-              <li><%= link_to "Appointment Requests", appointment_approval_path(@admin) %></li>
-              <li><%= link_to "Manage Delays", manage_delays_path(@admin) %></li>
-            </ul>
-        </div>
+
+  <div class="col-md-3">
+    <div class="row">
+      <div class="col-md-12 inverse-color">
+        <%= link_to "Add Appointment", new_admin_appointment_path(@admin) %><br/>
+        <%= link_to "Appointment Requests", appointment_approval_path(@admin) %> <br/>
+        <%= link_to "Manage Delays", manage_delays_path(@admin) %>  <br/>
       </div>
     </div>
   </div>
-</div>
 </div>

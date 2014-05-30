@@ -1,21 +1,28 @@
 <%= provide(:title, " | New Appointment") %>
-<%= render 'admins/sidebar' %>
-<div class="col-xs-8">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Select Date</h4></div>
-        <div class="panel-body">
-          <%= hidden_field_tag 'clinic_id', @clinic_id, { id: 'clinic_id'} %>
-          <%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'create'), method: :post, html: { class: 'form-group', role: 'form' }) do |f| %>
+<%= render 'admins/header' %>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Select Date</h4></div>
+      <div class="panel-body panel-inverse">
+        <%= hidden_field_tag 'clinic_id', @clinic_id, { id: 'clinic_id'} %>
+        <%= form_for(@appointment, url: url_for(controller: 'admins/appointments', action: 'create'), method: :post, html: { class: 'form-group', role: 'form' }) do |f| %>
+            <%= render 'shared/error_messages', object: @appointment %>
+            <div class="col-xs-6 col-xs-offset-3">
               <div class="form-group">
                 <%= f.label(:date, "Select Date") %>
                 <%= f.text_field(:date, class: "form-control" ) %>
               </div>
+            </div>
+
+            <div class="col-xs-6 col-xs-offset-3">
               <div class='form-group'>
                   <%= f.label(:appointment, 'Doctor') %>
                   <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@admin).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
+            </div>
+            <div class="col-xs-6 col-xs-offset-3">
               <div class="form-group">
                 <%= f.label(:appointment, 'Time', for: 'date_time') %>
                 <select class="form-control" id="date_time" name="appointment[time]">
@@ -24,21 +31,24 @@
                   <% end %>
                 </select>
               </div>
+            </div>
+            <div class="col-xs-6 col-xs-offset-3">
               <div class='form-group'>
                 <%= f.label(:appointment, "Select patient") %>
                 <%= collection_select(:appointment, :patient_id, Patient.in_clinic(@admin), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
+            </div>
+            <div class="col-xs-6 col-xs-offset-3">
               <div class='form-group'>
                   <%= f.label(:appointment, 'Notes') %>
-                  <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 49em;') %>
+                  <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%') %>
               </div>
-            <div style="text-align: center">
-              <%= f.submit 'Schedule', class: 'btn btn-success' %>
             </div>
-          <% end %>
-        </div>
+          <div class="col-xs-6 col-xs-offset-3" style="text-align: center">
+            <%= f.submit 'Schedule', class: 'btn btn-success' %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
-</div>
 </div>
