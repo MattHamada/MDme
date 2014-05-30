@@ -1,20 +1,14 @@
 <% provide(:title, ' | Sign In') %>
-<div class="container-non-responsive" id="main-content">
-  <div class="row fixedheight">
-    <div class="col-xs-5" id="logo">
-      <%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
-    </div>
-  </div>
-  <hr id="nav-break"/>
+<%= render 'header_no_links' %>
   <%= render 'shared/flash' %>
 
   <div class="row">
   <div class="col-xs-6 col-xs-offset-3">
-    <div class="panel panel-default">
-      <div class="panel-heading" style="text-align: center">
+    <div class="panel panel-default ">
+      <div class="panel-heading " style="text-align: center">
         <strong>Admin Sign In</strong>
       </div>
-      <div class="panel-body">
+      <div class="panel-body panel-inverse" style="text-align: center;">
         <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', role: 'form' }) do |f| %>
 
           <%= render '/shared/signin', f: f %>

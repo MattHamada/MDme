@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="breadcrumbs">
+        <%= render_breadcrumbs  separator: ' > ' %>
+      </div>
+    </div>
+    <div class="col-md-3 col-md-offset-6" style="text-align: right;">
+      <%= link_to 'Sign Out', signout_path %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" style="text-align: center;">
+      <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo img-responsive'), root_path %>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <hr id="menu-topbar-black"/>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom: 9em;">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row top-links home-menu-links">
+        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :appointments %>">
+          <%= link_to 'APPOINTMENTS', admin_appointments_path(current_admin) %>
+        </div>
+        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :doctors %>">
+          <%= link_to 'DOCTORS', admin_doctors_path(current_admin) %>
+        </div>
+        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :patients %>">
+          <%= link_to 'PATIENTS', admin_patients_path(current_admin) %>
+        </div>
+        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :departments %>">
+          <%= link_to 'DEPARTMENTS', admin_departments_path(current_admin) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
