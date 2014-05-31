@@ -11,6 +11,7 @@ class Admins::DoctorsController < ApplicationController
   def new
     @current_user = @admin
     @doctor = Doctor.new
+    @doctor.department_id = params[:department_id] unless params[:department_id].nil?
   end
 
   def create

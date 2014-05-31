@@ -1,5 +1,5 @@
 <div class="panel-heading"><h4>Public Profile for <%= @doctor.full_name %></h4></div>
-<div class="panel-body">
+<div class="panel-body panel-inverse">
   <%= image_tag @doctor.avatar.url(:thumb), id: 'avatar' %>
   <br/>
   <b>First Name:</b> <%= @doctor.first_name %><br/>

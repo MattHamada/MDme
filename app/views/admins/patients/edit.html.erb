@@ -1,24 +1,25 @@
 <%= provide(:title, 'Update Patient') %>
-<%= render 'admins/sidebar' %>
+<%= render 'admins/header' %>
 
-<div class="col-xs-8">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Update Patient</h4></div>
-        <div class="panel-body">
-          <%= form_for @patient, url: admin_patient_path, method: :put do |f| %>
-              <%= render 'patients/new_edit_form', f: f %>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>  <br/><br/>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Update Patient</h4></div>
+      <div class="panel-body panel-inverse">
+        <%= form_for @patient, url: admin_patient_path, method: :put do |f| %>
+            <%= render 'patients/new_edit_form', f: f %>
+            <div class="col-xs-6 col-xs-offset-3" style="text-align: center;">
               <%= f.submit 'Update', class: 'btn btn-success' %>
-          <% end %>
-          <br/>
-          <%= link_to 'Delete Patient', admin_patient_path(@admin, @patient), method: :delete %>
-
+            </div>
+        <% end %>
+        <br/>
+        <div class="row">
+          <div class="col-md-12 inverse-color" style="text-align: left;">
+            <%= link_to 'Delete Patient', admin_patient_path(@admin, @patient), method: :delete %>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
-</div>
-
 </div>

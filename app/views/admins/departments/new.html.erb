@@ -1,33 +1,30 @@
-<%= provide(:title, "Add Department") %>
-<%= render 'admins/sidebar' %>
+<%= provide(:title, "Add Department | ") %>
+<%= render 'admins/header' %>
 
-<div class="col-xs-8">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Add Department</h4></div>
-        <div class="panel-body">
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Add Department</h4></div>
+      <div class="panel-body panel-inverse">
 
-          <%= form_for(@department, url: url_for(controller: 'departments', action: 'create'), method: :post,  html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
-            <%= render 'shared/error_messages', object: @department %>
+        <%= form_for(@department, url: url_for(controller: 'departments', action: 'create'), method: :post,  html: { :multipart => :true, class: "form-group", role: "form" }) do |f| %>
+          <%= render 'shared/error_messages', object: @department %>
 
-            <div class='form-group'>
-              <div class='col-xs-7'>
-                <%= f.label(:department, 'Name') %>
-                <%= text_field :department, :name, class: 'form-control' %>
-              </div>
+          <div class='form-group'>
+            <div class='col-xs-6 col-xs-offset-3'>
+              <%= f.label(:department, 'Name') %>
+              <%= text_field :department, :name, class: 'form-control' %>
             </div>
-
+          </div>
+          <div class="col-xs-6 col-xs-offset-3" style="text-align: center; margin-top: 2em;">
             <%= f.submit 'Create', class: 'btn btn-success' %>
+          </div>
 
-          <% end %>
+        <% end %>
 
-        </div>
       </div>
     </div>
   </div>
-</div>
-
 </div>
 
 

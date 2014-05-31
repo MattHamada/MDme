@@ -1,57 +1,57 @@
 <%= render 'shared/error_messages', object: @doctor %>
 
 <div class='form-group'>
-  <div class='col-xs-7'>
+  <div class='col-xs-6 col-xs-offset-3'>
     <%= f.label(:doctor, 'First Name') %>
     <%= text_field :doctor, :first_name, class: 'form-control' %>
   </div>
 </div>
 
 <div class='form-group'>
-  <div class='col-xs-7'>
+  <div class='col-xs-6 col-xs-offset-3'>
     <%= f.label(:doctor, 'Last Name') %>
     <%= text_field(:doctor, :last_name, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Email') %>
     <%= text_field(:doctor, :email, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Phone Number') %>
     <%= text_field(:doctor, :phone_number, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Degree') %>
     <%= text_field(:doctor, :degree, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Alma Mater') %>
     <%= text_field(:doctor, :alma_mater, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Description') %>
     <%= text_area(:doctor, :description, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
     <%= f.label(:doctor, 'Department') %>
     <%= collection_select(:doctor, :department_id, Department.in_clinic(@current_user), :id, :name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 
 <div class="form-group">
-  <div class="col-xs-7">
+  <div class="col-xs-6 col-xs-offset-3">
    <b>Picture:</b> <%= f.file_field :avatar %>
   </div>
 </div>
