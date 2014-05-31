@@ -5,7 +5,7 @@ class Admins::PatientsController < ApplicationController
   before_filter :require_admin_login
 
   def index
-    @patients = Patient.in_clinic(@admin).ordered_last_name.includes(:doctor)
+    @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
   end
 
   def new
