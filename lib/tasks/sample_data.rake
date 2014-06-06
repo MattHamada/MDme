@@ -15,8 +15,8 @@ namespace :db do
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
                     email: 'user@example.com',
-                    password: 'Qwerty1',
-                    password_confirmation: 'Qwerty1',
+                    password: 'AndrewMattMDME3000!',
+                    password_confirmation: 'AndrewMattMDME3000!',
                     doctor_id: '1')
     p.clinics << c
     Department.create!(name: 'Pediatrics',
@@ -30,8 +30,8 @@ namespace :db do
     Doctor.create!(first_name: 'Healthy',
                    last_name: 'doctorson',
                    email: 'doctor@example.com',
-                   password: 'Qwerty1',
-                   password_confirmation: 'Qwerty1',
+                   password: 'AndrewMattMDME3000!',
+                   password_confirmation: 'AndrewMattMDME3000!',
                    department_id: 1,
                    degree: 'MD',
                    alma_mater: 'Harvard',
@@ -45,8 +45,8 @@ namespace :db do
                         clinic_id: 1)
 
     Admin.create!(email: 'admin@example.com',
-                  password: 'Qwerty1',
-                  password_confirmation: 'Qwerty1',
+                  password: 'AndrewMattMDME3000!',
+                  password_confirmation: 'AndrewMattMDME3000!',
                   clinic_id: 1)
 
 
@@ -54,7 +54,7 @@ namespace :db do
     60.times do |n|
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
-      password = 'Qwerty1'
+      password = 'AndrewMattMDME3000!'
       doctor_id = rand_int(1,6)
       p = Patient.create!(first_name: name[0],
                       last_name: name[1],
@@ -70,7 +70,7 @@ namespace :db do
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
-      password = 'Qwerty1'
+      password = 'AndrewMattMDME3000!'
       department_id = rand_int(1,4)
       phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
                      rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +
