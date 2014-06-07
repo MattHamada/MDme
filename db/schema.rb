@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140516154358) do
+ActiveRecord::Schema.define(version: 20140606233121) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -114,11 +114,14 @@ ActiveRecord::Schema.define(version: 20140516154358) do
     t.string   "work_phone"
     t.string   "home_phone"
     t.string   "mobile_phone"
+    t.integer  "pid"
+    t.date     "dob"
   end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"
   add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
   add_index "patients", ["email"], name: "index_patients_on_email", unique: true
+  add_index "patients", ["pid"], name: "index_patients_on_pid", unique: true
   add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
   add_index "patients", ["slug"], name: "index_patients_on_slug"
 

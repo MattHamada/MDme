@@ -45,7 +45,8 @@ POPUPS.showInfo = (data) ->
   $("#ajaxPopupInfo").html(data).css(
     left: oneFourth
     width: 2 * oneFourth
-    top: 200
+    top: 20
+    position: 'fixed'
   ).show()
 
   #make close link work
