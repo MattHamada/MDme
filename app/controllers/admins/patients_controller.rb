@@ -61,11 +61,11 @@ class Admins::PatientsController < ApplicationController
   end
 
   def search
-    @patients = Patient.all
+    @patients = Patient.in_clinic(@admin)
     @patients = @patients.where("lower(last_name) = ?", params[:patient][:last_name].downcase) unless params[:patient][:last_name].empty?
     @patients = @patients.where("lower(first_name) = ?", params[:patient][:first_name].downcase) unless params[:patient][:first_name].empty?
-    @patients = @patients.where("lower(pid) = ?", params[:patient][:pid].downcase) unless params[:patient][:pid].empty?
-    @patients = @patients.where("lower(dob) = ?", Date.parse(params[:patient][:dob].downcase)) unless params[:patient][:dob].empty?
+    @patients = @patients.where("pid = ?", params[:patient][:pid].downcase) unless params[:patient][:pid].empty?
+    @patients = @patients.where("dob = ?", Date.parse(params[:patient][:dob].downcase)) unless params[:patient][:dob].empty?
   end
 
 
