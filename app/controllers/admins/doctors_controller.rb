@@ -5,7 +5,6 @@ class Admins::DoctorsController < ApplicationController
   before_filter :require_admin_login
 
   def index
-    @doctors = Doctor.in_clinic(@admin).includes(:department)
   end
 
   def new
@@ -61,6 +60,13 @@ class Admins::DoctorsController < ApplicationController
       flash.now[:danger] = 'An error has occurred'
       render admin_doctor_path(@admin, @doctor)
     end
+  end
+
+  def search
+    @doctors = Doctor.in_clinic(@admin).includes(:department)
+    @doctors = @doctors.where("lower(last_name) = ?", params[:doctor][:last_name].downcase).includes(:department) unless params[:doctor][:last_name].empty?
+    @doctors = @doctors.where("lower(first_name) = ?", params[:doctor][:first_name].downcase).includes(:department) unless params[:doctor][:first_name].empty?
+    @doctors = @doctors.where(department:  Department.where("lower(name) = ?", params[:doctor][:department].downcase).in_clinic(@admin).first).includes(:department) unless params[:doctor][:department].empty?
   end
 
 
