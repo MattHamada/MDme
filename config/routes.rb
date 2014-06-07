@@ -75,6 +75,7 @@ MDme::Application.routes.draw do
     resources :patients,     controller: 'admins/patients'
     resources :doctors,      controller: 'admins/doctors'
     resources :appointments, controller: 'admins/appointments'
+    resources :clinics,      controller: 'admins/clinics'
   end
 
   namespace :api do

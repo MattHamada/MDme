@@ -22,20 +22,23 @@
     </div>
   </div>
   <div class="row" style="margin-bottom: 9em;">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-10 col-md-offset-1">
       <div class="row top-links home-menu-links">
-        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :appointments %>">
+        <div class="col-xs-2 col-md-2 col-xs-offset-1 col-md-offset-1 <%= 'top-links-active' if @active == :appointments %>">
           <%= link_to 'APPOINTMENTS', admin_appointments_path(current_admin) %>
         </div>
-        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :doctors %>">
+        <div class="col-xs-2 col-md-2 <%= 'top-links-active' if @active == :doctors %>">
           <%= link_to 'DOCTORS', admin_doctors_path(current_admin) %>
         </div>
-        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :patients %>">
+        <div class="col-xs-2 col-md-2 <%= 'top-links-active' if @active == :patients %>">
           <%= link_to 'PATIENTS', admin_patients_path(current_admin) %>
         </div>
-        <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :departments %>">
+        <div class="col-xs-2 col-md-2 <%= 'top-links-active' if @active == :departments %>">
           <%= link_to 'DEPARTMENTS', admin_departments_path(current_admin) %>
         </div>
+         <div class="col-xs-2 col-md-xs-2 <%= 'top-links-active' if @active == :administration %>">
+           <%= link_to 'ADMINISTRATION', admin_clinic_path(current_admin, current_admin.clinic) %>
+         </div>
       </div>
     </div>
   </div>
