@@ -1,4 +1,4 @@
-<%= javascript_include_tag 'popups' %>
+<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 <% if patients.empty? %>
   <div class="alert alert-warning">
     No records found
@@ -13,10 +13,10 @@
       <tbody>
       <% patients.each_with_index do |patient, index| %>
         <tr>
-        <td class="popup-links"><%= link_to("#{index+1}", admin_patient_path(@admin, patient)) %></td>
-        <td><%= patient.full_name %></td>
+          <td class="popup-links"><%= link_to("#{index+1}", admin_patient_path(@admin, patient)) %></td>
+          <td><%= patient.full_name %></td>
         </tr>
-        <% end %>
+      <% end %>
       </tbody>
     </thread>
   </table>
