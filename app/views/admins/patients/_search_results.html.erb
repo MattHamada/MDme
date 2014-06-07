@@ -1,0 +1,23 @@
+<%= javascript_include_tag 'popups' %>
+<% if patients.empty? %>
+  <div class="alert alert-warning">
+    No records found
+  </div>
+<% else %>
+  <table class='table table-striped table-bordered table-condensed table-inverse'>
+    <thread>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+      </tr>
+      <tbody>
+      <% patients.each_with_index do |patient, index| %>
+        <tr>
+        <td class="popup-links"><%= link_to("#{index+1}", admin_patient_path(@admin, patient)) %></td>
+        <td><%= patient.full_name %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </thread>
+  </table>
+<% end %>

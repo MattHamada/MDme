@@ -60,6 +60,23 @@ class Admins::PatientsController < ApplicationController
     end
   end
 
+  def search
+
+    # last_name = params[:patient][:last_name] unless params[:patient][:last_name].empty
+    # first_name = params[:patient][:first_name] unless params[:patient][:first_name].empty
+    # pid = params[:patient][:pid] unless params[:patient][:pid].empty
+    # dob = params[:patient][:dob] unless params[:patient][:dob].empty
+    @patients = Patient.all
+    @patients = @patients.where("lower(last_name) = ?", params[:patient][:last_name].downcase) unless params[:patient][:last_name].empty?
+    @patients = @patients.where("lower(first_name) = ?", params[:patient][:first_name].downcase) unless params[:patient][:first_name].empty?
+    @patients = @patients.where("lower(pid) = ?", params[:patient][:pid].downcase) unless params[:patient][:pid].empty?
+    @patients = @patients.where("lower(dob) = ?", Date.parse(params[:patient][:dob].downcase)) unless params[:patient][:dob].empty?
+    # @patients = @patients.where(first_name: first_name) unless first_name.nil?
+    # @patients = @patients.where(pid: pid) unless pid.nil?
+    # @patients = @patients.where(dob: dob) unless dob.nil?
+
+  end
+
 
   private
 

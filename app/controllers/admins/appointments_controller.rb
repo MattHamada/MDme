@@ -52,7 +52,7 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   #ajax load for open appointments
-  def new_browse
+    def new_browse
     input = appointment_params
     @date = Date.parse(input[:date])
     @doctor = Doctor.find(input[:doctor_id])
