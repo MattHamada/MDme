@@ -1,6 +1,10 @@
 <%= render 'static_pages/header' %>
 <% provide(:title, 'Sign In | ') %>
-  <%= render 'shared/flash' %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= render 'shared/flash' %>
+  </div>
+</div>
   <div class="row" style="margin-top: 2em;">
     <div class="col-md-6 col-md-offset-3">
           <%= form_for(:session, url:sessions_path, html: { class: 'form form-horizontal form-group', role: 'form' }) do |f| %>
