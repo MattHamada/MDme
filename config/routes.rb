@@ -28,6 +28,7 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
+  get 'patients/:patient_id/clinics/getdoctors'          => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
@@ -51,7 +52,7 @@ MDme::Application.routes.draw do
   get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
   post 'doctors/:id/updatepassword'                      => 'doctors#update_password',                 as: :doctor_update_password
 
-  get 'patients/:patient_id/clinics/getdoctors'          => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
+   get 'clinics/:id/checkin/:pid'                        => 'clinics#checkin',                          as: :clinic_checkin
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
@@ -75,6 +76,7 @@ MDme::Application.routes.draw do
     resources :patients,     controller: 'admins/patients'
     resources :doctors,      controller: 'admins/doctors'
     resources :appointments, controller: 'admins/appointments'
+    resources :clinics,      controller: 'admins/clinics'
   end
 
   namespace :api do

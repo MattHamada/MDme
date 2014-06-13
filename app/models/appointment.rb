@@ -70,6 +70,8 @@ class Appointment < ActiveRecord::Base
   def self.in_clinic(model)
     if model.is_a?(Appointment)
       Appointment.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    elsif model.is_a?(Clinic)
+      Appointment.where(clinic_id: model.id)
     else
       Appointment.where(clinic_id: model.clinic_id)
     end

@@ -6,14 +6,16 @@
       <th>Time</th>
       <th>Doctor</th>
       <th>Patient</th>
+      <th>Checked In?</th>
     </tr>
     <tbody>
-    <% @appointments.each_with_index do |appointment, index| %>
+    <% appointments.each_with_index do |appointment, index| %>
         <tr>
           <td><%= link_to("#{index}", admin_appointment_path(@admin, appointment)) %></td>
           <td><%= appointment.time_am_pm %></td>
           <td><%= appointment.doctor_full_name %></td>
           <td><%= appointment.patient_full_name %></td>
+          <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in %> </td>
         </tr>
     <% end %>
     </tbody>

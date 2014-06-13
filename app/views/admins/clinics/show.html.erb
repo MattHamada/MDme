@@ -1,0 +1,50 @@
+<%= provide(:title, 'My Clinic | ') %>
+<%= render 'admins/header' %>
+
+<div class="row">
+  <div class="col-xs-6 col-xs-offset-3">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4>QR CODE</h4></div>
+          <div class="panel-body panel-inverse">
+            <style type="text/css">
+              table {
+                border-width: 0;
+                border-style: none;
+                border-color: #0000ff;
+                border-collapse: collapse;
+              }
+              td {
+                border-width: 0;
+                border-style: none;
+                border-color: #0000ff;
+                border-collapse: collapse;
+                padding: 0;
+                margin: 0;
+                width: 10px;
+                height: 10px;
+              }
+              td.black { background-color: #000; }
+              td.white { background-color: #fff; }
+            </style>
+
+            <table>
+              <% @qr.modules.each_index do |x| -%>
+                <tr>
+                  <% @qr.modules.each_index do |y| -%>
+                    <% if @qr.dark?(x,y) -%>
+                      <td class="black"/>
+                    <% else -%>
+                      <td class="white"/>
+                    <% end -%>
+                  <% end -%>
+                </tr>
+              <% end -%>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

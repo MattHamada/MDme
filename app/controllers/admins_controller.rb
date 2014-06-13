@@ -23,6 +23,10 @@ class AdminsController < ApplicationController
         today.confirmed.order('appointment_time ASC').load.includes([:patient, :doctor])
   end
 
+  def show
+    @active = :administration
+  end
+
   private
     def find_admin
       @admin ||= current_admin

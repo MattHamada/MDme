@@ -16,18 +16,20 @@ class Department < ActiveRecord::Base
   before_validation :generate_slug
 
   def generate_slug
-    unless self.name.blank?
-      if Department.in_clinic(self).where(slug: name.parameterize).count != 0
-        n = 1
-        while Department.where(slug: "#{name.parameterize}-#{n}").count != 0
-          n+= 1
+    if self.slug.blank? || self.slug.nil?
+      unless self.name.blank?
+        if Department.in_clinic(self).where(slug: name.parameterize).count != 0
+          n = 1
+          while Department.where(slug: "#{name.parameterize}-#{n}").count != 0
+            n+= 1
+          end
+          self.slug = "#{name.parameterize}-#{n}"
+        else
+          self.slug = name.parameterize
         end
-        self.slug = "#{name.parameterize}-#{n}"
       else
-        self.slug = name.parameterize
+        self.slug = 'no-name-entered'.parameterize
       end
-    else
-      self.slug = 'no-name-entered'.parameterize
     end
   end
 

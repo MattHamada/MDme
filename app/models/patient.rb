@@ -81,5 +81,9 @@ class Patient < ActiveRecord::Base
     self.appointments.within_2_hours.not_past.confirmed.order_by_time.first
   end
 
+  def checkin_appointment(clinic)
+    self.appointments.in_clinic(clinic).today.not_past.confirmed.order_by_time.first
+  end
+
 end
 

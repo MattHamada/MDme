@@ -9,7 +9,7 @@
           <div class="panel-heading"><h4>Today's Appointments</h4></div>
           <div class="panel-body panel-inverse">
             <div class="day_appointments">
-            <%= render 'admins/appointments/appointments_table' %>
+            <%= render 'admins/appointments/appointments_table', appointments: @appointments %>
             </div>
           </div>
         </div>
