@@ -6,7 +6,8 @@ class Admins::ClinicsController < ApplicationController
   before_filter :set_active_navbar
 
   def show
-    url = "https://www.mdme.us/clinics/#{@clinic.slug}/signin"
+    #will need to add patients pid as get param to request from mobile
+    url = "https://www.mdme.us/clinics/#{@clinic.slug}/checkin"
     @qr = RQRCode::QRCode.new(url, size: 6)
   end
 
