@@ -64,13 +64,13 @@ class Admins::AppointmentsController < ApplicationController
   def browse
     input = appointment_params
     date = Date.parse(input[:day])
-    if date < Date.today
-      flash[:danger] = 'Time must be set in the future'
-      redirect_to admin_appointments_path(@admin)
-    else
+    # if date < Date.today
+    #   flash[:danger] = 'Time must be set in the future'
+    #   redirect_to admin_appointments_path(@admin)
+    # else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
           confirmed.order('appointment_time ASC').load.includes([:doctor, :patient])
-    end
+    # end
   end
 
   def create

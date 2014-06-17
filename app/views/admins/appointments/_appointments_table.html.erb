@@ -9,7 +9,7 @@
       <th>Checked In?</th>
     </tr>
     <tbody>
-    <% appointments.each_with_index do |appointment, index| %>
+    <% @appointments.each_with_index do |appointment, index| %>
         <tr>
           <td><%= link_to("#{index}", admin_appointment_path(@admin, appointment)) %></td>
           <td><%= appointment.time_am_pm %></td>

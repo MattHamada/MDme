@@ -8,7 +8,10 @@ describe 'AdministrationPages' do
   let(:department) { FactoryGirl.create(:department) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
   subject { page }
-  before { switch_to_subdomain('admin') }
+  before do
+    clinic.save!
+    switch_to_subdomain('admin')
+  end
 
   describe 'root signin page' do
     before { visit root_path }
@@ -332,7 +335,8 @@ describe 'AdministrationPages' do
             describe 'Appointment delays' do
               let(:patient2) { FactoryGirl.create(:patient,
                                                   first_name: 'patient2',
-                                                  email: 'patient2@example.com') }
+                                                  email: 'patient2@example.com',
+                                                  pid: Random.rand(200000)) }
               let(:appointment)  { FactoryGirl.create(:appointment_today) }
               let(:appointment2) {
                 FactoryGirl.create(:appointment_today,
