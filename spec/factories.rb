@@ -1,4 +1,4 @@
-
+#TODO fix pid uniqueness failing on factories
 FactoryGirl.define do
 
   factory :patient do

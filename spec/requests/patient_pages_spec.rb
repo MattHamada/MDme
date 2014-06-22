@@ -210,7 +210,8 @@ describe 'Patient Pages' do
       describe 'cannot view pages of another patient' do
         let(:patient2) { FactoryGirl.create(:patient,
                                             email: 'test2@test.com',
-                                            clinics: [clinic]) }
+                                            clinics: [clinic],
+                                            pid: 124214124)}
         before do
           patient2.save!
           visit patient_path(patient2)
