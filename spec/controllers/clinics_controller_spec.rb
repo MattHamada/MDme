@@ -13,7 +13,7 @@ describe ClinicsController do
   end
   describe 'checking in' do
     it 'should check in patient' do
-      params = {pid: patient.pid, id: clinic.slug}
+      params = {patient_id: patient.id, id: clinic.slug}
       get :checkin, params
       expect(appointment.reload.checked_in).to be_true
     end

@@ -2,7 +2,7 @@ class ClinicsController < ApplicationController
 
   #TODO move this to API
   def checkin
-    patient = Patient.find_by_pid(params[:pid])
+    patient = Patient.find(params[:patient_id])
     clinic = Clinic.find_by_slug(params[:id])
     patient_appointment = patient.checkin_appointment(clinic)
     unless patient_appointment.nil?
