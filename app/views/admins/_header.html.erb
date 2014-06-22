@@ -37,7 +37,7 @@
           <%= link_to 'DEPARTMENTS', admin_departments_path(current_admin) %>
         </div>
          <div class="col-xs-2 col-md-xs-2 <%= 'top-links-active' if @active == :administration %>">
-           <%= link_to 'ADMINISTRATION', admin_clinic_path(current_admin, current_admin.clinic) %>
+           <%= link_to 'ADMINISTRATION', admin_clinic_path(current_admin, current_admin.clinic.id) %>
          </div>
       </div>
     </div>
