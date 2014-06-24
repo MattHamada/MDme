@@ -1,11 +1,14 @@
 class Api::V1::Patients::DoctorsController < ApplicationController
+  #TODO probably need to make doctors a subsection of clinics and not patients
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
-  def department_index
-    @departments = Department.in_clinic(@patient)
-    @info = 'Departments'
-  end
+
+  #TODO this should be in a clinic browsing api not for patients
+  # def department_index
+  #   @departments = Department.in_clinic(@patient)
+  #   @info = 'Departments'
+  # end
 
   def index
     clinic =  @patient.clinics.where(name: params[:name]).first

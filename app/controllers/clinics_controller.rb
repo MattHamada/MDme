@@ -7,11 +7,17 @@ class ClinicsController < ApplicationController
     patient_appointment = patient.checkin_appointment(clinic)
     unless patient_appointment.nil?
       patient_appointment.update_attribute(:checked_in, true)
-      flash[:success] = 'Successfully checked in'
+      render status: 200,
+             json:  { success: true,
+                      info: 'Checked in',
+                      data: {}}
+
     else
-      flash[:danger] = 'No appointment found'
+      render status: 200,
+             json:  { success: false,
+                      info: 'No patient found',
+                      data: {}}
     end
-    redirect_to root_path
   end
 
 end

@@ -37,7 +37,9 @@ class Api::V1::PatientsController < ApplicationController
     params.require(:patient).permit(:first_name,
                                     :last_name,
                                     :email,
-                                    :phone_number,
+                                    :home_phone,
+                                    :cell_phone,
+                                    :work_phone,
                                     :avatar)
   end
   def verify_api_token
