@@ -76,5 +76,35 @@ describe Api::V1::Patients::AppointmentsController do
         expect(json['info']).to eq 'Appointment requested'
       end
     end
+
+    describe 'POST #update' do
+      before do
+        clinic.save
+        doctor.save
+        appointment_request.save
+      end
+      patch_bad_requests :update, { id: 1 }
+      it 'should give a failed response with appointment time in past date' do
+        config = { id: appointment.id,
+                   api_token: @token,
+                   appointment:
+                    { appointment_time: DateTime.now - 1.day
+                    }
+        }
+        patch :update, config
+        expect(json[:success]).to be_false
+      end
+      it 'should give a success response with appointment time in past date' do
+        config = { id: appointment.id,
+                   api_token: @token,
+                   appointment:
+                       { appointment_time: DateTime.now + 1.day
+                       }
+        }
+        patch :update, config
+        expect(json['success']).to be_true
+        expect(json['info']).to eq 'Appointment request updated'
+      end
+    end
   end
 end

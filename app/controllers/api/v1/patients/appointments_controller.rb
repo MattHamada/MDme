@@ -24,7 +24,27 @@ class Api::V1::Patients::AppointmentsController < ApplicationController
                                    request: true)
     if @appointment.save
       render json: { success: true,
-                     info: 'Appointment Requested',
+                     info: 'Appointment requested',
+                     data: {}}
+    else
+      errors = []
+      @appointment.errors.full_messages.each { |e| errors << e}
+      render json: { success: false,
+                     info: "The following #{@appointment.errors.count} error(s) occured",
+                     data: {errors: errors} }
+    end
+
+  end
+
+  def update
+    p = appointment_params
+    date_time = DateTime.parse(p[:appointment_time])
+    p[:appointment_time] = date_time
+    @appointment = Appointment.find(params[:id])
+
+    if @appointment.update_attributes(p)
+      render json: { success: true,
+                     info: 'Appointment request updated',
                      data: {}}
     else
       errors = []
