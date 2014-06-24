@@ -16,7 +16,37 @@ class Api::V1::Patients::AppointmentsController < ApplicationController
                                  includes([:doctor])
   end
 
+  def create
+    p = appointment_params
+    date_time = DateTime.parse(p[:appointment_time])
+    p[:appointment_time] = date_time
+    @appointment = Appointment.new(p,
+                                   request: true)
+    if @appointment.save
+      render json: { success: true,
+                     info: 'Appointment Requested',
+                     data: {}}
+    else
+      errors = []
+      @appointment.errors.full_messages.each { |e| errors << e}
+      render json: { success: false,
+                     info: "The following #{@appointment.errors.count} error(s) occured",
+                     data: {errors: errors} }
+    end
+
+  end
+
   private
+
+    def appointment_params
+      params.require(:appointment).permit(:doctor_id,
+                                          :patient_id,
+                                          :appointment_time,
+                                          :clinic_id,
+                                          :description)
+    end
+
+
     def verify_api_token
       @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]));
       if @patient.nil?
