@@ -72,9 +72,8 @@ describe Api::V1::Patients::AppointmentsController do
                                           description: 'im sick :(' }
                 }
         post :create, config
-        # this is working but test is being dumb
-        # expect(json[:success]).to be_true
-        # expect(json[:info]).to be 'Appointment Requested'
+        expect(json['success']).to be_true
+        expect(json['info']).to eq 'Appointment requested'
       end
     end
   end
