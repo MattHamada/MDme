@@ -1,30 +1,45 @@
 <div class="panel panel-default">
   <div class="panel-heading"><h4>Edit Appointment Request</h4></div>
-  <div class="panel-body">
+  <div class="panel-body panel-inverse">
     <div class="alert alert-info">To change doctor or date, please delete and remake the request</div>
 
-    <%= form_for(@appointment, url: patient_appointment_path, method: :patch, html: { class: "form-inline", role: "form" }) do |f| %>
-      <%= f.label(:datetime, "Select Appointment Time") %>
-      <div class='form-group'>
-        <select class="form-control" id="time" name="appointment[time]">
-          <% @open_times.each_with_index do |time, index| %>
-            <option <%= 'selected="selected"' if index+1 == @open_times.length %>value="<%= time %>"><%= time %></option>
-          <% end %>
-        </select>
-      </div>
-      <br/>
-      <br/>
-      <div class='form-group'>
-        <%= f.label(:description, 'Notes') %>
-        <%= f.text_area(:description, class: 'form-control', id: 'desc_text', placeholder: 'Appointment notes', value: @appointment.description, rows: '5') %>
-      </div>
-      </br>
-      </br>
+    <%= form_for(@appointment, url: patient_appointment_path, method: :patch, html: { class: "form-group", role: "form" }) do |f| %>
+      <div class="form-group">
+        <div class='col-xs-6 col-xs-offset-3'>
 
-      <%= f.submit 'Update', class: 'btn btn-success' %>
+          <%= f.label(:appointment, 'Time', for: 'date_time') %>
+          <select class="form-inverse form-control" id="date_time" name="appointment[time]">
+            <% @open_times.each do |time| %>
+              <option value="<%= time %>"><%= time %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class='form-group'>
+        <div class='col-xs-6 col-xs-offset-3'>
 
-    <% end %> <br/>
-    <%= link_to 'Delete Request', patient_appointment_path(@patient, @appointment), method: :delete %> <br/>
-    <%= link_to "Close", "", { id: 'closeLink' }  if request.xhr? %>
+          <%= f.label(:description, 'Notes') %>
+          <%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-6 col-xs-offset-3">
+          <%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>
+          <%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>
+
+        </div>
+      </div>
+      <div class='col-xs-6 col-xs-offset-3'>
+        <div style="text-align: center">
+          <br/><br/>
+          <%= f.submit 'Update', class: 'btn btn-success' %>
+        </div>
+      </div>
+    <% end %>  <br/><br/>
+    <div class="col xs-6">
+      <%= link_to 'Delete Request', patient_appointment_path(@patient, @appointment), method: :delete %> <br/>
+      <%= link_to "Close", "", { id: 'closeLink' }  if request.xhr? %>
+
+    </div>
   </div>
 </div>

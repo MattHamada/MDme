@@ -9,7 +9,7 @@ class Patients::AppointmentsController < ApplicationController
     @appointments = @patient.appointments.
                              confirmed.
                              not_past.
-                             includes([:doctor, :clinic])
+                             includes([:doctor, :clinic]).order_by_time
   end
 
   def new
@@ -24,13 +24,18 @@ class Patients::AppointmentsController < ApplicationController
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
     time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
     date = DateTime.parse("#{input[:date]} #{time}")
+    inform = false
+    if input[:inform_earlier_time] == '1'
+      inform = true
+    end
 
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: @patient.id,
                                    appointment_time: date,
                                    description: input[:description],
                                    request: true,
-                                   clinic_id: input[:clinic_id])
+                                   clinic_id: input[:clinic_id],
+                                   inform_earlier_time: inform)
     if @appointment.save
       flash[:success] = "Appointment Requested"
       redirect_to patient_path(@patient)
@@ -60,8 +65,13 @@ class Patients::AppointmentsController < ApplicationController
     hour = time.hour
     minute = time.min
     newtime = @appointment.appointment_time.change({hour: hour, min: minute})
+    inform = false
+    if input[:inform_earlier_time] == '1'
+      inform = true
+    end
     if @appointment.update_attributes(description: input[:description],
-                                      appointment_time: newtime)
+                                      appointment_time: newtime,
+                                      inform_earlier_time: inform)
       flash[:success] = "Request updated"
       redirect_to open_requests_path(@patient)
     else
@@ -72,8 +82,11 @@ class Patients::AppointmentsController < ApplicationController
 
   def destroy
     @appointment = appointment
+    unless @appointment.request
+      Appointment.fill_canceled_appointment(@appointment.appointment_time, @appointment.appointment_time) if Date.parse(@appointment.date) == Date.today
+    end
     if @appointment.destroy
-      flash[:success] = "Request deleted"
+      flash[:success] = "Appointment deleted"
       redirect_to patient_appointments_path(@patient)
     else
       flash.now[:danger] = "An error has occured"
@@ -111,7 +124,8 @@ class Patients::AppointmentsController < ApplicationController
                                           :description,
                                           :clinic_id,
                                           :clinic_name,
-                                          :doctor_full_name)
+                                          :doctor_full_name,
+                                          :inform_earlier_time)
     end
 
     def set_active_navbar_and_crumbs

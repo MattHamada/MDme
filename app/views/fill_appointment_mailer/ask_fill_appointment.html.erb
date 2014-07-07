@@ -1,0 +1,13 @@
+Greetings,
+
+Your appointment on <%= @orig_appointment.date_time_ampm %> with <%= @orig_appointment.clinic.name %>
+has an earlier time available at <%= @new_time.strftime('%F %I:%M%p') %>.  Would you like to move times?
+<%= link_to 'Accept new time', appointment_change_time_path(@orig_appointment,
+                                                           access_key: @orig_appointment.access_key,
+                                                           fill:true,
+                                                           new_time: @new_time) %>
+
+<%= link_to 'Deny change', appointment_change_time_path(@orig_appointment,
+                                                        access_key: @orig_appointment.access_key,
+                                                        fill:false,
+                                                        new_time: @new_time) %>
