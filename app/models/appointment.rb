@@ -27,16 +27,33 @@ class Appointment < ActiveRecord::Base
   validates :clinic_id,  presence: true
 
   before_create { self.appointment_delayed_time = appointment_time }
+  before_create { generate_access_key }
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :within_2_hours, -> { where(appointment_time: DateTime.now...(DateTime.now + 2.hours)) }
   scope :requests, -> { where(request: true) }
   scope :confirmed, -> { where(request: false) }
+  scope :looking_for_earlier_time, -> { where(inform_earlier_time: true) }
 
+  def generate_access_key
+    self.access_key = Digest::SHA1.hexdigest(SecureRandom.urlsafe_base64)
+  end
+
+
+  def self.fill_canceled_appointment(time_to_fill, look_time_start)
+    appointment = Appointment.looking_for_earlier_time.same_day_after_time(look_time_start).first
+    appointment.patient.email_about_open_time(appointment, time_to_fill) unless appointment.nil?
+  end
 
   # returns all appointments on a specific date
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
+  end
+
+
+
+  def self.same_day_after_time(date_time)
+    Appointment.where(appointment_time: date_time+1.minute..date_time.at_end_of_day).order_by_time
   end
 
   def self.not_past

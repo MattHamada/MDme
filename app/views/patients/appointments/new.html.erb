@@ -36,6 +36,7 @@
                 </select>
                 </div>
               </div>
+
               <div class='form-group'>
                 <div class='col-xs-6 col-xs-offset-3'>
 
@@ -43,14 +44,19 @@
                   <%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>
                  </div>
               </div>
+              <div class="form-group">
+                <div class="col-xs-6 col-xs-offset-3">
+                  <%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>
+                  <%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>
+
+                </div>
+              </div>
              <div class='col-xs-6 col-xs-offset-3'>
-
-          <div style="text-align: center">
-            <br/><br/>
-
-            <%= f.submit 'Request', class: 'btn btn-success' %>
-              </div>
-              </div>
+               <div style="text-align: center">
+                 <br/><br/>
+                 <%= f.submit 'Request', class: 'btn btn-success' %>
+               </div>
+             </div>
          <% end %>
       </div>
     </div>

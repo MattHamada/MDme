@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140613171615) do
+ActiveRecord::Schema.define(version: 20140707190140) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20140613171615) do
     t.datetime "appointment_delayed_time"
     t.integer  "clinic_id"
     t.boolean  "checked_in",               default: false
+    t.boolean  "inform_earlier_time"
+    t.string   "access_key"
   end
 
   add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time"

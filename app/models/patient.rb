@@ -53,6 +53,14 @@ class Patient < ActiveRecord::Base
   scope :ordered_last_name, -> { order(last_name: :asc)}
 
 
+  #used when an appointment was canceled to notify this patient about opening
+  def email_about_open_time(orig_appointment, new_time)
+    Thread.new do
+      FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver
+    end
+  end
+
+
   def api_authenticate(api_token)
     if self.remember_token == encrypt(api_token)
       true
