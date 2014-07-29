@@ -66,6 +66,16 @@ FactoryGirl.define do
   end
 
   factory :clinic do
-    name                  'MyClinic'
+    name                  'MGH'
+    address1              'Scheduling Office'
+    address2              '55 fruit street'
+    address3              'Room 121'
+    city                  'Boston'
+    state                 'Massachusetts'
+    zipcode               '02114'
+    country               'United States'
+    phone_number          '617-726-2000'
+    fax_number            '617-726-3000'
+
   end
 end

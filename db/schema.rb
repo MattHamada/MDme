@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140707190140) do
+ActiveRecord::Schema.define(version: 20140729011517) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -51,8 +51,18 @@ ActiveRecord::Schema.define(version: 20140707190140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "slug"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.string   "country"
+    t.string   "phone_number"
+    t.string   "fax_number"
   end
 
+  add_index "clinics", ["name"], name: "index_clinics_on_name"
   add_index "clinics", ["slug"], name: "index_clinics_on_slug"
 
   create_table "clinics_patients", id: false, force: true do |t|
