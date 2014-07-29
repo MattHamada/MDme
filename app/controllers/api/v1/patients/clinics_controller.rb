@@ -4,6 +4,7 @@ class Api::V1::Patients::ClinicsController < ApplicationController
 
   def index
     @clinics = @patient.clinics
+    @info = "Patient's Clinics"
   end
 
   def show
