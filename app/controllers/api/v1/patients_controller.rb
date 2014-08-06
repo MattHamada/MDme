@@ -7,7 +7,7 @@ class Api::V1::PatientsController < ApplicationController
     @info = 'Logged in'
     @tasks = [{title: 'Profile'},
               {title: 'Appointments'},
-              {title:'Browse Doctors'},
+              {title:'My Clinics'},
               {title: 'Sign Out'}]
   end
 
