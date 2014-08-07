@@ -38,7 +38,7 @@ class Api::V1::PatientsController < ApplicationController
                                     :last_name,
                                     :email,
                                     :home_phone,
-                                    :cell_phone,
+                                    :mobile_phone,
                                     :work_phone,
                                     :avatar)
   end
