@@ -9,6 +9,10 @@ class Api::V1::Patients::AppointmentsController < ApplicationController
               {title:'Open Requests'}]
   end
 
+  def show
+
+  end
+
   def confirmed_appointments
     @appointments = @patient.appointments.
                                 confirmed.
