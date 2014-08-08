@@ -18,6 +18,12 @@ class Api::V1::Patients::AppointmentsController < ApplicationController
                                 confirmed.
                                  not_past.
                                  includes([:doctor])
+    if @appointments.empty?
+      render json: { success: true,
+                     info: 'No upcoming appointments',
+                     data: { appointments: [] }
+                  }
+    end
   end
 
   def create
