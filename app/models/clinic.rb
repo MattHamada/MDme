@@ -10,9 +10,28 @@ class Clinic < ActiveRecord::Base
   validates  :slug, presence: true, uniqueness: true;
 
   before_validation :generate_slug
+  before_create :get_location_coordinates
 
 
   scope :ordered_name, -> { order(name: :asc) }
+
+  def get_location_coordinates
+    api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
+    address = "#{self.address1}+" +
+                        "#{self.address2 unless self.address2.nil?}+" +
+                        "#{self.address3 unless self.address3.nil?}+" +
+                        ", #{self.city}+" +
+                        ", #{self.state unless self.state.nil?}+" +
+                        "#{self.country}"
+    address.gsub!(' ', '+')
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{api_key}"
+    response = HTTParty.get url
+    json = JSON.parse(response.body)
+    latitude = json['results'][0]['geometry']['location']['lat']
+    longitude = json['results'][0]['geometry']['location']['lng']
+    self.latitude = latitude unless latitude.nil?
+    self.longitude = longitude unless longitude.nil?
+  end
 
   def generate_slug
     if self.slug.blank? || self.slug.nil?

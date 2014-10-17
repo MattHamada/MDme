@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729011517) do
+ActiveRecord::Schema.define(version: 20141017002451) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 20140729011517) do
     t.string   "country"
     t.string   "phone_number"
     t.string   "fax_number"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "clinics", ["name"], name: "index_clinics_on_name"
