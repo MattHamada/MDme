@@ -15,6 +15,7 @@ class Clinic < ActiveRecord::Base
 
   scope :ordered_name, -> { order(name: :asc) }
 
+  #TODO NEED TO GET NE AND SW COORDINATES NOT CENTER FOR GMAPS API
   def get_location_coordinates
     api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
     address = "#{self.address1}+" +
@@ -27,10 +28,14 @@ class Clinic < ActiveRecord::Base
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{api_key}"
     response = HTTParty.get url
     json = JSON.parse(response.body)
-    latitude = json['results'][0]['geometry']['location']['lat']
-    longitude = json['results'][0]['geometry']['location']['lng']
-    self.latitude = latitude unless latitude.nil?
-    self.longitude = longitude unless longitude.nil?
+    ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
+    ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
+    sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
+    sw_longitude = json['results'][0]['geometry']['viewport']['southwest']['lng']
+    self.ne_latitude  = ne_latitude  unless ne_latitude.nil?
+    self.ne_longitude = ne_longitude unless ne_longitude.nil?
+    self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
+    self.sw_longitude = sw_longitude unless sw_longitude.nil?
   end
 
   def generate_slug
