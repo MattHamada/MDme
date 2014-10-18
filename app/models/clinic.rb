@@ -15,7 +15,6 @@ class Clinic < ActiveRecord::Base
 
   scope :ordered_name, -> { order(name: :asc) }
 
-  #TODO NEED TO GET NE AND SW COORDINATES NOT CENTER FOR GMAPS API
   def get_location_coordinates
     api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
     address = "#{self.address1}+" +
