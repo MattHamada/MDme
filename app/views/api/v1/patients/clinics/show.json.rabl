@@ -14,7 +14,9 @@ child :data do
                :zipcode,
                :phone_number,
                :fax_number,
-               :latitude,
-               :longitude
+               :ne_latitude,
+               :ne_longitude,
+               :sw_latitude,
+               :sw_longitude
   end
 end

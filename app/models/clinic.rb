@@ -27,6 +27,7 @@ class Clinic < ActiveRecord::Base
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{api_key}"
     response = HTTParty.get url
     json = JSON.parse(response.body)
+    puts json
     ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
     ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
     sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
