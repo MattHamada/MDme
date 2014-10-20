@@ -15,8 +15,8 @@ class Clinic < ActiveRecord::Base
 
   scope :ordered_name, -> { order(name: :asc) }
 
-  def get_location_coordinates
-    api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
+  @api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
+  def set_location_coordinates
     address = "#{self.address1}+" +
                         "#{self.address2 unless self.address2.nil?}+" +
                         "#{self.address3 unless self.address3.nil?}+" +
@@ -24,9 +24,8 @@ class Clinic < ActiveRecord::Base
                         ", #{self.state unless self.state.nil?}+" +
                         "#{self.country}"
     address.gsub!(' ', '+')
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{api_key}"
-    response = HTTParty.get url
-    json = JSON.parse(response.body)
+    response = call_google_api_for_location(address)
+    json = JSON.parse(response)
     #latitude = json['results'][0]['geometry']['location']['lat']
     #longitude = json['results'][0]['geometry']['location']['lng']
 
@@ -39,6 +38,12 @@ class Clinic < ActiveRecord::Base
     self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
     self.sw_longitude = sw_longitude unless sw_longitude.nil?
   end
+
+def call_google_api_for_location(address)
+  url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@api_key}"
+  response = HTTParty.get url
+  response.body
+end
 
   def generate_slug
     if self.slug.blank? || self.slug.nil?
