@@ -1,9 +1,8 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Controller main pages when not signed in
-#
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
 
+# +StaticPagesController+ main pages when not signed in
 class StaticPagesController < ApplicationController
   def home
     if patient_signed_in?

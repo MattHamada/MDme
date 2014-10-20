@@ -1,3 +1,8 @@
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
+
+# +ClinicsController+
 class ClinicsController < ApplicationController
 
   #TODO move this to API

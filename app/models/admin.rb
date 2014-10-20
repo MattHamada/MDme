@@ -32,7 +32,7 @@ class Admin < ActiveRecord::Base
 
   # Sends a new password to admin's email
   # Uses a separate thread so server does not hang while processing email
-  # ==== Attributes
+  # ==== Parameters
   # * +temppass+ - new password generated for the account
   def send_password_reset_email(temppass)
     Thread.new do

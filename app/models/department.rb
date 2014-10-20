@@ -39,6 +39,7 @@ class Department < ActiveRecord::Base
   end
 
   # Finds all other departments in the same clinic as +model+
+  # ==== Parameters
   # * +model+ - model passed to get get departments in same clinic.  Model
   # can be clinic or have a +clinic_id+
   def self.in_clinic(model)
@@ -71,7 +72,7 @@ class Department < ActiveRecord::Base
         name_unique_in_clinic?
   end
 
-  # Chekcs if another department in the same clinic has the same name
+  # Checks if another department in the same clinic has the same name
   def name_unique_in_clinic?
     Department.in_clinic(self).where(name: name).count == 0
   end

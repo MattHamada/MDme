@@ -53,7 +53,7 @@ class Doctor < ActiveRecord::Base
   scope :ordered_last_name, -> { order(last_name: :asc) }
 
   # Finds doctor by first and last name
-  # ====Attributes
+  # ==== Parameters
   # * +full_name+ doctor's full name formatted first_name_last_name
   # * +clinic_id+ the clinic id associated with the doctor
   def self.find_by_full_name(full_name, clinic_id)
@@ -99,7 +99,7 @@ class Doctor < ActiveRecord::Base
   end
 
   # Returns all doctors in the passed department instance
-  #==== Attributes
+  #==== Parameters
   # * +department+ - A department instance
   def self.in_department(department)
     Doctor.where(department_id: department.id).where(clinic_id: department.clinic_id)
@@ -108,7 +108,7 @@ class Doctor < ActiveRecord::Base
   # Returns string array of all open appointment times
   # on a given day in am/pm format.  Used for populating a selection box
   # on a web form for creating/editing appointments
-  #===== Attributes
+  #===== Parameters
   # * +date+ - A Date object
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date).confirmed

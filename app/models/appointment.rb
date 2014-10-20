@@ -47,7 +47,7 @@ class Appointment < ActiveRecord::Base
   # Part of appointment time recycling
   # Will find next appointment after canceled one and email the patient
   # about the availability
-  # ==== Attributes
+  # ==== Parameters
   # * +time_to_fill+ - the canceled appointment's time
   # * +look_time_start+ - look for appointments on or after this time
   # to fill opening
@@ -59,7 +59,7 @@ class Appointment < ActiveRecord::Base
   end
 
   # returns all appointments on a specific date
-  # ==== Attributes
+  # ==== Parameters
   # * +date+ - date object to fine appointments on
   def self.given_date(date)
     Appointment.where(appointment_time: date...date.at_end_of_day)
@@ -67,7 +67,7 @@ class Appointment < ActiveRecord::Base
 
 
   # return all appointments on the given date after the given time
-  # ==== Attributes
+  # ==== Parameters
   # * +date_time+ - date_time object to find appointments after
   def self.same_day_after_time(date_time)
     Appointment.where(appointment_time: date_time+1.minute..date_time.at_end_of_day).order_by_time
@@ -81,21 +81,21 @@ class Appointment < ActiveRecord::Base
   end
 
   # Returns all appointments with a given doctor
-  # ==== Attributes
+  # ==== Parameters
   # * +doctor_id+ - the +doctor_id+ of the doctor stored in the appointment
   def self.with_doctor(doctor_id)
     Appointment.where(doctor_id: doctor_id)
   end
 
   # Returns all appointments with a given patient
-  # ==== Attributes
+  # ==== Parameters
   # * +patient_id+ - the +patient_id+ of the patient stored in the appointment
   def self.with_patient(patient_id)
     Appointment.where(patient_id: patient_id)
   end
 
   # Returns all confirmed appointments today with a given doctor
-  # ==== Attributes
+  # ==== Parameters
   # * +doctor_id+ - the +doctor_id+ of the doctor stored in the appointment
   def self.confirmed_today_with_doctor(doctor_id)
     Appointment.given_date(Date.today).confirmed.
@@ -111,7 +111,7 @@ class Appointment < ActiveRecord::Base
   # Checks to see if the passed Clinic/Appointment/Doctor/Patient has the same
   # +id+ or +clinic_id+ as the appointment. Returns all appointments in the
   # same clinic
-  # ==== Attributes
+  # ==== Parameters
   # * +model+ - object to get id from to check against appointments
   def self.in_clinic(model)
     if model.is_a?(Appointment)
@@ -126,7 +126,7 @@ class Appointment < ActiveRecord::Base
   # TODO I think view helpers have a dedicated project location
   # A view helper.  Converts time chosen from selection box on appointment
   # creation or editing pages from selection indicies to minutes.
-  # ==== Attributes
+  # ==== Parameters
   # * +selection+ - The selection index chosen
   def self.get_added_time(selection)
     case selection
@@ -168,7 +168,7 @@ class Appointment < ActiveRecord::Base
 
   # Emails the patient whether their appointment request was approved or denied.
   # Uses a separate thread to send the email
-  # ==== Attributes
+  # ==== Parameters
   # * +choice+ - symbol either :approve or :deny
   def email_confirmation_to_patient(choice)
     if choice == :approve
@@ -194,7 +194,7 @@ class Appointment < ActiveRecord::Base
 
   # Adds time to each appointment found by #remaining_appointments_today due
   # to a delay.  Also signals to send delay notification to patient
-  # ==== Attributes
+  # ==== Parameters
   # * +time_to_add+ - minutes to add to each appointment
   def update_remaining_appointments!(time_to_add)
       remaining_appointments_today.each do |appt|

@@ -1,14 +1,15 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Controller for Sessions; handles logging in/out
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
+
+# +SessionsController+ for sessions and cookies; handles logging in/out
 #
 #
 
 
 class SessionsController < ApplicationController
 
-
+  # Signin page for patients on www subdomain
   def new
     @active = :signin
     if patient_signed_in?
@@ -20,6 +21,8 @@ class SessionsController < ApplicationController
     end
   end
 
+  # All web logins go through here regardless of subdomain
+  # Stores session info in cookie to keep logged in
   def create
     if request.subdomain == 'doctors'
       doctor = Doctor.find_by(email: params[:session][:email].downcase)

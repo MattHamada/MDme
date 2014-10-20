@@ -1,3 +1,4 @@
+# :nodoc:
 class DepartmentsController < ApplicationController
 
 

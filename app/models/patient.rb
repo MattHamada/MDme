@@ -58,7 +58,7 @@ class Patient < ActiveRecord::Base
   scope :ordered_last_name, -> { order(last_name: :asc)}
 
   # Returns patients in the same clinic as the passed model
-  # ==== Attributes
+  # ==== Parameters
   # * +model+ - model to get +clinic_id+ to match againt patients
   def self.in_clinic(model)
     if model.is_a? Patient
@@ -71,7 +71,7 @@ class Patient < ActiveRecord::Base
 
   # Used when an appointment was canceled to notify this patient about opening
   # Uses separate thread to send email
-  # ==== Attributes
+  # ==== Parameters
   # * +orig_appointment+ - The canceled appointment
   # * +new_time+ - The new available open time
   def email_about_open_time(orig_appointment, new_time)
@@ -81,7 +81,7 @@ class Patient < ActiveRecord::Base
   end
 
   # Verify mobile client api token
-  # ==== Attributes
+  # ==== Parameters
   # * +api_token+ - passed client api token to verify
   def api_authenticate(api_token)
     if self.remember_token == encrypt(api_token)

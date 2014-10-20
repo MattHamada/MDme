@@ -1,14 +1,11 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Controller for handling Patient pages on default subdomain (www)
-#
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
 
-
+# +PatientsController+ for handling Patient pages on default subdomain (www)
 class PatientsController < ApplicationController
 
   before_filter :find_patient
-
   before_filter :require_patient_login
   before_filter :get_upcoming_appointment
 
