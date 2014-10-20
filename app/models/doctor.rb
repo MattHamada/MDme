@@ -1,8 +1,8 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Doctor model
-#
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
+
+# +Doctor+ class
 require 'cookie_crypt'
 require 'user_common_instance'
 #require 'user_common_class'
@@ -32,26 +32,84 @@ class Doctor < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
                     :default_url => "/images/:style/missing.png"
+
+  VALID_CONTENT_TYPES = ["application/octet-stream", "image/jpg",
+                         "image/jpeg", "image/gif", "image/png"]
+  # Paperclip sees photos uploaded from android app as
+  # octet-stream and not image/jpeg.  This is a work around
+  before_validation do |file|
+    if file.avatar_content_type == 'application/octet-stream'
+      mime_type = MIME::Types.type_for(file.avatar_file_name)
+      file.avatar_content_type = mime_type.first.content_type if mime_type.first
+    end
+  end
+
+  validate :attachment_content_type
+  do_not_validate_attachment_file_type :avatar
   validates_attachment :avatar,
-                       :content_type => { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
                        :size => { :in => 0..10.megabytes }
 
+  # Sort doctors alphabetically by last name
   scope :ordered_last_name, -> { order(last_name: :asc) }
 
-  # def self.in_clinic(model)
-  #   if model.is_a?(Doctor)
-  #     Doctor.where(clinic_id: model.clinic_id).where.not(id: model.id)
-  #   else
-  #     Doctor.where(clinic_id: model.clinic_id)
-  #   end
-  # end
-  #
-  # def full_name
-  #   "#{first_name} #{last_name}"
-  # end
+  # Finds doctor by first and last name
+  # ====Attributes
+  # * +full_name+ doctor's full name formatted first_name_last_name
+  # * +clinic_id+ the clinic id associated with the doctor
+  def self.find_by_full_name(full_name, clinic_id)
+    first_name = full_name.match(/^([\w\-.]+)/)[0]
+    last_name = full_name.match(/(\w+)$/)[0]
+    Doctor.where(first_name: first_name,
+                 last_name: last_name,
+                 clinic_id: clinic_id).first
+  end
 
-  # returns string array of all open appointment times
-  # on a given day in am/pm format
+
+  # Finds all other doctors in the same clinic as +model+
+  # * +model+ - model passed to get get doctors in same clinic.  Model
+  # can be clinic or have a +clinic_id+
+  def self.in_clinic(model)
+    if model.is_a?(self)
+      self.where(clinic_id: model.clinic_id).where.not(id: model.id)
+    elsif model.is_a?(Patient)
+      clinic_ids = []
+      model.clinics.each { |c| clinic_ids << c.id }
+      #self.find_by_clinic_id(clinic_ids)
+      self.where(clinic_id: clinic_ids)
+    else
+      self.where(clinic_id: model.clinic_id)
+    end
+  end
+
+  #TODO merge with in_clinic; add second elsif model.is_a?(Clinic)
+  # Same as #in_clinic but for passing a clinic instance in
+  def self.in_passed_clinic_model(clinic)
+    Doctor.where(clinic_id: clinic.id)
+  end
+
+  # TODO convert to an ActiveRecord_Relation if possible
+  # Returns an array (not <tt>ActiveRecord_Relation</tt>) of doctors
+  # who have appointments today
+  def self.with_appointments_today
+    doctors = []
+    Doctor.find_each do |d|
+      doctors << d unless d.appointments.today.load.empty?
+    end
+    doctors
+  end
+
+  # Returns all doctors in the passed department instance
+  #==== Attributes
+  # * +department+ - A department instance
+  def self.in_department(department)
+    Doctor.where(department_id: department.id).where(clinic_id: department.clinic_id)
+  end
+
+  # Returns string array of all open appointment times
+  # on a given day in am/pm format.  Used for populating a selection box
+  # on a web form for creating/editing appointments
+  #===== Attributes
+  # * +date+ - A Date object
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date).confirmed
     times = []
@@ -101,40 +159,22 @@ class Doctor < ActiveRecord::Base
     times
   end
 
-  def self.in_clinic(model)
-    if model.is_a?(self)
-      self.where(clinic_id: model.clinic_id).where.not(id: model.id)
-    elsif model.is_a?(Patient)
-      clinic_ids = []
-      model.clinics.each { |c| clinic_ids << c.id }
-      #self.find_by_clinic_id(clinic_ids)
-      self.where(clinic_id: clinic_ids)
-    else
-      self.where(clinic_id: model.clinic_id)
-    end
-  end
-
-  def self.in_passed_clinic_model(clinic)
-    Doctor.where(clinic_id: clinic.id)
-  end
-
-
-  def self.with_appointments_today
-    doctors = []
-    Doctor.find_each do |d|
-      doctors << d unless d.appointments.today.load.empty?
-    end
-    doctors
-  end
-
+  # Return collection of doctor's appointments for hte day
   def appointments_today
     appointments.today.order('appointment_time ASC')
   end
 
-  def self.in_department(department)
-    Doctor.where(department_id: department.id).where(clinic_id: department.clinic_id)
+  # Paperclip sees photos uploaded from android app as
+  # octet-stream and not image/jpeg.  This is a work around
+  def attachment_content_type
+    unless self.avatar_content_type.nil?
+      errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.
+          include?(self.avatar_content_type)
+    end
   end
 
+  #TODO move to dedicated view helpers location
+  # View helpers
   def avatar_thumb_url
     avatar.url(:thumb)
   end
@@ -147,12 +187,10 @@ class Doctor < ActiveRecord::Base
     "#{degree}; #{alma_mater}"
   end
 
-  def self.find_by_full_name(full_name, clinic_id)
-    first_name = full_name.match(/^([\w\-.]+)/)[0]
-    last_name = full_name.match(/(\w+)$/)[0]
-    Doctor.where(first_name: first_name,
-                 last_name: last_name,
-                 clinic_id: clinic_id).first
-  end
+  # def full_name
+  #   "#{first_name} #{last_name}"
+  # end
+
+
 
 end

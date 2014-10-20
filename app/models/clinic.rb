@@ -1,6 +1,10 @@
+#MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# Copyright:: Copyright (c) 2014 MDme
+
+# +Clinic+ model
 class Clinic < ActiveRecord::Base
   has_and_belongs_to_many :patients
-  #has_many :doctors
   has_many :appointments
   has_many :admins
   has_many :departments
@@ -10,12 +14,19 @@ class Clinic < ActiveRecord::Base
   validates  :slug, presence: true, uniqueness: true;
 
   before_validation :generate_slug
-  before_create :get_location_coordinates
+  before_save :set_location_coordinates
 
-
+  # Order clinics alphabetically by name
   scope :ordered_name, -> { order(name: :asc) }
 
+  #Google developer api key for MDme webserver
   @api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
+
+  # Called on clinic creation
+  # Calls google geolocation api for latitude/longitude coordinates of
+  # the clinic address.  Grabs NE and SW viewport coordinates for easier
+  # google map rendering
+  # TODO handle invalid addresses / null coordinates
   def set_location_coordinates
     address = "#{self.address1}+" +
                         "#{self.address2 unless self.address2.nil?}+" +
@@ -39,12 +50,19 @@ class Clinic < ActiveRecord::Base
     self.sw_longitude = sw_longitude unless sw_longitude.nil?
   end
 
-def call_google_api_for_location(address)
-  url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@api_key}"
-  response = HTTParty.get url
-  response.body
-end
+  # Helper for #set_location_coordinates
+  def call_google_api_for_location(address)
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@api_key}"
+    response = HTTParty.get url
+    response.body
+  end
 
+  # Creates a +slug+ for generating readable url.  Slug is generated from
+  # the clinic's name.  Slugs are all lower case and replace whitespace with '-'
+  # Duplicate names will add '-n' to the end of the name
+  # with n being the number of current duplicates
+  # Ex: Three created clinics named 'My Clinic' will return
+  # my-clinic, my-clinic-1, my-clinic-2, respectively
   def generate_slug
     if self.slug.blank? || self.slug.nil?
       unless self.name.blank?
@@ -63,7 +81,9 @@ end
     end
   end
 
+  # +slug+ used in URL opposed to +id+
   def to_param
     slug
   end
 end
+
