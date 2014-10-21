@@ -1,6 +1,9 @@
-#MDme Rails master application
+# MDme Rails master application
 # Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 11/16/13
 # Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
 # Department model
 # Used to group doctors based on specialty

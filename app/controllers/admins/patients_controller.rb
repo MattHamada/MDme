@@ -1,3 +1,11 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/29/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Admins::DepartmentsController</tt> for admin.mdme.us/departments
 class Admins::PatientsController < ApplicationController
 
   before_filter :find_admin
@@ -60,12 +68,21 @@ class Admins::PatientsController < ApplicationController
     end
   end
 
+  # Allows searching for doctor(s) by id, dob, first name, and/or last name
   def search
     @patients = Patient.in_clinic(@admin)
-    @patients = @patients.where("lower(last_name) = ?", params[:patient][:last_name].downcase) unless params[:patient][:last_name].empty?
-    @patients = @patients.where("lower(first_name) = ?", params[:patient][:first_name].downcase) unless params[:patient][:first_name].empty?
-    @patients = @patients.where("pid = ?", params[:patient][:pid].downcase) unless params[:patient][:pid].empty?
-    @patients = @patients.where("dob = ?", Date.parse(params[:patient][:dob].downcase)) unless params[:patient][:dob].empty?
+    @patients = @patients.where(
+        "lower(last_name) = ?", params[:patient][:last_name].downcase) unless
+        params[:patient][:last_name].empty?
+    @patients = @patients.where(
+        "lower(first_name) = ?", params[:patient][:first_name].downcase) unless
+        params[:patient][:first_name].empty?
+    @patients = @patients.where(
+        "pid = ?", params[:patient][:pid].downcase) unless
+        params[:patient][:pid].empty?
+    @patients = @patients.where(
+        "dob = ?", Date.parse(params[:patient][:dob].downcase)) unless
+        params[:patient][:dob].empty?
   end
 
 

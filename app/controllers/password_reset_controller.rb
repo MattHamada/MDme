@@ -1,6 +1,9 @@
-#MDme Rails master application
+# MDme Rails master application
 # Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/6/14
 # Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
 # +PasswordResetController+ for Doctors, Patients, and Admins
 class PasswordResetController < ApplicationController

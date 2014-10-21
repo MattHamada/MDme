@@ -1,6 +1,9 @@
-#MDme Rails master application
+# MDme Rails master application
 # Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 10/29/13
 # Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
 # +PatientsController+ for handling Patient pages on default subdomain (www)
 class PatientsController < ApplicationController

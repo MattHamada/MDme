@@ -1,3 +1,11 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/2914
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Admins::AppointmentsController</tt> for admin.mdme.us/appointments
 class Admins::AppointmentsController < ApplicationController
 
   before_filter :find_admin
@@ -51,7 +59,7 @@ class Admins::AppointmentsController < ApplicationController
 
   end
 
-  #ajax load for open appointments
+  # Ajax load - For open appointments given selected doctor
     def new_browse
     input = appointment_params
     @date = Date.parse(input[:date])
@@ -60,7 +68,7 @@ class Admins::AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
-  # shows all confirmed appointments on a given date for admin on index page
+  # Ajax load - Shows all confirmed appointments on a given date for  index page
   def browse
     input = appointment_params
     date = Date.parse(input[:day])
@@ -69,14 +77,18 @@ class Admins::AppointmentsController < ApplicationController
     #   redirect_to admin_appointments_path(@admin)
     # else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
-          confirmed.order('appointment_time ASC').load.includes([:doctor, :patient])
+          confirmed.order('appointment_time ASC').load.includes([:doctor,
+                                                                 :patient])
     # end
   end
 
   def create
     input = appointment_params
-    time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
-    date = DateTime.parse("#{input[:date]} #{time}").in_time_zone('Arizona')  + 7.hours #TODO make this less hacky shouldnt need to convert timezone and shift hours
+    time = Doctor.find(input[:doctor_id]).open_appointment_times(
+        Date.parse(input[:date]))[(input[:time].to_i)-1]
+    #TODO make this less hacky; shouldnt need to convert timezone and shift hours
+    date = DateTime.parse(
+        "#{input[:date]} #{time}").in_time_zone('Arizona') + 7.hours
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: input[:patient_id],
                                    appointment_time: date,
@@ -95,13 +107,14 @@ class Admins::AppointmentsController < ApplicationController
     end
   end
 
+  # Shows list of appointments awaiting approval
   def approval
     @appointments = Appointment.in_clinic(@admin).requests.
         order_by_time.includes(:doctor, :patient).not_past
   end
 
-  # allows admin to see what appointments are already on a specific date with a specific
-  # doctor before Accepting/denying request
+  # Allows admin to see what appointments are already on a
+  # specific date with a specific doctor before Accepting/denying request
   def show_on_date
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
@@ -130,10 +143,13 @@ class Admins::AppointmentsController < ApplicationController
     render partial: 'ajax_show' if request.xhr?
   end
 
+  # Shows a list of appointments occurring today for setting delays
   def manage_delays
     @doctors = Doctor.in_clinic(current_admin).with_appointments_today
   end
 
+  # POST to add delay to appointment.
+  # Can also add delay to subsequent appointments
   def add_delay
     appointment = Appointment.find(params[:appointment_id])
     time_to_add = Appointment.get_added_time(params[:delay_time].to_i)
