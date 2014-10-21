@@ -1,7 +1,17 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 4/4/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Api::V1::PatientsController</tt> for www.mdme.us/api/v1/patients
+# All calls need to pass :api_token for validation
 class Api::V1::PatientsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
+  # GET www.mdme.us/api/v1/patients
   def index
 
     @info = 'Logged in'
@@ -11,10 +21,12 @@ class Api::V1::PatientsController < ApplicationController
               {title: 'Sign Out'}]
   end
 
+  # GET www.mdme.us/api/v1/patient/:id
   def show
     @info = 'Profile'
   end
 
+  # POST www.mdme.us/api/v1/patient/:id
   def update
     @patient.bypass_password_validation = true
     if @patient.update_attributes(patient_params)
@@ -42,6 +54,7 @@ class Api::V1::PatientsController < ApplicationController
                                     :work_phone,
                                     :avatar)
   end
+
   def verify_api_token
     @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]));
     if @patient.nil?
