@@ -1,3 +1,11 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/29/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Admins::DepartmentsController</tt> for admin.mdme.us/departments
 class Admins::DepartmentsController < ApplicationController
 
   before_filter :find_admin
@@ -46,10 +54,6 @@ class Admins::DepartmentsController < ApplicationController
       redirect_to admin_department_path(@admin, @department)
     end
 
-  end
-
-  def department_params
-    params.require(:department).permit(:name)
   end
 
   private

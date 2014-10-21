@@ -1,21 +1,25 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Controller for handing doctor subdomain
-#
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 10/30/13
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
-
+# +DoctorsController+ for handing doctors subdomain of mdme.us
+#
 class DoctorsController < ApplicationController
 
   before_filter :find_doctor, except: [:signin, :open_appointments]
   before_filter :require_doctor_login, except: [:signin, :open_appointments]
 
+  # Cannot access sign in page while signed in.  Will redirect to #show
   def signin
     if doctor_signed_in?
       redirect_to doctor_path(current_doctor)
     end
   end
 
+  #Shows all doctors in the clinic of the logged in doctor
   def index
     @doctors = Doctor.in_clinic(@doctor).includes(:department)
   end
@@ -67,6 +71,9 @@ class DoctorsController < ApplicationController
     end
   end
 
+  #TODO move to an API controller?
+  # API orphan to get open appointment times for a given doctor for
+  # creating appointments
   def open_appointments
     input = params[:appointment]
     @date = Date.parse(input[:date])
@@ -83,21 +90,18 @@ class DoctorsController < ApplicationController
     render json: {open_times: @open_times}
   end
 
-
-
-
   private
 
-  def doctor_params
-    params.require(:doctor).permit(:first_name, :last_name, :email,
-                                   :department_id, :phone_number, :degree,
-                                   :alma_mater, :description, :password,
-                                   :password_confirmation, :avatar)
-  end
+    def doctor_params
+      params.require(:doctor).permit(:first_name, :last_name, :email,
+                                     :department_id, :phone_number, :degree,
+                                     :alma_mater, :description, :password,
+                                     :password_confirmation, :avatar)
+    end
 
-  def find_doctor
-    @doctor ||= Doctor.find_by_slug!(params[:id])
-  end
+    def find_doctor
+      @doctor ||= Doctor.find_by_slug!(params[:id])
+    end
 
   helper_method :find_doctor
 end

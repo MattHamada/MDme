@@ -1,8 +1,11 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Patient model
-#
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 10/28/13
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# +Patient+ class
 require 'cookie_crypt'
 require 'user_common_instance'
 require 'user_common_class'
@@ -24,8 +27,10 @@ class Patient < ActiveRecord::Base
                                           :thumb => "100x100>" },
                     :default_url => "/images/:style/missing.png"
 
-  VALID_CONTENT_TYPES = ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"]
-
+  VALID_CONTENT_TYPES = ["application/octet-stream", "image/jpg",
+                         "image/jpeg", "image/gif", "image/png"]
+  # Paperclip sees photos uploaded from android app as
+  # octet-stream and not image/jpeg.  This is a work around
   before_validation do |file|
     if file.avatar_content_type == 'application/octet-stream'
       mime_type = MIME::Types.type_for(file.avatar_file_name)
@@ -34,10 +39,12 @@ class Patient < ActiveRecord::Base
   end
 
   validate :attachment_content_type
-
+  # Paperclip sees photos uploaded from android app as
+  # octet-stream and not image/jpeg.  This is a work around
   def attachment_content_type
     unless self.avatar_content_type.nil?
-      errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.include?(self.avatar_content_type)
+      errors.add(:avatar, "type is not allowed") unless VALID_CONTENT_TYPES.
+          include?(self.avatar_content_type)
     end
   end
   do_not_validate_attachment_file_type :avatar
@@ -45,38 +52,17 @@ class Patient < ActiveRecord::Base
                        :size => { :in => 0..10.megabytes }
 
   # validates_attachment_content_type :avatar,
-  #                                   :content_type =>   { :content_type => ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
+  #                                   :content_type =>   { :content_type =>
+  # ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
   #                                   :size => { :in => 0..10.megabytes }
 
   has_secure_password
 
   scope :ordered_last_name, -> { order(last_name: :asc)}
 
-
-  #used when an appointment was canceled to notify this patient about opening
-  def email_about_open_time(orig_appointment, new_time)
-    Thread.new do
-      FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver
-    end
-  end
-
-
-  def api_authenticate(api_token)
-    if self.remember_token == encrypt(api_token)
-      true
-    else
-      false
-    end
-  end
-
-  def avatar_thumb_url
-    avatar.url(:thumb)
-  end
-
-  def avatar_medium_url
-    avatar.url(:medium)
-  end
-
+  # Returns patients in the same clinic as the passed model
+  # ==== Parameters
+  # * +model+ - model to get +clinic_id+ to match againt patients
   def self.in_clinic(model)
     if model.is_a? Patient
       Patient.joins(:clinics).where(clinics: { id: model.clinic_id }).where.not(id: model.id)
@@ -85,12 +71,51 @@ class Patient < ActiveRecord::Base
     end
   end
 
+
+  # Used when an appointment was canceled to notify this patient about opening
+  # Uses separate thread to send email
+  # ==== Parameters
+  # * +orig_appointment+ - The canceled appointment
+  # * +new_time+ - The new available open time
+  def email_about_open_time(orig_appointment, new_time)
+    Thread.new do
+      FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver
+    end
+  end
+
+  # Verify mobile client api token
+  # ==== Parameters
+  # * +api_token+ - passed client api token to verify
+  def api_authenticate(api_token)
+    if self.remember_token == encrypt(api_token)
+      true
+    else
+      false
+    end
+  end
+
+  # Returns next confirmed appointment in the next two hours
   def upcoming_appointment
     self.appointments.within_2_hours.not_past.confirmed.order_by_time.first
   end
 
+  # TODO should add more safeguards than this to verify that this is the correct
+  #TODO# appointment to check into other than it is the next chronologically
+
+  # Returns next confirmed appointment for patient to check in
   def checkin_appointment(clinic)
-    self.appointments.in_clinic(clinic).today.not_past.confirmed.order_by_time.first
+    self.appointments.in_clinic(clinic).today.not_past.confirmed.
+        order_by_time.first
+  end
+
+  #TODO move to dedicated view helpers spot
+  # View helpers
+  def avatar_thumb_url
+    avatar.url(:thumb)
+  end
+
+  def avatar_medium_url
+    avatar.url(:medium)
   end
 
 end

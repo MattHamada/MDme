@@ -28,6 +28,7 @@ gem 'oj'
 gem "breadcrumbs_on_rails"
 gem 'rqrcode-rails3'
 gem 'mini_magick'
+gem 'httparty'
 
 group :development do
   #nicer error page

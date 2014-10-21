@@ -13,6 +13,10 @@ child :data do
                :country,
                :zipcode,
                :phone_number,
-               :fax_number
+               :fax_number,
+               :ne_latitude,
+               :ne_longitude,
+               :sw_latitude,
+               :sw_longitude
   end
 end

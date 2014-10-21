@@ -1,9 +1,18 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/6/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# +PasswordResetController+ for Doctors, Patients, and Admins
 class PasswordResetController < ApplicationController
 
   def new
 
   end
 
+  # Generates a random password and emails it to the user
   def create
     email = params[:password_reset][:email]
     if request.subdomain == 'doctors'
@@ -23,7 +32,6 @@ class PasswordResetController < ApplicationController
       else
         flash[:danger] = 'An error has occurred'
         redirect_to '/signin'
-
       end
     else
       flash[:warning] = 'Invalid email address entered'

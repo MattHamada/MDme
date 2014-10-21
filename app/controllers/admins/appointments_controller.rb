@@ -1,15 +1,26 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/2914
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Admins::AppointmentsController</tt>
+# for admin.mdme.us/admins/:admin_id/appointments
 class Admins::AppointmentsController < ApplicationController
 
   before_filter :find_admin
   before_filter :require_admin_login
   before_filter :set_active_navbar
 
+  # GET admin.mdme.us/admins/:admin_id/appointments
   def index
     if Appointment.requests.in_clinic(@admin).not_past.any?
       flash.now[:warning] = "Appointments waiting for approval."
     end
   end
 
+  # GET admin.mdme.us/admins/:admin_id/appointments/new
   def new
     @appointment = Appointment.new(appointment_time: DateTime.now)
     @clinic_id = @admin.clinic_id
@@ -17,12 +28,14 @@ class Admins::AppointmentsController < ApplicationController
 
   end
 
+  # GET admin.mdme.us/admins/:admin_id/appointment/:id/edit
   def edit
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
     @open_times << @appointment.time_selector
   end
 
+  # PATCH admin.mdme.us/admins/:admin_id/appointment/:id/
   def update
     @appointment = appointment
     input_params = appointment_params
@@ -39,6 +52,7 @@ class Admins::AppointmentsController < ApplicationController
     end
   end
 
+  # DELETE admin.mdme.us/admins/:admin_id/appointment/:id/
   def destroy
     @appointment = appointment
     if @appointment.destroy
@@ -51,8 +65,9 @@ class Admins::AppointmentsController < ApplicationController
 
   end
 
-  #ajax load for open appointments
-    def new_browse
+  # Ajax load - For open appointments given selected doctor
+  # GET  admin.mdme.us/admins/:admin_id/appointments/new_browse
+  def new_browse
     input = appointment_params
     @date = Date.parse(input[:date])
     @doctor = Doctor.find(input[:doctor_id])
@@ -60,7 +75,9 @@ class Admins::AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
-  # shows all confirmed appointments on a given date for admin on index page
+  # Ajax load - Shows all confirmed appointments on a given date for  index page
+  # Expects the param :day passed as a string date to parse
+  # GET  admin.mdme.us/admins/:admin_id/appointments/browse
   def browse
     input = appointment_params
     date = Date.parse(input[:day])
@@ -69,14 +86,19 @@ class Admins::AppointmentsController < ApplicationController
     #   redirect_to admin_appointments_path(@admin)
     # else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
-          confirmed.order('appointment_time ASC').load.includes([:doctor, :patient])
+          confirmed.order('appointment_time ASC').load.includes([:doctor,
+                                                                 :patient])
     # end
   end
 
+  # POST admin.mdme.us/admins/:admin_id/appointments
   def create
     input = appointment_params
-    time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
-    date = DateTime.parse("#{input[:date]} #{time}").in_time_zone('Arizona')  + 7.hours #TODO make this less hacky shouldnt need to convert timezone and shift hours
+    time = Doctor.find(input[:doctor_id]).open_appointment_times(
+        Date.parse(input[:date]))[(input[:time].to_i)-1]
+    #TODO make this less hacky; shouldnt need to convert timezone and shift hours
+    date = DateTime.parse(
+        "#{input[:date]} #{time}").in_time_zone('Arizona') + 7.hours
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: input[:patient_id],
                                    appointment_time: date,
@@ -95,13 +117,16 @@ class Admins::AppointmentsController < ApplicationController
     end
   end
 
+  # Shows list of appointments awaiting approval
+  # GET admin.mdme.us/admins/:admin_id/appointments/approval
   def approval
     @appointments = Appointment.in_clinic(@admin).requests.
         order_by_time.includes(:doctor, :patient).not_past
   end
 
-  # allows admin to see what appointments are already on a specific date with a specific
-  # doctor before Accepting/denying request
+  # Allows admin to see what appointments are already on a
+  # specific date with a specific doctor before Accepting/denying request
+  # GET admin.mdme.us/admins/:admin_id/appointments/show_on_date
   def show_on_date
     @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
@@ -112,6 +137,7 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   # run when admin hits approve or deny on approval page
+  # POST admin.mdme.us/admins/:admin_id/appointments
   def approve_deny
     appointment = Appointment.find(params[:appointment_id])
     if params.has_key?(:approve)
@@ -125,15 +151,21 @@ class Admins::AppointmentsController < ApplicationController
     redirect_to appointment_approval_path(@admin.id)
   end
 
+  # GET admin.mdme.us/admins/:admin_id/appointment/:id
   def show
     @appointment = appointment
     render partial: 'ajax_show' if request.xhr?
   end
 
+  # Shows a list of appointments occurring today for setting delays
+  # GET admin.mdme.us/admins/:admin_id/appointments/manage_delays
   def manage_delays
     @doctors = Doctor.in_clinic(current_admin).with_appointments_today
   end
 
+  # POST to add delay to appointment.
+  # Can also add delay to subsequent appointments
+  # POST admin.mdme.us/admins/:admin_id/appointments/add_delay
   def add_delay
     appointment = Appointment.find(params[:appointment_id])
     time_to_add = Appointment.get_added_time(params[:delay_time].to_i)

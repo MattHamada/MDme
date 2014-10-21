@@ -91,12 +91,12 @@ MDme::Application.routes.draw do
 
       namespace :patients do
         get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
+        get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
         resources :doctors, controller: 'doctors', only: [:index, :show]
         resources :appointments, controller: 'appointments', only: [:create, :update, :show]
         resources :clinics, controller: 'clinics', only: [:index, :show]
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
 
-        get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
       end
     end
     namespace :v2 do
