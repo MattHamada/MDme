@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   before_action :set_variant
+  before_filter :expire_hsts
 
   # Used to define if user is on mobile browser
   def set_variant
@@ -79,6 +80,12 @@ class ApplicationController < ActionController::Base
           "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
     end
   end
+
+  private
+    def expire_hsts
+      response.headers["Strict-Transport-Security"] = 'max-age=0' if
+          Rails.env.production?
+    end
 
 
 end

@@ -23,6 +23,7 @@ class Clinic < ActiveRecord::Base
   scope :ordered_name, -> { order(name: :asc) }
 
   #Google developer api key for MDme webserver
+  #TODO move this to a dedicated spot not just buried in clinic model
   @api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
 
   # Called on clinic creation
