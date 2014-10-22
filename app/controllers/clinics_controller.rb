@@ -5,10 +5,11 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# +ClinicsController+
+# +ClinicsController+ for mdme.us/clinics
 class ClinicsController < ApplicationController
 
   #TODO move this to API
+  # GET mdme.us/clinics/:id/checkin/:patient_id'
   def checkin
     patient = Patient.find(params[:patient_id])
     clinic = Clinic.find_by_slug(params[:id])

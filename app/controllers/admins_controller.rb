@@ -5,13 +5,14 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# +AdminsController+ runs on the admins subdomain of mdme.us
+# +AdminsController+ runs on the admins subdomain  admins.mdme.us/admins
 class AdminsController < ApplicationController
 
   before_filter :find_admin, except: [:signin]
   before_filter :require_admin_login, except: :signin
 
   # Cannot visit signin page when signed in
+  # GET admin.mdme.us/admins/signin
   def signin
     if admin_signed_in?
         redirect_to admins_path
@@ -20,11 +21,13 @@ class AdminsController < ApplicationController
   end
 
   # Shows a list of all confirmed appointments for the current day
+  # GET admin.mdme.us/admins
   def index
     @appointments = Appointment.in_clinic(current_admin).
         today.confirmed.order('appointment_time ASC').load.includes([:patient, :doctor])
   end
 
+  # GET admin.mdme.us/admins/:id
   def show
     @active = :administration
   end

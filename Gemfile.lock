@@ -326,6 +326,7 @@ DEPENDENCIES
   rabl
   rails (= 4.1.1)
   rails_12factor (= 0.0.2)
+  rdoc
   rqrcode-rails3
   rspec-rails (= 2.14.2)
   sass-rails (~> 4.0.0)

@@ -1,6 +1,17 @@
-class Patients::ClinicsController < ApplicationController
-  def getdoctors
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 4/23/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
+# <tt>Patients::ClinicsController</tt>
+# for mdme.us/patients/:patient_id/clinics
+class Patients::ClinicsController < ApplicationController
+
+  # GET mdme.us/patients/:patient_id/clinics/getdoctors
+  # TODO is this method for api?  Should it return a redirect and json?
+  def getdoctors
     #verify user in slug is logged in
     token_passed = params[:token] unless params[:token].nil?
     patient = Patient.find_by_slug!(params[:patient_id])

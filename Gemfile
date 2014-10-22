@@ -38,6 +38,7 @@ group :development do
   gem 'bullet'
   #for viewing emails sent
   gem 'letter_opener'
+  gem 'rdoc'
 end
 
 group :development, :test do

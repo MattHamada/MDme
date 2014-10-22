@@ -6,7 +6,7 @@
 # Proprietary and confidential.
 
 
-# +AppointmentsController+ for handling appointments
+# +AppointmentsController+ for for mdme.us/appointments
 class AppointmentsController < ApplicationController
 
   # Called when a patient accepts notice by email that they can take earlier
@@ -14,6 +14,9 @@ class AppointmentsController < ApplicationController
   # the appointment being moved up is the one specified in the email.
   # If the patient denys taking earlier time, a new mailer is sent to the next
   # available patient
+
+  # TODO change method to change_time to match route
+  # GET mdme.us/appointments/:id/change_time
   def fill_appointment
     @appointment = Appointment.find(params[:id])
     access_key = params[:access_key]

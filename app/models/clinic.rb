@@ -24,7 +24,7 @@ class Clinic < ActiveRecord::Base
 
   #Google developer api key for MDme webserver
   #TODO move this to a dedicated spot not just buried in clinic model
-  @api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
+  @@api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
 
   # Called on clinic creation
   # Calls google geolocation api for latitude/longitude coordinates of
@@ -56,7 +56,7 @@ class Clinic < ActiveRecord::Base
 
   # Helper for #set_location_coordinates
   def call_google_api_for_location(address)
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@api_key}"
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@@api_key}"
     response = HTTParty.get url
     response.body
   end

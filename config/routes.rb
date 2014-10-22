@@ -1,9 +1,9 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Routing file
-#
-
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 10/23/13
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
 MDme::Application.routes.draw do
   #TODO change doctors subdomain to clinical

@@ -82,6 +82,8 @@ class ApplicationController < ActionController::Base
   end
 
   private
+    # Makes browsers not think site is sketchy when ssl turned off.
+    # Disable this when ssl back on
     def expire_hsts
       response.headers["Strict-Transport-Security"] = 'max-age=0' if
           Rails.env.production?

@@ -5,22 +5,26 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# <tt>Admins::DepartmentsController</tt> for admin.mdme.us/departments
+# <tt>Admins::PatientsController</tt>
+# for admin.mdme.us/admins/:admin_id/patients
 class Admins::PatientsController < ApplicationController
 
   before_filter :find_admin
   before_filter :find_patient, only: [:show, :edit, :update, :destroy]
   before_filter :require_admin_login
 
+  # GET admin.mdme.us/admins/:admin_id/patients
   def index
     @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
   end
 
+  # GET admin.mdme.us/admins/:admin_id/patients/new
   def new
     @current_user = @admin
     @patient = Patient.new
   end
 
+  # POST admin.mdme.us/admins/:admin_id/patients
   def create
     @current_user = @admin
     p = patient_params
@@ -41,10 +45,12 @@ class Admins::PatientsController < ApplicationController
     render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
   end
 
+  # GET admin.mdme.us/admins/:admin_id/patients/:id/edit
   def edit
     @current_user = @admin
   end
 
+  # PATCH admin.mdme.us/admins/:admin_id/patients/:id
   def update
     @patient.bypass_password_validation = true
     @patient.attributes = patient_params
@@ -57,6 +63,7 @@ class Admins::PatientsController < ApplicationController
     end
   end
 
+  # DELETE admin.mdme.us/admins/:admin_id/patients/:id
   def destroy
     id = @patient.id
     if @patient.destroy
@@ -69,6 +76,7 @@ class Admins::PatientsController < ApplicationController
   end
 
   # Allows searching for doctor(s) by id, dob, first name, and/or last name
+  # GET admin.mdme.us/admins/:admin_id/patients/search
   def search
     @patients = Patient.in_clinic(@admin)
     @patients = @patients.where(
