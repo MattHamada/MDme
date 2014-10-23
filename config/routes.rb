@@ -90,10 +90,9 @@ MDme::Application.routes.draw do
       put 'patients/update' => 'patients#update', as: 'patient_update_profile'
 
       namespace :patients do
-        get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
         get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
         resources :doctors, controller: 'doctors', only: [:index, :show]
-        resources :appointments, controller: 'appointments', only: [:create, :update, :show]
+        resources :appointments, controller: 'appointments', only: [:create, :update, :show, :index]
         resources :clinics, controller: 'clinics', only: [:index, :show]
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
 

@@ -15,11 +15,11 @@ describe Api::V1::Patients::AppointmentsController do
   end
 
   context :json do
-    describe 'GET #tasks' do
-      get_bad_requests(:tasks)
+    describe 'GET #index' do
+      get_bad_requests :index
       it 'should respond with a json array of tasks with valid api token' do
         config = { format: 'json', api_token: @token }
-        get :tasks, config
+        get :index, config
         expect(response).to be_success
         expect(json['data']['tasks']).not_to be_empty
         expect(json['data']['tasks'][0]['title']).to eq 'Confirmed Appointments'
