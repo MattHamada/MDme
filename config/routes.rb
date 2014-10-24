@@ -54,7 +54,7 @@ MDme::Application.routes.draw do
 
   get 'clinics/:id/checkin/:patient_id'                  => 'clinics#checkin',                         as: :clinic_checkin
 
-  get 'appointments/:id/change_time'                     => 'appointments#fill_appointment',           as: :appointment_change_time
+  get 'appointments/:id/fill_appointment'                => 'appointments#fill_appointment',           as: :fill_appointment
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]

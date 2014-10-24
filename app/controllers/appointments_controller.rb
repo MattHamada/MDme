@@ -16,7 +16,7 @@ class AppointmentsController < ApplicationController
   # available patient
 
   # TODO change method to change_time to match route
-  # GET mdme.us/appointments/:id/change_time
+  # GET mdme.us/appointments/:id/fill_appointment
   def fill_appointment
     @appointment = Appointment.find(params[:id])
     access_key = params[:access_key]
