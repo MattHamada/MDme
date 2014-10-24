@@ -14,8 +14,6 @@ class AppointmentsController < ApplicationController
   # the appointment being moved up is the one specified in the email.
   # If the patient denys taking earlier time, a new mailer is sent to the next
   # available patient
-
-  # TODO change method to change_time to match route
   # GET mdme.us/appointments/:id/fill_appointment
   def fill_appointment
     @appointment = Appointment.find(params[:id])
@@ -28,8 +26,7 @@ class AppointmentsController < ApplicationController
       if wants_to_fill == 'true'
         @appointment.update_attribute(
             :appointment_time, DateTime.parse(new_time))
-        #TODO make dedicated email for filling opening instead of using delayed email
-        PatientMailer.appointment_delayed_email(
+        PatientMailer.appointment_update_time_email(
             @appointment.patient, DateTime.parse(new_time)).deliver
       else
         Appointment.fill_canceled_appointment(

@@ -53,7 +53,7 @@ class PatientsController < ApplicationController
         render 'edit'
       end
     else
-      flash[:danger] = 'Invalid password entered.'
+      flash[:danger] = 'Invalid password entered'
       render 'edit'
     end
 
