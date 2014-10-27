@@ -126,8 +126,7 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  # TODO I think view helpers have a dedicated project location
-  # A view helper.  Converts time chosen from selection box on appointment
+  # Converts time chosen from selection box on appointment
   # creation or editing pages from selection indicies to minutes.
   # ==== Parameters
   # * +selection+ - The selection index chosen

@@ -176,7 +176,6 @@ class Doctor < ActiveRecord::Base
     end
   end
 
-  #TODO move to dedicated view helpers location
   # View helpers
   def avatar_thumb_url
     avatar.url(:thumb)

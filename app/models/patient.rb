@@ -108,7 +108,6 @@ class Patient < ActiveRecord::Base
         order_by_time.first
   end
 
-  #TODO move to dedicated view helpers spot
   # View helpers
   def avatar_thumb_url
     avatar.url(:thumb)
