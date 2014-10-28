@@ -154,7 +154,8 @@ describe 'Patient Pages' do
                 fill_in 'verify_verify_password', with: 'Qwerty1'
                 click_button 'Update'
               end
-              it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered' }
+              it { should have_selector 'div.alert.alert-danger', text: 'Invalid parameters entered' }
+              it { should have_selector 'div.alert.alert-danger', text: 'The form contains 1 error.' }
             end
             describe 'with valid information' do
               before do
@@ -255,7 +256,7 @@ describe 'Patient Pages' do
         describe 'editing a request' do
           before do
             click_link 'Edit'
-            select '4:45 PM', from: 'time'
+            select '4:45 PM', from: 'date_time'
           end
           it { expect do
             click_button 'Update'

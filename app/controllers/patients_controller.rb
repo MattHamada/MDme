@@ -49,7 +49,7 @@ class PatientsController < ApplicationController
         flash[:success] = 'Patient Successfully Updated'
         redirect_to patient_path(@patient)
       else
-        flash.now[:danger] = 'Invalid Parameters Entered'
+        flash.now[:danger] = 'Invalid parameters entered'
         render 'edit'
       end
     else
@@ -81,7 +81,7 @@ class PatientsController < ApplicationController
         flash[:success] = 'Password updated'
         redirect_to patient_path(@patient)
       else
-        flash.now[:danger] = 'Unable to change password'
+        flash[:danger] = 'Unable to change password'
         render 'change_password'
       end
     else
