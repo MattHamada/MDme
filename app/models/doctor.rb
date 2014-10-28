@@ -87,15 +87,9 @@ class Doctor < ActiveRecord::Base
     end
   end
 
-  # TODO convert to an ActiveRecord_Relation if possible
-  # Returns an array (not <tt>ActiveRecord_Relation</tt>) of doctors
-  # who have appointments today
+  # Returns doctors who have confirmed appointments today
   def self.with_appointments_today
-    doctors = []
-    Doctor.find_each do |d|
-      doctors << d unless d.appointments.today.load.empty?
-    end
-    doctors
+    Doctor.joins(:appointments).merge(Appointment.today.confirmed).uniq
   end
 
   # Returns all doctors in the passed department instance
