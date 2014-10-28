@@ -87,12 +87,6 @@ class Doctor < ActiveRecord::Base
     end
   end
 
-  #TODO merge with in_clinic; add second elsif model.is_a?(Clinic)
-  # Same as #in_clinic but for passing a clinic instance in
-  # def self.in_passed_clinic_model(clinic)
-  #   Doctor.where(clinic_id: clinic.id)
-  # end
-
   # TODO convert to an ActiveRecord_Relation if possible
   # Returns an array (not <tt>ActiveRecord_Relation</tt>) of doctors
   # who have appointments today
