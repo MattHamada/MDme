@@ -16,12 +16,15 @@ require 'sprockets/railtie'
 Bundler.require(:default, Rails.env)
 
 
-#load email account settings into rails ENV
-CONFIG = YAML.load(File.read(File.expand_path('../email_config.yml', __FILE__)))
-CONFIG.merge! CONFIG.fetch(Rails.env, {})
-CONFIG.each do |key, value|
-  ENV[key] = value.to_s unless value.kind_of? Hash
+#load yaml stored settings
+['../email_config.yml', '../api_keys.yml'].each do |yml|
+  config = YAML.load(File.read(File.expand_path(yml, __FILE__)))
+  config.merge! config.fetch(Rails.env, {})
+  config.each do |key, value|
+    ENV[key] = value.to_s unless value.kind_of? Hash
+  end
 end
+
 
 module MDme
   class Application < Rails::Application

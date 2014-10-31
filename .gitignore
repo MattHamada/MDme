@@ -25,3 +25,4 @@ doc/
 .idea
 .secret
 config/email_config.yml
+config/api_keys.yml

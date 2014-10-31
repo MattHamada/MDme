@@ -30,8 +30,8 @@ describe Clinic do
   it { should be_valid }
 
   describe '#set_location_coordinates' do
-    #comment out stub to call real api
     before do
+      #comment out stub to call real api
       @clinic.stub(:call_google_api_for_location).and_return(
           {
               "results" => [
