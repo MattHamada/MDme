@@ -99,9 +99,6 @@ class Patient < ActiveRecord::Base
     self.appointments.within_2_hours.not_past.confirmed.order_by_time.first
   end
 
-  # TODO should add more safeguards than this to verify that this is the correct
-  #TODO# appointment to check into other than it is the next chronologically
-
   # Returns next confirmed appointment for patient to check in
   def checkin_appointment(clinic)
     self.appointments.in_clinic(clinic).today.not_past.confirmed.
