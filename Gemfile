@@ -13,14 +13,15 @@ gem 'font-awesome-rails'
 
 #gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails',
 #                              :github => 'anjlab/bootstrap-rails',
-#
 #                              :branch => '3.0.0'
+
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 #gem 'rocket_pants', '~> 1.9.1' #api
 gem 'uuid'
+gem 'pushmeup'
 
 gem 'rabl'
 gem 'oj'

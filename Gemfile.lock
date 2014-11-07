@@ -178,6 +178,9 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pushmeup (0.3.0)
+      httparty
+      json
     rabl (0.9.3)
       activesupport (>= 2.3.14)
     rack (1.5.2)
@@ -323,6 +326,7 @@ DEPENDENCIES
   oj
   paperclip (~> 4.1)
   pg (= 0.15.1)
+  pushmeup
   rabl
   rails (= 4.1.1)
   rails_12factor (= 0.0.2)

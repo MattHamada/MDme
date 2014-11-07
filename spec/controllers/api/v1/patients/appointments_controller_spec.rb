@@ -1,3 +1,10 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 4/11/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
 require 'spec_helper'
 include ApiHelpers
 

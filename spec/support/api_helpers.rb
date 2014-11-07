@@ -1,5 +1,5 @@
 module ApiHelpers
-
+ # TODO must be a way to combine these into one method with ruby magic
   def get_bad_requests(action, config = {})
     it 'should have failed response with no api token' do
       config[:format] = 'json'

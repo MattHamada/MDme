@@ -94,6 +94,7 @@ MDme::Application.routes.draw do
         resources :doctors, controller: 'doctors', only: [:index, :show]
         resources :appointments, controller: 'appointments', only: [:create, :update, :show, :index]
         resources :clinics, controller: 'clinics', only: [:index, :show]
+        resources :devices, controller: 'devices', only: [:create]
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
 
       end

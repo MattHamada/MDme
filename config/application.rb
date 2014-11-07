@@ -64,6 +64,12 @@ module MDme
 
     #Allow jsonp non-get http requests
     # config.middleware.swap(Rack::MethodOverride,Rack::RestfulJsonpMiddleware)
+
+    #pushmeup settings for android
+    GCM.host = 'https://android.googleapis.com/gcm/send'
+    GCM.format = :json
+    GCM.key = ENV['GCM_API_KEY']
+
   end
 end
 

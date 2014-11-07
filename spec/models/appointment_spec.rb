@@ -82,7 +82,7 @@ describe Appointment do
   #       @appointment2.should_not be_valid
   #     end
   #   end
-  # end
+  end
 
   it 'should show up in given date of today' do
     Appointment.given_date(DateTime.now + 30.minutes).should

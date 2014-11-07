@@ -39,7 +39,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     end
   end
 
-  # POST www.mdme.us/api/v1/patients/:patient_id/appointments/new
+  # POST www.mdme.us/api/v1/patients/:patient_id/appointments
   def create
     p = appointment_params
     date_time = DateTime.parse(p[:appointment_time])

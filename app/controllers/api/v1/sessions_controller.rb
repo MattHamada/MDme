@@ -20,7 +20,9 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
       render status: 200,
              json: { success: true,
                      info: 'Logged in',
-                     data: { api_token: api_token } }
+                     data: { api_token: api_token,
+                             id: patient.id }
+             }
     else
       render status: 401,
              json: { success: false,

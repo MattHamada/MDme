@@ -16,6 +16,7 @@ class Patient < ActiveRecord::Base
   include CookieCrypt, UserCommonInstance
 
   belongs_to  :doctor
+  has_many :devices
   has_many :appointments, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
