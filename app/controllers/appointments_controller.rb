@@ -15,6 +15,8 @@ class AppointmentsController < ApplicationController
   # If the patient denys taking earlier time, a new mailer is sent to the next
   # available patient
   # GET mdme.us/appointments/:id/fill_appointment
+
+  # TODO add safeguard so you cannot alter url to change appointment time
   def fill_appointment
     @appointment = Appointment.find(params[:id])
     access_key = params[:access_key]
