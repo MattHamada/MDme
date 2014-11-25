@@ -1,4 +1,4 @@
-<div class="container-fluid container-black-logo  <%= 'container-larger-sized' if params[:action] == 'home' %> ">
+<div class="container-fluid container-black-logo  <%= 'container-smaller-sized' if params[:action] == 'home' %> ">
   <div class="row">
     <div class="col-md-3">
       <div class="breadcrumbs">
@@ -17,19 +17,21 @@
         scheduling simplified
       </h4>
     </div>
+    <div class="row">
+      <div class="col-md-12 button-blue-text" style="text-align: center; margin-top: 2em;">
+        <%= link_to 'Learn More', about_path, class:'button_links button_inverse btn btn-large' %>
+      </div>
+    </div>
   </div>
 
   <%= render 'shared/flash' %>
 
-  <div class="row">
-    <div class="col-md-12 button-blue-text" style="text-align: center; margin-top: 10em;">
-      <%= link_to 'Learn More', about_path, class:'button_links button_inverse btn btn-large' %>
-    </div>
-  </div>
+
 </div>
 
 
-<div class="container-fluid container-white container-smaller-sized">
+<div class="container-fluid container-home-image container-white container-larger-sized">
+
  <div class="row">
    <div class="col-md-8 col-md-offset-2" style="margin-top: 10em;">
      <hr id="menu-topbar"/>

@@ -68,7 +68,7 @@ a:hover {
 .container-black-logo {
   background-image: image-url('MDME_logo.svg');
   background-repeat: no-repeat;
-  background-position: 95% -110%;
+  background-position: 95% 50%;
 
 }
 
@@ -237,11 +237,16 @@ input.signin-form{
 }
 
 .container-larger-sized {
-  height: 450px;
+  height: 550px;
 }
 
 .container-smaller-sized {
-  height: 400px;
+  height: 300px;
+}
+
+.container-home-image {
+  background-image: asset-url('waitingroom.jpg');
+  background-repeat: no-repeat;
 }
 .container-white {
   background-color: white;
