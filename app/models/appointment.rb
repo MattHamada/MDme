@@ -194,6 +194,16 @@ class Appointment < ActiveRecord::Base
     end
   end
 
+  def push_delay_notification
+    droid_destinations = patient.devices.map do |device|
+      device.token if device.platform == 'android' && device.enabled
+    end
+    data = {:type => 'delay', :message =>
+      "Your appointment time has changed. Your appointment with #{appointment.clinic.name}
+      is now set to #{appointment.delayed_date_time_ampm}" }
+    GCM.send_notification(droid_destinations, data)
+  end
+
   # Adds time to each appointment found by #remaining_appointments_today due
   # to a delay.  Also signals to send delay notification to patient
   # ==== Parameters
