@@ -8,11 +8,14 @@
 # +PasswordResetController+ for Doctors, Patients, and Admins
 class PasswordResetController < ApplicationController
 
+  # works on all subdomains
+  # GET x.mdme.us/forgot_password
   def new
 
   end
 
   # Generates a random password and emails it to the user
+  # POST x.mdme.us/forgot_password
   def create
     email = params[:password_reset][:email]
     if request.subdomain == 'doctors'

@@ -8,14 +8,13 @@
 # <tt>Api::V1::Patients::AppointmentsController</tt> for
 # www.mdme.us/api/v1/patients/:patient_id/appointments
 # All calls need to pass :api_token for validation
-class Api::V1::Patients::AppointmentsController < ApplicationController
+class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
 
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
-  #TODO make this index
   # GET www.mdme.us/api/v1/patients/:patient_id/appointments/tasks
-  def tasks
+  def index
     @tasks = [{title: 'Confirmed Appointments'},
               {title: 'New Request'},
               {title:'Open Requests'}]
@@ -40,7 +39,7 @@ class Api::V1::Patients::AppointmentsController < ApplicationController
     end
   end
 
-  # POST www.mdme.us/api/v1/patients/:patient_id/appointments/new
+  # POST www.mdme.us/api/v1/patients/:patient_id/appointments
   def create
     p = appointment_params
     date_time = DateTime.parse(p[:appointment_time])

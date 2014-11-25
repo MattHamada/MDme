@@ -126,8 +126,7 @@ class Appointment < ActiveRecord::Base
     end
   end
 
-  # TODO I think view helpers have a dedicated project location
-  # A view helper.  Converts time chosen from selection box on appointment
+  # Converts time chosen from selection box on appointment
   # creation or editing pages from selection indicies to minutes.
   # ==== Parameters
   # * +selection+ - The selection index chosen
@@ -193,6 +192,16 @@ class Appointment < ActiveRecord::Base
       PatientMailer.appointment_delayed_email(patient,
                                               appointment_delayed_time).deliver
     end
+  end
+
+  def push_delay_notification
+    droid_destinations = patient.devices.map do |device|
+      device.token if device.platform == 'android' && device.enabled
+    end
+    data = {:type => 'delay', :message =>
+      "Your appointment time has changed. Your appointment with #{appointment.clinic.name}
+      is now set to #{appointment.delayed_date_time_ampm}" }
+    GCM.send_notification(droid_destinations, data)
   end
 
   # Adds time to each appointment found by #remaining_appointments_today due

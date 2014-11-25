@@ -1,3 +1,12 @@
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 3/28/14
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
+
+# <tt>Patients::AppointmentsController</tt>
+# for mdme.us/patients/:patient_id/appointments
 class Patients::AppointmentsController < ApplicationController
 
   before_filter :find_patient, except: [:open_appointments]
@@ -5,6 +14,7 @@ class Patients::AppointmentsController < ApplicationController
   before_filter :set_active_navbar_and_crumbs
   before_filter :load_upcoming_appointment
 
+  # GET mdme.us/patients/:patient_id/appointments
   def index
     @appointments = @patient.appointments.
                              confirmed.
@@ -12,6 +22,7 @@ class Patients::AppointmentsController < ApplicationController
                              includes([:doctor, :clinic]).order_by_time
   end
 
+  # GET mdme.us/patients/:patient_id/appointments/new
   def new
     add_breadcrumb 'New Appointment', new_patient_appointment_path(@patient)
 
@@ -19,6 +30,7 @@ class Patients::AppointmentsController < ApplicationController
     @open_times = []
   end
 
+  # POST mdme.us/patients/:patient_id/appointments/:id
   def create
     input = appointment_params
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
@@ -47,10 +59,13 @@ class Patients::AppointmentsController < ApplicationController
     end
   end
 
+  # Shows patient's requests that have not yet been confirmed.
+  # GET mdme.us/patients/:patient_id/appointments/open_requests
   def open_requests
     @appointments = @patient.appointments.requests.not_past.includes(:doctor)
   end
 
+  # GET mdme.us/patients/:patient_id/appointments/:id/edit
   def edit
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
@@ -58,6 +73,7 @@ class Patients::AppointmentsController < ApplicationController
     render partial: 'patients/appointments/ajax_edit' if request.xhr?
   end
 
+  # PATCH mdme.us/patients/:patient_id/appointments/:id
   def update
     @appointment = appointment
     input = appointment_params
@@ -80,6 +96,8 @@ class Patients::AppointmentsController < ApplicationController
     end
   end
 
+  # will signal to fill the appointment time if the appointment is not a request
+  # DELETE mdme.us/patients/:patient_id/appointments/:id
   def destroy
     @appointment = appointment
     unless @appointment.request
@@ -94,11 +112,14 @@ class Patients::AppointmentsController < ApplicationController
     end
   end
 
+  # GET mdme.us/patients/:patient_id/appointments/:id
   def show
     @appointment = appointment
     render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
+
+  # TODO is this method depricated? Can it be removed?
   # ajax load when creating new appointment to see open times when given a date
   def open_appointments
     # input = appointment_params

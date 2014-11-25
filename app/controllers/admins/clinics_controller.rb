@@ -5,7 +5,7 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# <tt>Admins::ClinicsController</tt> for admin.mdme.us/clinics
+# <tt>Admins::ClinicsController</tt> for admin.mdme.us/admins/:admin_id/clinics
 class Admins::ClinicsController < ApplicationController
 
   before_filter :find_admin
@@ -13,6 +13,8 @@ class Admins::ClinicsController < ApplicationController
   before_filter :require_admin_login
   before_filter :set_active_navbar
 
+  # Generates a QR code used for checking in from mobile
+  # GET admin.mdme.us/admins/:admin_id/clinics/:id
   def show
     url = "https://www.mdme.us/clinics/#{@clinic.slug}/checkin"
     @qr = RQRCode::QRCode.new(url, size: 6)

@@ -5,20 +5,24 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# <tt>Admins::DepartmentsController</tt> for admin.mdme.us/departments
+# <tt>Admins::DepartmentsController</tt>
+# for admin.mdme.us/admins/:admin_id/departments
 class Admins::DepartmentsController < ApplicationController
 
   before_filter :find_admin
   before_filter :require_admin_login
 
+  # GET admin.mdme.us/admins/:admin_id/departments
   def index
     @departments = @admin.clinic_departments
   end
 
+  # GET admin.mdme.us/admins/:admin_id/departments/new
   def new
     @department = Department.new
   end
 
+  # POST admin.mdme.us/admins/:admin_id/departments
   def create
     @department = Department.new(department_params)
     @department.clinic_id = current_admin.clinic_id
@@ -32,17 +36,21 @@ class Admins::DepartmentsController < ApplicationController
 
   end
 
+  # GET admin.mdme.us/admins/:admin_id/departments/:id
   def show
     @department = department
     @doctors = @department.doctors.in_clinic(@department)
   end
 
+  # GET admin.mdme.us/admins/:admin_id/departments/:id/edit
   def edit
   end
 
+  # PATCH admin.mdme.us/admins/:admin_id/departments/:id
   def update
   end
 
+  # DELETE admin.mdme.us/admins/:admin_id/departments/:id
   def destroy
     @department = department
     if @department.doctors.empty?

@@ -22,7 +22,7 @@
               <div class="form-group">
                 <div class='col-xs-6 col-xs-offset-3'>
                 <%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>
-                <%= collection_select(:appointment, :doctor_id, Doctor.in_passed_clinic_model(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>
+                <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>
               </div>
                 </div>
               <div class="form-group">

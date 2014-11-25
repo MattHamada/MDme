@@ -6,7 +6,7 @@
 # Proprietary and confidential.
 
 
-# +AppointmentsController+ for handling appointments
+# +AppointmentsController+ for for mdme.us/appointments
 class AppointmentsController < ApplicationController
 
   # Called when a patient accepts notice by email that they can take earlier
@@ -14,6 +14,9 @@ class AppointmentsController < ApplicationController
   # the appointment being moved up is the one specified in the email.
   # If the patient denys taking earlier time, a new mailer is sent to the next
   # available patient
+  # GET mdme.us/appointments/:id/fill_appointment
+
+  # TODO add safeguard so you cannot alter url to change appointment time
   def fill_appointment
     @appointment = Appointment.find(params[:id])
     access_key = params[:access_key]
@@ -25,8 +28,7 @@ class AppointmentsController < ApplicationController
       if wants_to_fill == 'true'
         @appointment.update_attribute(
             :appointment_time, DateTime.parse(new_time))
-        #TODO make dedicated email for filling opening instead of using delayed email
-        PatientMailer.appointment_delayed_email(
+        PatientMailer.appointment_update_time_email(
             @appointment.patient, DateTime.parse(new_time)).deliver
       else
         Appointment.fill_canceled_appointment(

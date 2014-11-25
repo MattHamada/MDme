@@ -6,12 +6,14 @@
 # Proprietary and confidential.
 
 # +PatientsController+ for handling Patient pages on default subdomain (www)
+# www.mdme.us/patients
 class PatientsController < ApplicationController
 
   before_filter :find_patient
   before_filter :require_patient_login
   before_filter :get_upcoming_appointment
 
+  # GET www.mdme.us/patients/:id
   def show
     @active = :profile
     add_breadcrumb 'Home', patients_path
@@ -27,6 +29,7 @@ class PatientsController < ApplicationController
     end
   end
 
+  # GET www.mdme.us/patients/:id/edit
   def edit
     add_breadcrumb 'Home', patients_path
     add_breadcrumb 'My Profile', patient_path(@patient)
@@ -35,6 +38,7 @@ class PatientsController < ApplicationController
     @current_user = @patient
   end
 
+  # POST www.mdme.us/patients/:id
   def update
     @current_user = @patient
     #skip password validation on update if validated here
@@ -45,21 +49,23 @@ class PatientsController < ApplicationController
         flash[:success] = 'Patient Successfully Updated'
         redirect_to patient_path(@patient)
       else
-        flash.now[:danger] = 'Invalid Parameters Entered'
+        flash.now[:danger] = 'Invalid parameters entered'
         render 'edit'
       end
     else
-      flash[:danger] = 'Invalid password entered.'
+      flash[:danger] = 'Invalid password entered'
       render 'edit'
     end
 
   end
 
+  # GET www.mdme.us/patients
   def index
     @active = :home
     add_breadcrumb 'Home', patients_path
   end
 
+  # GET www.mdme.us/patients/:id/changepassword
   def change_password
     @active = :profile
     add_breadcrumb 'Home', patients_path
@@ -67,6 +73,7 @@ class PatientsController < ApplicationController
     add_breadcrumb 'Change Password', patient_password_path(@patient)
   end
 
+  # POST www.mdme.us/patients/:id/updatepassword
   def update_password
     if @patient.authenticate(params[:old_password])
       if @patient.update_attributes(password: params[:new_password],
@@ -74,7 +81,7 @@ class PatientsController < ApplicationController
         flash[:success] = 'Password updated'
         redirect_to patient_path(@patient)
       else
-        flash.now[:danger] = 'Unable to change password'
+        flash[:danger] = 'Unable to change password'
         render 'change_password'
       end
     else
@@ -91,24 +98,23 @@ class PatientsController < ApplicationController
 
   private
 
-  def patient_params
-    params.require(:patient).permit(:first_name,
-                                    :last_name,
-                                    :email,
-                                    :password,
-                                    :password_confirmation,
-                                    :doctor_id,
-                                    :home_phone,
-                                    :work_phone,
-                                    :avatar)
-  end
+    def patient_params
+      params.require(:patient).permit(:first_name,
+                                      :last_name,
+                                      :email,
+                                      :password,
+                                      :password_confirmation,
+                                      :doctor_id,
+                                      :home_phone,
+                                      :work_phone,
+                                      :avatar)
+    end
 
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:id])
     end
     helper_method :find_patient
 
-  #TODO make out of 2 hours, progress more times
 
     def get_upcoming_appointment
       @upcoming_appointment = @patient.upcoming_appointment

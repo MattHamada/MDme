@@ -69,6 +69,7 @@ class Doctor < ActiveRecord::Base
 
 
   # Finds all other doctors in the same clinic as +model+
+  # ==== Parameters
   # * +model+ - model passed to get get doctors in same clinic.  Model
   # can be clinic or have a +clinic_id+
   def self.in_clinic(model)
@@ -79,26 +80,16 @@ class Doctor < ActiveRecord::Base
       model.clinics.each { |c| clinic_ids << c.id }
       #self.find_by_clinic_id(clinic_ids)
       self.where(clinic_id: clinic_ids)
+    elsif model.is_a?(Clinic)
+      self.where(clinic_id: model.id)
     else
       self.where(clinic_id: model.clinic_id)
     end
   end
 
-  #TODO merge with in_clinic; add second elsif model.is_a?(Clinic)
-  # Same as #in_clinic but for passing a clinic instance in
-  def self.in_passed_clinic_model(clinic)
-    Doctor.where(clinic_id: clinic.id)
-  end
-
-  # TODO convert to an ActiveRecord_Relation if possible
-  # Returns an array (not <tt>ActiveRecord_Relation</tt>) of doctors
-  # who have appointments today
+  # Returns doctors who have confirmed appointments today
   def self.with_appointments_today
-    doctors = []
-    Doctor.find_each do |d|
-      doctors << d unless d.appointments.today.load.empty?
-    end
-    doctors
+    Doctor.joins(:appointments).merge(Appointment.today.confirmed).uniq
   end
 
   # Returns all doctors in the passed department instance
@@ -176,7 +167,6 @@ class Doctor < ActiveRecord::Base
     end
   end
 
-  #TODO move to dedicated view helpers location
   # View helpers
   def avatar_thumb_url
     avatar.url(:thumb)

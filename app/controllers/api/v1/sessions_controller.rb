@@ -6,7 +6,7 @@
 # Proprietary and confidential.
 
 # <tt>Api::V1::SessionsController</tt> for www.mdme.us/api/v1/sessions
-class Api::V1::SessionsController < ApplicationController
+class Api::V1::SessionsController < Api::V1::ApplicationController
   skip_before_filter :verify_authenticity_token,
                      :if => Proc.new { |c| c.request.format ==
                                        'application/json' }
@@ -20,7 +20,9 @@ class Api::V1::SessionsController < ApplicationController
       render status: 200,
              json: { success: true,
                      info: 'Logged in',
-                     data: { api_token: api_token } }
+                     data: { api_token: api_token,
+                             id: patient.id }
+             }
     else
       render status: 401,
              json: { success: false,

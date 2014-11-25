@@ -5,7 +5,7 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# +DoctorsController+ for handing doctors subdomain of mdme.us
+# +DoctorsController+ for handing doctors subdomain doctors.mdme.us/doctors
 #
 class DoctorsController < ApplicationController
 
@@ -13,21 +13,25 @@ class DoctorsController < ApplicationController
   before_filter :require_doctor_login, except: [:signin, :open_appointments]
 
   # Cannot access sign in page while signed in.  Will redirect to #show
+  # GET doctors.mdme.us/signin
   def signin
     if doctor_signed_in?
       redirect_to doctor_path(current_doctor)
     end
   end
 
-  #Shows all doctors in the clinic of the logged in doctor
+  # Shows all doctors in the clinic of the logged in doctor
+  # GET doctors.mdme.us/doctors
   def index
     @doctors = Doctor.in_clinic(@doctor).includes(:department)
   end
 
+  # GET doctors.mdme.us/doctors/:id/edit
   def edit
     @current_user = @doctor
   end
 
+  # PATCH doctors.mdme.us/doctors/:id
   def update
     @current_user = @doctor
     if @doctor.authenticate(params[:verify][:verify_password])
@@ -49,12 +53,15 @@ class DoctorsController < ApplicationController
 
   end
 
+  # GET doctors.mdme.us/doctors/:id
   def show
   end
 
+  # GET doctors.mdme.us/doctors/:id/changepassword
   def change_password
   end
 
+  # POST doctors.mdme.us/doctors/:id/updatepassword
   def update_password
     if @doctor.authenticate(params[:old_password])
       if @doctor.update_attributes(password: params[:new_password],
@@ -72,8 +79,10 @@ class DoctorsController < ApplicationController
   end
 
   #TODO move to an API controller?
+  #TODO rename method or route to be the same
   # API orphan to get open appointment times for a given doctor for
   # creating appointments
+  # GET doctors.mdme.us/doctors/opentimes
   def open_appointments
     input = params[:appointment]
     @date = Date.parse(input[:date])

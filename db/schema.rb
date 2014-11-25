@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141018155247) do
+ActiveRecord::Schema.define(version: 20141104163421) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -87,6 +87,15 @@ ActiveRecord::Schema.define(version: 20141018155247) do
 
   add_index "departments", ["clinic_id"], name: "index_departments_on_clinic_id"
   add_index "departments", ["slug"], name: "index_departments_on_slug"
+
+  create_table "devices", force: true do |t|
+    t.integer  "patient_id"
+    t.string   "token"
+    t.string   "platform"
+    t.boolean  "enabled",    default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "doctors", force: true do |t|
     t.string   "first_name"

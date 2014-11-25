@@ -1,9 +1,9 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
-#
-# Routing file
-#
-
+# MDme Rails master application
+# Author:: Matt Hamada (maito:mattahamada@gmail.com)
+# 10/23/13
+# Copyright:: Copyright (c) 2014 MDme
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential.
 
 MDme::Application.routes.draw do
   #TODO change doctors subdomain to clinical
@@ -54,7 +54,7 @@ MDme::Application.routes.draw do
 
   get 'clinics/:id/checkin/:patient_id'                  => 'clinics#checkin',                         as: :clinic_checkin
 
-  get 'appointments/:id/change_time'                     => 'appointments#fill_appointment',           as: :appointment_change_time
+  get 'appointments/:id/fill_appointment'                => 'appointments#fill_appointment',           as: :fill_appointment
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
@@ -90,11 +90,11 @@ MDme::Application.routes.draw do
       put 'patients/update' => 'patients#update', as: 'patient_update_profile'
 
       namespace :patients do
-        get 'appointments/tasks' => 'appointments#tasks', as: 'appointments_tasks'
         get 'appointments/confirmed' => 'appointments#confirmed_appointments', as: 'confirmed_appointments'
         resources :doctors, controller: 'doctors', only: [:index, :show]
-        resources :appointments, controller: 'appointments', only: [:create, :update, :show]
+        resources :appointments, controller: 'appointments', only: [:create, :update, :show, :index]
         resources :clinics, controller: 'clinics', only: [:index, :show]
+        resources :devices, controller: 'devices', only: [:create]
         get 'departments' => 'doctors#department_index', as: 'doctors_departments'
 
       end

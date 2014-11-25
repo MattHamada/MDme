@@ -10,7 +10,6 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  #TODO make base apiapplicatoncontroller with null session enabled
   protect_from_forgery with: :exception
 
   include SessionsHelper
@@ -82,6 +81,8 @@ class ApplicationController < ActionController::Base
   end
 
   private
+    # Makes browsers not think site is sketchy when ssl turned off.
+    # Disable this when ssl back on
     def expire_hsts
       response.headers["Strict-Transport-Security"] = 'max-age=0' if
           Rails.env.production?

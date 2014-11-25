@@ -8,17 +8,11 @@
 # <tt>Api::V1::Patients::DoctorsController</tt> for
 # www.mdme.us/api/v1/patients/:patient_id/doctors
 # All calls need to pass :api_token for validation
-class Api::V1::Patients::DoctorsController < ApplicationController
-  #TODO probably need to make doctors a subsection of clinics and not patients
+class Api::V1::Patients::DoctorsController < Api::V1::ApplicationController
+  #TODO probably need to make doctors a subsection of clinics and not patients. ASK andrew
+
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
-
-
-  #TODO this should be in a clinic browsing api not for patients
-  # def department_index
-  #   @departments = Department.in_clinic(@patient)
-  #   @info = 'Departments'
-  # end
 
   #GET www.mdme.us/api/v1/patients/:patient_id/doctors
   def index

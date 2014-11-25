@@ -7,7 +7,7 @@
 
 # <tt>Api::V1::PatientsController</tt> for www.mdme.us/api/v1/patients
 # All calls need to pass :api_token for validation
-class Api::V1::PatientsController < ApplicationController
+class Api::V1::PatientsController < Api::V1::ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 

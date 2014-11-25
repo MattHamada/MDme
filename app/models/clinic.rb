@@ -5,7 +5,9 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# +Clinic+ model
+# +Clinic+ model.  Stores geolocation of clinic obtianed from
+# Google's geocode api.  Coordinates will be null if no valid address
+# information is supplied
 class Clinic < ActiveRecord::Base
   has_and_belongs_to_many :patients
   has_many :appointments
@@ -22,15 +24,11 @@ class Clinic < ActiveRecord::Base
   # Order clinics alphabetically by name
   scope :ordered_name, -> { order(name: :asc) }
 
-  #Google developer api key for MDme webserver
-  #TODO move this to a dedicated spot not just buried in clinic model
-  @api_key = "AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k"
-
   # Called on clinic creation
   # Calls google geolocation api for latitude/longitude coordinates of
   # the clinic address.  Grabs NE and SW viewport coordinates for easier
   # google map rendering
-  # TODO handle invalid addresses / null coordinates
+  # will not change coordinates if invalid address supplied
   def set_location_coordinates
     address = "#{self.address1}+" +
                         "#{self.address2 unless self.address2.nil?}+" +
@@ -41,22 +39,25 @@ class Clinic < ActiveRecord::Base
     address.gsub!(' ', '+')
     response = call_google_api_for_location(address)
     json = JSON.parse(response)
-    #latitude = json['results'][0]['geometry']['location']['lat']
-    #longitude = json['results'][0]['geometry']['location']['lng']
+    unless json['results'].empty?
+      #latitude = json['results'][0]['geometry']['location']['lat']
+      #longitude = json['results'][0]['geometry']['location']['lng']
+      ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
+      ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
+      sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
+      sw_longitude = json['results'][0]['geometry']['viewport']['southwest']['lng']
+      self.ne_latitude  = ne_latitude  unless ne_latitude.nil?
+      self.ne_longitude = ne_longitude unless ne_longitude.nil?
+      self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
+      self.sw_longitude = sw_longitude unless sw_longitude.nil?
+    end
 
-    ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
-    ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
-    sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
-    sw_longitude = json['results'][0]['geometry']['viewport']['southwest']['lng']
-    self.ne_latitude  = ne_latitude  unless ne_latitude.nil?
-    self.ne_longitude = ne_longitude unless ne_longitude.nil?
-    self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
-    self.sw_longitude = sw_longitude unless sw_longitude.nil?
   end
 
   # Helper for #set_location_coordinates
   def call_google_api_for_location(address)
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{@api_key}"
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{
+                                          address}&key=#{ENV['GOOGLE_API_KEY']}"
     response = HTTParty.get url
     response.body
   end

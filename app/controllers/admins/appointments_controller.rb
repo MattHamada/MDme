@@ -28,14 +28,14 @@ class Admins::AppointmentsController < ApplicationController
 
   end
 
-  # GET admin.mdme.us/admins/:admin_id/appointment/:id/edit
+  # GET admin.mdme.us/admins/:admin_id/appointments/:id/edit
   def edit
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
     @open_times << @appointment.time_selector
   end
 
-  # PATCH admin.mdme.us/admins/:admin_id/appointment/:id/
+  # PATCH admin.mdme.us/admins/:admin_id/appointments/:id/
   def update
     @appointment = appointment
     input_params = appointment_params
@@ -52,7 +52,7 @@ class Admins::AppointmentsController < ApplicationController
     end
   end
 
-  # DELETE admin.mdme.us/admins/:admin_id/appointment/:id/
+  # DELETE admin.mdme.us/admins/:admin_id/appointments/:id/
   def destroy
     @appointment = appointment
     if @appointment.destroy
@@ -66,7 +66,7 @@ class Admins::AppointmentsController < ApplicationController
   end
 
   # Ajax load - For open appointments given selected doctor
-  # GET  admin.mdme.us/admins/:admin_id/appointments/new_browse
+  # GET admin.mdme.us/admins/:admin_id/appointments/new_browse
   def new_browse
     input = appointment_params
     @date = Date.parse(input[:date])
@@ -77,7 +77,7 @@ class Admins::AppointmentsController < ApplicationController
 
   # Ajax load - Shows all confirmed appointments on a given date for  index page
   # Expects the param :day passed as a string date to parse
-  # GET  admin.mdme.us/admins/:admin_id/appointments/browse
+  # GET admin.mdme.us/admins/:admin_id/appointments/browse
   def browse
     input = appointment_params
     date = Date.parse(input[:day])
@@ -151,7 +151,7 @@ class Admins::AppointmentsController < ApplicationController
     redirect_to appointment_approval_path(@admin.id)
   end
 
-  # GET admin.mdme.us/admins/:admin_id/appointment/:id
+  # GET admin.mdme.us/admins/:admin_id/appointments/:id
   def show
     @appointment = appointment
     render partial: 'ajax_show' if request.xhr?

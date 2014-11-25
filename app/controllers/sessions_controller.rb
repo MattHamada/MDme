@@ -9,6 +9,7 @@
 class SessionsController < ApplicationController
 
   # Signin page for patients on www subdomain
+  # GET www.mdme.us/signin
   def new
     @active = :signin
     if patient_signed_in?
@@ -22,6 +23,7 @@ class SessionsController < ApplicationController
 
   # All web logins go through here regardless of subdomain
   # Stores session info in cookie to keep logged in
+  # POST www.mdme.us/sessions
   def create
     if request.subdomain == 'doctors'
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
@@ -58,6 +60,7 @@ class SessionsController < ApplicationController
     end
   end
 
+  # DELETE www.mdme.us/sessions/:id
   def destroy
     if request.subdomain == 'doctors'
       sign_out :doctor
