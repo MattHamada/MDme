@@ -194,13 +194,29 @@ class Appointment < ActiveRecord::Base
     end
   end
 
+  # Will send GCM message to android devices registered to patient
+  # Informs patient of delay and new time
+  # TODO also add iphone support for future iphone app
   def push_delay_notification
     droid_destinations = patient.devices.map do |device|
       device.token if device.platform == 'android' && device.enabled
     end
-    data = {:type => "DELAY", :message =>
+    data = {:type => "DELAY", appointment_id => id, :message =>
       "Your appointment time has changed. Your appointment with #{clinic.name}" +
       " is now set to #{delayed_date_time_ampm}" }
+    GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+  end
+
+
+  # Will send GCM message to android devices registered to patient
+  # Informs patient their appointment is ready
+  # TODO also add iphone support for future iphone app
+  def push_notify_ready
+    droid_destinations = patient.devices.map do |device|
+      device.token if device.platform == 'android' && device.enabled
+    end
+    data = {:type => "READY", :message =>
+        "Your appointment with #{clinic.name} at #{delayed_date_time_ampm} is ready" }
     GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
   end
 

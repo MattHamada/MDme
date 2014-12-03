@@ -38,14 +38,15 @@ MDme::Application.routes.draw do
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search
-  get  'admins/:admin_id/appointments/browse'            => 'admins/appointments#browse',              as: :appointments_browse
+  get  'admins/:admin_id/appointments/browse'            => 'admins/appointments#browse',              as: :admin_appointments_browse
+  get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
   get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
   get  'admins/:admin_id/appointments/ondate'            => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
   get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
   post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
   post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
-
+  post 'admins/:admin_id/appointments/notify_ready'      => 'admins/appointments#notify_ready',        as: :notify_appointment_ready
 
   get  'doctors/opentimes'                               => 'doctors#open_appointments',               as: :doctor_open_appointments
   get  'doctors/:id/public'                              => 'doctors#show_public',                     as: :doctor_public_show
