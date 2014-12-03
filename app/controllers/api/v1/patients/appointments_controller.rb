@@ -13,7 +13,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/tasks
+  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/
   def index
     @tasks = [{title: 'Confirmed Appointments'},
               {title: 'New Request'},

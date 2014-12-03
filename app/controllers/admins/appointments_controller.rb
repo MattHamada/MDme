@@ -173,6 +173,7 @@ class Admins::AppointmentsController < ApplicationController
     if appointment.update_attribute(:appointment_delayed_time, new_time)
       flash[:success] = "Appointments updated"
       appointment.send_delay_email
+      appointment.push_delay_notification
     else
       flash[:warning] = "An error has occured please try again."
     end
