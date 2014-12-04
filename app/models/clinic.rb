@@ -55,6 +55,7 @@ class Clinic < ActiveRecord::Base
   end
 
   # Helper for #set_location_coordinates
+  # TODO possibly make the call in a thread
   def call_google_api_for_location(address)
     url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{
                                           address}&key=#{ENV['GOOGLE_API_KEY']}"
