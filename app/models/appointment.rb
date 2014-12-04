@@ -204,7 +204,9 @@ class Appointment < ActiveRecord::Base
     data = {:type => "DELAY", appointment_id => id, :message =>
       "Your appointment time has changed. Your appointment with #{clinic.name}" +
       " is now set to #{delayed_date_time_ampm}" }
-    GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    Thread.new do
+      GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    end
   end
 
 
@@ -217,7 +219,9 @@ class Appointment < ActiveRecord::Base
     end
     data = {:type => "READY", :message =>
         "Your appointment with #{clinic.name} at #{delayed_date_time_ampm} is ready" }
-    GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    Thread.new do
+      GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    end
   end
 
   # Adds time to each appointment found by #remaining_appointments_today due
