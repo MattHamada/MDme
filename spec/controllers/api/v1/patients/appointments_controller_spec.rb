@@ -35,6 +35,23 @@ describe Api::V1::Patients::AppointmentsController do
       end
     end
 
+    describe 'GET #show' do
+      get_bad_requests :show,  {id: 1}
+      before do
+        clinic.save
+        doctor.save
+        appointment.save
+      end
+      it 'should respond with json of appointment info with valid api token' do
+        config = { format: 'json', api_token: @token, id: appointment.id }
+        get :show, config
+        expect(response).to be_success
+        expect(json['data']['appointment']).not_to be_empty
+        expect(json['data']['appointment']['date']).to eq appointment.date
+
+      end
+    end
+
     describe 'GET #confirmed_appointments' do
       before do
         doctor.save

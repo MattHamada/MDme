@@ -15,6 +15,7 @@ class Clinic < ActiveRecord::Base
   has_many :departments
   has_many :doctors
 
+
   validates  :name, presence: true, length: { maximum: 30 }
   validates  :slug, presence: true, uniqueness: true;
 

@@ -56,7 +56,7 @@ class Api::V1::PatientsController < Api::V1::ApplicationController
   end
 
   def verify_api_token
-    @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]));
+    @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]))
     if @patient.nil?
       render status: 401,
              json: { success: false,

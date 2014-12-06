@@ -18,6 +18,8 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :doctor,  prefix: true
   delegate :full_name, to: :patient, prefix: true
   delegate :name,      to: :clinic,  prefix: true
+  delegate :avatar_thumb_url, to: :doctor, prefix: true
+
 
   # Appointments must be at a unique time for patient and doctor in the future
   validates :appointment_time, presence: true
@@ -201,7 +203,7 @@ class Appointment < ActiveRecord::Base
     droid_destinations = patient.devices.map do |device|
       device.token if device.platform == 'android' && device.enabled
     end
-    data = {:type => "DELAY", appointment_id => id, :message =>
+    data = {:type => "DELAY", :appointment_id => id, :message =>
       "Your appointment time has changed. Your appointment with #{clinic.name}" +
       " is now set to #{delayed_date_time_ampm}" }
     Thread.new do

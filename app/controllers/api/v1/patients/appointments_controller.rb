@@ -20,9 +20,9 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
               {title:'Open Requests'}]
   end
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointment/:id
+  # GET www.mdme.us/api/v1/patients/appointments/:id
   def show
-
+    @appointment = Appointment.find(params[:id])
   end
 
   # GET www.mdme.us/api/v1/patients/:patient_id/appointments/confirmed_appointments
@@ -57,7 +57,6 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
                      info: "The following #{@appointment.errors.count} error(s) occured",
                      data: {errors: errors} }
     end
-
   end
 
   # POST www.mdme.us/api/v1/patients/:patient_id/appointment/:id
