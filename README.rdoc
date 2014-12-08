@@ -17,7 +17,7 @@ You should not need to install postgreSQL to get things running locally.
 
 If using any image uploading features of MDme it is required that *ImageMagick*
 is installed to allow for modifying/resizing the raw image uploaded.
-ImageMagick can be found here http://www.imagemagick.org/
+ImageMagick can be found here http://www.imagemagick.org
 
 Because this app runs on multiple subdomains it cannot be accessed simply by
 127.0.0.1  The routes are bound to www, admin, or doctors subdomains; in
@@ -38,7 +38,7 @@ mdme.tk:7171 as a test host url.  You will likely have to add this domain to
 your host file, as well as www.mdme.tk admin.mdme.tk and doctors.mdme.tk to
 point at 127.0.0.1
 If you run the test suite after cloning and something fails please contact Matt
-Hamada (mailto: ermacaz@gmail.com).  I only have one development machine so
+Hamada (mailto:ermacaz@gmail.com).  I only have one development machine so
 things may break on other machines/environments.
 
 == Comitting
