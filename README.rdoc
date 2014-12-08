@@ -26,7 +26,7 @@ your host file to include a domain with those subdomains pointing at
 <tt>127.0.0.1:3000</tt> in order to access the development server.
 
 == Database setup
-The database schema should be setup after running <tt>rake db:migrate</tt>
+The database schema should be ready after running <tt>rake db:migrate</tt>
 To load sample data, you can run rake <tt>db:populate</tt>.  Running
 <tt>rake db:populate_appointments</tt> will add additional appointments spanning
 the next 3 days.
@@ -41,15 +41,15 @@ If you run the test suite after cloning and something fails please contact Matt
 Hamada (mailto:ermacaz@gmail.com).  I only have one development machine so
 things may break on other machines/environments.
 
-== Comitting
+== Committing
 Please fork a new branch off of master to make modifications/additions.  Make
 sure all additions are covered with rspec tests.  Submit a pull request for your
 branch.  Once I check it out and it all looks good I will merge to master.
 
 == Deploying
 The production app is currently hosted on heroku.  There is a specific branch,
-production that is used for pushing.  Commits should rarely be made to
-production; rather you should merge master to production when ready to deploy.
-The main exception is when adding sensitive info like api keys, or imbed full
-Urls to mdme.us.  When deploying to production use
-<tt> git push heroku production:master </tt>
+production that is used for pushing.  This branch is not kept on github since it
+has sensitive info.  Commits should rarely be made to production; rather you
+should merge master to production when ready to deploy. The main exception is
+when adding sensitive info like api keys, or embed full Urls to mdme.us. When
+deploying to production use <tt> git push heroku production:master </tt>
