@@ -75,6 +75,12 @@ FactoryGirl.define do
     country               'United States'
     phone_number          '617-726-2000'
     fax_number            '617-726-3000'
+  end
 
+  factory :device do
+    patient_id          '1'
+    token               'aaa'
+    platform            'android'
+    enabled             'false'
   end
 end
