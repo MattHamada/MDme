@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe 'AdministrationPages' do
-  let(:clinic) { FactoryGirl.create(:clinic) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:clinic)      { FactoryGirl.create(:clinic) }
+  let(:admin)       { FactoryGirl.create(:admin) }
   let(:appointment) { FactoryGirl.create(:appointment) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
-  let(:department) { FactoryGirl.create(:department) }
-  let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
+  let(:doctor)      { FactoryGirl.create(:doctor) }
+  let(:department)  { FactoryGirl.create(:department) }
+  let(:patient)     { FactoryGirl.create(:patient, clinics: [clinic]) }
+  let(:device)      { FactoryGirl.create(:device) }
   subject { page }
   before do
     clinic.save!
@@ -359,6 +360,7 @@ describe 'AdministrationPages' do
               end
               describe 'Delaying only one appointment' do
                 before do
+                  device.save!
                   select '15', from: 'delay_0_0'
                 end
                 it { expect do
@@ -614,7 +616,7 @@ describe 'AdministrationPages' do
         before { click_link 'Delete Patient' }
 
         it { should have_title 'Patients' }
-        it { should_not have_content 'Boo Radley' }
+        it { should have_no_content 'Boo Radley' }
         it { should have_selector('div.alert.alert-warning', text: 'Patient deleted') }
       end
     end
@@ -705,7 +707,7 @@ describe 'AdministrationPages' do
         describe 'after deleting doctor' do
           before { click_link 'Delete Doctor' }
           it { should have_selector('div.alert.alert-warning', text: 'Doctor deleted') }
-          it { should_not have_content 'Boos Radley' }
+          it { should have_no_content 'Boos Radley' }
         end
       end
     end

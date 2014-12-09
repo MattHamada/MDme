@@ -65,6 +65,7 @@ group :test do
   gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
   gem 'timecop'
+  gem 'capybara-slow_finder_errors'
 end
 
 group :production do

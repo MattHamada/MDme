@@ -56,6 +56,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-slow_finder_errors (0.1.1)
+      capybara (~> 2.0)
     capybara-webkit (1.1.0)
       capybara (~> 2.0, >= 2.0.2)
       json
@@ -304,6 +306,7 @@ DEPENDENCIES
   breadcrumbs_on_rails
   bullet
   capybara (= 2.2.1)
+  capybara-slow_finder_errors
   capybara-webkit
   coffee-rails (~> 4.0.0)
   cucumber-rails (= 1.4.0)
