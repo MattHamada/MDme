@@ -30,8 +30,8 @@ describe Api::V1::Patients::AppointmentsController do
         expect(response).to be_success
         expect(json['data']['tasks']).not_to be_empty
         expect(json['data']['tasks'][0]['title']).to eq 'Confirmed Appointments'
-        expect(json['data']['tasks'][1]['title']).to eq 'New Request'
-        expect(json['data']['tasks'][2]['title']).to eq 'Open Requests'
+        expect(json['data']['tasks'][1]['title']).to eq 'Open Requests'
+        expect(json['data']['tasks'][2]['title']).to eq 'New Request'
       end
     end
 

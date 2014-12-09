@@ -449,6 +449,7 @@ describe 'AdministrationPages' do
       fill_in 'password', with: admin.password
       click_button 'SIGN IN'
       click_link 'APPOINTMENTS'
+      click_link 'Browse Appointments'
       fill_in 'appointment_day', with: 3.days.from_now.strftime('%F')
       click_button 'Submit'
     end
