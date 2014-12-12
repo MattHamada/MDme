@@ -115,5 +115,20 @@ class Patient < ActiveRecord::Base
     avatar.url(:medium)
   end
 
+  class MaritalStatus
+    SINGLE = 0
+    MARRIED = 1
+    DIVORCED = 2
+    WIDOWED = 3
+    OTHER = 4
+  end
+
+  class PreferredDaytimePhone
+    HOME = 0
+    WORK = 1
+    CELL = 2
+  end
+
+
 end
 

@@ -28,7 +28,7 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
-  get 'patients/:patient_id/clinics/getdoctors'          => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
+  get  'patients/:patient_id/clinics/getdoctors'         => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
@@ -38,6 +38,8 @@ MDme::Application.routes.draw do
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search
+  get  'admins/:admin_id/patients/browse'                => 'admins/patients#browse',                  as: :admin_patients_browse
+  get  'admins/:admin_id/patients/:id/registration-form' => 'admins/patients#registration_form',       as: :admin_patient_registration_form
   get  'admins/:admin_id/appointments/browse'            => 'admins/appointments#browse',              as: :admin_appointments_browse
   get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse

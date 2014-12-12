@@ -26,6 +26,10 @@ gem 'pushmeup'
 gem 'rabl'
 gem 'oj'
 
+gem 'prawn'
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
+
 gem "breadcrumbs_on_rails"
 gem 'rqrcode-rails3'
 gem 'mini_magick'

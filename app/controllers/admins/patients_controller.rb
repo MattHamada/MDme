@@ -10,12 +10,16 @@
 class Admins::PatientsController < ApplicationController
 
   before_filter :find_admin
-  before_filter :find_patient, only: [:show, :edit, :update, :destroy]
+  before_filter :find_patient, only: [:show, :edit, :update,
+                                      :destroy, :registration_form]
   before_filter :require_admin_login
 
   # GET admin.mdme.us/admins/:admin_id/patients
   def index
     @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
+  end
+
+  def browse
   end
 
   # GET admin.mdme.us/admins/:admin_id/patients/new
@@ -43,6 +47,19 @@ class Admins::PatientsController < ApplicationController
 
   def show
     render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
+  end
+
+  def registration_form
+     respond_to do |format|
+       format.pdf do
+         pdf = PatientRegistrationPdf.new(@patient)
+         send_data pdf.render,
+                   filename: "#{@patient.last_name}_registration_form.pdf",
+                   type: "application/pdf",
+                   disposition: "inline"
+
+       end
+     end
   end
 
   # GET admin.mdme.us/admins/:admin_id/patients/:id/edit

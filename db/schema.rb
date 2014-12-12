@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141104163421) do
+ActiveRecord::Schema.define(version: 20141212204202) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -145,6 +145,20 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.string   "mobile_phone"
     t.integer  "pid"
     t.date     "dob"
+    t.string   "middle_initial",          default: ""
+    t.string   "name_prefix"
+    t.string   "name_suffix",             default: ""
+    t.date     "birthday"
+    t.boolean  "is_male"
+    t.string   "social_security_number",  default: ""
+    t.integer  "marital_status"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.string   "work_phone_extension"
+    t.integer  "preferred_daytime_phone"
   end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"
