@@ -7,16 +7,17 @@ class PatientRegistrationPdf
     font 'Times-Roman'
     stroke_axis
     default_leading 10
-    header('General Information')
+    header('General Information', 728)
     patient_information
   end
 
-  def header(words)
+  def header(words, topleft_y)
     pad_bottom(5) do
       fill_color 'DDDDDD'
-      fill_and_stroke_rectangle [0, 728], 528, 25
+      fill_and_stroke_rectangle [0, topleft_y], 528, 25
       fill_color '000000'
-      text "#{words}", style: :bold, size: 16, align: :center
+      x_axis = (264 - (3.6 * words.length)).to_i
+      draw_text "#{words}", style: :bold, size: 16, at: [x_axis, topleft_y - 18]
     end
   end
 
@@ -118,12 +119,29 @@ class PatientRegistrationPdf
     draw_text "#{@patient.state}", font: 'Courier', at: [344, text_height]
     draw_text 'Zip:', style: :bold, at: [375, text_height]
     draw_text "#{@patient.zipcode}", font: 'Courier', at: [405, text_height]
-
     stroke do
       horizontal_line 55,  300, at: line_height
-      horizontal_line 342, 367, at: line_height
+      horizontal_line 342, 364, at: line_height
       horizontal_line 402, 445, at: line_height
+    end
+    #line6
+    text_height -= LINE_SPACING
+    line_height -= LINE_SPACING
+    draw_text 'Home#:', style: :bold, at: [0, text_height]
+    draw_text "#{@patient.home_phone}", font: 'Courier', at: [50, text_height]
+    draw_text 'Work#:', style: :bold, at: [150, text_height]
+    draw_text "#{@patient.work_phone}", font: 'Courier', at: [199, text_height]
+    draw_text 'EXT:',   style: :bold, at: [300, text_height]
+    draw_text "#{@patient.work_phone_extension}", font: 'Courier', at: [333, text_height]
+    draw_text 'Cell#:', style: :bold, at: [380, text_height]
+    draw_text "#{@patient.home_phone}", font: 'Courier', at: [422, text_height]
 
+
+    stroke do
+      horizontal_line  40, 140, at: line_height
+      horizontal_line 189, 290, at: line_height
+      horizontal_line 328, 370, at: line_height
+      horizontal_line 412, 498, at: line_height
     end
   end
 end
