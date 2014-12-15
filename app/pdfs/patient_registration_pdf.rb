@@ -16,6 +16,7 @@ class PatientRegistrationPdf
       fill_color 'DDDDDD'
       fill_and_stroke_rectangle [0, topleft_y], 528, 25
       fill_color '000000'
+      #estimates best x start for centering text
       x_axis = (264 - (3.6 * words.length)).to_i
       draw_text "#{words}", style: :bold, size: 16, at: [x_axis, topleft_y - 18]
     end
@@ -34,7 +35,7 @@ class PatientRegistrationPdf
     stroke do
       horizontal_line 60, 185, at: line_height
       horizontal_line 255, 380, at: line_height
-      horizontal_line 460, 480, at: line_height
+      horizontal_line 460, 530, at: line_height
     end
     #line2
     text_height -= LINE_SPACING
@@ -108,7 +109,7 @@ class PatientRegistrationPdf
     draw_text "#{@patient.city}", font: 'Courier', at: [342, text_height]
     stroke do
       horizontal_line 55,  300, at: line_height
-      horizontal_line 335, 500, at: line_height
+      horizontal_line 335, 530, at: line_height
     end
     #line5
     text_height -= LINE_SPACING
@@ -122,7 +123,7 @@ class PatientRegistrationPdf
     stroke do
       horizontal_line 55,  300, at: line_height
       horizontal_line 342, 364, at: line_height
-      horizontal_line 402, 445, at: line_height
+      horizontal_line 402, 530, at: line_height
     end
     #line6
     text_height -= LINE_SPACING
@@ -135,13 +136,38 @@ class PatientRegistrationPdf
     draw_text "#{@patient.work_phone_extension}", font: 'Courier', at: [333, text_height]
     draw_text 'Cell#:', style: :bold, at: [380, text_height]
     draw_text "#{@patient.home_phone}", font: 'Courier', at: [422, text_height]
-
-
     stroke do
       horizontal_line  40, 140, at: line_height
       horizontal_line 189, 290, at: line_height
       horizontal_line 328, 370, at: line_height
-      horizontal_line 412, 498, at: line_height
+      horizontal_line 412, 530, at: line_height
     end
+    #line7
+    text_height -= LINE_SPACING
+    line_height -= LINE_SPACING
+    draw_text 'Preferred Daytime Phone#:', style: :bold, at: [0, text_height]
+    draw_text 'Home',   style: :bold, at: [165, text_height]
+    draw_text 'Work',   style: :bold, at: [225, text_height]
+    draw_text 'Cell',   style: :bold, at: [280, text_height]
+    draw_text 'Email:', style: :bold, at: [315, text_height]
+    draw_text "#{@patient.email}", font: 'Courier', at: [357, text_height]
+    stroke do
+      horizontal_line 350, 530, at: line_height
+      rectangle [150, (text_height + 10)], 12, 12
+      rectangle [210, (text_height + 10)], 12, 12
+      rectangle [265, (text_height + 10)], 12, 12
+    end
+    self.line_width = 3
+    stroke do
+      case @patient.preferred_daytime_phone
+        when Patient::PreferredDaytimePhone::HOME
+          line [152, text_height], [165, (text_height + 15)]
+        when Patient::PreferredDaytimePhone::WORK
+          line [212, text_height], [225, (text_height + 15)]
+        when Patient::PreferredDaytimePhone::CELL
+          line [267, text_height], [280, (text_height + 15)]
+      end
+    end
+    self.line_width = 1
   end
 end
