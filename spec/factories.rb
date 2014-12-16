@@ -8,8 +8,8 @@ FactoryGirl.define do
     password_confirmation  'Qwerty1'
     doctor_id              '1'
     pid                    Random.rand(20000)
-    birthday               Date.today - (Random.rand(40)).years
-    is_male                true
+    birthday               Date.today - 20.years
+    sex                    Patient::Sex::MALE
     marital_status         Patient::MaritalStatus::SINGLE
     address1               '123 w main street'
     city                   'Tempe'

@@ -247,6 +247,13 @@ describe 'AdministrationPages' do
                   fill_in 'patient_first_name', with: 'Boo'
                   fill_in 'patient_last_name',  with: 'Radley'
                   fill_in 'patient_email', with: 'boo@radley.com'
+                  fill_in 'patient_birthday', with: '1962-12-12'
+                  fill_in 'patient_social_security_number', with: '122-11-2211'
+                  choose  'patient_sex_0'
+                  fill_in 'patient_address1', with: '123 W main st'
+                  fill_in 'patient_city', with: 'Phoenix'
+                  fill_in 'patient_state', with: 'AZ'
+                  fill_in 'patient_zipcode', with: '12345'
                   select doctor.full_name, from: 'doctor_doctor_id'
                 end
                 it 'should create a patient' do
@@ -462,7 +469,7 @@ describe 'AdministrationPages' do
     it { should have_content 'Time' }
 
     it { should have_content Doctor.first.full_name }
-    it { should have_content appointment.appointment_time.strftime('%h')}
+    it { should have_content appointment.time_am_pm }
 
     describe 'show appointment' do
       before { click_link('0') }

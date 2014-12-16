@@ -9,7 +9,7 @@ describe Patient do
                                   password_confirmation: 'Qwerty1',
                                   clinics: [clinic],
                                   birthday: Date.today - 20.years,
-                                  is_male: true,
+                                  sex: Patient::Sex::MALE,
                                   marital_status: Patient::MaritalStatus::SINGLE,
                                   social_security_number: '123-22-1155',
                                   address1: '123 W first ave',
@@ -33,7 +33,7 @@ describe Patient do
   it { should respond_to(:name_prefix) }
   it { should respond_to(:name_suffix) }
   it { should respond_to(:middle_initial) }
-  it { should respond_to(:is_male) }
+  it { should respond_to(:sex) }
   it { should respond_to(:social_security_number) }
   it { should respond_to(:marital_status) }
   it { should respond_to(:address1) }
@@ -197,7 +197,7 @@ describe Patient do
   end
 
   describe 'with no sex specified' do
-    before { @patient.is_male = nil }
+    before { @patient.sex = nil }
     it { should_not be_valid }
   end
 
