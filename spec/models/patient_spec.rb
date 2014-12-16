@@ -7,7 +7,16 @@ describe Patient do
                                   email: "user@example.com",
                                   password: 'Qwerty1',
                                   password_confirmation: 'Qwerty1',
-                                  clinics: [clinic]) }
+                                  clinics: [clinic],
+                                  birthday: Date.today - 20.years,
+                                  is_male: true,
+                                  marital_status: Patient::MaritalStatus::SINGLE,
+                                  social_security_number: '123-22-1155',
+                                  address1: '123 W first ave',
+                                  city: 'Phoenix',
+                                  state: 'AZ',
+                                  zipcode: '85018')
+         }
 
   subject { @patient }
 
@@ -20,6 +29,26 @@ describe Patient do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:slug) }
+  it { should respond_to(:birthday) }
+  it { should respond_to(:name_prefix) }
+  it { should respond_to(:name_suffix) }
+  it { should respond_to(:middle_initial) }
+  it { should respond_to(:is_male) }
+  it { should respond_to(:social_security_number) }
+  it { should respond_to(:marital_status) }
+  it { should respond_to(:address1) }
+  it { should respond_to(:address2) }
+  it { should respond_to(:city) }
+  it { should respond_to(:state) }
+  it { should respond_to(:zipcode) }
+  it { should respond_to(:home_phone) }
+  it { should respond_to(:work_phone) }
+  it { should respond_to(:mobile_phone) }
+  it { should respond_to(:work_phone_extension) }
+  it { should respond_to(:preferred_daytime_phone) }
+
+
+
 
   it { should be_valid }
 
@@ -151,5 +180,69 @@ describe Patient do
         @patient2.slug.should eq "#{@patient.slug}-1"
       end
     end
+  end
+
+  describe 'with no state' do
+    before { @patient.state = nil }
+    it { should_not be_valid }
+  end
+  describe 'State should only accept 2 char abbreviation' do
+    before { @patient.state = 'Arizona' }
+    it { should_not be_valid }
+  end
+
+  describe 'social security number should be less than 12 digits' do
+    before { @patient.social_security_number = '1' * 12 }
+    it { should_not be_valid }
+  end
+
+  describe 'with no sex specified' do
+    before { @patient.is_male = nil }
+    it { should_not be_valid }
+  end
+
+  describe 'with no address1' do
+    before { @patient.address1 = nil }
+    it {should_not be_valid}
+  end
+
+  describe 'with address1 over 100char' do
+    before { @patient.address1 = 'a' * 101 }
+    it { should_not be_valid }
+  end
+
+  describe 'with no city' do
+   before { @patient.city = nil }
+    it { should_not be_valid }
+  end
+
+  describe 'with city name over 50char' do
+    before { @patient.city = 'a' * 51 }
+    it { should_not be_valid }
+  end
+
+  describe 'with no zipcode' do
+    before { @patient.zipcode = nil }
+    it {should_not be_valid}
+  end
+
+  describe 'with address1 over 11char' do
+    before { @patient.zipcode = 'a' * 12 }
+    it { should_not be_valid }
+  end
+
+  describe 'with middle initial over 1char' do
+    before { @patient.middle_initial = 'a' * 2 }
+    it { should_not be_valid }
+  end
+
+  describe 'with no birthday' do
+    before { @patient.birthday =nil }
+    it { should_not be_valid }
+  end
+
+  describe 'with birthday in future' do
+    before { @patient.birthday = Date.today + 3.days }
+    it { should_not be_valid }
   end
 end

@@ -21,8 +21,19 @@ class Patient < ActiveRecord::Base
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
 
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
+  #TODO store social encrypted
+
+  validates :first_name,             presence: true, length: {maximum: 50}
+  validates :last_name,              presence: true, length: {maximum: 50}
+  validates :sex,                    presence: true
+  validates :social_security_number, presence: true, length: {maximum: 11}
+  validates :address1,               presence: true, length: {maximum: 100}
+  validates :city,                   presence: true, length: {maximum: 50}
+  validates :state,                  presence: true, length: {maximum: 2}
+  validates :zipcode,                presence: true, length: {maximum: 11}
+  validates :birthday,               presence: true
+  validate  :birthday_in_past
+  validates :middle_initial,                         length: {maximum: 1}
 
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
@@ -56,6 +67,15 @@ class Patient < ActiveRecord::Base
   #                                   :content_type =>   { :content_type =>
   # ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
   #                                   :size => { :in => 0..10.megabytes }
+
+  def birthday_in_past
+    if birthday.nil?
+      errors.add(:birthday, "No birthday entered.")
+    else
+      errors.add(:birthday, "Birthday date must be set in the past.") if
+          birthday > Date.today
+    end
+  end
 
   has_secure_password
 
@@ -129,6 +149,9 @@ class Patient < ActiveRecord::Base
     CELL = 2
   end
 
-
+  class Sex
+    MALE   = 0
+    FEMALE = 1
+  end
 end
 

@@ -58,7 +58,7 @@ class PatientRegistrationPdf
     end
     self.line_width = 3
     stroke do
-      if @patient.is_male
+      if @patient.sex == Patient::Sex::MALE
         line [372, text_height], [385, (text_height + 15)]
       else
         line [432, text_height], [445, (text_height + 15)]

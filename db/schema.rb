@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212204202) do
+ActiveRecord::Schema.define(version: 20141216204551) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -149,7 +149,6 @@ ActiveRecord::Schema.define(version: 20141212204202) do
     t.string   "name_prefix"
     t.string   "name_suffix",             default: ""
     t.date     "birthday"
-    t.boolean  "is_male"
     t.string   "social_security_number",  default: ""
     t.integer  "marital_status"
     t.string   "address1"
@@ -159,6 +158,7 @@ ActiveRecord::Schema.define(version: 20141212204202) do
     t.string   "zipcode"
     t.string   "work_phone_extension"
     t.integer  "preferred_daytime_phone"
+    t.integer  "sex"
   end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"

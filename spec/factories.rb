@@ -1,13 +1,21 @@
 FactoryGirl.define do
 
   factory :patient do
-    first_name            'fname'
-    last_name             'lname'
-    email                 'patient@example.com'
-    password              'Qwerty1'
-    password_confirmation 'Qwerty1'
-    doctor_id             '1'
-    pid                   Random.rand(20000)
+    first_name             'fname'
+    last_name              'lname'
+    email                  'patient@example.com'
+    password               'Qwerty1'
+    password_confirmation  'Qwerty1'
+    doctor_id              '1'
+    pid                    Random.rand(20000)
+    birthday               Date.today - (Random.rand(40)).years
+    is_male                true
+    marital_status         Patient::MaritalStatus::SINGLE
+    address1               '123 w main street'
+    city                   'Tempe'
+    state                  'AZ'
+    zipcode                '85281'
+    social_security_number '123-12-1212'
   end
 
   factory :doctor do

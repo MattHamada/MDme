@@ -23,8 +23,8 @@ class Appointment < ActiveRecord::Base
 
   # Appointments must be at a unique time for patient and doctor in the future
   validates :appointment_time, presence: true
-  validate :appointment_unique_with_doctor_in_clinic
-  validate :appointment_time_in_future
+  validate  :appointment_unique_with_doctor_in_clinic
+  validate  :appointment_time_in_future
   # Must have a clinic, doctor, and patient assigned to each appointment
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
