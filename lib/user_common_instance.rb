@@ -101,7 +101,7 @@ module UserCommonInstance
     end
 
     def create_remember_token
-      self.remember_token = encrypt(new_remember_token)
+      self.remember_token = my_encrypt(new_remember_token)
     end
 
 end

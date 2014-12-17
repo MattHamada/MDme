@@ -91,7 +91,7 @@ describe Api::V1::Patients::AppointmentsController do
   end
   before :each do
     @token = 'ca76c7a6c7a'
-    patient.update_attribute(:api_key, encrypt(@token))
+    patient.update_attribute(:api_key, my_encrypt(@token))
   end
 
   context :json do

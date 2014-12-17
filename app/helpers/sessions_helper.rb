@@ -47,26 +47,26 @@ module SessionsHelper
     if type == :patient
     remember_token = new_remember_token
     cookies.permanent[:remember_token] = remember_token
-    user.update_attribute(:remember_token, encrypt(remember_token))
+    user.update_attribute(:remember_token, my_encrypt(remember_token))
     self.current_patient = user
 
     elsif type == :doctor
       remember_token = new_remember_token
       cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, encrypt(remember_token))
+      user.update_attribute(:remember_token, my_encrypt(remember_token))
       self.current_doctor = user
 
     elsif type == :admin
       remember_token = new_remember_token
       cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, encrypt(remember_token))
+      user.update_attribute(:remember_token, my_encrypt(remember_token))
       self.current_admin = user
     end
   end
 
   def api_sign_in(patient)
     api_key = new_remember_token
-    patient.update_attribute(:api_key, encrypt(api_key))
+    patient.update_attribute(:api_key, my_encrypt(api_key))
     self.current_patient = patient
     api_key
   end
@@ -102,23 +102,23 @@ module SessionsHelper
   end
 
   def current_patient
-    remember_token = encrypt(cookies[:remember_token])
+    remember_token = my_encrypt(cookies[:remember_token])
     @current_patient ||= Patient.find_by(remember_token: remember_token)
   end
 
   def current_doctor
-    remember_token = encrypt(cookies[:remember_token])
+    remember_token = my_encrypt(cookies[:remember_token])
     @current_doctor ||= Doctor.find_by(remember_token: remember_token)
   end
 
   def current_admin
-    remember_token = encrypt(cookies[:remember_token])
+    remember_token = my_encrypt(cookies[:remember_token])
     @current_admin ||= Admin.find_by(remember_token: remember_token)
   end
 
   def api_current_patient(api_token)
     remember_token = api_token
-    @current_patient ||= Patient.find_by_remember_token(encrypt(remember_token))
+    @current_patient ||= Patient.find_by_remember_token(my_encrypt(remember_token))
   end
 
   def patient_signed_in?

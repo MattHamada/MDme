@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216204551) do
+ActiveRecord::Schema.define(version: 20141217181335) do
 
   create_table "admins", force: true do |t|
     t.string   "email"
@@ -145,11 +145,11 @@ ActiveRecord::Schema.define(version: 20141216204551) do
     t.string   "mobile_phone"
     t.integer  "pid"
     t.date     "dob"
-    t.string   "middle_initial",          default: ""
+    t.string   "middle_initial",                   default: ""
     t.string   "name_prefix"
-    t.string   "name_suffix",             default: ""
+    t.string   "name_suffix",                      default: ""
     t.date     "birthday"
-    t.string   "social_security_number",  default: ""
+    t.string   "encrypted_social_security_number", default: ""
     t.integer  "marital_status"
     t.string   "address1"
     t.string   "address2"

@@ -21,12 +21,12 @@ class Patient < ActiveRecord::Base
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
 
-  #TODO store social encrypted
+  attr_encrypted :social_security_number, key: ENV['SOCIAL_ENCRYPT_KEY'], algorithm: 'aes-256-cbc'
 
   validates :first_name,             presence: true, length: {maximum: 50}
   validates :last_name,              presence: true, length: {maximum: 50}
   validates :sex,                    presence: true
-  validates :social_security_number, presence: true, length: {maximum: 11}
+  validates :social_security_number, presence: true
   validates :address1,               presence: true, length: {maximum: 100}
   validates :city,                   presence: true, length: {maximum: 50}
   validates :state,                  presence: true, length: {maximum: 2}
@@ -34,7 +34,7 @@ class Patient < ActiveRecord::Base
   validates :birthday,               presence: true
   validate  :birthday_in_past
   validates :middle_initial,                         length: {maximum: 1}
-  validates_uniqueness_of :social_security_number
+  validates_uniqueness_of :encrypted_social_security_number
 
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
@@ -109,7 +109,7 @@ class Patient < ActiveRecord::Base
   # ==== Parameters
   # * +api_token+ - passed client api token to verify
   def api_authenticate(api_token)
-    if self.remember_token == encrypt(api_token)
+    if self.remember_token == my_encrypt(api_token)
       true
     else
       false
@@ -136,7 +136,7 @@ class Patient < ActiveRecord::Base
     avatar.url(:medium)
   end
 
-  class MaritalStatus
+  module MaritalStatus
     SINGLE = 0
     MARRIED = 1
     DIVORCED = 2
@@ -144,13 +144,13 @@ class Patient < ActiveRecord::Base
     OTHER = 4
   end
 
-  class PreferredDaytimePhone
+  module PreferredDaytimePhone
     HOME = 0
     WORK = 1
     CELL = 2
   end
 
-  class Sex
+  module Sex
     MALE   = 0
     FEMALE = 1
   end

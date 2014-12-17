@@ -126,7 +126,7 @@ class Admins::PatientsController < ApplicationController
                                       :doctor_id,
                                       :home_phone,
                                       :work_phone,
-                                      :cell_phone,
+                                      :mobile_phone,
                                       :work_phone_extension,
                                       :sex,
                                       :social_security_number,

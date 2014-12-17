@@ -15,25 +15,37 @@ gem 'font-awesome-rails'
 #                              :github => 'anjlab/bootstrap-rails',
 #                              :branch => '3.0.0'
 
+#for encrypting cookies
 gem 'bcrypt-ruby', '3.1.2'
+
+#text populator
 gem 'faker', '1.1.2'
-gem 'will_paginate', '3.0.4'
-gem 'bootstrap-will_paginate', '0.0.9'
-#gem 'rocket_pants', '~> 1.9.1' #api
+
+#generating patient ids
 gem 'uuid'
+
+#push notifications
 gem 'pushmeup'
 
+#rabl json markup
 gem 'rabl'
 gem 'oj'
 
+#pdf generation
 gem 'prawn'
-gem 'pdfkit'
-gem 'wkhtmltopdf-binary'
 
+#helper for page breadcrumbs
 gem "breadcrumbs_on_rails"
+
+#generate qr code images
 gem 'rqrcode-rails3'
 gem 'mini_magick'
+
+#help in calling 3rd party apis
 gem 'httparty'
+
+#encrypt database fields
+gem 'attr_encrypted'
 
 group :development do
   #nicer error page

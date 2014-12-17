@@ -34,7 +34,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 
   # DELETE www.mdme.us/api/v1/sessions/:id
   def destroy
-    patient = Patient.find_by_api_key(encrypt(params[:auth_token]))
+    patient = Patient.find_by_api_key(my_encrypt(params[:auth_token]))
     if patient
       patient.update_attribute(:api_key, nil)
       sign_out :patient

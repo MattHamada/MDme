@@ -15,7 +15,7 @@ class Patients::ClinicsController < ApplicationController
     #verify user in slug is logged in
     token_passed = params[:token] unless params[:token].nil?
     patient = Patient.find_by_slug!(params[:patient_id])
-    if encrypt(patient.remember_token) != token_passed
+    if my_encrypt(patient.remember_token) != token_passed
       redirect_to signin_path
     else
       allows_cors

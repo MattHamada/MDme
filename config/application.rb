@@ -17,7 +17,7 @@ Bundler.require(:default, Rails.env)
 
 
 #load yaml stored settings
-['../email_config.yml', '../api_keys.yml'].each do |yml|
+['../email_config.yml', '../api_keys.yml', '../encryption_keys.yml'].each do |yml|
   config = YAML.load(File.read(File.expand_path(yml, __FILE__)))
   config.merge! config.fetch(Rails.env, {})
   config.each do |key, value|

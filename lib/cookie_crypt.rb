@@ -4,7 +4,7 @@ module CookieCrypt
     SecureRandom.urlsafe_base64
   end
 
-  def encrypt(token)
+  def my_encrypt(token)
     Digest::SHA1.hexdigest(token.to_s)
   end
 end

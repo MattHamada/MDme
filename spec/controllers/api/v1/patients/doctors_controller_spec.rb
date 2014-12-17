@@ -20,7 +20,7 @@ describe Api::V1::Patients::DoctorsController do
     doctor3.save
     doctor4.save
     @token = 'ca76c7a6c7a'
-    patient.update_attribute(:api_key, encrypt(@token))
+    patient.update_attribute(:api_key, my_encrypt(@token))
   end
   context :json do
     #needs to specify which clinic in request
