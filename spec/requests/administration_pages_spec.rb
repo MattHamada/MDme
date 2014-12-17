@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'AdministrationPages' do
-  let(:clinic)      { FactoryGirl.create(:clinic) }
+  let(:clinic)      { FactoryGirl.build(:clinic) }
   let(:admin)       { FactoryGirl.create(:admin) }
   let(:appointment) { FactoryGirl.create(:appointment) }
   let(:doctor)      { FactoryGirl.create(:doctor) }
@@ -10,6 +10,77 @@ describe 'AdministrationPages' do
   let(:device)      { FactoryGirl.create(:device) }
   subject { page }
   before do
+    #comment out stub to call real api
+    clinic.stub(:call_google_api_for_location).and_return(
+        {
+            "results" => [
+                {
+                    "address_components" => [
+                        {
+                            "long_name" => "55",
+                            "short_name" => "55",
+                            "types" => [ "street_number" ]
+                        },
+                        {
+                            "long_name" => "Fruit Street",
+                            "short_name" => "Fruit St",
+                            "types" => [ "route" ]
+                        },
+                        {
+                            "long_name" => "West End",
+                            "short_name" => "West End",
+                            "types" => [ "neighborhood", "political" ]
+                        },
+                        {
+                            "long_name" => "Boston",
+                            "short_name" => "Boston",
+                            "types" => [ "locality", "political" ]
+                        },
+                        {
+                            "long_name" => "Suffolk County",
+                            "short_name" => "Suffolk County",
+                            "types" => [ "administrative_area_level_2", "political" ]
+                        },
+                        {
+                            "long_name" => "Massachusetts",
+                            "short_name" => "MA",
+                            "types" => [ "administrative_area_level_1", "political" ]
+                        },
+                        {
+                            "long_name" => "United States",
+                            "short_name" => "US",
+                            "types" => [ "country", "political" ]
+                        },
+                        {
+                            "long_name" => "02114",
+                            "short_name" => "02114",
+                            "types" => [ "postal_code" ]
+                        }
+                    ],
+                    "formatted_address" => "55 Fruit Street, Boston, MA 02114, USA",
+                    "geometry" => {
+                        "location" => {
+                            "lat" => 42.3632091,
+                            "lng" => -71.0686487
+                        },
+                        "location_type" => "ROOFTOP",
+                        "viewport" => {
+                            "northeast" => {
+                                "lat" => 42.3645580802915,
+                                "lng" => -71.0672997197085
+                            },
+                            "southwest" => {
+                                "lat" => 42.3618601197085,
+                                "lng" => -71.06999768029151
+                            }
+                        }
+                    },
+                    "types" => [ "street_address" ]
+                }
+            ],
+            "status" => "OK"
+        }.to_json
+    )
     clinic.save!
     switch_to_subdomain('admin')
   end
@@ -88,12 +159,83 @@ describe 'AdministrationPages' do
             end
 
             describe 'Should only see doctors in dept in same clinic' do
-              let(:clinic2) { FactoryGirl.create(:clinic) }
+              let(:clinic2) { FactoryGirl.build(:clinic) }
               let(:doctor2) { FactoryGirl.create(:doctor,
                                                  first_name: 'Billiam',
                                                  email: 'doc2@doc2.com',
                                                  clinic_id: 2)}
               before do
+                #comment out stub to call real api
+                clinic2.stub(:call_google_api_for_location).and_return(
+                    {
+                        "results" => [
+                            {
+                                "address_components" => [
+                                    {
+                                        "long_name" => "55",
+                                        "short_name" => "55",
+                                        "types" => [ "street_number" ]
+                                    },
+                                    {
+                                        "long_name" => "Fruit Street",
+                                        "short_name" => "Fruit St",
+                                        "types" => [ "route" ]
+                                    },
+                                    {
+                                        "long_name" => "West End",
+                                        "short_name" => "West End",
+                                        "types" => [ "neighborhood", "political" ]
+                                    },
+                                    {
+                                        "long_name" => "Boston",
+                                        "short_name" => "Boston",
+                                        "types" => [ "locality", "political" ]
+                                    },
+                                    {
+                                        "long_name" => "Suffolk County",
+                                        "short_name" => "Suffolk County",
+                                        "types" => [ "administrative_area_level_2", "political" ]
+                                    },
+                                    {
+                                        "long_name" => "Massachusetts",
+                                        "short_name" => "MA",
+                                        "types" => [ "administrative_area_level_1", "political" ]
+                                    },
+                                    {
+                                        "long_name" => "United States",
+                                        "short_name" => "US",
+                                        "types" => [ "country", "political" ]
+                                    },
+                                    {
+                                        "long_name" => "02114",
+                                        "short_name" => "02114",
+                                        "types" => [ "postal_code" ]
+                                    }
+                                ],
+                                "formatted_address" => "55 Fruit Street, Boston, MA 02114, USA",
+                                "geometry" => {
+                                    "location" => {
+                                        "lat" => 42.3632091,
+                                        "lng" => -71.0686487
+                                    },
+                                    "location_type" => "ROOFTOP",
+                                    "viewport" => {
+                                        "northeast" => {
+                                            "lat" => 42.3645580802915,
+                                            "lng" => -71.0672997197085
+                                        },
+                                        "southwest" => {
+                                            "lat" => 42.3618601197085,
+                                            "lng" => -71.06999768029151
+                                        }
+                                    }
+                                },
+                                "types" => [ "street_address" ]
+                            }
+                        ],
+                        "status" => "OK"
+                    }.to_json
+                )
                 clinic2.save!
                 doctor.save!
                 doctor2.save!
@@ -344,7 +486,8 @@ describe 'AdministrationPages' do
               let(:patient2) { FactoryGirl.create(:patient,
                                                   first_name: 'patient2',
                                                   email: 'patient2@example.com',
-                                                  pid: Random.rand(200000)) }
+                                                  pid: Random.rand(200000),
+                                                  social_security_number: '123-99-8151') }
               let(:appointment)  { FactoryGirl.create(:appointment_today) }
               let(:appointment2) {
                 FactoryGirl.create(:appointment_today,

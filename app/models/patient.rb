@@ -34,6 +34,7 @@ class Patient < ActiveRecord::Base
   validates :birthday,               presence: true
   validate  :birthday_in_past
   validates :middle_initial,                         length: {maximum: 1}
+  validates_uniqueness_of :social_security_number
 
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },

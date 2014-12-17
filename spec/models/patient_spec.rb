@@ -1,22 +1,95 @@
 require 'spec_helper'
 
 describe Patient do
-  let(:clinic) { FactoryGirl.create(:clinic) }
-  before { @patient = Patient.new(first_name: "Example",
-                                  last_name: 'patient',
-                                  email: "user@example.com",
-                                  password: 'Qwerty1',
-                                  password_confirmation: 'Qwerty1',
-                                  clinics: [clinic],
-                                  birthday: Date.today - 20.years,
-                                  sex: Patient::Sex::MALE,
-                                  marital_status: Patient::MaritalStatus::SINGLE,
-                                  social_security_number: '123-22-1155',
-                                  address1: '123 W first ave',
-                                  city: 'Phoenix',
-                                  state: 'AZ',
-                                  zipcode: '85018')
-         }
+  let(:clinic) { FactoryGirl.build(:clinic) }
+  before do
+    #comment out stub to call real api
+    clinic.stub(:call_google_api_for_location).and_return(
+        {
+            "results" => [
+                {
+                    "address_components" => [
+                        {
+                            "long_name" => "55",
+                            "short_name" => "55",
+                            "types" => [ "street_number" ]
+                        },
+                        {
+                            "long_name" => "Fruit Street",
+                            "short_name" => "Fruit St",
+                            "types" => [ "route" ]
+                        },
+                        {
+                            "long_name" => "West End",
+                            "short_name" => "West End",
+                            "types" => [ "neighborhood", "political" ]
+                        },
+                        {
+                            "long_name" => "Boston",
+                            "short_name" => "Boston",
+                            "types" => [ "locality", "political" ]
+                        },
+                        {
+                            "long_name" => "Suffolk County",
+                            "short_name" => "Suffolk County",
+                            "types" => [ "administrative_area_level_2", "political" ]
+                        },
+                        {
+                            "long_name" => "Massachusetts",
+                            "short_name" => "MA",
+                            "types" => [ "administrative_area_level_1", "political" ]
+                        },
+                        {
+                            "long_name" => "United States",
+                            "short_name" => "US",
+                            "types" => [ "country", "political" ]
+                        },
+                        {
+                            "long_name" => "02114",
+                            "short_name" => "02114",
+                            "types" => [ "postal_code" ]
+                        }
+                    ],
+                    "formatted_address" => "55 Fruit Street, Boston, MA 02114, USA",
+                    "geometry" => {
+                        "location" => {
+                            "lat" => 42.3632091,
+                            "lng" => -71.0686487
+                        },
+                        "location_type" => "ROOFTOP",
+                        "viewport" => {
+                            "northeast" => {
+                                "lat" => 42.3645580802915,
+                                "lng" => -71.0672997197085
+                            },
+                            "southwest" => {
+                                "lat" => 42.3618601197085,
+                                "lng" => -71.06999768029151
+                            }
+                        }
+                    },
+                    "types" => [ "street_address" ]
+                }
+            ],
+            "status" => "OK"
+        }.to_json
+    )
+    clinic.save!
+    @patient = Patient.new(first_name: "Example",
+                           last_name: 'patient',
+                           email: "user@example.com",
+                           password: 'Qwerty1',
+                           password_confirmation: 'Qwerty1',
+                           clinics: [clinic],
+                           birthday: Date.today - 20.years,
+                           sex: Patient::Sex::MALE,
+                           marital_status: Patient::MaritalStatus::SINGLE,
+                           social_security_number: '123-22-1155',
+                           address1: '123 W first ave',
+                           city: 'Phoenix',
+                           state: 'AZ',
+                           zipcode: '85018')
+  end
 
   subject { @patient }
 
