@@ -14,10 +14,19 @@ namespace :db do
     c = Clinic.create!(name: 'MDME clinic')
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
+                    middle_initial: 'A',
                     email: 'user@example.com',
-                    password: 'AndrewMattMDME3000!',
-                    password_confirmation: 'AndrewMattMDME3000!',
-                    doctor_id: '1')
+                    password: 'Qwerty123!',
+                    password_confirmation: 'Qwerty123!',
+                    doctor_id: '1',
+                    sex: Patient::Sex::MALE,
+                    social_security_number: '000-00-0000',
+                    address1: '1324 W 4th street',
+                    address2: 'C',
+                    city: 'phoenix',
+                    state: 'AZ',
+                    zipcode: '85018',
+                    birthday: Date.today - 25.years)
     p.clinics << c
     Department.create!(name: 'Pediatrics',
                        clinic_id: 1)
@@ -56,12 +65,26 @@ namespace :db do
       email = "examplePatient#{n+1}@example.com"
       password = 'AndrewMattMDME3000!'
       doctor_id = rand_int(1,6)
+      sex = rand_int(0,1)
+      social_security_number = "#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}"
+      address1 = '4024 E main street'
+      city = 'Phoenix'
+      state = 'AZ'
+      zipcode = '02141'
+      birthday = Date.today - (rand_int(18,80)).years
       p = Patient.create!(first_name: name[0],
                       last_name: name[1],
                       email: email,
                       password: password,
                       password_confirmation: password,
-                      doctor_id: doctor_id)
+                      doctor_id: doctor_id,
+                      sex: sex,
+                      social_security_number: social_security_number,
+                      address1: address1,
+                      city: city,
+                      state: state,
+                      zipcode: zipcode,
+                      birthday: birthday)
       p.clinics << c
     end
 

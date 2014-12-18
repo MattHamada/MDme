@@ -28,9 +28,13 @@ your host file to include a domain with those subdomains pointing at
 
 == Database setup
 The database schema should be ready after running <tt>rake db:migrate</tt>
-To load sample data, you can run rake <tt>db:populate</tt>.  Running
+To load sample data, you can run <tt>rake db:populate</tt>.  Running
 <tt>rake db:populate_appointments</tt> will add additional appointments spanning
 the next 3 days.
+You may want to comment out the line in config/environments/development.rb
+<tt>config.action_mailer.delivery_method = :letter_opener</tt>
+before running <tt>rake db:populate</tt> to prevent a confirmation email page
+opening for each user created.
 
 == Testing
 The MDme repo has an extensive <b>rspec 2.x</b> testing suite.  In order to test
