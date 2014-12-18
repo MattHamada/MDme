@@ -26,7 +26,7 @@ class Patient < ActiveRecord::Base
   validates :first_name,             presence: true, length: {maximum: 50}
   validates :last_name,              presence: true, length: {maximum: 50}
   validates :sex,                    presence: true
-  validates :social_security_number, presence: true
+  validates :social_security_number, presence: true, length: {maximum: 11}
   validates :address1,               presence: true, length: {maximum: 100}
   validates :city,                   presence: true, length: {maximum: 50}
   validates :state,                  presence: true, length: {maximum: 2}
