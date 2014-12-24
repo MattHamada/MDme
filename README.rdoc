@@ -1,6 +1,6 @@
 = MDme
 
-The *MDme* app is currently setup to run on <b>rails 4.1.1</b> powered by
+The *MDme* app is currently setup to run on <b>rails 4.2.0</b> powered by
 <b>Ruby 2.1.1</b>  Before running for the first time two files must be created
 * <tt>config/email_config.rb </tt>
 * <tt>config/api_keys.rb </tt>

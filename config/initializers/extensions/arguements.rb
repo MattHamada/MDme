@@ -1,6 +1,5 @@
 #Monkeypatch of activejob to support serializing Date/Time for ActionMailer.deliver_later
 #TODO move to a gem
-# require 'active_job'
 
 module ActionMailer
   class DeliveryJob < ActiveJob::Base
