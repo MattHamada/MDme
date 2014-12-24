@@ -38,9 +38,7 @@ class Admin < ActiveRecord::Base
   # ==== Parameters
   # * +temppass+ - new password generated for the account
   def send_password_reset_email(temppass)
-    Thread.new do
-      PasswordResetMailer.reset_email(self, temppass).deliver
-    end
+    PasswordResetMailer.reset_email(self, temppass).deliver_later
   end
 
   private

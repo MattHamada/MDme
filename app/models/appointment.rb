@@ -37,7 +37,10 @@ class Appointment < ActiveRecord::Base
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :within_2_hours, -> { where(
-  appointment_time: DateTime.now...(DateTime.now + 2.hours)) }
+      appointment_time: Time.zone.now...(Time.zone.now + 2.hours)) }
+  scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
+  scope :order_by_time, -> { order("appointment_time ASC")}
+
 
   # True is a patient request not an admin forcing a new appointment
   scope :requests, -> { where(request: true) }
@@ -80,10 +83,10 @@ class Appointment < ActiveRecord::Base
 
   # returns appointments that have not past
   # TODO should this use delayed time?
-  def self.not_past
-    Appointment.where(Appointment.arel_table[:appointment_time].
-                          gt(DateTime.now)).load
-  end
+  # def self.not_past
+  #   Appointment.where(Appointment.arel_table[:appointment_time].
+  #                         gt(DateTime.now)).load
+  # end
 
   # Returns all appointments with a given doctor
   # ==== Parameters
@@ -109,9 +112,9 @@ class Appointment < ActiveRecord::Base
 
   # Returns appointments in order of earliest +appointment_time+ first.
   # used for ordering queries
-  def self.order_by_time
-    Appointment.order('appointment_time ASC').load
-  end
+  # def self.order_by_time
+  #   Appointment.order('appointment_time ASC').load
+  # end
 
   # Checks to see if the passed Clinic/Appointment/Doctor/Patient has the same
   # +id+ or +clinic_id+ as the appointment. Returns all appointments in the
@@ -176,13 +179,9 @@ class Appointment < ActiveRecord::Base
   # * +choice+ - symbol either :approve or :deny
   def email_confirmation_to_patient(choice)
     if choice == :approve
-      Thread.new do
-        PatientMailer.appointment_confirmation_email(self).deliver
-      end
+      PatientMailer.appointment_confirmation_email(self).deliver_later
     elsif choice == :deny
-      Thread.new do
-        PatientMailer.appointment_deny_email(self).deliver
-      end
+      PatientMailer.appointment_deny_email(self).deliver_later
     end
 
   end
@@ -190,10 +189,8 @@ class Appointment < ActiveRecord::Base
   # Emails patient informing them their appointment hsa been delayed.
   # Uses a separate thread
   def send_delay_email
-    Thread.new do
-      PatientMailer.appointment_delayed_email(patient,
-                                              appointment_delayed_time).deliver
-    end
+    PatientMailer.appointment_delayed_email(patient,
+                                         appointment_delayed_time).deliver_later
   end
 
   # Will send GCM message to android devices registered to patient

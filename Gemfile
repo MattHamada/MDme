@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
-#ruby-gemset=mdme
+ruby '2.1.2'
+#ruby-gemset=mdme-rails4.2
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.1'
+gem 'rails', '4.2.0'
 
+#gem 'activejob_time_serialize', '0.1.1'
 
 gem 'bootstrap-sass', '3.0.3.0'
 gem 'font-awesome-rails'
@@ -47,6 +48,9 @@ gem 'httparty'
 #encrypt database fields
 gem 'attr_encrypted'
 
+#adds respond_to calls
+gem 'responders'
+
 group :development do
   #nicer error page
   gem 'better_errors'
@@ -55,7 +59,6 @@ group :development do
   gem 'bullet'
   #for viewing emails sent
   gem 'letter_opener'
-  gem 'rdoc'
 end
 
 group :development, :test do
@@ -66,6 +69,7 @@ group :development, :test do
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
   #gem 'json_spec', '~> 1.1.1'
+  gem 'rdoc'
 end
 
 group :test do
@@ -111,7 +115,7 @@ gem 'jquery-turbolinks'
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '1.1.1'
+gem 'turbolinks', '2.3.0'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

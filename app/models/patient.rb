@@ -100,9 +100,7 @@ class Patient < ActiveRecord::Base
   # * +orig_appointment+ - The canceled appointment
   # * +new_time+ - The new available open time
   def email_about_open_time(orig_appointment, new_time)
-    Thread.new do
-      FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver
-    end
+    FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver_later
   end
 
   # Verify mobile client api token
