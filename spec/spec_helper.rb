@@ -52,6 +52,9 @@ RSpec.configure do |config|
   #add helpers from app
   config.include ApplicationHelper
 
+  #from rspec2 deprication message
+  config.infer_spec_type_from_file_location!
+
 
   #below needed for db transactions to stick with capybara :webkit testing
   #found http://stackoverflow.com/questions/8178120/capybara-with-js-true-causes-test-to-fail

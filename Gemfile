@@ -64,7 +64,8 @@ end
 group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.9'
-  gem 'rspec-rails', '2.14.2'
+  #gem 'rspec-rails', '2.14.2'
+  gem 'rspec-rails', '2.99.0'
   gem 'guard-rspec', '2.5.1' #rspec generation and autotest
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
@@ -110,7 +111,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '3.0.4'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '5.0.3'
 gem 'jquery-turbolinks'
 
 
