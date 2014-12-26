@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.2'
+ruby '2.2.0'
 #ruby-gemset=mdme-rails4.2
 
 
