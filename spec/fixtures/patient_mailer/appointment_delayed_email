@@ -1,3 +1,0 @@
-PatientMailer#appointment_delayed_email
-
-Hi, find me in app/views/patient_mailer/appointment_delayed_email
