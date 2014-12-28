@@ -66,7 +66,7 @@ group :development, :test do
   gem 'sqlite3', '1.3.9'
   #gem 'rspec-rails', '2.14.2'
   gem 'rspec-rails', '2.99.0'
-  gem 'guard-rspec', '2.5.1' #rspec generation and autotest
+  # gem 'guard-rspec' #rspec generation and autotest
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
   #gem 'json_spec', '~> 1.1.1'
@@ -75,6 +75,7 @@ end
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
+  #gem 'rspec-its'
   #gem 'ZenTest'
   gem 'capybara', '2.2.1'
   gem 'capybara-webkit'

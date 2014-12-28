@@ -608,8 +608,8 @@ describe 'AdministrationPages' do
     end
 
 
-    #this test fails randomly, not sure why; complains doctor is nil
-    #it { should have_selector('.day_appointments') }
+    #first test fails randomly, complains doctor is nil. Doesnt matter which is first
+    it { should have_selector('.day_appointments') }
     it { should have_content 'Select Date' }
     it { should have_content 'Time' }
 
