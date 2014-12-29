@@ -13,26 +13,26 @@ describe Clinic do
                                 fax_number:   '617-726-3000') }
   subject { @clinic }
 
-  it { should respond_to :name }
-  it { should respond_to :address1 }
-  it { should respond_to :address2 }
-  it { should respond_to :address3 }
-  it { should respond_to :city }
-  it { should respond_to :state }
-  it { should respond_to :zipcode }
-  it { should respond_to :country }
-  it { should respond_to :phone_number }
-  it { should respond_to :fax_number }
-  it { should respond_to :ne_latitude }
-  it { should respond_to :ne_longitude }
-  it { should respond_to :sw_latitude }
-  it { should respond_to :sw_longitude }
-  it { should be_valid }
+  it { is_expected.to respond_to :name }
+  it { is_expected.to respond_to :address1 }
+  it { is_expected.to respond_to :address2 }
+  it { is_expected.to respond_to :address3 }
+  it { is_expected.to respond_to :city }
+  it { is_expected.to respond_to :state }
+  it { is_expected.to respond_to :zipcode }
+  it { is_expected.to respond_to :country }
+  it { is_expected.to respond_to :phone_number }
+  it { is_expected.to respond_to :fax_number }
+  it { is_expected.to respond_to :ne_latitude }
+  it { is_expected.to respond_to :ne_longitude }
+  it { is_expected.to respond_to :sw_latitude }
+  it { is_expected.to respond_to :sw_longitude }
+  it { is_expected.to be_valid }
 
   describe '#set_location_coordinates' do
     before do
       #comment out stub to call real api
-      @clinic.stub(:call_google_api_for_location).and_return(
+      allow(@clinic).to receive(:call_google_api_for_location).and_return(
           {
               "results" => [
                   {
@@ -105,17 +105,17 @@ describe Clinic do
     end
     it 'should be called on model save' do
         @clinic.save
-        @clinic.ne_latitude.round(4).should eq 42.3646
-        @clinic.sw_latitude.round(4).should eq 42.3619
-        @clinic.ne_longitude.round(4).should eq -71.0673
-        @clinic.sw_longitude.round(4).should eq -71.0700
+        expect(@clinic.ne_latitude.round(4)).to eq 42.3646
+        expect(@clinic.sw_latitude.round(4)).to eq 42.3619
+        expect(@clinic.ne_longitude.round(4)).to eq -71.0673
+        expect(@clinic.sw_longitude.round(4)).to eq -71.0700
     end
     it 'should assign coordinates to the model' do
       @clinic.set_location_coordinates
-      @clinic.ne_latitude.round(4).should eq 42.3646
-      @clinic.sw_latitude.round(4).should eq 42.3619
-      @clinic.ne_longitude.round(4).should eq -71.0673
-      @clinic.sw_longitude.round(4).should eq -71.0700
+      expect(@clinic.ne_latitude.round(4)).to eq 42.3646
+      expect(@clinic.sw_latitude.round(4)).to eq 42.3619
+      expect(@clinic.ne_longitude.round(4)).to eq -71.0673
+      expect(@clinic.sw_longitude.round(4)).to eq -71.0700
 
     end
   end

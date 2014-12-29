@@ -11,7 +11,7 @@ describe Api::V1::Patients::ClinicsController do
 
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {
@@ -89,17 +89,15 @@ describe Api::V1::Patients::ClinicsController do
     patient.clinics << clinic
   end
 
-  context :json do
-    describe 'GET #index' do
-      get_bad_requests :index
-      it 'should respond successfully with proper API token' do
-        config = { format: 'json', api_token: @token }
-        get :index,  config
-        expect(response).to be_success
-        expect(json['success']).to eq true
-        expect(json['info']).to eq "Patient's Clinics"
-        expect(json['data'].keys.include?('clinics'))
-      end
+  describe 'GET #index' do
+    get_bad_requests :index
+    it 'should respond successfully with proper API token' do
+      config = { format: 'json', api_token: @token }
+      get :index,  config
+      expect(response).to be_success
+      expect(json['success']).to eq true
+      expect(json['info']).to eq "Patient's Clinics"
+      expect(json['data'].keys.include?('clinics'))
     end
   end
 end

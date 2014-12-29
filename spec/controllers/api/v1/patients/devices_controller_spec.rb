@@ -16,7 +16,7 @@ describe Api::V1::Patients::DevicesController do
 
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {
@@ -93,23 +93,21 @@ describe Api::V1::Patients::DevicesController do
     patient.update_attribute(:api_key, my_encrypt(@token))
   end
 
-  context :json do
-    describe 'POST #create' do
-      post_bad_requests :create
-      it 'should have a successful response with valid inputs' do
-        clinic.save
-        patient.save
-        config = { api_token: @token, device:
-                                        {
-                                            patient_id: patient.id,
-                                            token: 'testToken123',
-                                            platform: 'android'
-                                        }
-                }
-        post :create, config
-        expect(json['success']).to be_true
-        expect(json['info']).to eq 'Device saved'
-      end
+  describe 'POST #create' do
+    post_bad_requests :create
+    it 'should have a successful response with valid inputs' do
+      clinic.save
+      patient.save
+      config = { api_token: @token, device:
+                                      {
+                                          patient_id: patient.id,
+                                          token: 'testToken123',
+                                          platform: 'android'
+                                      }
+              }
+      post :create, config
+      expect(json['success']).to be_truthy
+      expect(json['info']).to eq 'Device saved'
     end
   end
 end

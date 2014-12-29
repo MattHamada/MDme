@@ -14,25 +14,25 @@ describe Appointment do
   end
 
   subject { @appointment }
-  it { should respond_to(:doctor_id) }
-  it { should respond_to(:patient_id) }
-  it { should respond_to(:appointment_time) }
-  it { should respond_to(:clinic_id) }
-  it { should be_valid }
+  it { is_expected.to respond_to(:doctor_id) }
+  it { is_expected.to respond_to(:patient_id) }
+  it { is_expected.to respond_to(:appointment_time) }
+  it { is_expected.to respond_to(:clinic_id) }
+  it { is_expected.to be_valid }
 
   describe 'when doctor_id is missing' do
     before { @appointment.doctor_id = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when patient_id is missing' do
     before { @appointment.patient_id = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when appointment_time is missing' do
     before { @appointment.appointment_time = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'doctors should not have more than one appointment at same time in same clinic' do
@@ -56,7 +56,7 @@ describe Appointment do
         @appointment2.save
       end
       it 'should be valid' do
-        @appointment2.should be_valid
+        expect(@appointment2).to be_valid
       end
     end
 
@@ -68,7 +68,18 @@ describe Appointment do
         @appointment2.save
       end
       it 'should be valid' do
-        @appointment2.should be_valid
+        expect(@appointment2).to be_valid
+      end
+    end
+
+    describe 'should be able to search by date and by doctor id' do
+      before { @appointment.save }
+      it 'should show up in appointments with given day' do
+        expect(Appointment.given_date(DateTime.now + 30.minutes)).to match_array([@appointment])
+      end
+
+      it 'should show up in appointments with same doctor' do
+        expect(Appointment.with_doctor(@appointment.doctor_id)).to match_array([@appointment])
       end
     end
 
@@ -82,16 +93,6 @@ describe Appointment do
   #       @appointment2.should_not be_valid
   #     end
   #   end
-  end
-
-  it 'should show up in given date of today' do
-    Appointment.given_date(DateTime.now + 30.minutes).should
-                                     match_array([@appointment])
-  end
-
-  it 'should show up in appointments with same doctor' do
-    Appointment.with_doctor(@appointment.doctor_id).should
-                                    match_array([@appointment])
   end
 end
 

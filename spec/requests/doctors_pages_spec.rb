@@ -8,16 +8,16 @@ describe 'DoctorsPages' do
     let(:doctor) { FactoryGirl.create(:doctor) }
 
     before { visit doctor_path(doctor) }
-    it { should have_content 'Sign In' }
-    it { should_not have_content "Today's Appointments" }
+    it { is_expected.to have_content 'Sign In' }
+    it { is_expected.not_to have_content "Today's Appointments" }
   end
 
   describe 'Doctor signin page' do
 
     before { visit root_path }
-    it { should have_title 'Sign In'
+    it { is_expected.to have_title 'Sign In'
     }
-    it { should have_content('Sign In') }
+    it { is_expected.to have_content('Sign In') }
 
 
 
@@ -25,8 +25,8 @@ describe 'DoctorsPages' do
     describe 'Doctor signing in' do
       describe 'with invalid information' do
         before { click_button 'SIGN IN' }
-        it { should have_title 'Sign In' }
-        it { should have_selector 'div.alert.alert-danger',
+        it { is_expected.to have_title 'Sign In' }
+        it { is_expected.to have_selector 'div.alert.alert-danger',
                                   text: 'Invalid email/password combination' }
       end
 
@@ -40,12 +40,12 @@ describe 'DoctorsPages' do
           fill_in 'password', with: doctor.password
           click_button 'SIGN IN'
         end
-        it { should have_title("My Profile") }
+        it { is_expected.to have_title("My Profile") }
 
 
         describe 'Visiting signin page when logged in' do
           before { visit root_path }
-          it { should have_title "My Profile" }
+          it { is_expected.to have_title "My Profile" }
         end
 
         describe 'cannot visit another doctors pages' do
@@ -62,13 +62,13 @@ describe 'DoctorsPages' do
 
         describe 'Profile view page' do
           before { click_link 'My Profile' }
-          it { should have_content doctor.first_name }
-          it { should have_content doctor.last_name }
-          it { should have_content doctor.email }
-          it { should have_content doctor.phone_number }
-          it { should have_content doctor.degree }
-          it { should have_content doctor.alma_mater }
-          it { should have_content doctor.description }
+          it { is_expected.to have_content doctor.first_name }
+          it { is_expected.to have_content doctor.last_name }
+          it { is_expected.to have_content doctor.email }
+          it { is_expected.to have_content doctor.phone_number }
+          it { is_expected.to have_content doctor.degree }
+          it { is_expected.to have_content doctor.alma_mater }
+          it { is_expected.to have_content doctor.description }
 
           describe 'Edit Profile' do
             before { click_link 'Edit Profile' }
@@ -77,7 +77,7 @@ describe 'DoctorsPages' do
                 fill_in 'doctor_phone_number', with: '000-000-0000'
                 click_button 'Update'
               end
-              it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered'}
+              it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid password entered'}
             end
 
             describe 'with valid password' do
@@ -87,7 +87,7 @@ describe 'DoctorsPages' do
                   fill_in 'verify_verify_password', with: 'Qwerty1'
                   click_button 'Update'
                 end
-                it { should have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered' }
+                it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid Parameters Entered' }
               end
 
               describe 'with valid information' do
@@ -96,18 +96,18 @@ describe 'DoctorsPages' do
                   fill_in 'verify_verify_password', with: 'Qwerty1'
                   click_button 'Update'
                 end
-                it { should have_content '000-000-0000'}
+                it { is_expected.to have_content '000-000-0000'}
               end
             end
           end
 
           describe 'Change password page' do
             before { click_link 'Change Password' }
-            it { should have_content 'Change Password' }
-            it { should have_content 'Old password' }
-            it { should have_content 'New password' }
-            it { should have_content 'Confirm new password' }
-            it { should have_button 'Change' }
+            it { is_expected.to have_content 'Change Password' }
+            it { is_expected.to have_content 'Old password' }
+            it { is_expected.to have_content 'New password' }
+            it { is_expected.to have_content 'Confirm new password' }
+            it { is_expected.to have_button 'Change' }
 
             describe 'changing the password' do
               describe 'without adding old password' do
@@ -116,16 +116,16 @@ describe 'DoctorsPages' do
                   fill_in 'new_password_confirm', with: 'Boobado1'
                   click_button 'Change'
                 end
-                it { should have_content 'Change Password' }
-                it { should have_content 'Old password' }
-                it { should have_selector 'div.alert.alert-danger', text: 'Old password invalid' }
+                it { is_expected.to have_content 'Change Password' }
+                it { is_expected.to have_content 'Old password' }
+                it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Old password invalid' }
               end
               describe 'with invalid new password format' do
                 before do
                   fill_in 'old_password', with: doctor.password
                   click_button 'Change'
                 end
-                it { should have_selector 'div.alert.alert-danger',
+                it { is_expected.to have_selector 'div.alert.alert-danger',
                             text: 'The form contains 1 error.' }
               end
               describe 'with valid parameters' do
@@ -135,7 +135,7 @@ describe 'DoctorsPages' do
                   fill_in 'new_password_confirm', with: 'Boobado1'
                   click_button 'Change'
                 end
-                it { should have_selector 'div.alert.alert-success', text: 'Password updated' }
+                it { is_expected.to have_selector 'div.alert.alert-success', text: 'Password updated' }
               end
             end
           end
@@ -143,7 +143,7 @@ describe 'DoctorsPages' do
 
         describe 'signing out' do
           before { click_link 'Sign Out' }
-          it { should have_content 'Sign In' }
+          it { is_expected.to have_content 'Sign In' }
         end
       end
     end
@@ -153,15 +153,15 @@ describe 'DoctorsPages' do
       before do
         click_link 'Forgot Password'
       end
-      it { should have_content 'Email' }
-      it { should have_title 'Forgot Password' }
+      it { is_expected.to have_content 'Email' }
+      it { is_expected.to have_title 'Forgot Password' }
 
       describe 'resetting password' do
         before do
           fill_in 'Email', with: doctor.email
           click_button 'Submit'
         end
-        it { should have_content 'An email has been sent containing your new password'}
+        it { is_expected.to have_content 'An email has been sent containing your new password'}
         #TODO update for rails 4.2 deliver_later (returning last email array as empty)
         # it 'Email should be sent to user' do
         #   last_email.to.should include(doctor.email)

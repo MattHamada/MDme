@@ -10,13 +10,13 @@ describe PatientMailer do
     before { doctor.save }
 
     it 'renders the headers' do
-      mail.subject.should eq('Appointment time changed')
-      mail.to.should eq([patient.email])
-      mail.from.should eq(['no-reply@mdme.us'])
+      expect(mail.subject).to eq('Appointment time changed')
+      expect(mail.to).to eq([patient.email])
+      expect(mail.from).to eq(['no-reply@mdme.us'])
     end
 
     it 'renders the body' do
-      mail.body.encoded.should have_text(appointment.appointment_delayed_time.
+      expect(mail.body.encoded).to have_text(appointment.appointment_delayed_time.
                                          strftime('%m-%e-%y %I:%M%p'))
     end
   end

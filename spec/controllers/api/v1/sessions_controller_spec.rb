@@ -7,7 +7,7 @@ describe Api::V1::SessionsController do
        it 'should return a failed response' do
          post :create, patient: {email: 'user@test.com', password: 'Qwerty1'}
          expect(response).not_to be_success
-         response.body.should == %({"success":false,"info":"Login failed","data":{}})
+         expect(response.body).to eq(%({"success":false,"info":"Login failed","data":{}}))
        end
      end
     describe 'with valid parameters' do

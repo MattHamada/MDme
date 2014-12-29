@@ -22,7 +22,6 @@ describe Api::V1::Patients::DoctorsController do
     @token = 'ca76c7a6c7a'
     patient.update_attribute(:api_key, my_encrypt(@token))
   end
-  context :json do
     #needs to specify which clinic in request
     # describe 'GET department_index' do
     #   get_bad_requests(:department_index)
@@ -52,26 +51,25 @@ describe Api::V1::Patients::DoctorsController do
     #   end
     # end
 
-    describe 'GET #show' do
-      get_bad_requests :show, { id: 1 }
-      it 'should return doctors info with valid api and valid id' do
-        config = { format: 'json', api_token: @token, id: doctor.id }
-        get :show, config
-        expect(response).to be_success
-        expect(json['data']['doctor']).not_to be_nil
-        expect(json['data']['doctor']['full_name']).to eq doctor.full_name
-        expect(json['data']['doctor']['description']).to eq doctor.description
-        expect(json['data']['doctor']['education']).to eq doctor.education
-        expect(json['data']['doctor']['department_name']).to eq doctor.department_name
-        expect(json['data']['doctor']['avatar_medium_url']).not_to be_nil
-      end
-      it 'should have have invalid info valid api and invalid doctor id' do
-        config = { format: 'json', api_token: @token, id: 999 }
-        get :show, config
-        expect(response).to be_success
-        expect(json['info']).to eq 'Doctor not found.'
-        expect(json['data']['doctor']).to be_nil
-      end
+  describe 'GET #show' do
+    get_bad_requests :show, { id: 1 }
+    it 'should return doctors info with valid api and valid id' do
+      config = { format: 'json', api_token: @token, id: doctor.id }
+      get :show, config
+      expect(response).to be_success
+      expect(json['data']['doctor']).not_to be_nil
+      expect(json['data']['doctor']['full_name']).to eq doctor.full_name
+      expect(json['data']['doctor']['description']).to eq doctor.description
+      expect(json['data']['doctor']['education']).to eq doctor.education
+      expect(json['data']['doctor']['department_name']).to eq doctor.department_name
+      expect(json['data']['doctor']['avatar_medium_url']).not_to be_nil
+    end
+    it 'should have have invalid info valid api and invalid doctor id' do
+      config = { format: 'json', api_token: @token, id: 999 }
+      get :show, config
+      expect(response).to be_success
+      expect(json['info']).to eq 'Doctor not found.'
+      expect(json['data']['doctor']).to be_nil
     end
   end
 end

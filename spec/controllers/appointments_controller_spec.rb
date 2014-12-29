@@ -7,7 +7,7 @@ describe AppointmentsController do
   let(:appointment) { FactoryGirl.create(:appointment) }
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {

@@ -4,6 +4,6 @@ describe Department do
   before { @department = Department.new(name: 'Oncology') }
   subject { @department }
 
-  it { should respond_to :name }
-  it { should be_valid }
+  it { is_expected.to respond_to :name }
+  it { is_expected.to be_valid }
 end

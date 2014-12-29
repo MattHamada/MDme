@@ -7,7 +7,7 @@ describe 'Patient Pages' do
   let(:doctor) { FactoryGirl.create(:doctor) }
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {
@@ -85,19 +85,19 @@ describe 'Patient Pages' do
     before do
       visit patient_path(patient)
     end
-    it { should have_button 'SIGN IN' }
+    it { is_expected.to have_button 'SIGN IN' }
   end
 
   describe 'signing in' do
     before { visit signin_path }
 
-    it { should have_button('SIGN IN') }
-    it { should have_title('Sign In') }
+    it { is_expected.to have_button('SIGN IN') }
+    it { is_expected.to have_title('Sign In') }
 
     describe 'with invalid information' do
       before { click_button 'SIGN IN' }
-      it { should have_title 'Sign In' }
-      it { should have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
+      it { is_expected.to have_title 'Sign In' }
+      it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
     end
 
     describe 'with valid information' do
@@ -107,10 +107,10 @@ describe 'Patient Pages' do
         fill_in 'password', with: 'Qwerty1'
         click_button 'SIGN IN'
       end
-      it { should_not have_title 'Sign in' }
-      it { should have_link 'Sign Out' }
-      it { should have_title 'Home |'}
-      it { should_not have_link('Sign in', href: signin_path) }
+      it { is_expected.not_to have_title 'Sign in' }
+      it { is_expected.to have_link 'Sign Out' }
+      it { is_expected.to have_title 'Home |'}
+      it { is_expected.not_to have_link('Sign in', href: signin_path) }
 
       # describe 'sidebar' do
       #   it { should have_content 'Browse Doctors' }
@@ -120,9 +120,9 @@ describe 'Patient Pages' do
       # end
 
       describe 'patient home page with no upcomming appointments' do
-        it { should have_title 'Home |'}
-        it { should have_content "Welcome, #{patient.full_name}" }
-        it { should have_content 'No upcoming appointments' }
+        it { is_expected.to have_title 'Home |'}
+        it { is_expected.to have_content "Welcome, #{patient.full_name}" }
+        it { is_expected.to have_content 'No upcoming appointments' }
       end
 
       describe '3 hours left on Appointment' do
@@ -132,7 +132,7 @@ describe 'Patient Pages' do
           upcoming_appointment.save
           click_link 'HOME'
         end
-        it { should have_content 'No upcoming appointments' }
+        it { is_expected.to have_content 'No upcoming appointments' }
       end
 
       describe 'patient home page with upcoming appointment' do
@@ -143,10 +143,10 @@ describe 'Patient Pages' do
             upcoming_appointment.save
             click_link 'HOME'
           end
-          it { should have_selector 'div.appointment-progressbar'}
-          it { should have_selector 'div.progress-bar.progress-bar-success' }
+          it { is_expected.to have_selector 'div.appointment-progressbar'}
+          it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 65%'
+            expect(page.find('div.progress-bar.progress-bar-success')['style']).to eq('width: 65%')
           end
         end
 
@@ -159,10 +159,10 @@ describe 'Patient Pages' do
             upcoming_appointment.save
             click_link 'HOME'
           end
-          it { should have_selector 'div.appointment-progressbar'}
-          it { should have_selector 'div.progress-bar.progress-bar-success' }
+          it { is_expected.to have_selector 'div.appointment-progressbar'}
+          it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-success')['style'].should == 'width: 50%'
+            expect(page.find('div.progress-bar.progress-bar-success')['style']).to eq('width: 50%')
           end
         end
 
@@ -173,10 +173,10 @@ describe 'Patient Pages' do
             upcoming_appointment.save
             click_link 'HOME'
           end
-          it { should have_selector 'div.appointment-progressbar'}
-          it { should have_selector 'div.progress-bar.progress-bar-warning' }
+          it { is_expected.to have_selector 'div.appointment-progressbar'}
+          it { is_expected.to have_selector 'div.progress-bar.progress-bar-warning' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-warning')['style'].should == 'width: 80%'
+            expect(page.find('div.progress-bar.progress-bar-warning')['style']).to eq('width: 80%')
           end
         end
 
@@ -187,10 +187,10 @@ describe 'Patient Pages' do
             upcoming_appointment.save
             click_link 'HOME'
           end
-          it { should have_selector 'div.appointment-progressbar'}
-          it { should have_selector 'div.progress-bar.progress-bar-danger' }
+          it { is_expected.to have_selector 'div.appointment-progressbar'}
+          it { is_expected.to have_selector 'div.progress-bar.progress-bar-danger' }
           it 'has correct percentage filled' do
-            page.find('div.progress-bar.progress-bar-danger')['style'].should == 'width: 90%'
+            expect(page.find('div.progress-bar.progress-bar-danger')['style']).to eq('width: 90%')
           end
         end
       end
@@ -199,12 +199,12 @@ describe 'Patient Pages' do
         before do
           click_link 'MY PROFILE'
         end
-        it { should have_content patient.first_name }
-        it { should have_content patient.last_name }
-        it { should have_content patient.email }
-        it { should have_content patient.home_phone }
-        it { should have_link 'edit profile' }
-        it { should have_link 'change password' }
+        it { is_expected.to have_content patient.first_name }
+        it { is_expected.to have_content patient.last_name }
+        it { is_expected.to have_content patient.email }
+        it { is_expected.to have_content patient.home_phone }
+        it { is_expected.to have_link 'edit profile' }
+        it { is_expected.to have_link 'change password' }
 
         describe 'edit profile page' do
           before do
@@ -217,7 +217,7 @@ describe 'Patient Pages' do
               fill_in 'patient_home_phone', with: '000-000-0000'
               click_button 'Update'
             end
-            it { should have_selector 'div.alert.alert-danger', text: 'Invalid password entered'}
+            it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid password entered'}
           end
 
           describe 'with valid password' do
@@ -227,8 +227,8 @@ describe 'Patient Pages' do
                 fill_in 'verify_verify_password', with: 'Qwerty1'
                 click_button 'Update'
               end
-              it { should have_selector 'div.alert.alert-danger', text: 'Invalid parameters entered' }
-              it { should have_selector 'div.alert.alert-danger', text: 'The form contains 1 error.' }
+              it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid parameters entered' }
+              it { is_expected.to have_selector 'div.alert.alert-danger', text: 'The form contains 1 error.' }
             end
             describe 'with valid information' do
               before do
@@ -236,18 +236,18 @@ describe 'Patient Pages' do
                 fill_in 'verify_verify_password', with: 'Qwerty1'
                 click_button 'Update'
               end
-              it { should have_content '000-000-0000'}
+              it { is_expected.to have_content '000-000-0000'}
             end
           end
         end
 
         describe 'Change password page' do
           before { click_link 'change password' }
-          it { should have_content 'Change Password' }
-          it { should have_content 'Old password' }
-          it { should have_content 'New password' }
-          it { should have_content 'Confirm new password' }
-          it { should have_button 'Change' }
+          it { is_expected.to have_content 'Change Password' }
+          it { is_expected.to have_content 'Old password' }
+          it { is_expected.to have_content 'New password' }
+          it { is_expected.to have_content 'Confirm new password' }
+          it { is_expected.to have_button 'Change' }
 
           describe 'changing the password' do
             describe 'without adding old password' do
@@ -256,16 +256,16 @@ describe 'Patient Pages' do
                 fill_in 'new_password_confirm', with: 'Boobado1'
                 click_button 'Change'
               end
-              it { should have_content 'Change Password' }
-              it { should have_content 'Old password' }
-              it { should have_selector 'div.alert.alert-danger', text: 'Old password invalid' }
+              it { is_expected.to have_content 'Change Password' }
+              it { is_expected.to have_content 'Old password' }
+              it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Old password invalid' }
             end
             describe 'with invalid new password format' do
               before do
                 fill_in 'old_password', with: patient.password
                 click_button 'Change'
               end
-              it { should have_selector 'div.alert.alert-danger',
+              it { is_expected.to have_selector 'div.alert.alert-danger',
                                         text: 'The form contains 1 error.' }
             end
             describe 'with valid parameters' do
@@ -275,7 +275,7 @@ describe 'Patient Pages' do
                 fill_in 'new_password_confirm', with: 'Boobado1'
                 click_button 'Change'
               end
-              it { should have_selector 'div.alert.alert-success', text: 'Password updated' }
+              it { is_expected.to have_selector 'div.alert.alert-success', text: 'Password updated' }
             end
           end
         end
@@ -291,7 +291,7 @@ describe 'Patient Pages' do
           patient2.save!
           visit patient_path(patient2)
         end
-        it { should have_content patient.email }
+        it { is_expected.to have_content patient.email }
       end
 
       # describe 'browse doctor pages' do
@@ -323,9 +323,9 @@ describe 'Patient Pages' do
           click_link 'MY APPOINTMENTS'
           click_link 'Open Requests'
         end
-        it { should have_content appointment.date_time_ampm }
-        it { should have_content appointment.doctor.full_name }
-        it { should have_link '1' }
+        it { is_expected.to have_content appointment.date_time_ampm }
+        it { is_expected.to have_content appointment.doctor.full_name }
+        it { is_expected.to have_link '1' }
 
         describe 'editing a request' do
           before do
@@ -343,7 +343,7 @@ describe 'Patient Pages' do
             click_link 'Edit'
             click_link 'Delete Request'
           end
-          it { should_not have_content appointment.date_time_ampm }
+          it { is_expected.not_to have_content appointment.date_time_ampm }
         end
 
         describe 'should delete appointment request' do
@@ -360,7 +360,7 @@ describe 'Patient Pages' do
 
       describe 'signing out' do
         before { click_link 'Sign Out' }
-        it { should have_link('SIGN IN') }
+        it { is_expected.to have_link('SIGN IN') }
       end
     end
 
@@ -369,15 +369,15 @@ describe 'Patient Pages' do
       before do
         click_link 'forgot password?'
       end
-      it { should have_content 'Email' }
-      it { should have_title 'Forgot Password' }
+      it { is_expected.to have_content 'Email' }
+      it { is_expected.to have_title 'Forgot Password' }
 
       describe 'resetting password' do
         before do
           fill_in 'Email', with: patient.email
           click_button 'Submit'
         end
-        it { should have_content 'An email has been sent containing your new password'}
+        it { is_expected.to have_content 'An email has been sent containing your new password'}
         # TODO get this working with rails 4.2 deliver_later
         # it 'Email should be sent to user' do
         #   last_email.to.should include(patient.email)
@@ -389,7 +389,7 @@ describe 'Patient Pages' do
   describe 'Profile page' do
     describe 'need to be logged in as patient to view profile' do
       before { visit patient_path(patient) }
-      it { should_not have_content patient.email }
+      it { is_expected.not_to have_content patient.email }
     end
   end
 
@@ -416,7 +416,7 @@ describe 'Patient Pages' do
         fill_in 'appointment_date', with: 3.days.ago.strftime('%F')
         click_button 'Request'
       end
-      it { should have_selector 'div.alert.alert-danger', text: 'Time must be set in the future' }
+      it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Time must be set in the future' }
     end
 
     describe 'with valid date' do
@@ -424,7 +424,7 @@ describe 'Patient Pages' do
         fill_in 'appointment_date', with: 3.days.from_now.strftime('%F')
         click_button 'Request'
       end
-      it { should have_selector 'div.alert.alert-success', text: 'Appointment Requested'}
+      it { is_expected.to have_selector 'div.alert.alert-success', text: 'Appointment Requested'}
     end
 
     describe 'Can only choose doctors in same clinic' do
@@ -437,7 +437,7 @@ describe 'Patient Pages' do
         click_link 'New Request'
       end
       it 'should not list doctor2 in available doctors' do
-        find(:css, 'select#appointment_doctor_id').value.should_not eq 2
+        expect(find(:css, 'select#appointment_doctor_id').value).not_to eq 2
       end
     end
   end

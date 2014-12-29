@@ -4,7 +4,7 @@ describe Patient do
   let(:clinic) { FactoryGirl.build(:clinic) }
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {
@@ -93,61 +93,61 @@ describe Patient do
 
   subject { @patient }
 
-  it { should respond_to(:first_name) }
-  it { should respond_to(:last_name) }
-  it { should respond_to(:email) }
-  it { should respond_to(:password_digest) }
-  it { should respond_to(:password) }
-  it { should respond_to(:password_confirmation) }
-  it { should respond_to(:remember_token) }
-  it { should respond_to(:authenticate) }
-  it { should respond_to(:slug) }
-  it { should respond_to(:birthday) }
-  it { should respond_to(:name_prefix) }
-  it { should respond_to(:name_suffix) }
-  it { should respond_to(:middle_initial) }
-  it { should respond_to(:sex) }
-  it { should respond_to(:social_security_number) }
-  it { should respond_to(:marital_status) }
-  it { should respond_to(:address1) }
-  it { should respond_to(:address2) }
-  it { should respond_to(:city) }
-  it { should respond_to(:state) }
-  it { should respond_to(:zipcode) }
-  it { should respond_to(:home_phone) }
-  it { should respond_to(:work_phone) }
-  it { should respond_to(:mobile_phone) }
-  it { should respond_to(:work_phone_extension) }
-  it { should respond_to(:preferred_daytime_phone) }
+  it { is_expected.to respond_to(:first_name) }
+  it { is_expected.to respond_to(:last_name) }
+  it { is_expected.to respond_to(:email) }
+  it { is_expected.to respond_to(:password_digest) }
+  it { is_expected.to respond_to(:password) }
+  it { is_expected.to respond_to(:password_confirmation) }
+  it { is_expected.to respond_to(:remember_token) }
+  it { is_expected.to respond_to(:authenticate) }
+  it { is_expected.to respond_to(:slug) }
+  it { is_expected.to respond_to(:birthday) }
+  it { is_expected.to respond_to(:name_prefix) }
+  it { is_expected.to respond_to(:name_suffix) }
+  it { is_expected.to respond_to(:middle_initial) }
+  it { is_expected.to respond_to(:sex) }
+  it { is_expected.to respond_to(:social_security_number) }
+  it { is_expected.to respond_to(:marital_status) }
+  it { is_expected.to respond_to(:address1) }
+  it { is_expected.to respond_to(:address2) }
+  it { is_expected.to respond_to(:city) }
+  it { is_expected.to respond_to(:state) }
+  it { is_expected.to respond_to(:zipcode) }
+  it { is_expected.to respond_to(:home_phone) }
+  it { is_expected.to respond_to(:work_phone) }
+  it { is_expected.to respond_to(:mobile_phone) }
+  it { is_expected.to respond_to(:work_phone_extension) }
+  it { is_expected.to respond_to(:preferred_daytime_phone) }
 
 
 
 
-  it { should be_valid }
+  it { is_expected.to be_valid }
 
   describe 'when first name is not present' do
     before { @patient.first_name = ' ' }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when last name not present' do
     before { @patient.last_name = ' '}
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when first name to long' do
     before { @patient.first_name = 'a'*51 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when last name to long' do
     before { @patient.last_name = 'a'*51 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'when email is not present' do
     before { @patient.email = ' '}
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
   end
 
   describe 'with valid email' do
@@ -172,13 +172,13 @@ describe Patient do
       patient_dup.email = patient_dup.email.upcase
       patient_dup.save
     end
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'password problems' do
     describe 'when password not present' do
       before {@patient.password = @patient.password_confirmation = ''}
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
 
     describe 'when password != password confirmation' do
@@ -186,27 +186,27 @@ describe Patient do
         @patient.password = 'Qwerty1'
         @patient.password='YtrewQ1'
       end
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
 
     describe 'when password to short' do
       before { @patient.password = @patient.password_confirmation = 'Qwer1' }
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
 
     describe 'when password has no capital letters' do
       before { @patient.password = @patient.password_confirmation = 'qwerty1' }
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
 
     describe 'when password is all capital' do
       before { @patient.password = @patient.password_confirmation = 'QWERTY1' }
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
 
     describe 'when password has no numbers' do
       before { @patient.password = @patient.password_confirmation = 'Qwertyy' }
-      it { should_not be_valid }
+      it { is_expected.not_to be_valid }
     end
   end
 
@@ -215,24 +215,32 @@ describe Patient do
     let(:found_patient) { Patient.find_by(email: @patient.email) }
 
     describe 'with valid password' do
-      it { should eq found_patient.authenticate(@patient.password) }
+      it { is_expected.to eq found_patient.authenticate(@patient.password) }
     end
 
     describe 'with invalid password' do
       let(:patient_invalid_password) { found_patient.authenticate('invalid') }
-      it { should_not eq patient_invalid_password }
-      specify { expect(patient_invalid_password).to be_false }
+      it { is_expected.not_to eq patient_invalid_password }
+      specify { expect(patient_invalid_password).to be_falsey }
     end
 
     describe 'remmeber token' do
       before { @patient.save }
-      its(:remember_token) { should_not be_blank }
+
+      describe '#remember_token' do
+        subject { super().remember_token }
+        it { is_expected.not_to be_blank }
+      end
     end
   end
 
   describe "Slug is set to patients name hyphenated" do
     before { @patient.save }
-    its(:slug) { should eq "#{@patient.first_name.downcase}-#{@patient.last_name.downcase}" }
+
+    describe '#slug' do
+      subject { super().slug }
+      it { is_expected.to eq "#{@patient.first_name.downcase}-#{@patient.last_name.downcase}" }
+    end
 
     describe 'A second patient with the same name still has a valid slug' do
       before do
@@ -246,76 +254,79 @@ describe Patient do
         @patient.save
         @patient2.save
       end
-      it(@patient)  { should be_valid }
-      it(@patient2) { should be_valid }
-      its 'slug should have a unique number at the end' do
-        @patient.slug.should eq @patient.full_name.parameterize
-        @patient2.slug.should eq "#{@patient.slug}-1"
+      it(@patient)  { is_expected.to be_valid }
+      it(@patient2) { is_expected.to be_valid }
+
+      describe '#slug should have a unique number at the end' do
+        it do
+          expect(@patient.slug).to eq @patient.full_name.parameterize
+          expect(@patient2.slug).to eq "#{@patient.slug}-1"
+        end
       end
     end
   end
 
   describe 'with no state' do
     before { @patient.state = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
   describe 'State should only accept 2 char abbreviation' do
     before { @patient.state = 'Arizona' }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'social security number should be less than 12 digits' do
     before { @patient.social_security_number = '1' * 12 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with no sex specified' do
     before { @patient.sex = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with no address1' do
     before { @patient.address1 = nil }
-    it {should_not be_valid}
+    it {is_expected.not_to be_valid}
   end
 
   describe 'with address1 over 100char' do
     before { @patient.address1 = 'a' * 101 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with no city' do
    before { @patient.city = nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with city name over 50char' do
     before { @patient.city = 'a' * 51 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with no zipcode' do
     before { @patient.zipcode = nil }
-    it {should_not be_valid}
+    it {is_expected.not_to be_valid}
   end
 
   describe 'with address1 over 11char' do
     before { @patient.zipcode = 'a' * 12 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with middle initial over 1char' do
     before { @patient.middle_initial = 'a' * 2 }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with no birthday' do
     before { @patient.birthday =nil }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 
   describe 'with birthday in future' do
     before { @patient.birthday = Date.today + 3.days }
-    it { should_not be_valid }
+    it { is_expected.not_to be_valid }
   end
 end

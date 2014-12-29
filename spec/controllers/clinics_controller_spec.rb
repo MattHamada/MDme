@@ -7,7 +7,7 @@ describe ClinicsController do
   let(:appointment) { FactoryGirl.create(:appointment_today) }
   before do
     #comment out stub to call real api
-    clinic.stub(:call_google_api_for_location).and_return(
+    allow(clinic).to receive(:call_google_api_for_location).and_return(
         {
             "results" => [
                 {
@@ -86,7 +86,7 @@ describe ClinicsController do
     it 'should check in patient' do
       params = {patient_id: patient.id, id: clinic.slug}
       get :checkin, params
-      expect(appointment.reload.checked_in).to be_true
+      expect(appointment.reload.checked_in).to be_truthy
     end
   end
 end
