@@ -17,7 +17,6 @@
 /coverage*
 
 
-database.yml
 doc/
 *.swp
 *~

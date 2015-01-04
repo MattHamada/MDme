@@ -77,7 +77,7 @@ group :test do
   gem 'selenium-webdriver', '2.35.1'
   #gem 'rspec-its'
   #gem 'ZenTest'
-  gem 'capybara', '2.2.1'
+  gem 'capybara'
   gem 'capybara-webkit'
   gem 'factory_girl_rails', '4.2.0'
   gem 'cucumber-rails', '1.4.0', :require => false
