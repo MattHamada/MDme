@@ -27,3 +27,12 @@ production:
   username: pi
   password: 
 
+staging:
+  adapter: postgresql
+  encoding: unicode
+  database: MDme_staging
+  pool: 10
+  timeout: 5000
+  username: pi
+  password: 
+

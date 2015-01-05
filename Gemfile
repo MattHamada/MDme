@@ -92,7 +92,7 @@ group :test do
   gem 'capybara-slow_finder_errors'
 end
 
-group :production do
+group :production, :staging do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
   gem 'unicorn'
