@@ -66,8 +66,8 @@ MDme::Application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = false
+ config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       address:              ENV['EMAIL_SERVER'],#smtpout.secureserver.net',
       port:                 ENV['EMAIL_PORT'],#80,
@@ -89,6 +89,9 @@ MDme::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  #Set local log file
+  RAILS_DEFAULT_LOGGER = Logger.new('log/production.log')
 
   #for paperclip to use imagemagick
   Paperclip.options[:command_path] = '/usr/bin/'

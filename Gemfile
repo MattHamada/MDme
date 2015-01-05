@@ -51,6 +51,8 @@ gem 'attr_encrypted'
 #adds respond_to calls
 gem 'responders'
 
+gem 'rdoc'
+
 group :development do
   #nicer error page
   gem 'better_errors'
@@ -70,7 +72,6 @@ group :development, :test do
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
   #gem 'json_spec', '~> 1.1.1'
-  gem 'rdoc'
 end
 
 group :test do
