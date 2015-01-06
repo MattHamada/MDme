@@ -94,8 +94,11 @@ end
 
 group :production, :staging do
   gem 'pg', '0.15.1'
-  gem 'rails_12factor', '0.0.2'
   gem 'unicorn'
+end
+
+group :production do
+  gem 'rails_12factor', '0.0.2' #heroku logging
 end
 
 #haml markup templates
