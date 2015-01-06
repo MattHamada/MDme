@@ -90,9 +90,6 @@ MDme::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  #Set local log file
-  RAILS_DEFAULT_LOGGER = Logger.new('log/production.log')
-
   #for paperclip to use imagemagick
   Paperclip.options[:command_path] = '/usr/bin/'
 end
