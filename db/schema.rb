@@ -11,9 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141104163421) do
+ActiveRecord::Schema.define(version: 20141217181335) do
 
-  create_table "admins", force: true do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "admins", force: :cascade do |t|
     t.string   "email"
     t.string   "remember_token"
     t.datetime "created_at"
@@ -22,11 +25,11 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.integer  "clinic_id"
   end
 
-  add_index "admins", ["clinic_id"], name: "index_admins_on_clinic_id"
-  add_index "admins", ["email"], name: "index_admins_on_email"
-  add_index "admins", ["remember_token"], name: "index_admins_on_remember_token"
+  add_index "admins", ["clinic_id"], name: "index_admins_on_clinic_id", using: :btree
+  add_index "admins", ["email"], name: "index_admins_on_email", using: :btree
+  add_index "admins", ["remember_token"], name: "index_admins_on_remember_token", using: :btree
 
-  create_table "appointments", force: true do |t|
+  create_table "appointments", force: :cascade do |t|
     t.integer  "doctor_id"
     t.integer  "patient_id"
     t.datetime "appointment_time"
@@ -41,15 +44,15 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.string   "access_key"
   end
 
-  add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time"
-  add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id"
-  add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id"
-  add_index "appointments", ["request"], name: "index_appointments_on_request"
+  add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time", using: :btree
+  add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id", using: :btree
+  add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id", using: :btree
+  add_index "appointments", ["request"], name: "index_appointments_on_request", using: :btree
 
-  create_table "clinics", force: true do |t|
+  create_table "clinics", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.string   "slug"
     t.string   "address1"
     t.string   "address2"
@@ -66,18 +69,18 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.float    "sw_longitude"
   end
 
-  add_index "clinics", ["name"], name: "index_clinics_on_name"
-  add_index "clinics", ["slug"], name: "index_clinics_on_slug"
+  add_index "clinics", ["name"], name: "index_clinics_on_name", using: :btree
+  add_index "clinics", ["slug"], name: "index_clinics_on_slug", using: :btree
 
-  create_table "clinics_patients", id: false, force: true do |t|
+  create_table "clinics_patients", id: false, force: :cascade do |t|
     t.integer "clinic_id"
     t.integer "patient_id"
   end
 
-  add_index "clinics_patients", ["clinic_id"], name: "index_clinics_patients_on_clinic_id"
-  add_index "clinics_patients", ["patient_id"], name: "index_clinics_patients_on_patient_id"
+  add_index "clinics_patients", ["clinic_id"], name: "index_clinics_patients_on_clinic_id", using: :btree
+  add_index "clinics_patients", ["patient_id"], name: "index_clinics_patients_on_patient_id", using: :btree
 
-  create_table "departments", force: true do |t|
+  create_table "departments", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -85,10 +88,10 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.string   "slug"
   end
 
-  add_index "departments", ["clinic_id"], name: "index_departments_on_clinic_id"
-  add_index "departments", ["slug"], name: "index_departments_on_slug"
+  add_index "departments", ["clinic_id"], name: "index_departments_on_clinic_id", using: :btree
+  add_index "departments", ["slug"], name: "index_departments_on_slug", using: :btree
 
-  create_table "devices", force: true do |t|
+  create_table "devices", force: :cascade do |t|
     t.integer  "patient_id"
     t.string   "token"
     t.string   "platform"
@@ -97,7 +100,7 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.datetime "updated_at"
   end
 
-  create_table "doctors", force: true do |t|
+  create_table "doctors", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
@@ -118,13 +121,13 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.integer  "clinic_id"
   end
 
-  add_index "doctors", ["clinic_id"], name: "index_doctors_on_clinic_id"
-  add_index "doctors", ["department_id"], name: "index_doctors_on_department_id"
-  add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true
-  add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token"
-  add_index "doctors", ["slug"], name: "index_doctors_on_slug"
+  add_index "doctors", ["clinic_id"], name: "index_doctors_on_clinic_id", using: :btree
+  add_index "doctors", ["department_id"], name: "index_doctors_on_department_id", using: :btree
+  add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true, using: :btree
+  add_index "doctors", ["remember_token"], name: "index_doctors_on_remember_token", using: :btree
+  add_index "doctors", ["slug"], name: "index_doctors_on_slug", using: :btree
 
-  create_table "patients", force: true do |t|
+  create_table "patients", force: :cascade do |t|
     t.string   "first_name"
     t.string   "email"
     t.datetime "created_at"
@@ -145,13 +148,27 @@ ActiveRecord::Schema.define(version: 20141104163421) do
     t.string   "mobile_phone"
     t.integer  "pid"
     t.date     "dob"
+    t.string   "middle_initial",                   default: ""
+    t.string   "name_prefix"
+    t.string   "name_suffix",                      default: ""
+    t.date     "birthday"
+    t.string   "encrypted_social_security_number", default: ""
+    t.integer  "marital_status"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.string   "work_phone_extension"
+    t.integer  "preferred_daytime_phone"
+    t.integer  "sex"
   end
 
-  add_index "patients", ["api_key"], name: "index_patients_on_api_key"
-  add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id"
-  add_index "patients", ["email"], name: "index_patients_on_email", unique: true
-  add_index "patients", ["pid"], name: "index_patients_on_pid", unique: true
-  add_index "patients", ["remember_token"], name: "index_patients_on_remember_token"
-  add_index "patients", ["slug"], name: "index_patients_on_slug"
+  add_index "patients", ["api_key"], name: "index_patients_on_api_key", using: :btree
+  add_index "patients", ["doctor_id"], name: "index_patients_on_doctor_id", using: :btree
+  add_index "patients", ["email"], name: "index_patients_on_email", unique: true, using: :btree
+  add_index "patients", ["pid"], name: "index_patients_on_pid", unique: true, using: :btree
+  add_index "patients", ["remember_token"], name: "index_patients_on_remember_token", using: :btree
+  add_index "patients", ["slug"], name: "index_patients_on_slug", using: :btree
 
 end

@@ -13,22 +13,23 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :verify_api_token
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/tasks
+  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/
   def index
     @tasks = [{title: 'Confirmed Appointments'},
-              {title: 'New Request'},
-              {title:'Open Requests'}]
+              {title: 'Open Requests'},
+              {title:'New Request'}]
   end
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointment/:id
+  # GET www.mdme.us/api/v1/patients/appointments/:id
   def show
-
+    @appointment = Appointment.find(params[:id])
   end
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/confirmed_appointments
-  def confirmed_appointments
+  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/requested_appointments
+  # requested_appointments_path
+  def requested_appointments
     @appointments = @patient.appointments.
-                                confirmed.
+                                 requests.
                                  not_past.
                                  includes([:doctor])
     if @appointments.empty?
@@ -39,13 +40,26 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     end
   end
 
+  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/confirmed_appointments
+  def confirmed_appointments
+    @appointments = @patient.appointments.
+        confirmed.
+        not_past.
+        includes([:doctor])
+    if @appointments.empty?
+      render json: { success: true,
+                     info: 'No upcoming appointments',
+                     data: { appointments: [] }
+             }
+    end
+  end
+
   # POST www.mdme.us/api/v1/patients/:patient_id/appointments
   def create
     p = appointment_params
     date_time = DateTime.parse(p[:appointment_time])
     p[:appointment_time] = date_time
-    @appointment = Appointment.new(p,
-                                   request: true)
+    @appointment = Appointment.new(p, request: true)
     if @appointment.save
       render json: { success: true,
                      info: 'Appointment requested',
@@ -57,7 +71,6 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
                      info: "The following #{@appointment.errors.count} error(s) occured",
                      data: {errors: errors} }
     end
-
   end
 
   # POST www.mdme.us/api/v1/patients/:patient_id/appointment/:id
@@ -93,7 +106,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
 
 
     def verify_api_token
-      @patient ||= Patient.find_by_api_key(encrypt(params[:api_token]));
+      @patient ||= Patient.find_by_api_key(my_encrypt(params[:api_token]));
       if @patient.nil?
         render status: 401,
                json: { success: false,

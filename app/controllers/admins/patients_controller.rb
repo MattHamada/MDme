@@ -10,12 +10,16 @@
 class Admins::PatientsController < ApplicationController
 
   before_filter :find_admin
-  before_filter :find_patient, only: [:show, :edit, :update, :destroy]
+  before_filter :find_patient, only: [:show, :edit, :update,
+                                      :destroy, :registration_form]
   before_filter :require_admin_login
 
   # GET admin.mdme.us/admins/:admin_id/patients
   def index
     @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
+  end
+
+  def browse
   end
 
   # GET admin.mdme.us/admins/:admin_id/patients/new
@@ -43,6 +47,19 @@ class Admins::PatientsController < ApplicationController
 
   def show
     render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
+  end
+
+  def registration_form
+     respond_to do |format|
+       format.pdf do
+         pdf = PatientRegistrationPdf.new(@patient)
+         send_data pdf.render,
+                   filename: "#{@patient.last_name}_registration_form.pdf",
+                   type: "application/pdf",
+                   disposition: "inline"
+
+       end
+     end
   end
 
   # GET admin.mdme.us/admins/:admin_id/patients/:id/edit
@@ -99,11 +116,26 @@ class Admins::PatientsController < ApplicationController
     def patient_params
       params.require(:patient).permit(:first_name,
                                       :last_name,
+                                      :middle_initial,
+                                      :name_prefix,
+                                      :name_suffix,
+                                      :birthday,
                                       :email,
                                       :password,
                                       :password_confirmation,
                                       :doctor_id,
-                                      :phone_number,
+                                      :home_phone,
+                                      :work_phone,
+                                      :mobile_phone,
+                                      :work_phone_extension,
+                                      :sex,
+                                      :social_security_number,
+                                      :marital_status,
+                                      :address1,
+                                      :address2,
+                                      :city,
+                                      :state,
+                                      :zipcode,
                                       :avatar)
     end
 

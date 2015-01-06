@@ -20,7 +20,7 @@ MDme::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_files = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -34,6 +34,9 @@ MDme::Application.configure do
 
   # Version of your assets, change this if you want to expire all your assets.
   config.assets.version = '1.0'
+
+  #raise errors in after_commit/after_rollback
+  config.active_record.raise_in_transactional_callbacks = true
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -60,11 +63,11 @@ MDme::Application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
-
+  config.assets.precompile = ['*.js', '*.scss', '*.js.erb', '*.scss.erb']
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = false
+ config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       address:              ENV['EMAIL_SERVER'],#smtpout.secureserver.net',
       port:                 ENV['EMAIL_PORT'],#80,
@@ -86,6 +89,9 @@ MDme::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  #Set local log file
+  RAILS_DEFAULT_LOGGER = Logger.new('log/production.log')
 
   #for paperclip to use imagemagick
   Paperclip.options[:command_path] = '/usr/bin/'

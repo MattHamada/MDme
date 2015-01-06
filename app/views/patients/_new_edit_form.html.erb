@@ -2,36 +2,123 @@
 <%= render 'shared/error_messages', object: @patient %>
 
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, 'First Name') %>
-    <%= text_field :patient, :first_name, class: 'form-control' %>
+  <div class="row">
+    <div class='col-xs-5'>
+      <%= f.label(:patient, 'First Name*') %>
+      <%= text_field :patient, :first_name, class: 'form-control' %>
+    </div>
+    <div class='col-xs-5'>
+      <%= f.label(:patient, 'Last Name*') %>
+      <%= text_field(:patient, :last_name, class: 'form-control') %>
+    </div>
+    <div class="col-xs-2">
+      <%= f.label(:patient, 'Middle Initial') %>
+      <%= text_field(:patient, :middle_initial, class: 'form-control') %>
+    </div>
   </div>
 </div>
 
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, 'Last Name') %>
-    <%= text_field(:patient, :last_name, class: 'form-control') %>
+  <div class="row">
+    <div class="col-xs-2">
+      <%= f.label(:patient, 'Prefix') %>
+      <%= text_field(:patient, :name_prefix, class: 'form-control') %>
+    </div>
+    <div class="col-xs-2">
+      <%= f.label(:patient, 'Suffix') %>
+      <%= text_field(:patient, :name_suffix, class: 'form-control') %>
+    </div>
+    <div class='col-xs-4'>
+      <%= f.label(:patient, 'Email*') %>
+      <%= text_field(:patient, :email, class: 'form-control') %>
+    </div>
+    <div class='col-xs-4'>
+      <%= f.label(:patient, 'Birthday*') %>
+      <%= text_field(:patient, :birthday, placeholder: 'YYYY-MM-DD', class: 'form-control') %>
+    </div>
   </div>
 </div>
+
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, "Email") %>
-    <%= text_field(:patient, :email, class: 'form-control') %>
+  <div class='row'>
+    <div class='col-xs-3'>
+      <%= f.label(:patient, 'Home Phone #') %>
+      <%= text_field(:patient, :home_phone, placeholder: '123-456-7890', class: 'form-control') %>
+    </div>
+    <div class='col-xs-3'>
+      <%= f.label(:patient, 'Mobile Phone #') %>
+      <%= text_field(:patient, :mobile_phone, placeholder: '123-456-7890', class: 'form-control') %>
+    </div>
+    <div class='col-xs-3'>
+      <%= f.label(:patient, 'Work Phone #') %>
+      <%= text_field(:patient, :work_phone, placeholder: '123-456-7890', class: 'form-control') %>
+    </div>
+    <div class='col-xs-3'>
+      <%= f.label(:patient, 'Work Extension') %>
+      <%= text_field(:patient, :work_phone_extension, class: 'form-control') %>
+    </div>
   </div>
 </div>
+
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, 'Home Phone #') %>
-    <%= text_field(:patient, :home_phone, class: 'form-control') %>
+  <div class="row">
+    <div class="col-xs-3">
+      <%= f.label(:patient, 'SSN#*') %>
+      <%= text_field(:patient, :social_security_number, placeholder: '123-44-5567', class: 'form-control') %>
+    </div>
+    <div class="col-xs-6">
+      <%= f.label(:patient, 'Marital Status') %>  <br/>
+      <%= f.label(:patient, 'Single', value: Patient::MaritalStatus::SINGLE) %>
+      <%= f.radio_button :marital_status, Patient::MaritalStatus::SINGLE %>
+      <%= f.label(:patient, 'Married', value: Patient::MaritalStatus::MARRIED) %>
+      <%= f.radio_button :marital_status, Patient::MaritalStatus::MARRIED %>
+      <%= f.label(:patient, 'Divorced', value: Patient::MaritalStatus::DIVORCED) %>
+      <%= f.radio_button :marital_status, Patient::MaritalStatus::DIVORCED %>
+      <%= f.label(:patient, 'Widowed', value: Patient::MaritalStatus::WIDOWED) %>
+      <%= f.radio_button :marital_status, Patient::MaritalStatus::WIDOWED %>
+      <%= f.label(:patient, 'Other', value: Patient::MaritalStatus::OTHER) %>
+      <%= f.radio_button :marital_status, Patient::MaritalStatus::OTHER %>
+    </div>
+    <div class="col-xs-3">
+      <%= f.label(:patient, 'Sex*') %>  <br/>
+      <%= f.label(:patient, 'Male', value: Patient::Sex::MALE) %>
+      <%= f.radio_button :sex, Patient::Sex::MALE %>
+      <%= f.label(:patient, 'Female', value: Patient::Sex::FEMALE) %>
+      <%= f.radio_button :sex, value: Patient::Sex::FEMALE %>
+    </div>
   </div>
 </div>
-<div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:patient, 'Work Phone #') %>
-    <%= text_field(:patient, :work_phone, class: 'form-control') %>
+
+<div class="form-group">
+  <div class="row">
+    <div class="col-xs-6">
+      <%= f.label(:patient, 'Address1*') %>
+      <%= text_field(:patient, :address1, class: 'form-control') %>
+    </div>
+    <div class="col-xs-6">
+      <%= f.label(:patient, 'City*') %>
+      <%= text_field(:patient, :city, class: 'form-control') %>
+    </div>
   </div>
 </div>
+
+<div class="form-group">
+  <div class="row">
+    <div class="col-xs-6">
+      <%= f.label(:patient, 'Address2') %>
+      <%= text_field(:patient, :address2, class: 'form-control') %>
+    </div>
+    <div class="col-xs-2">
+      <%= f.label(:patient, 'State*') %>
+      <%= text_field(:patient, :state, placeholder: 'AZ', class: 'form-control') %>
+    </div>
+    <div class="col-xs-4">
+      <%= f.label(:patient, 'Zipcode*') %>
+      <%= text_field(:patient, :zipcode, class: 'form-control') %>
+    </div>
+  </div>
+</div>
+
 <div class='form-group'>
   <div class='col-xs-6 col-xs-offset-3'>
     <%= f.label(:patient, 'Doctor') %>

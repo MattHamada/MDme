@@ -1,3 +1,4 @@
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -11,6 +12,8 @@
  *= require_self
  * require bootstrap
  *= require font-awesome
- *= require jquery.ui.datepicker
+ *= require jquery-ui
  *= require_tree .
  */
+@import "bootstrap-sprockets";
+@import "bootstrap";

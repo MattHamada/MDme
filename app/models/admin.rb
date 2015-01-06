@@ -38,9 +38,7 @@ class Admin < ActiveRecord::Base
   # ==== Parameters
   # * +temppass+ - new password generated for the account
   def send_password_reset_email(temppass)
-    Thread.new do
-      PasswordResetMailer.reset_email(self, temppass).deliver
-    end
+    PasswordResetMailer.reset_email(self, temppass).deliver_later
   end
 
   private
@@ -48,7 +46,7 @@ class Admin < ActiveRecord::Base
   # Used when admin first created and each subsequent login through browser
   # Creates session info for cookie
   def create_remember_token
-    self.remember_token = encrypt(new_remember_token)
+    self.remember_token = my_encrypt(new_remember_token)
   end
 
 end

@@ -28,8 +28,9 @@ class AppointmentsController < ApplicationController
       if wants_to_fill == 'true'
         @appointment.update_attribute(
             :appointment_time, DateTime.parse(new_time))
+        #TODO strftime should be in mailer method but gave serialization error, dirty here
         PatientMailer.appointment_update_time_email(
-            @appointment.patient, DateTime.parse(new_time)).deliver
+            @appointment.patient, DateTime.parse(new_time)).deliver_later
       else
         Appointment.fill_canceled_appointment(
             new_time, @appointment.appointment_time)

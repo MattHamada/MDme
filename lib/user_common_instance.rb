@@ -85,9 +85,7 @@ module UserCommonInstance
   end
 
   def send_password_reset_email(temppass)
-    Thread.new do
-      PasswordResetMailer.reset_email(self, temppass).deliver
-    end
+    PasswordResetMailer.reset_email(self, temppass).deliver_later
   end
 
   private
@@ -95,13 +93,11 @@ module UserCommonInstance
 
 
     def send_confirmation_email
-      Thread.new do
-        SignupMailer.signup_confirmation(self, password).deliver
-      end
+      SignupMailer.signup_confirmation(self, password).deliver_later
     end
 
     def create_remember_token
-      self.remember_token = encrypt(new_remember_token)
+      self.remember_token = my_encrypt(new_remember_token)
     end
 
 end

@@ -21,8 +21,20 @@ class Patient < ActiveRecord::Base
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
 
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
+  attr_encrypted :social_security_number, key: ENV['SOCIAL_ENCRYPT_KEY'], algorithm: 'aes-256-cbc'
+
+  validates :first_name,             presence: true, length: {maximum: 50}
+  validates :last_name,              presence: true, length: {maximum: 50}
+  validates :sex,                    presence: true
+  validates :social_security_number, presence: true, length: {maximum: 11}
+  validates :address1,               presence: true, length: {maximum: 100}
+  validates :city,                   presence: true, length: {maximum: 50}
+  validates :state,                  presence: true, length: {maximum: 2}
+  validates :zipcode,                presence: true, length: {maximum: 11}
+  validates :birthday,               presence: true
+  validate  :birthday_in_past
+  validates :middle_initial,                         length: {maximum: 1}
+  validates_uniqueness_of :encrypted_social_security_number
 
   has_attached_file :avatar, :styles => { :medium => "300x300>",
                                           :thumb => "100x100>" },
@@ -57,6 +69,15 @@ class Patient < ActiveRecord::Base
   # ["application/octet-stream", "image/jpg", "image/jpeg", "image/gif", "image/png"] },
   #                                   :size => { :in => 0..10.megabytes }
 
+  def birthday_in_past
+    if birthday.nil?
+      errors.add(:birthday, "No birthday entered.")
+    else
+      errors.add(:birthday, "Birthday date must be set in the past.") if
+          birthday > Date.today
+    end
+  end
+
   has_secure_password
 
   scope :ordered_last_name, -> { order(last_name: :asc)}
@@ -79,16 +100,14 @@ class Patient < ActiveRecord::Base
   # * +orig_appointment+ - The canceled appointment
   # * +new_time+ - The new available open time
   def email_about_open_time(orig_appointment, new_time)
-    Thread.new do
-      FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver
-    end
+    FillAppointmentMailer.ask_fill_appointment(self, orig_appointment, new_time).deliver_later
   end
 
   # Verify mobile client api token
   # ==== Parameters
   # * +api_token+ - passed client api token to verify
   def api_authenticate(api_token)
-    if self.remember_token == encrypt(api_token)
+    if self.remember_token == my_encrypt(api_token)
       true
     else
       false
@@ -115,5 +134,23 @@ class Patient < ActiveRecord::Base
     avatar.url(:medium)
   end
 
+  module MaritalStatus
+    SINGLE = 0
+    MARRIED = 1
+    DIVORCED = 2
+    WIDOWED = 3
+    OTHER = 4
+  end
+
+  module PreferredDaytimePhone
+    HOME = 0
+    WORK = 1
+    CELL = 2
+  end
+
+  module Sex
+    MALE   = 0
+    FEMALE = 1
+  end
 end
 

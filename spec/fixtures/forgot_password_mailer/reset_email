@@ -1,3 +1,0 @@
-ForgotPasswordMailer#reset_email
-
-Hi, find me in app/views/forgot_password_mailer/reset_email

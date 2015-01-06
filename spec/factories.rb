@@ -1,13 +1,21 @@
 FactoryGirl.define do
 
   factory :patient do
-    first_name            'fname'
-    last_name             'lname'
-    email                 'patient@example.com'
-    password              'Qwerty1'
-    password_confirmation 'Qwerty1'
-    doctor_id             '1'
-    pid                   Random.rand(20000)
+    first_name             'fname'
+    last_name              'lname'
+    email                  'patient@example.com'
+    password               'Qwerty1'
+    password_confirmation  'Qwerty1'
+    doctor_id              '1'
+    pid                    Random.rand(20000)
+    birthday               Date.today - 20.years
+    sex                    Patient::Sex::MALE
+    marital_status         Patient::MaritalStatus::SINGLE
+    address1               '123 w main street'
+    city                   'Tempe'
+    state                  'AZ'
+    zipcode                '85281'
+    social_security_number '123-12-1212'
   end
 
   factory :doctor do
@@ -75,6 +83,12 @@ FactoryGirl.define do
     country               'United States'
     phone_number          '617-726-2000'
     fax_number            '617-726-3000'
+  end
 
+  factory :device do
+    patient_id          '1'
+    token               'aaa'
+    platform            'android'
+    enabled             'false'
   end
 end

@@ -8,7 +8,7 @@ describe Admin do
 
   subject { @admin }
 
-  it { should respond_to(:email) }
-  it { should respond_to(:password_digest) }
-  it { should be_valid }
+  it { is_expected.to respond_to(:email) }
+  it { is_expected.to respond_to(:password_digest) }
+  it { is_expected.to be_valid }
 end

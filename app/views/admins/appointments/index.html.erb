@@ -4,22 +4,38 @@
 <div class="row">
   <div class="col-md-5 col-md-offset-3">
     <div class="panel panel-default">
-      <div class="panel-heading"><h4>Select Date</h4></div>
+      <div class="panel-heading"><h4>Today's Appointments</h4></div>
       <div class="panel-body panel-inverse">
 
-        <%= form_for(:appointment, url:appointments_browse_path, remote: true, method: :get, html: { class: 'form-group form-inline', role: 'form' }) do |f| %>
-            <div class="form-group">
-              <%= f.label(:day, "Select Date") %>
-            </div>
-            <div class="form-group">
-              <%= f.text_field(:day, class: "form-control" ) %>
-            </div>
-          <div class='form-group' id="submit">
-            <%= f.submit 'Submit' , class: 'btn btn-large btn-primary', id: 'submit_button' %>
-          </div>
-       <% end %>
-      </div>
-      <div class='day_appointments'>
+
+        <table class='table table-striped table-bordered table-hover table-inverse'>
+          <thread>
+            <tr>
+              <th>#</th>
+              <th>Time</th>
+              <th>Doctor</th>
+              <th>Patient</th>
+              <th>Checked In?</th>
+              <th>Appointment Ready</th>
+            </tr>
+            <tbody>
+            <% @appointments.each_with_index do |appointment, index| %>
+              <tr>
+                <td><%= link_to("#{index}", admin_appointment_path(@admin, appointment)) %></td>
+                <td><%= appointment.time_am_pm %></td>
+                <td><%= appointment.doctor_full_name %></td>
+                <td><%= appointment.patient_full_name %></td>
+                <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in? %> </td>
+                <%= form_tag(controller: 'admins/appointments', action: 'notify_ready', html: { role: 'form' }) do %>
+                  <%= hidden_field_tag(:appointment_id, appointment.id) %>
+                  <td><%= submit_tag 'Notify', class: 'btn btn-sm btn-primary' %></td>
+                <% end %>
+              </tr>
+            <% end %>
+            </tbody>
+          </thread>
+        </table>
+
 
       </div>
     </div>
@@ -30,6 +46,7 @@
   <div class="col-md-3">
     <div class="row">
       <div class="col-md-12 inverse-color">
+        <%= link_to "Browse Appointments", admin_appointments_browse_path(@admin) %><br/>
         <%= link_to "Add Appointment", new_admin_appointment_path(@admin) %><br/>
         <%= link_to "Appointment Requests", appointment_approval_path(@admin) %> <br/>
         <%= link_to "Manage Delays", manage_delays_path(@admin) %>  <br/>

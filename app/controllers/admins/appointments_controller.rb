@@ -18,6 +18,8 @@ class Admins::AppointmentsController < ApplicationController
     if Appointment.requests.in_clinic(@admin).not_past.any?
       flash.now[:warning] = "Appointments waiting for approval."
     end
+    @appointments = Appointment.in_clinic(@admin).today.confirmed.
+        order('appointment_time ASC').load.includes([:doctor, :patient])
   end
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
@@ -75,10 +77,14 @@ class Admins::AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  def browse
+
+  end
+
   # Ajax load - Shows all confirmed appointments on a given date for  index page
   # Expects the param :day passed as a string date to parse
   # GET admin.mdme.us/admins/:admin_id/appointments/browse
-  def browse
+  def ajax_browse
     input = appointment_params
     date = Date.parse(input[:day])
     # if date < Date.today
@@ -173,6 +179,7 @@ class Admins::AppointmentsController < ApplicationController
     if appointment.update_attribute(:appointment_delayed_time, new_time)
       flash[:success] = "Appointments updated"
       appointment.send_delay_email
+      appointment.push_delay_notification
     else
       flash[:warning] = "An error has occured please try again."
     end
@@ -182,6 +189,19 @@ class Admins::AppointmentsController < ApplicationController
     end
     redirect_to manage_delays_path(@admin)
   end
+
+  # POST to notify patient appointment is ready
+  # psuhed notification to patients phone
+  # POST admin.mdme.us/admins/:admin_id/appointments/notify_ready
+  # notify_appointment_ready_path
+  # TODO setup some sort of error system if push notfication failed / patient has no device registered to push to.
+  def notify_ready
+    appointment = Appointment.find(params[:appointment_id])
+    flash[:danger] = 'Patient has not checked in' unless appointment.checked_in?
+    appointment.push_notify_ready
+    redirect_to admin_appointments_path(@admin)
+  end
+
 
 
 

@@ -6,13 +6,13 @@ describe PasswordResetMailer do
     let(:mail) { PasswordResetMailer.reset_email(patient, 'Qwerty123') }
 
     it 'renders the headers' do
-      mail.subject.should eq('Password Reset')
-      mail.to.should eq([patient.email])
-      mail.from.should eq(['no-reply@mdme.us'])
+      expect(mail.subject).to eq('Password Reset')
+      expect(mail.to).to eq([patient.email])
+      expect(mail.from).to eq(['no-reply@mdme.us'])
     end
 
     it 'renders the body' do
-      mail.body.encoded.should have_text('Qwerty123')
+      expect(mail.body.encoded).to have_text('Qwerty123')
     end
   end
 

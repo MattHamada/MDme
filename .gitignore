@@ -11,13 +11,14 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+/config/database.yml
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
 /coverage*
 
 
-database.yml
 doc/
 *.swp
 *~

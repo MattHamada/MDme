@@ -1,28 +1,60 @@
-== README
+= MDme
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The *MDme* app is currently setup to run on <b>rails 4.2.0</b> powered by
+<b>Ruby 2.2.0</b>  Before running for the first time two files must be created
+* <tt>config/email_config.rb </tt>
+* <tt>config/api_keys.rb </tt>
+* <tt>config/encryption_keys.yml</tt>
 
-Things you may want to cover:
+Tese files have examples included such as
+<tt>email_config_example.rb</tt>. The contents of these files can be copied entirely to get the app running, but you
+will need the proper API keys if you are planning to send emails,
+use google services, etc.
 
-* Ruby version
+== Dependencies
+Development and test environemnts use *sqlite3* and require a copy installed on
+the host machine.  Production currently is run on Heroku and uses postgreSQL.
+You should not need to install postgreSQL to get things running locally.
 
-* System dependencies
+If using any image uploading features of MDme it is required that *ImageMagick*
+is installed to allow for modifying/resizing the raw image uploaded.
+ImageMagick can be found here http://www.imagemagick.org
 
-* Configuration
+Because this app runs on multiple subdomains it cannot be accessed simply by
+127.0.0.1  The routes are bound to www, admin, or doctors subdomains; in
+production a blank subdomain reroutes to www.  Therefore you will need to edit
+your host file to include a domain with those subdomains pointing at
+<tt>127.0.0.1:3000</tt> in order to access the development server.
 
-* Database creation
+== Database setup
+The database schema should be ready after running <tt>rake db:migrate</tt>
+To load sample data, you can run <tt>rake db:populate</tt>.  Running
+<tt>rake db:populate_appointments</tt> will add additional appointments spanning
+the next 3 days.
+You may want to comment out the line in config/environments/development.rb
+<tt>config.action_mailer.delivery_method = :letter_opener</tt>
+before running <tt>rake db:populate</tt> to prevent a confirmation email page
+opening for each user created.
 
-* Database initialization
+== Testing
+The MDme repo has an extensive <b>rspec 2.x</b> testing suite.  In order to test
+the site across multiple subdomains (www, admin, and doctors) it uses
+mdme.tk:7171 as a test host url.  You will likely have to add this domain to
+your host file, as well as www.mdme.tk admin.mdme.tk and doctors.mdme.tk to
+point at 127.0.0.1
+If you run the test suite after cloning and something fails please contact Matt
+Hamada (mailto:ermacaz@gmail.com).  I only have one development machine so
+things may break on other machines/environments.
 
-* How to run the test suite
+== Committing
+Please fork a new branch off of master to make modifications/additions.  Make
+sure all additions are covered with rspec tests.  Submit a pull request for your
+branch.  Once I check it out and it all looks good I will merge to master.
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+== Deploying
+The production app is currently hosted on heroku.  There is a specific branch,
+production that is used for pushing.  This branch is not kept on github since it
+has sensitive info.  Commits should rarely be made to production; rather you
+should merge master to production when ready to deploy. The main exception is
+when adding sensitive info like api keys, or embed full Urls to mdme.us. When
+deploying to production use <tt> git push heroku production:master </tt>

@@ -45,25 +45,25 @@ class ApplicationController < ActionController::Base
     minutes_left =
       ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
     case minutes_left
-      when 81...120
+      when 81..120
         @color = 'success'
         @percent = 20
       when 70..81
         @color = 'success'
         @percent = 40
-      when 60...69
+      when 59..69
         @color = 'success'
         @percent = 50
-      when 35...59
+      when 35..58
         @color = 'success'
         @percent = 65
-      when 21...34
+      when 21..34
         @color = 'success'
         @percent = 75
-      when 6...20
+      when 6..20
         @color = 'warning'
         @percent = 80
-      when 0...5
+      when 0..5
         @color = 'danger'
         @percent = 90
       else

@@ -1,37 +1,60 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
-#ruby-gemset=mdme
+ruby '2.2.0'
+#ruby-gemset=mdme-rails4.2
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.1'
+gem 'rails', '4.2.0'
 
+#gem 'activejob_time_serialize', '0.1.1'
 
-gem 'bootstrap-sass', '3.0.3.0'
+gem 'bootstrap-sass', '3.3.1'
 gem 'font-awesome-rails'
+gem 'autoprefixer-rails'
 
 
 #gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails',
 #                              :github => 'anjlab/bootstrap-rails',
 #                              :branch => '3.0.0'
 
+#for encrypting cookies
 gem 'bcrypt-ruby', '3.1.2'
+
+#text populator
 gem 'faker', '1.1.2'
-gem 'will_paginate', '3.0.4'
-gem 'bootstrap-will_paginate', '0.0.9'
-#gem 'rocket_pants', '~> 1.9.1' #api
+
+#generating patient ids
 gem 'uuid'
+
+#push notifications
 gem 'pushmeup'
 
+#rabl json markup
 gem 'rabl'
 gem 'oj'
 
+#pdf generation
+gem 'prawn'
+
+#helper for page breadcrumbs
 gem "breadcrumbs_on_rails"
+
+#generate qr code images
 gem 'rqrcode-rails3'
 gem 'mini_magick'
+
+#help in calling 3rd party apis
 gem 'httparty'
 gem 'rdoc'
 
+
+#encrypt database fields
+gem 'attr_encrypted'
+
+#adds respond_to calls
+gem 'responders'
+
+gem 'rdoc'
 
 group :development do
   #nicer error page
@@ -46,8 +69,9 @@ end
 group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '1.3.9'
-  gem 'rspec-rails', '2.14.2'
-  gem 'guard-rspec', '2.5.1' #rspec generation and autotest
+  #gem 'rspec-rails', '2.14.2'
+  gem 'rspec-rails'
+  # gem 'guard-rspec' #rspec generation and autotest
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
   #gem 'json_spec', '~> 1.1.1'
@@ -55,8 +79,9 @@ end
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
+  #gem 'rspec-its'
   #gem 'ZenTest'
-  gem 'capybara', '2.2.1'
+  gem 'capybara'
   gem 'capybara-webkit'
   gem 'factory_girl_rails', '4.2.0'
   gem 'cucumber-rails', '1.4.0', :require => false
@@ -66,12 +91,16 @@ group :test do
   gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
   gem 'timecop'
+  gem 'capybara-slow_finder_errors'
+end
+
+group :production, :staging do
+  gem 'pg', '0.15.1'
+  gem 'unicorn'
 end
 
 group :production do
-  gem 'pg', '0.15.1'
-  gem 'rails_12factor', '0.0.2'
-  gem 'unicorn'
+  gem 'rails_12factor', '0.0.2' #heroku logging
 end
 
 #haml markup templates
@@ -90,12 +119,12 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '3.0.4'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '5.0.3'
 gem 'jquery-turbolinks'
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '1.1.1'
+gem 'turbolinks', '2.3.0'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

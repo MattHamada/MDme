@@ -101,14 +101,28 @@ class PatientsController < ApplicationController
     def patient_params
       params.require(:patient).permit(:first_name,
                                       :last_name,
+                                      :middle_initial,
+                                      :name_prefix,
+                                      :name_suffix,
+                                      :birthday,
                                       :email,
                                       :password,
                                       :password_confirmation,
                                       :doctor_id,
                                       :home_phone,
                                       :work_phone,
+                                      :cell_phone,
+                                      :work_phone_extension,
+                                      :sex,
+                                      :social_security_number,
+                                      :marital_status,
+                                      :address1,
+                                      :address2,
+                                      :city,
+                                      :state,
+                                      :zipcode,
                                       :avatar)
-    end
+      end
 
     def find_patient
       @patient ||= current_patient || Patient.find_by_slug!(params[:id])

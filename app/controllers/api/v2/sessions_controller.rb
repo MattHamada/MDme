@@ -33,7 +33,7 @@ class Api::V2::SessionsController < ApplicationController
   end
 
   def destroy
-    patient = Patient.find_by_api_key(encrypt(params[:auth_token]))
+    patient = Patient.find_by_api_key(my_encrypt(params[:auth_token]))
     if patient
       patient.update_attribute(:api_key, nil)
       sign_out :patient

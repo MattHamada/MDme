@@ -5,7 +5,7 @@ SimpleCov.start
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
+#require 'rspec/autorun'
 require 'subdomains'
 #require 'factory_girl_rails'
 
@@ -51,6 +51,9 @@ RSpec.configure do |config|
 
   #add helpers from app
   config.include ApplicationHelper
+
+  #from rspec2 deprication message
+  config.infer_spec_type_from_file_location!
 
 
   #below needed for db transactions to stick with capybara :webkit testing

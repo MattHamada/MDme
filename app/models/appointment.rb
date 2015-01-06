@@ -18,11 +18,13 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :doctor,  prefix: true
   delegate :full_name, to: :patient, prefix: true
   delegate :name,      to: :clinic,  prefix: true
+  delegate :avatar_thumb_url, to: :doctor, prefix: true
+
 
   # Appointments must be at a unique time for patient and doctor in the future
   validates :appointment_time, presence: true
-  validate :appointment_unique_with_doctor_in_clinic
-  validate :appointment_time_in_future
+  validate  :appointment_unique_with_doctor_in_clinic
+  validate  :appointment_time_in_future
   # Must have a clinic, doctor, and patient assigned to each appointment
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
@@ -35,7 +37,10 @@ class Appointment < ActiveRecord::Base
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :within_2_hours, -> { where(
-  appointment_time: DateTime.now...(DateTime.now + 2.hours)) }
+      appointment_time: Time.zone.now...(Time.zone.now + 2.hours)) }
+  scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
+  scope :order_by_time, -> { order("appointment_time ASC")}
+
 
   # True is a patient request not an admin forcing a new appointment
   scope :requests, -> { where(request: true) }
@@ -65,6 +70,7 @@ class Appointment < ActiveRecord::Base
   # ==== Parameters
   # * +date+ - date object to fine appointments on
   def self.given_date(date)
+    date = date.to_date if date.class == DateTime
     Appointment.where(appointment_time: date...date.at_end_of_day)
   end
 
@@ -78,10 +84,10 @@ class Appointment < ActiveRecord::Base
 
   # returns appointments that have not past
   # TODO should this use delayed time?
-  def self.not_past
-    Appointment.where(Appointment.arel_table[:appointment_time].
-                          gt(DateTime.now)).load
-  end
+  # def self.not_past
+  #   Appointment.where(Appointment.arel_table[:appointment_time].
+  #                         gt(DateTime.now)).load
+  # end
 
   # Returns all appointments with a given doctor
   # ==== Parameters
@@ -107,9 +113,9 @@ class Appointment < ActiveRecord::Base
 
   # Returns appointments in order of earliest +appointment_time+ first.
   # used for ordering queries
-  def self.order_by_time
-    Appointment.order('appointment_time ASC').load
-  end
+  # def self.order_by_time
+  #   Appointment.order('appointment_time ASC').load
+  # end
 
   # Checks to see if the passed Clinic/Appointment/Doctor/Patient has the same
   # +id+ or +clinic_id+ as the appointment. Returns all appointments in the
@@ -174,13 +180,9 @@ class Appointment < ActiveRecord::Base
   # * +choice+ - symbol either :approve or :deny
   def email_confirmation_to_patient(choice)
     if choice == :approve
-      Thread.new do
-        PatientMailer.appointment_confirmation_email(self).deliver
-      end
+      PatientMailer.appointment_confirmation_email(self).deliver_later
     elsif choice == :deny
-      Thread.new do
-        PatientMailer.appointment_deny_email(self).deliver
-      end
+      PatientMailer.appointment_deny_email(self).deliver_later
     end
 
   end
@@ -188,24 +190,43 @@ class Appointment < ActiveRecord::Base
   # Emails patient informing them their appointment hsa been delayed.
   # Uses a separate thread
   def send_delay_email
-    Thread.new do
-      PatientMailer.appointment_delayed_email(patient,
-                                              appointment_delayed_time).deliver
-    end
+    PatientMailer.appointment_delayed_email(patient,
+                                         appointment_delayed_time).deliver_later
   end
 
+  # Will send GCM message to android devices registered to patient
+  # Informs patient of delay and new time
+  # TODO also add iphone support for future iphone app
   def push_delay_notification
     droid_destinations = patient.devices.map do |device|
       device.token if device.platform == 'android' && device.enabled
     end
-    data = {:type => 'delay', :message =>
-      "Your appointment time has changed. Your appointment with #{appointment.clinic.name}
-      is now set to #{appointment.delayed_date_time_ampm}" }
-    GCM.send_notification(droid_destinations, data)
+    data = {:type => "DELAY", :appointment_id => id, :message =>
+      "Your appointment time has changed. Your appointment with #{clinic.name}" +
+      " is now set to #{delayed_date_time_ampm}" }
+    Thread.new do
+      GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    end
+  end
+
+
+  # Will send GCM message to android devices registered to patient
+  # Informs patient their appointment is ready
+  # TODO also add iphone support for future iphone app
+  def push_notify_ready
+    droid_destinations = patient.devices.map do |device|
+      device.token if device.platform == 'android' && device.enabled
+    end
+    data = {:type => "READY", :message =>
+        "Your appointment with #{clinic.name} at #{delayed_date_time_ampm} is ready" }
+    Thread.new do
+      GCM.send_notification(droid_destinations, data) unless droid_destinations.empty?
+    end
   end
 
   # Adds time to each appointment found by #remaining_appointments_today due
-  # to a delay.  Also signals to send delay notification to patient
+  # to a delay.  Also signals to send delay notification to patient .
+  # Only delays appointments with same doctor_id  (from remaining_appointments_today)
   # ==== Parameters
   # * +time_to_add+ - minutes to add to each appointment
   def update_remaining_appointments!(time_to_add)
@@ -213,6 +234,7 @@ class Appointment < ActiveRecord::Base
          appt.update_attribute(:appointment_delayed_time,
                             appt.appointment_delayed_time + time_to_add.minutes)
          appt.send_delay_email
+         appt.push_delay_notification
       end
   end
 
