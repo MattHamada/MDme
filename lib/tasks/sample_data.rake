@@ -11,7 +11,14 @@ namespace :db do
   desc 'Fill database with sample data'
   task populate: :environment do
     #create first doctor and patient and appointment and clinic
-    c = Clinic.create!(name: 'MDME clinic')
+    c = Clinic.create!(name: 'MGH',
+                       address1: '55 Fruit Street',
+                       address2: '9th floor',
+                       city:     'Boston',
+                       state:    'Ma',
+                       zipcode:  '02114',
+                       country:  'United States')
+
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
                     middle_initial: 'A',

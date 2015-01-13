@@ -17,7 +17,7 @@ class Clinic < ActiveRecord::Base
 
 
   validates  :name, presence: true, length: { maximum: 30 }
-  validates  :slug, presence: true, uniqueness: true;
+  validates  :slug, presence: true, uniqueness: true
 
   before_validation :generate_slug
   before_save :set_location_coordinates
