@@ -564,7 +564,6 @@ describe 'AdministrationPages' do
                     appointment.patient.email
                     appointment2.patient.email
                   end
-                  #turned off, makes to many db connections
                   it ' should send an email to changed patient' do
                     expect(all_emails_to).to include([appointment.patient.email])
                   end
@@ -650,7 +649,12 @@ describe 'AdministrationPages' do
         describe 'deleting appointment should change Appointment count' do
           before { visit edit_admin_appointment_path(admin, appointment) }
           #TODO find out why this is not changing count
-          it { expect { click_link 'Delete Appointment' }.to change(Appointment, :count) }
+          it do
+            expect do
+              click_link 'Delete Appointment'
+              Appointment.all.reload
+            end.to change(Appointment, :count)
+          end
         end
       end
     end
@@ -762,6 +766,7 @@ describe 'AdministrationPages' do
       it 'should delete the patient' do
         expect do
           click_link 'Delete Patient'
+          Patient.all.reload
         end.to change(Patient, :count)
       end
       describe 'after deleting patient' do
@@ -850,11 +855,12 @@ describe 'AdministrationPages' do
           click_link 'Edit'
         end
         #TODO Not detecting count change
-        # it 'should delete the doctor' do
-        #   expect do
-        #     click_link 'Delete Doctor'
-        #   end.to change(Doctor, :count)
-        # end
+        it 'should delete the doctor' do
+          expect do
+            click_link 'Delete Doctor'
+            Doctor.all.reload
+          end.to change(Doctor, :count)
+        end
 
         describe 'after deleting doctor' do
           before { click_link 'Delete Doctor' }

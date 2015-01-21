@@ -351,6 +351,7 @@ describe 'Patient Pages' do
           it 'should change appointment count' do
             expect do
               click_link('Delete Request')
+              Appointment.all.reload
             end.to change(Appointment, :count).by(-1)
           end
         end
