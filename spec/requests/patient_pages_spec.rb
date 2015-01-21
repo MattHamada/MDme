@@ -150,8 +150,6 @@ describe 'Patient Pages' do
           end
         end
 
-
-
         describe '1 hours left on Appointment' do
           let(:upcoming_appointment) { FactoryGirl.create(:appointment,
                                                           appointment_time: DateTime.now + 1.hour) }
@@ -378,10 +376,9 @@ describe 'Patient Pages' do
           click_button 'Submit'
         end
         it { is_expected.to have_content 'An email has been sent containing your new password'}
-        # TODO get this working with rails 4.2 deliver_later
-        # it 'Email should be sent to user' do
-        #   last_email.to.should include(patient.email)
-        # end
+        it 'Email should be sent to user' do
+          expect(last_email.to).to include(patient.email)
+        end
       end
     end
   end

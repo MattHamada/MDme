@@ -289,7 +289,12 @@ describe 'AdministrationPages' do
                     end
                     it { is_expected.to have_selector 'div.alert.alert-danger',
                          text: 'Cannot delete a department with doctors' }
-                    #it { should_not change(Department, count) }
+                  end
+                  describe 'Invalid delete should not change Department count' do
+                    before { click_link department.name }
+                    it 'should not delete department count' do
+                      expect { click_link 'Delete department' }.not_to change(Department, :count)
+                    end
                   end
                   describe 'it should not delete the department' do
                     before do
@@ -319,19 +324,20 @@ describe 'AdministrationPages' do
               it { is_expected.to have_content('Search') }
             end
 
-            # describe 'can only see doctors in own clinic' do
-            #   let(:clinic2) { FactoryGirl.create(:clinic) }
-            #   let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
-            #                                   email: 'docEmailTest.@test.com',
-            #                                   first_name: 'healthier')}
-            #   before do
-            #     clinic2.save!
-            #     department.save!
-            #     doctor.save!
-            #     doctor2.save!
-            #     click_link 'DOCTORS'
-            #   end
-            # end
+            describe 'can only see doctors in own clinic' do
+              let(:clinic2) { FactoryGirl.create(:clinic) }
+              let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
+                                              email: 'docEmailTest.@test.com',
+                                              first_name: 'healthier')}
+              before do
+                clinic2.save!
+                department.save!
+                doctor.save!
+                doctor2.save!
+                click_link 'DOCTORS'
+              end
+              it { is_expected.not_to have_text doctor2.full_name}
+            end
 
             describe 'Add Doctor' do
               before  do
@@ -358,11 +364,10 @@ describe 'AdministrationPages' do
                     click_button 'Create'
                   end.to change(Doctor, :count).by(1)
                 end
-                # TODO find out why this does not work
-                # describe 'Sends confirmation email when creating a doctor' do
-                #   before { click_button 'Create' }
-                #   it { last_email.to.should include('boo@radley.com') }
-                # end
+                describe 'Sends confirmation email when creating a doctor' do
+                  before { click_button 'Create' }
+                  it { expect(last_email.to).to include('boo@radley.com') }
+                end
               end
             end
           end
@@ -409,8 +414,7 @@ describe 'AdministrationPages' do
 
                   it { is_expected.to have_title('Patients') }
                   it { is_expected.to have_selector('div.alert.alert-success', text: 'Patient Created') }
-                  # TODO get this working with rails 4.2 deliver_later
-                  # it { last_email.to.should include('boo@radley.com') }
+                  it { expect(last_email.to).to include('boo@radley.com') }
                 end
               end
             end
@@ -453,12 +457,11 @@ describe 'AdministrationPages' do
                   it 'should set request attribute to false' do
                     expect(appointment_request.reload.request).to eq(false)
                   end
-                  #turned off, makes to many db connections
-                  # it 'should send an email' do
-                  #   email_thread = appointment_request.email_confirmation_to_patient(:approve)
-                  #   email_thread.join
-                  #   all_emails_to.should include([appointment_request.patient.email])
-                  # end
+                  it 'should send an email' do
+                    # email_thread = appointment_request.email_confirmation_to_patient(:approve)
+                    # email_thread.join
+                    expect(all_emails_to).to include([appointment_request.patient.email])
+                  end
                 end
 
                 describe 'Denying the appointment' do
@@ -468,12 +471,9 @@ describe 'AdministrationPages' do
                   end
                   it { is_expected.not_to have_content appointment_request.
                        appointment_time.strftime('%m-%e-%y %I:%M%p') }
-                  #turned off, makes to many db connections
-                  # it 'should send an email' do
-                  #   email_thread = appointment.email_confirmation_to_patient(:deny)
-                  #   email_thread.join
-                  #   all_emails_to.should include([appointment.patient.email])
-                  # end
+                  it 'should send an email' do
+                    expect(all_emails_to).to include([appointment.patient.email])
+                  end
                 end
 
                 describe 'Denying appointment deletes record' do
@@ -529,12 +529,11 @@ describe 'AdministrationPages' do
                       click_button 'Update_0_0'
                       appointment.patient.email
                     end
-                   #turned off, makes to many db connections
-                   # it ' should send an email to affected patient' do
-                   #    email_thread = appointment.send_delay_email
-                   #    email_thread.join
-                   #    all_emails_to.should include([appointment.patient.email])
-                   # end
+                   it ' should send an email to affected patient' do
+                      # email_thread = appointment.send_delay_email
+                      # email_thread.join
+                      expect(all_emails_to).to include([appointment.patient.email])
+                   end
                   end
                   describe 'not checking box should not delay other appointment' do
                     it { expect do
@@ -566,16 +565,12 @@ describe 'AdministrationPages' do
                     appointment2.patient.email
                   end
                   #turned off, makes to many db connections
-                  # it ' should send an email to changed patient' do
-                  #   email_thread = appointment.send_delay_email
-                  #   email_thread.join
-                  #   all_emails_to.should include([appointment.patient.email])
-                  # end
-                  # it ' should send an email to other patient patient' do
-                  #   email_thread = appointment2.send_delay_email
-                  #   email_thread.join
-                  #   all_emails_to.should include([appointment2.patient.email])
-                  # end
+                  it ' should send an email to changed patient' do
+                    expect(all_emails_to).to include([appointment.patient.email])
+                  end
+                  it ' should send an email to other patient patient' do
+                    expect(all_emails_to).to include([appointment2.patient.email])
+                  end
                 end
               end
             end
@@ -621,6 +616,7 @@ describe 'AdministrationPages' do
       it { is_expected.to have_text(appointment.description) }
 
       describe 'editing appointment' do
+        #TODO fix
         # describe 'with invalid information' do
         #   before do
         #     click_link('Edit Appointment')
@@ -649,8 +645,12 @@ describe 'AdministrationPages' do
             click_link 'Delete Appointment'
           end
           it { is_expected.to have_selector('div.alert.alert-warning', text: 'Appointment deleted') }
-            #expect { click_link 'Delete Appointment' }.to change(Appointment, :count).by(-1)
+        end
 
+        describe 'deleting appointment should change Appointment count' do
+          before { visit edit_admin_appointment_path(admin, appointment) }
+          #TODO find out why this is not changing count
+          it { expect { click_link 'Delete Appointment' }.to change(Appointment, :count) }
         end
       end
     end
@@ -758,12 +758,12 @@ describe 'AdministrationPages' do
         click_link 'Edit'
       end
 
-      #does not seem to work on webkit
-      # it 'should delete the patient' do
-      #   expect do
-      #     click_link 'Delete Patient'
-      #   end.to change(Patient, :count).by(-1)
-      # end
+      #TODO does not seem to change count
+      it 'should delete the patient' do
+        expect do
+          click_link 'Delete Patient'
+        end.to change(Patient, :count)
+      end
       describe 'after deleting patient' do
         before { click_link 'Delete Patient' }
 
@@ -849,11 +849,11 @@ describe 'AdministrationPages' do
           click_link '1'
           click_link 'Edit'
         end
-        # Not working with webkit driver
+        #TODO Not detecting count change
         # it 'should delete the doctor' do
         #   expect do
         #     click_link 'Delete Doctor'
-        #   end.to change(Doctor, :count).by(-1)
+        #   end.to change(Doctor, :count)
         # end
 
         describe 'after deleting doctor' do

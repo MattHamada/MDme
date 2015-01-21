@@ -19,9 +19,6 @@ describe 'DoctorsPages' do
     }
     it { is_expected.to have_content('Sign In') }
 
-
-
-
     describe 'Doctor signing in' do
       describe 'with invalid information' do
         before { click_button 'SIGN IN' }
@@ -163,9 +160,9 @@ describe 'DoctorsPages' do
         end
         it { is_expected.to have_content 'An email has been sent containing your new password'}
         #TODO update for rails 4.2 deliver_later (returning last email array as empty)
-        # it 'Email should be sent to user' do
-        #   last_email.to.should include(doctor.email)
-        # end
+        it 'Email should be sent to user' do
+          expect(last_email.to).to include(doctor.email)
+        end
       end
     end
   end
