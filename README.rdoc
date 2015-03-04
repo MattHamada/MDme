@@ -1,12 +1,12 @@
 = MDme
 
 The *MDme* app is currently setup to run on <b>rails 4.2.0</b> powered by
-<b>Ruby 2.2.0</b>  Before running for the first time two files must be created
+<b>Ruby 2.2.0</b>  Before running for the first time several files must be created
 * <tt>config/email_config.rb </tt>
 * <tt>config/api_keys.rb </tt>
 * <tt>config/encryption_keys.yml</tt>
 
-Tese files have examples included such as
+Test files have examples included such as
 <tt>email_config_example.rb</tt>. The contents of these files can be copied entirely to get the app running, but you
 will need the proper API keys if you are planning to send emails,
 use google services, etc.
@@ -37,7 +37,7 @@ before running <tt>rake db:populate</tt> to prevent a confirmation email page
 opening for each user created.
 
 == Testing
-The MDme repo has an extensive <b>rspec 2.x</b> testing suite.  In order to test
+The MDme repo has an extensive <b>rspec 3.x</b> testing suite.  In order to test
 the site across multiple subdomains (www, admin, and doctors) it uses
 mdme.tk:7171 as a test host url.  You will likely have to add this domain to
 your host file, as well as www.mdme.tk admin.mdme.tk and doctors.mdme.tk to
