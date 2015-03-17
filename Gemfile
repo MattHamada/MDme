@@ -8,7 +8,7 @@ gem 'rails', '4.2.0'
 
 #gem 'activejob_time_serialize', '0.1.1'
 
-gem 'bootstrap-sass', '3.3.1'
+#gem 'bootstrap-sass', '3.3.1'
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'
 
@@ -54,6 +54,9 @@ gem 'responders'
 
 gem 'rdoc'
 
+#front end js package manager
+gem 'bower-rails'
+
 group :development do
   #nicer error page
   gem 'better_errors'
@@ -84,11 +87,11 @@ group :test do
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'factory_girl_rails', '4.2.0'
-  gem 'cucumber-rails', '1.4.0', :require => false
-  gem 'cucumber-rails-training-wheels' #premade stepdefs
+  # gem 'cucumber-rails', '1.4.0', :require => false
+  # gem 'cucumber-rails-training-wheels' #premade stepdefs
   gem 'database_cleaner', github: 'bmabey/database_cleaner' #reset cucumber db after test
   gem 'libnotify', '0.8.0'
-  gem 'launchy' #debug tool for user stories
+  # gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
   gem 'timecop'
   gem 'capybara-slow_finder_errors'
@@ -120,11 +123,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '3.0.4'
 gem 'jquery-ui-rails', '5.0.3'
-gem 'jquery-turbolinks'
+#gem 'jquery-turbolinks'
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '2.3.0'
+#gem 'turbolinks', '2.3.0'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

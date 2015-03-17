@@ -12,10 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-sprockets
-//= require turbolinks
-//= require jquery.turbolinks
 //= require jquery-ui
+//= require angular/angular
 //= require appointments
 //# require patients
 //= require popups
