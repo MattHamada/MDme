@@ -43,6 +43,10 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    angular-rails-templates (0.1.3)
+      railties (>= 3.1)
+      sprockets
+      tilt
     arel (6.0.0)
     attr_encrypted (1.3.3)
       encryptor (>= 1.3.0)
@@ -288,6 +292,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  angular-rails-templates
   attr_encrypted
   autoprefixer-rails
   bcrypt-ruby (= 3.1.2)

@@ -26,10 +26,6 @@
 </head>
 <body>
 
-<!--&lt;!&ndash;<script>&ndash;&gt;-->
-<!--//  (function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();-->
-<!--&lt;!&ndash;</script>&ndash;&gt;-->
-
 <% if request.subdomain == 'www' || request.subdomain.blank?  %>
   <% unless   !request.variant.include? :mobile %>
     <% render 'static_pages/header' %>

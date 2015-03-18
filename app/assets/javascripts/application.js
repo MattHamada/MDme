@@ -12,10 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
+//= require jquery-ui/datepicker
 //= require angular/angular
+//= require angular-route/angular-route
+//= require angular-rails-templates
 //= require appointments
 //# require patients
 //= require popups
 //= require appointment_load_selects
-//# require_tree .
+//= require_tree .

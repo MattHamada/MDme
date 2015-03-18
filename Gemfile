@@ -56,6 +56,8 @@ gem 'rdoc'
 
 #front end js package manager
 gem 'bower-rails'
+#precaches angular views
+gem 'angular-rails-templates'
 
 group :development do
   #nicer error page

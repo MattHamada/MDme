@@ -1,31 +1,12 @@
-<!--<div class="container-non-responsive" id="main-content">-->
-<!--<div class="row fixedheight">-->
-<!--<div class="col-xs-5" id="logo">-->
-<!--<%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>-->
-<!--</div>-->
-<!--<div id="static-links">-->
-<!--<div class="col-xs-1 col-xs-offset-2">-->
-<!--<%= link_to 'about us', about_path %>-->
-<!--</div>-->
-<!--<div class="col-xs-1">-->
-<!--<a href="#">services</a>-->
-<!--</div>-->
-<!--<div class="col-xs-1">-->
-<!--<%= link_to 'contact', contact_path %>-->
-<!--</div>-->
-<!--<div class="col-xs-1">-->
-<!--<a href="#">resources</a>-->
-<!--</div>-->
-<!--<div class="col-xs-1">-->
-<!--<% if patient_signed_in? %>-->
-  <!--<%= link_to 'my account', patient_path(current_patient) %>-->
-  <!--<% else %>-->
-  <!--<a href="/signin">sign in</a>-->
-  <!--<% end %>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<hr id="nav-break"/>-->
+
+<%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
+<%= link_to 'about us', about_path %>
+<%= link_to 'contact', contact_path %>
+<% if patient_signed_in? %>
+<div ng-click="test()">  <%= link_to 'my account', patient_path(current_patient) %></div>
+  <% else %>
+  <a href="/signin">sign in</a>
+  <% end %>
 
 <div class="container-fluid">
   <div class="row">
