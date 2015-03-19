@@ -17,7 +17,8 @@ namespace :db do
                        city:     'Boston',
                        state:    'Ma',
                        zipcode:  '02114',
-                       country:  'United States')
+                       country:  'United States',
+                       timezone: 'America/New_York')
 
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
