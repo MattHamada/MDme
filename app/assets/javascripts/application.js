@@ -15,9 +15,5 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require jquery.turbolinks
-//= require jquery-ui
-//= require appointments
-//# require patients
-//= require popups
-//= require appointment_load_selects
-//# require_tree .
+//= require jquery-ui/datepicker
+//= require_tree .
