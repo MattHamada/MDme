@@ -35,7 +35,8 @@ class Patients::AppointmentsController < ApplicationController
     input = appointment_params
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
     time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
-    date = DateTime.parse("#{input[:date]} #{time}")
+    timezone = Clinic.find(input[:clinic_id]).timezone
+    date = Time.zone.parse("#{input[:date]} #{time} #{timezone}")
     inform = false
     if input[:inform_earlier_time] == '1'
       inform = true

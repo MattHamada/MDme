@@ -52,6 +52,9 @@ gem 'attr_encrypted'
 #adds respond_to calls
 gem 'responders'
 
+gem 'tzinfo'
+gem 'tzinfo-data'
+
 gem 'rdoc'
 
 group :development do

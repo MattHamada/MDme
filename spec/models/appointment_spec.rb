@@ -5,6 +5,8 @@ describe Appointment do
   let(:patient) { FactoryGirl.create(:patient) }
   let(:clinic) { FactoryGirl.create(:clinic) }
   before do
+    clinic.save
+    patient.save
     @appointment = Appointment.new(doctor_id: doctor.id,
                                    patient_id: patient.id,
                                    appointment_time: DateTime.now + 30.minutes,
@@ -63,6 +65,7 @@ describe Appointment do
     describe 'when appointment at the same time in different clinic' do
       let(:clinic2) { FactoryGirl.create(:clinic) }
       before do
+        clinic2.save
         @appointment2.clinic_id = 2
         @appointment.save
         @appointment2.save
