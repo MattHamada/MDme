@@ -49,6 +49,12 @@ module MDme
       end
     }
 
+    config.assets.precompile += %w(
+      teaspoon.css
+      teaspoon-teaspoon.js
+      teaspoon-jasmine.js
+    )
+
     #set default time zone - used for appointments
     config.time_zone = 'Arizona'
     config.active_record.default_timezone = :local
