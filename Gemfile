@@ -111,7 +111,8 @@ end
 #haml markup templates
 gem 'haml'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+# gem 'sass-rails', '~> 4.0.0'
+gem 'sass', '3.2.19'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '2.1.1'
@@ -125,11 +126,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '3.0.4'
 gem 'jquery-ui-rails', '5.0.3'
-#gem 'jquery-turbolinks'
+gem 'jquery-turbolinks'
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-#gem 'turbolinks', '2.3.0'
+gem 'turbolinks', '2.3.0'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

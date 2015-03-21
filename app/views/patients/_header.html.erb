@@ -1,16 +1,17 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'shared/flash' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="breadcrumbs">
-        <%= render_breadcrumbs  separator: ' > ' %>
+<div ng-controller="PatientsCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <%= render 'shared/flash' %>
       </div>
     </div>
-    <div class="col-md-3 col-md-offset-6" style="text-align: right;">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="breadcrumbs">
+          <%= render_breadcrumbs  separator: ' > ' %>
+        </div>
+      </div>
+      <div class="col-md-3 col-md-offset-6" style="text-align: right;">
         <%= link_to "Sign Out", signout_path, method: :delete %>
       </div>
     </div>
@@ -22,14 +23,9 @@
       </div>
     </div>
   </div>
-
-  <!--<hr id="nav-break"/>-->
-  <!--<% flash.each do |key, value| %>-->
-    <!--<div class="alert alert-<%= key %>"><%= value %></div>-->
-  <!--<% end %>-->
-                                    <!--<% flash.each do |key, value| %>-->
-    <!--<div class="alert alert-<%= key %>"><%= value %></div>-->
-  <!--<% end %>-->
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <hr id="patient-menu-topbar"/>
@@ -53,35 +49,34 @@
       </div>
     </div>
   </div>
-
   <br/><br/><br/>
-  <% unless @upcoming_appointment.nil? %>
-    <div class="appointment-progressbar">
-      <div class="row">
-        <div class="col-xs-6 col-xs-offset-3">
-          <div class="row">
-            <div class="col-xs-6">
-              <%= @upcoming_appointment.date %>
+  <div>
+    {{message}}
+    <% unless @upcoming_appointment.nil? %>
+      <div class="appointment-progressbar">
+        <div class="row">
+          <div class="col-xs-6 col-xs-offset-3">
+            <div class="row">
+              <div class="col-xs-6">
+                <%= @upcoming_appointment.date %>
+              </div>
+              <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
+                <%= @upcoming_appointment.delayed_time_ampm %>
+              </div>
             </div>
-            <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
-              <%= @upcoming_appointment.delayed_time_ampm %>
+            <div class="progress progress-striped">
+              <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
+                <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
+              </div>
             </div>
-          </div>
-          <div class="progress progress-striped">
-            <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
-              <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
+            <div style="text-align: center;">
+              <%= @humanized_time_left %>
             </div>
-          </div>
-          <div style="text-align: center;">
-            <%= @humanized_time_left %>
           </div>
         </div>
       </div>
-    </div>
-  <% else %>
-    <div style="text-align: center;">No upcoming appointments</div>
-  <% end %>
-
-
+    <% else %>
+      <div style="text-align: center;">No upcoming appointments</div>
+    <% end %>
+  </div>
   <br/><br/><br/>
-

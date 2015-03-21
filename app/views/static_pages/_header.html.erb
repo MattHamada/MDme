@@ -1,13 +1,3 @@
-
-<%= link_to(image_tag(asset_path('mdmelogo.png')), root_path) %>
-<%= link_to 'about us', about_path %>
-<%= link_to 'contact', contact_path %>
-<% if patient_signed_in? %>
-<div ng-click="test()">  <%= link_to 'my account', patient_path(current_patient) %></div>
-  <% else %>
-  <a href="/signin">sign in</a>
-  <% end %>
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3">
@@ -22,7 +12,6 @@
 
     </div>
   </div>
-
   <%= render 'static_pages/menu_black' %>
 
 

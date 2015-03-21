@@ -9,6 +9,8 @@
 # www.mdme.us/patients
 class PatientsController < ApplicationController
 
+  layout 'patients'
+
   before_filter :find_patient
   before_filter :require_patient_login
   before_filter :get_upcoming_appointment
