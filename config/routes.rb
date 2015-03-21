@@ -28,6 +28,9 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
+
+  post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
+
   get  'patients/:patient_id/clinics/getdoctors'         => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu

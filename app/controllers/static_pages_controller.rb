@@ -29,6 +29,26 @@ class StaticPagesController < ApplicationController
   def contact
     @active = :contact
   end
+
+  #post www.mdme.us/submit-comment
+  def submit_comment
+    begin
+      name = params[:client][:name]
+      email = params[:client][:email]
+      phone = params[:client][:phone]
+      comment = params[:client][:comment]
+      SubmitCommentMailer.send_email(name, email, phone, comment).deliver_later
+      render json: {
+                 status: true
+             }
+    rescue => error
+      render json: {
+               status: false,
+               message: $!.message
+             }
+    end
+
+  end
 end
 
 

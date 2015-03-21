@@ -5,35 +5,20 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
-  <% if request.variant.include? :mobile %>
-  <%= stylesheet_link_tag 'mobile', media: 'all', "data-turbolinks-track" => true %>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  <%= javascript_include_tag 'mobile' %>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<% end %>
   <%= csrf_meta_tags %>
 
 
   <meta charset="utf-8">
   <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="author" content="MDme">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title><%= yield :title %> MD & ME</title>
 
 </head>
 <body>
-
-
-<% if request.variant.include? :mobile %>
-  <%= render 'patients/mobile/header' %>
-<% end %>
-
+  <%= render 'static_pages/header' %>
   <%= yield %>
-<% unless request.variant.include? :mobile %>
   <%= render 'layouts/footer' %>
-<% end %>
 </body>
 </html>

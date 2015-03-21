@@ -17,8 +17,5 @@
 //= require angular-route/angular-route
 //= require angular-rails-templates
 //= require angular-resource/angular-resource
-//= require appointments
-//# require patients
-//= require popups
-//= require appointment_load_selects
+//= require angular-flash/dist/angular-flash
 //= require_tree .
