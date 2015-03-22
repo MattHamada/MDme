@@ -40,6 +40,7 @@ app.controller('ContactController', ['$scope', '$http', 'flash', function($scope
       url: '/submit-comment.json'
     }).success(function(data, status, headers) {
       if (data.status) {
+        $scope.client = {};
         flash.success = "Comments submitted";
       }
       else {

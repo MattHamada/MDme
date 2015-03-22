@@ -167,6 +167,7 @@ GEM
       mime-types
     pdf-core (0.4.0)
     pg (0.15.1)
+    phantomjs (1.9.8.0)
     prawn (1.3.0)
       pdf-core (~> 0.4.0)
       ttfunk (~> 1.4.0)
@@ -324,6 +325,7 @@ DEPENDENCIES
   oj
   paperclip (~> 4.1)
   pg (= 0.15.1)
+  phantomjs
   prawn
   pushmeup
   rabl

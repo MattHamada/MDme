@@ -31,3 +31,11 @@
 // For more information: http://github.com/modeset/teaspoon
 
 //= require angular-mocks/angular-mocks
+
+beforeEach(function() {
+  return this.addMatchers({
+    toEqualData: function(expected) {
+      return angular.equals(this.actual, expected);
+    }
+  });
+});
