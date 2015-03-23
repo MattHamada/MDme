@@ -1,6 +1,8 @@
 asset 'angular'
 asset 'angular-route'
 asset 'angular-resource'
+asset 'angular-ui-router'
+asset 'angular-local-storage'
 asset 'angular-mocks'
 asset 'bootstrap-sass-official'
 asset 'angular-flash'

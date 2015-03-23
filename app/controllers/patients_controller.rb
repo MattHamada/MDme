@@ -11,9 +11,11 @@ class PatientsController < ApplicationController
 
   layout 'patients'
 
-  before_filter :find_patient
-  before_filter :require_patient_login
-  before_filter :get_upcoming_appointment
+  # before_filter :find_patient
+  # before_filter :require_patient_login
+  # before_filter :get_upcoming_appointment
+
+  before_action :authenticate
 
   # GET www.mdme.us/patients/:id
   def show
@@ -126,15 +128,26 @@ class PatientsController < ApplicationController
                                       :avatar)
       end
 
-    def find_patient
-      @patient ||= current_patient || Patient.find_by_slug!(params[:id])
-    end
-    helper_method :find_patient
+    # def find_patient
+    #   @patient ||= current_patient || Patient.find_by_slug!(params[:id])
+    # end
+    # helper_method :find_patient
 
 
     def get_upcoming_appointment
       @upcoming_appointment = @patient.upcoming_appointment
       get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
+    end
+
+    def authenticate
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        @patient = Patient.find_by(id: payload['user_id'])
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
     end
 
 

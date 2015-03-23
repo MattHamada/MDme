@@ -59,6 +59,9 @@ gem 'bower-rails'
 #precaches angular views
 gem 'angular-rails-templates'
 
+#json web token lib
+gem 'jwt'
+
 group :development do
   #nicer error page
   gem 'better_errors'

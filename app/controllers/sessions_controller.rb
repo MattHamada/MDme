@@ -7,10 +7,12 @@
 
 # +SessionsController+ for sessions and cookies; handles logging in/out
 class SessionsController < ApplicationController
+  include AuthToken
 
   # Signin page for patients on www subdomain
   # GET www.mdme.us/signin
   def new
+    provide(:title, 'Sign In | ')
     @active = :signin
     if patient_signed_in?
       if request.variant.include?(:mobile)
@@ -29,6 +31,7 @@ class SessionsController < ApplicationController
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
       if doctor && doctor.authenticate(params[:session][:password])
         sign_in doctor, :doctor
+        # token = AuthToken.issue_token({user_id: doctor.id})
         redirect_to doctor_path(doctor)
       else
         flash.now[:danger] = 'Invalid email/password combination'
@@ -44,18 +47,16 @@ class SessionsController < ApplicationController
         redirect_to root_path
       end
     else
-      patient = Patient.find_by(email: params[:session][:email].downcase)
-      if patient && patient.authenticate(params[:session][:password])
-        sign_in patient, :patient
-
-        if request.variant.include? :mobile
-          redirect_to patient_mobile_menu_path(patient)
-        else
-          redirect_to patient_path(patient)
-        end
+      patient = Patient.find_by(email: params[:email].downcase)
+      if patient && patient.authenticate(params[:password])
+        # sign_in patient, :patient
+        token = AuthToken.issue_token({user_id: patient.id})
+        render json: {
+                   user_id: patient.id,
+                   token: token
+               }
       else
-        flash.now[:danger] = 'Invalid email/password combination'
-        render 'new'
+        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
       end
     end
   end

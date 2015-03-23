@@ -18,4 +18,6 @@
 //= require angular-rails-templates
 //= require angular-resource/angular-resource
 //= require angular-flash/dist/angular-flash
+//= require angular-ui-router/release/angular-ui-router
+//= require angular-local-storage/dist/angular-local-storage
 //= require_tree .
