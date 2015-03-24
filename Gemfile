@@ -18,7 +18,7 @@ gem 'autoprefixer-rails'
 #                              :branch => '3.0.0'
 
 #for encrypting cookies
-gem 'bcrypt-ruby', '3.1.2'
+gem 'bcrypt-ruby'
 
 #text populator
 gem 'faker', '1.1.2'
@@ -142,8 +142,6 @@ group :doc do
   gem 'sdoc', '0.3.20', require: false
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the app server
 # gem 'unicorn'
