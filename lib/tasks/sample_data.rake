@@ -47,8 +47,8 @@ namespace :db do
     Doctor.create!(first_name: 'Healthy',
                    last_name: 'doctorson',
                    email: 'doctor@example.com',
-                   password: 'AndrewMattMDME3000!',
-                   password_confirmation: 'AndrewMattMDME3000!',
+                   password: 'Qwerty123!',
+                   password_confirmation: 'Qwerty123!',
                    department_id: 1,
                    degree: 'MD',
                    alma_mater: 'Harvard',
@@ -62,8 +62,8 @@ namespace :db do
                         clinic_id: 1)
 
     Admin.create!(email: 'admin@example.com',
-                  password: 'AndrewMattMDME3000!',
-                  password_confirmation: 'AndrewMattMDME3000!',
+                  password: 'Qwerty123!',
+                  password_confirmation: 'Qwerty123!',
                   clinic_id: 1)
 
 
@@ -71,7 +71,7 @@ namespace :db do
     60.times do |n|
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
-      password = 'AndrewMattMDME3000!'
+      password = 'Qwerty123!'
       doctor_id = rand_int(1,6)
       sex = rand_int(0,1)
       social_security_number = "#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}"
@@ -101,7 +101,7 @@ namespace :db do
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
-      password = 'AndrewMattMDME3000!'
+      password = 'Qwerty123!'
       department_id = rand_int(1,4)
       phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
                      rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +
