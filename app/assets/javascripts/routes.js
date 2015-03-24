@@ -4,7 +4,7 @@ angular.module('mdme')
     $stateProvider
       .state('anon', {
         abstract: true,
-        template: '<ui-view/>',
+        templateUrl: "static_pages/_menu.html",
         data: {
           access: AccessLevels.anon
         }
