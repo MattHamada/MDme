@@ -668,6 +668,7 @@ describe 'AdministrationPages' do
       patient.save!
       appointment.save!
       admin.save!
+      clinic.save!
 
       visit root_path
       fill_in 'email', with: admin.email

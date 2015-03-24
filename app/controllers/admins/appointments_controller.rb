@@ -102,9 +102,9 @@ class Admins::AppointmentsController < ApplicationController
     input = appointment_params
     time = Doctor.find(input[:doctor_id]).open_appointment_times(
         Date.parse(input[:date]))[(input[:time].to_i)-1]
-    #TODO make this less hacky; shouldnt need to convert timezone and shift hours
-    date = DateTime.parse(
-        "#{input[:date]} #{time}").in_time_zone('Arizona') + 7.hours
+    timezone = Admin.find(params[:admin_id]).clinic.timezone
+    date = Time.zone.parse(
+        "#{input[:date]} #{time} #{timezone}")
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: input[:patient_id],
                                    appointment_time: date,
