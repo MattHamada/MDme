@@ -33,7 +33,7 @@ angular.module('mdme')
     $stateProvider
       .state('user', {
         abstract: true,
-        template: '<ui-view/>',
+        templateUrl: 'patients/_menu.html',
         data: {
           access: AccessLevels.user
         }
