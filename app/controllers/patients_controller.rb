@@ -147,6 +147,7 @@ class PatientsController < ApplicationController
       }
       minutes_left =
           ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+      results[:minutes_left] = minutes_left
       case minutes_left
         when 81..120
           results[:color] = 'success'

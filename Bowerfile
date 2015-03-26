@@ -4,6 +4,7 @@ asset 'angular-resource'
 asset 'angular-ui-router'
 asset 'angular-local-storage'
 asset 'angular-mocks'
+asset 'angular-timer'
 asset 'bootstrap-sass-official'
 asset 'angular-flash'
 # vim: ft=ruby
