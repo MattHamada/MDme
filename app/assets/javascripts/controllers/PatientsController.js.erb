@@ -1,0 +1,17 @@
+app.controller('PatientsController', ['$scope', '$http', 'AuthInterceptor', 'LocalService', function($scope, $http, AuthInterceptor, LocalService) {
+  $scope.patient = {};
+  $scope.patient.id = LocalService.get('userId');
+  var req = {
+    method: 'GET',
+    url: '/patients/' + $scope.patient.id + '.json',
+    headers: $http.defaults.headers.common
+  };
+  req = AuthInterceptor.request(req);
+  $http(req)
+    .success(function(data) {
+      $scope.patient = data.patient;
+      console.log($scope.patient);
+    }).error(function(err) {
+      console.log(err);
+    });
+}]);
