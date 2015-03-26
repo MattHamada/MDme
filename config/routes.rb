@@ -31,6 +31,7 @@ MDme::Application.routes.draw do
 
   post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
 
+  get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
   get  'patients/:patient_id/clinics/getdoctors'         => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu

@@ -1,3 +1,37 @@
-angular.module('mdme').controller('PatientsMenuController', ['$scope', function($scope) {
+angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state', '$http', 'Auth', 'AuthInterceptor', function($scope, $state, $http, Auth, AuthInterceptor) {
   $scope.logoSrc = '<%= asset_path("full_logo_white.png") %>';
+  $scope.upcommingAppointment = {};
+  $scope.showProgressBar = false;
+  $scope.color = '';
+  $scope.barClass = 'progress-bar-';
+  $scope.percent = 0;
+  $scope.date = '';
+  $scope.time = '';
+  $scope.timeLeft = '';
+
+  $scope.logout = function() {
+    Auth.logout();
+    $state.go('anon.home');
+  };
+
+  var req = {
+    method: 'GET',
+    url: '/patients/get-upcoming-appointment.json',
+    headers: $http.defaults.headers.common
+  };
+  req = AuthInterceptor.request(req);
+  $http(req)
+    .success(function(data) {
+        if (data) {
+          $scope.showProgressBar = true;
+          $scope.color = data.color;
+          $scope.barClass += $scope.color;
+          $scope.percent = data.percent;
+          $scope.date = data.date;
+          $scope.time = data.time;
+          $scope.timeLeft = data.time_left;
+        }
+  }).error(function(error) {
+     console.log(error);
+  });
 }]);

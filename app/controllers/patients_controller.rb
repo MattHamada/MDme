@@ -9,8 +9,6 @@
 # www.mdme.us/patients
 class PatientsController < ApplicationController
 
-  layout 'patients'
-
   # before_filter :find_patient
   # before_filter :require_patient_login
   # before_filter :get_upcoming_appointment
@@ -94,6 +92,15 @@ class PatientsController < ApplicationController
     end
   end
 
+  def get_upcoming_appointment
+    upcoming_appointment = @patient.upcoming_appointment
+    if upcoming_appointment
+      render json:  get_appointment_progress_bar(upcoming_appointment).to_json
+    else
+      render json: {}
+    end
+  end
+
   #mobile stuff below
 
   def menu
@@ -133,10 +140,48 @@ class PatientsController < ApplicationController
     # end
     # helper_method :find_patient
 
-
-    def get_upcoming_appointment
-      @upcoming_appointment = @patient.upcoming_appointment
-      get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
+    def get_appointment_progress_bar(upcoming_appointment)
+      results = {
+          date: upcoming_appointment.date,
+          time: upcoming_appointment.delayed_time_ampm
+      }
+      minutes_left =
+          ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+      case minutes_left
+        when 81..120
+          results[:color] = 'success'
+          results[:percent] = 20
+        when 70..81
+          results[:color] = 'success'
+          results[:percent] = 40
+        when 59..69
+          results[:color] = 'success'
+          results[:percent] = 50
+        when 35..58
+          results[:color] = 'success'
+          results[:percent] = 65
+        when 21..34
+          results[:color] = 'success'
+          results[:percent] = 75
+        when 6..20
+          results[:color] = 'warning'
+          results[:percent] = 80
+        when 0..5
+          results[:color] = 'danger'
+          results[:percent] = 90
+        else
+          results[:color] = 'success'
+          results[:percent] = 0
+      end
+      if minutes_left < 60
+       results[:time_left] = "#{minutes_left} minutes until appointment"
+      else
+        hours_left = minutes_left / 60
+        if hours_left == 1 then h = 'hour' else h = 'hours' end
+       results[:time_left] =
+            "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
+      end
+      results
     end
 
     def authenticate

@@ -8,6 +8,9 @@ angular.module('mdme').factory('LocalService', function() {
     },
     unset: function(key) {
       return localStorage.removeItem(key);
+    },
+    remove: function(key) {
+      return localStorage.removeItem(key);
     }
   };
 });

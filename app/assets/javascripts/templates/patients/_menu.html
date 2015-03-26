@@ -1,17 +1,15 @@
 <div ng-controller="PatientsMenuController">
-  {{logoSrc}}
   <div class="container">
     <div class="row">
       <div class="col-md-3 col-md-offset-6" style="text-align: right;">
-        <a href="#/signout">Sign Out</a>
+        <a ng-click='logout()' href="#">Sign Out</a>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-4">
-      <div id="logo-container">
-        <a href="#/patients"><img class="logo" ng-src="{{logoSrc}}"></a>
-        <%= link_to image_tag(asset_path('full_logo_white.png'), class: 'logo'), root_path %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" style="text-align: center;">
+        <a href="#/patients"><img class="logo img-responsive" ng-src="{{logoSrc}}"></a>
       </div>
     </div>
   </div>
@@ -24,48 +22,43 @@
     <div class="col-md-8 col-md-offset-2">
       <div class="row patient-home-menu-links ">
         <div class="col-md-3">
-          <%= link_to 'HOME', patients_path %>
+          <a href="#/patients">HOME</a>
         </div>
         <div class="col-md-3">
-          <%= link_to 'MY PROFILE', patient_path(current_patient) %>
+          <a href="#/patients/profile">MY PROFILE</a>
         </div>
         <div class="col-md-3">
           <a href="#">MY RESULTS</a>
         </div>
         <div class="col-md-3">
-          <%= link_to 'MY APPOINTMENTS', patient_appointments_path(current_patient) %>
+          <a href="#/patients/appointments">MY APPOINTMENTS</a>
         </div>
       </div>
     </div>
   </div>
   <br/><br/><br/>
-  <div>
-    {{message}}
-    <% unless @upcoming_appointment.nil? %>
-    <div class="appointment-progressbar">
+    <div ng-show='showProgressBar' class="appointment-progressbar">
       <div class="row">
         <div class="col-xs-6 col-xs-offset-3">
           <div class="row">
             <div class="col-xs-6">
-              <%= @upcoming_appointment.date %>
+              {{date}}
             </div>
             <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
-              <%= @upcoming_appointment.delayed_time_ampm %>
+              {{time}}
             </div>
           </div>
           <div class="progress progress-striped">
-            <div class="progress-bar progress-bar-<%= @color %>" role="progressbar" aria-valuenow="<%= @percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%">
-              <span class="sr-only"><%= @percent %>% Complete (<%= @color %>)</span>
+            <div class="progress-bar" ng-class="barClass" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: percent}">
+              <span class="sr-only">{{percent}}% Complete ({{color}})</span>
             </div>
           </div>
           <div style="text-align: center;">
-            <%= @humanized_time_left %>
+            {{timeLeft}}
           </div>
         </div>
       </div>
     </div>
-    <% else %>
-    <div style="text-align: center;">No upcoming appointments</div>
-    <% end %>
-  </div>
+    <div ng-hide='showProgressBar' style="text-align: center;">No upcoming appointments</div>
+</div>
   <br/><br/><br/>
