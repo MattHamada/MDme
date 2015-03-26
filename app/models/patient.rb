@@ -127,11 +127,15 @@ class Patient < ActiveRecord::Base
 
   # View helpers
   def avatar_thumb_url
-    avatar.url(:thumb)
+    ActionController::Base.helpers.asset_path(avatar.url(:thumb))
   end
 
   def avatar_medium_url
-    avatar.url(:medium)
+    ActionController::Base.helpers.asset_path(avatar.url(:medium))
+  end
+
+  def social_last_four
+    'xxx-xx-' + social_security_number[-4..-1]
   end
 
   module MaritalStatus

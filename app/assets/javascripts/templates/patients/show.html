@@ -4,16 +4,15 @@
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-default ">
-            <div class="panel-heading panel-inverse"><h4>{{patient.fullName}}</h4></div>
+            <div class="panel-heading panel-inverse"><h4>{{patient.full_name}}</h4></div>
             <div class="panel-body panel-inverse">
-              <%= image_tag @patient.avatar.url(:thumb), id: 'avatar' %>
+              <img ng-src="{{patient.avatar_thumb_url}}" id="avatar"/>
               <br/>
-              <b>First Name:</b> {{patient.firstName}}<br/>
-              <b>Last Name:</b> {{patient.lastName}}<br/>
+              <b>First Name:</b> {{patient.first_name}}<br/>
+              <b>Last Name:</b> {{patient.last_name}}<br/>
               <b>Email:</b> {{patient.email}}<br/>
-              <b>Home Phone #:</b> {{patient.homePhone}}<br/>
-              <b>Work Phone #:</b> <{{patient.workPhone}}<br/>
-              <b>Preferred Doctor:</b> {{Patient.doctorFullName}}<br/>
+              <b>Home Phone #:</b> {{patient.home_phone}}<br/>
+              <b>Work Phone #:</b> <{{patient.work_phone}}<br/>
             </div>
           </div>
         </div>

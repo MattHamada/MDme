@@ -17,18 +17,15 @@ class PatientsController < ApplicationController
 
   # GET www.mdme.us/patients/:id
   def show
-    @active = :profile
-    add_breadcrumb 'Home', patients_path
-    add_breadcrumb 'My Profile', patient_path(@patient)
-    respond_to do |format|
-      format.html do |variant|
-        variant.mobile { render 'patients/mobile/show' }
-      end
-      format.json  { render :json => @patient, except: [:created_at,
-                                                        :updated_at,
-                                                        :password_digest,
-                                                        :remember_token] }
-    end
+    # respond_to do |format|
+    #   format.html do |variant|
+    #     variant.mobile { render 'patients/mobile/show' }
+    #   end
+    #   format.json  { render :json => @patient, except: [:created_at,
+    #                                                     :updated_at,
+    #                                                     :password_digest,
+    #                                                     :remember_token] }
+    # end
   end
 
   # GET www.mdme.us/patients/:id/edit
