@@ -4,7 +4,8 @@ var app = angular.module('mdme',[
   'ngResource',
   'angular-flash.service',
   'angular-flash.flash-alert-directive',
-  'ui.router'
+  'ui.router',
+  'angular-jwt'
 ]);
 
 app.constant('AccessLevels', {

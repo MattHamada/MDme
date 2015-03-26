@@ -1,1 +1,35 @@
-patient stuff
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-3">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default ">
+            <div class="panel-heading panel-inverse"><h4>{{patient.fullName}}</h4></div>
+            <div class="panel-body panel-inverse">
+              <%= image_tag @patient.avatar.url(:thumb), id: 'avatar' %>
+              <br/>
+              <b>First Name:</b> {{patient.firstName}}<br/>
+              <b>Last Name:</b> {{patient.lastName}}<br/>
+              <b>Email:</b> {{patient.email}}<br/>
+              <b>Home Phone #:</b> {{patient.homePhone}}<br/>
+              <b>Work Phone #:</b> <{{patient.workPhone}}<br/>
+              <b>Preferred Doctor:</b> {{Patient.doctorFullName}}<br/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row patient-home-submenu-links">
+        <div class="col-md-6">
+          <a href="#/patients/edit">edit profile</a>
+        </div>
+        <div class="col-md-6">
+          <a href="#/patients/change-password">change password</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

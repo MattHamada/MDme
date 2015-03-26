@@ -14,7 +14,8 @@ angular.module('mdme').factory('Auth', ['$http', 'LocalService', 'AccessLevels',
     login: function(credentials) {
       var login = $http.post('/sessions', credentials);
       login.success(function(result) {
-        LocalService.set('auth_token', JSON.stringify(result));
+        LocalService.set('auth_token', JSON.stringify(result.token));
+        LocalService.set('userId', JSON.stringify(user.id))
       });
       return login;
     },
