@@ -20,6 +20,5 @@
 //= require angular-flash/dist/angular-flash
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-local-storage/dist/angular-local-storage
-//= require angular-jwt/dist/angular-jwt
 //= require mdme-ang
 //= require_tree .
