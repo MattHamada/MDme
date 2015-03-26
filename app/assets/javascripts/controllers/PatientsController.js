@@ -1,4 +1,4 @@
-app.controller('PatientsController', ['$scope', '$http', function($scope, $http) {
+app.controller('PatientsController', ['$scope', '$http', 'AuthInterceptor', function($scope, $http, AuthInterceptor) {
   $scope.patient = {};
   $scope.patient.id =0;
   var req = {

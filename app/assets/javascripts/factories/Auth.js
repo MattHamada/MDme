@@ -14,8 +14,8 @@ angular.module('mdme').factory('Auth', ['$http', 'LocalService', 'AccessLevels',
     login: function(credentials) {
       var login = $http.post('/sessions', credentials);
       login.success(function(result) {
-        LocalService.set('auth_token', JSON.stringify(result.token));
-        LocalService.set('userId', JSON.stringify(user.id))
+        LocalService.set('auth_token', JSON.stringify(result.api_token));
+        LocalService.set('userId', JSON.stringify(result.user_id))
       });
       return login;
     },
@@ -26,7 +26,8 @@ angular.module('mdme').factory('Auth', ['$http', 'LocalService', 'AccessLevels',
       LocalService.remove('auth_token');
       var register = $http.post('/patients', formData);
       register.success(function(result) {
-        LocalService.set('auth_token', JSON.stringify(result));
+        LocalService.set('auth_token', JSON.stringify(result.api_token));
+        LocalService.set('userId', JSON.stringify(result.user_id));
       });
       return register;
     }

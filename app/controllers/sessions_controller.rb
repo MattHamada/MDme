@@ -53,7 +53,9 @@ class SessionsController < ApplicationController
         token = AuthToken.issue_token({user_id: patient.id})
         render json: {
                    user_id: patient.id,
-                   token: token
+                   api_token: {
+                     token: token
+                   }
                }
       else
         render json: { error: 'Invalid email/password combination' }, status: :unauthorized
