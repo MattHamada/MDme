@@ -44,6 +44,16 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #efefef;
 }
 
+.non-responsive {
+  /* Margin/padding copied from Bootstrap */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  /* Set width to your desired site width */
+}
+
 a:hover {
   text-decoration: none;
   font-weight: bold;

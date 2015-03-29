@@ -25,13 +25,18 @@ class Patient < ActiveRecord::Base
 
   validates :first_name,             presence: true, length: {maximum: 50}
   validates :last_name,              presence: true, length: {maximum: 50}
+  validates :name_prefix,            presence: true, length: {maximum: 10}
+  validates :name_suffix,            presence: true, length: {maximum: 10}
+  validates :home_phone,                             length: {maximum: 20}
+  validates :work_phone,                             length: {maximum: 20}
+  validates :mobile_phone,                           length: {maximum: 20}
   validates :sex,                    presence: true
   validates :social_security_number, presence: true, length: {maximum: 11}
   validates :address1,               presence: true, length: {maximum: 100}
   validates :city,                   presence: true, length: {maximum: 50}
   validates :state,                  presence: true, length: {maximum: 2}
   validates :zipcode,                presence: true, length: {maximum: 11}
-  validates :birthday,               presence: true
+  validates :birthday,               presence: true, length: {maximum: 11}
   validate  :birthday_in_past
   validates :middle_initial,                         length: {maximum: 1}
   validates_uniqueness_of :encrypted_social_security_number

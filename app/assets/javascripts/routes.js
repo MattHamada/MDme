@@ -42,6 +42,11 @@ angular.module('mdme')
         url: '/patients',
         templateUrl: 'patients/show.html',
         controller:  'PatientsController'
+      })
+      .state('user.edit', {
+        url: '/patients/' + localStorage.getItem('userId') + '/edit',
+        templateUrl: 'patients/edit.html',
+        controller: 'PatientsController'
       });
 
     $urlRouterProvider.otherwise('/');
