@@ -1,14 +1,15 @@
 angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state', '$timeout', '$http', 'Auth', 'AuthInterceptor', function($scope, $state, $timeout, $http, Auth, AuthInterceptor) {
   $scope.logoSrc = '<%= asset_path("full_logo_white.png") %>';
   $scope.upcommingAppointment = {};
+  $scope.progressBar = {};
   $scope.showProgressBar = false;
-  $scope.color = '';
-  $scope.barClass = 'progress-bar-';
-  $scope.percent = 0;
-  $scope.date = '';
-  $scope.time = '';
-  $scope.timeLeft = '';
-  $scope.minutesLeft = 0;
+//  $scope.color = '';
+//  $scope.barClass = 'progress-bar-';
+//  $scope.percent = 0;
+//  $scope.date = '';
+//  $scope.time = '';
+//  $scope.timeLeft = '';
+//  $scope.minutesLeft = 0;
 
   $scope.logout = function() {
     Auth.logout();
@@ -25,50 +26,59 @@ angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state',
     .success(function(data) {
         if (data && data.date != null) {
           $scope.showProgressBar = true;
-          $scope.color = data.color;
-          $scope.barClass += $scope.color;
-          $scope.percent = data.percent;
-          $scope.date = data.date;
-          $scope.time = data.time;
-          $scope.minutesLeft = parseInt(data.minutes_left);
-          $scope.timeLeft = $scope.minutesLeft + 'minutes until appointment';
+          $scope.progressBar = data;
+//          $scope.color = data.color;
+//          $scope.barClass = $scope.color;
+//          $scope.percent = data.percent;
+//          $scope.date = data.date;
+//          $scope.time = data.time;
+//          $scope.minutesLeft = parseInt(data.minutesLeft);
+//          $scope.timeLeft = $scope.minutesLeft + 'minutes until appointment';
           setupCountDown();
         }
   }).error(function(error) {
      console.log(error);
   });
+
+  $scope.getPercentStyle = function() {
+    return {
+      'width': $scope.progressBar.percent + '%'
+    }
+  };
   var stopped;
   var setupCountDown = function() {
     stopped = $timeout(function() {
-      $scope.minutesLeft--;
-      if ($scope.minutesLeft > 0) {
-        if ($scope.minutesLeft > 20 ) {
-          $scope.color = 'success';
-          if ($scope.minutesLeft >= 80) {
-            $scope.percent = 20;
+      $scope.progressBar.minutesLeft--;
+      if ($scope.progressBar.minutesLeft > 0) {
+        if ($scope.progressBar.minutesLeft > 20 ) {
+          $scope.progressBar.color = 'success';
+          if ($scope.progressBar.minutesLeft >= 80) {
+            $scope.progressBar.percent = '20';
           }
-          else if($scope.minutesLeft >= 70) {
-            $scope.percent = 40;
+          else if($scope.progressBar.minutesLeft >= 70) {
+            $scope.progressBar.percent = '40';
           }
-          else if ($scope.minutesLeft >= 60) {
-            $scope.percent = 50;
+          else if ($scope.progressBar.minutesLeft >= 60) {
+            $scope.progressBar.percent = '50';
           }
-          else if ($scope.minutesLeft >= 35) {
-            $scope.percent = 65;
+          else if ($scope.progressBar.minutesLeft >= 35) {
+            $scope.progressBar.percent = '65';
           }
           else {
-            $scope.percent = 75;
+            $scope.progressBar.percent = '75';
           }
         }
-        else if ($scope.minutesLeft > 5 && $scope.minutesLeft < 20) {
-          $scope.color = 'warning';
-          $scope.percent = 80;
+        else if ($scope.progressBar.minutesLeft > 5 && $scope.progressBar.minutesLeft < 20) {
+          $scope.progressBar.color = 'warning';
+          $scope.progressBar.barClass = 'progress-bar-warning';
+          $scope.progressBar.percent = '80';
         }
         else {
-          $scope.color = 'danger';
-          $scope.percent = 90;
+          $scope.progressBar.color = 'danger';
+          $scope.progressBar.barClass = 'progress-bar-danger';
+          $scope.progressBar.percent = '90';
         }
-        $scope.timeLeft = $scope.minutesLeft + 'minutes until appointment';
+        $scope.progressBar.timeLeft = $scope.progressBar.minutesLeft + 'minutes until appointment';
         setupCountDown();
       }
     }, 60000);

@@ -25,8 +25,8 @@ class Patient < ActiveRecord::Base
 
   validates :first_name,             presence: true, length: {maximum: 50}
   validates :last_name,              presence: true, length: {maximum: 50}
-  validates :name_prefix,            presence: true, length: {maximum: 10}
-  validates :name_suffix,            presence: true, length: {maximum: 10}
+  validates :name_prefix,                            length: {maximum: 10}
+  validates :name_suffix,                            length: {maximum: 10}
   validates :home_phone,                             length: {maximum: 20}
   validates :work_phone,                             length: {maximum: 20}
   validates :mobile_phone,                           length: {maximum: 20}

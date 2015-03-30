@@ -144,7 +144,7 @@ class PatientsController < ApplicationController
       }
       minutes_left =
           ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
-      results[:minutes_left] = minutes_left
+      results[:minutesLeft] = minutes_left
       case minutes_left
         when 81..120
           results[:color] = 'success'
@@ -172,13 +172,15 @@ class PatientsController < ApplicationController
           results[:percent] = 0
       end
       if minutes_left < 60
-       results[:time_left] = "#{minutes_left} minutes until appointment"
+       results[:timeLeft] = "#{minutes_left} minutes until appointment"
       else
         hours_left = minutes_left / 60
         if hours_left == 1 then h = 'hour' else h = 'hours' end
-       results[:time_left] =
+       results[:timeLeft] =
             "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
       end
+      results[:barClass] = 'progress-bar-' + results[:color]
+      results[:timeLeft] = minutes_left.to_s + 'minutes until appointment'
       results
     end
 

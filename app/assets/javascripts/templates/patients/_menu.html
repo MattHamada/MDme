@@ -39,19 +39,19 @@
         <div class="col-xs-6 col-xs-offset-3">
           <div class="row">
             <div class="col-xs-6">
-              {{date}}
+              {{progressBar.date}}
             </div>
             <div class="col-xs-2 col-xs-offset-4" style="text-align: right;">
-              {{time}}
+              {{progressBar.time}}
             </div>
           </div>
           <div class="progress progress-striped active">
-            <div class="progress-bar" ng-class="barClass" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: percent}">
-              <span class="sr-only">{{percent}}% Complete ({{color}})</span>
+            <div class="progress-bar" ng-class="progressBar.barClass" role="progressbar" aria-valuenow="{{progressBar.percent}}" aria-valuemin="0" aria-valuemax="100" ng-style="getPercentStyle()">
+              <span class="sr-only">{{progressBar.percent}}% Complete ({{progressBar.color}})</span>
             </div>
           </div>
           <div style="text-align: center;">
-            {{timeLeft}}
+            {{progressBar.timeLeft}}
           </div>
         </div>
       </div>
