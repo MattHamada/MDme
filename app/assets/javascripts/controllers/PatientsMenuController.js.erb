@@ -50,33 +50,34 @@ angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state',
     stopped = $timeout(function() {
       $scope.progressBar.minutesLeft--;
       if ($scope.progressBar.minutesLeft > 0) {
+        $scope.progressBar.percent = (100-$scope.progressBar.minutesLeft).toString();
         if ($scope.progressBar.minutesLeft > 20 ) {
           $scope.progressBar.color = 'success';
-          if ($scope.progressBar.minutesLeft >= 80) {
-            $scope.progressBar.percent = '20';
-          }
-          else if($scope.progressBar.minutesLeft >= 70) {
-            $scope.progressBar.percent = '40';
-          }
-          else if ($scope.progressBar.minutesLeft >= 60) {
-            $scope.progressBar.percent = '50';
-          }
-          else if ($scope.progressBar.minutesLeft >= 35) {
-            $scope.progressBar.percent = '65';
-          }
-          else {
-            $scope.progressBar.percent = '75';
-          }
+//          if ($scope.progressBar.minutesLeft >= 80) {
+//            $scope.progressBar.percent = ;
+//          }
+//          else if($scope.progressBar.minutesLeft >= 70) {
+//            $scope.progressBar.percent = '40';
+//          }
+//          else if ($scope.progressBar.minutesLeft >= 60) {
+//            $scope.progressBar.percent = '50';
+//          }
+//          else if ($scope.progressBar.minutesLeft >= 35) {
+//            $scope.progressBar.percent = '65';
+//          }
+//          else {
+//            $scope.progressBar.percent = '75';
+//          }
         }
-        else if ($scope.progressBar.minutesLeft > 5 && $scope.progressBar.minutesLeft < 20) {
+        else if ($scope.progressBar.minutesLeft > 5 && $scope.progressBar.minutesLeft <= 20) {
           $scope.progressBar.color = 'warning';
           $scope.progressBar.barClass = 'progress-bar-warning';
-          $scope.progressBar.percent = '80';
+//          $scope.progressBar.percent = '80';
         }
         else {
           $scope.progressBar.color = 'danger';
           $scope.progressBar.barClass = 'progress-bar-danger';
-          $scope.progressBar.percent = '90';
+//          $scope.progressBar.percent = '90';
         }
         $scope.progressBar.timeLeft = $scope.progressBar.minutesLeft + 'minutes until appointment';
         setupCountDown();

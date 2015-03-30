@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Patient Pages' do
+describe 'Patient Pages', :js => true do
   subject { page }
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }

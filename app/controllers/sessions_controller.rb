@@ -12,7 +12,6 @@ class SessionsController < ApplicationController
   # Signin page for patients on www subdomain
   # GET www.mdme.us/signin
   def new
-    provide(:title, 'Sign In | ')
     @active = :signin
     if patient_signed_in?
       if request.variant.include?(:mobile)

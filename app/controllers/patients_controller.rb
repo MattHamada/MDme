@@ -145,28 +145,14 @@ class PatientsController < ApplicationController
       minutes_left =
           ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
       results[:minutesLeft] = minutes_left
+      results[:percent] = 100-minutes_left
       case minutes_left
-        when 81..120
+        when 21..120
           results[:color] = 'success'
-          results[:percent] = 20
-        when 70..81
-          results[:color] = 'success'
-          results[:percent] = 40
-        when 59..69
-          results[:color] = 'success'
-          results[:percent] = 50
-        when 35..58
-          results[:color] = 'success'
-          results[:percent] = 65
-        when 21..34
-          results[:color] = 'success'
-          results[:percent] = 75
         when 6..20
           results[:color] = 'warning'
-          results[:percent] = 80
         when 0..5
           results[:color] = 'danger'
-          results[:percent] = 90
         else
           results[:color] = 'success'
           results[:percent] = 0
