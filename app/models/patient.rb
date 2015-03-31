@@ -120,6 +120,7 @@ class Patient < ActiveRecord::Base
   end
 
   # Returns next confirmed appointment in the next two hours
+  #TODO perhaps make this out of 100 minutes to match progress bar %
   def upcoming_appointment
     self.appointments.within_2_hours.not_past.confirmed.order_by_time.first
   end
