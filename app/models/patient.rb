@@ -33,6 +33,8 @@ class Patient < ActiveRecord::Base
   validates :sex,                    presence: true
   validates :social_security_number, presence: true, length: {maximum: 11}
   validates :address1,               presence: true, length: {maximum: 100}
+  validates :address2,                               length: {maximum: 100}
+  # validates :address3,                               length: {maximum: 100}
   validates :city,                   presence: true, length: {maximum: 50}
   validates :state,                  presence: true, length: {maximum: 2}
   validates :zipcode,                presence: true, length: {maximum: 11}

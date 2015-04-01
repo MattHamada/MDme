@@ -9,5 +9,13 @@ child @patient, :object_root => false do
              :mobile_phone,
              :avatar_medium_url,
              :avatar_thumb_url,
-             :social_last_four
+             :social_last_four,
+             :birthday,
+             :city,
+             :social_security_number,
+             :sex,
+             :address1,
+             :city,
+             :state,
+             :zipcode
 end

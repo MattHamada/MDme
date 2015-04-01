@@ -13,7 +13,7 @@ class PatientsController < ApplicationController
   # before_filter :require_patient_login
   # before_filter :get_upcoming_appointment
 
-  before_action :authenticate
+  before_action :authenticate_header
 
   # GET www.mdme.us/patients/:id
   def show
@@ -39,22 +39,34 @@ class PatientsController < ApplicationController
 
   # POST www.mdme.us/patients/:id
   def update
-    @current_user = @patient
-    #skip password validation on update if validated here
-    if @patient.authenticate(params[:verify][:verify_password])
-      @patient.bypass_password_validation = true
-      @patient.attributes = patient_params
+    p = patient_params
+    if @patient.authenticate(p[:password])
+      @patient.attributes = p
+
       if @patient.save
-        flash[:success] = 'Patient Successfully Updated'
-        redirect_to patient_path(@patient)
+        render json: { status: 'patient updated' }
       else
-        flash.now[:danger] = 'Invalid parameters entered'
-        render 'edit'
+        render json: { status: 'error', errors: @patient.errors.full_messages }
       end
     else
-      flash[:danger] = 'Invalid password entered'
-      render 'edit'
+      render json: { status: 'Invalid password entered' }
     end
+    # @current_user = @patient
+    # #skip password validation on update if validated here
+    # if @patient.authenticate(params[:verify][:verify_password])
+    #   @patient.bypass_password_validation = true
+    #   @patient.attributes = patient_params
+    #   if @patient.save
+    #     flash[:success] = 'Patient Successfully Updated'
+    #     redirect_to patient_path(@patient)
+    #   else
+    #     flash.now[:danger] = 'Invalid parameters entered'
+    #     render 'edit'
+    #   end
+    # else
+    #   flash[:danger] = 'Invalid password entered'
+    #   render 'edit'
+    # end
 
   end
 
@@ -119,7 +131,7 @@ class PatientsController < ApplicationController
                                       :doctor_id,
                                       :home_phone,
                                       :work_phone,
-                                      :cell_phone,
+                                      :mobile_phone,
                                       :work_phone_extension,
                                       :sex,
                                       :social_security_number,
@@ -170,7 +182,7 @@ class PatientsController < ApplicationController
       results
     end
 
-    def authenticate
+    def authenticate_header
       begin
         token = request.headers['Authorization'].split(' ').last
         payload, header = AuthToken.valid?(token)

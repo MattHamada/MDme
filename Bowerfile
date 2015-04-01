@@ -7,4 +7,5 @@ asset 'angular-mocks'
 asset 'angular-jwt'
 asset 'bootstrap-sass-official'
 asset 'angular-flash'
+asset 'angular-file-upload'
 # vim: ft=ruby
