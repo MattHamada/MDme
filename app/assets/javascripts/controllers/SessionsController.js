@@ -1,4 +1,4 @@
-angular.module('mdme').controller('SessionsController', ['$scope', '$state', 'Auth', 'flash', function($scope, $state, Auth, flash) {
+angular.module('mdme').controller('SessionsController', ['$scope', '$state', 'Auth', 'flare', function($scope, $state, Auth, flare) {
   if (Auth.isAuthenticated()) {
     $state.go('user.home');
   }
@@ -9,7 +9,7 @@ angular.module('mdme').controller('SessionsController', ['$scope', '$state', 'Au
         $state.go('user.home');
       }).error(function(err) {
         $scope.user = {};
-        flash.error = err.error;
+        flare.error(err.error, 10000);
       });
     }
   };

@@ -2,10 +2,9 @@ var app = angular.module('mdme',[
   'templates',
   'ngRoute',
   'ngResource',
-  'angular-flash.service',
-  'angular-flash.flash-alert-directive',
   'ui.router',
-  'ngFileUpload'
+  'ngFileUpload',
+  'angular-flare'
 
 ]);
 

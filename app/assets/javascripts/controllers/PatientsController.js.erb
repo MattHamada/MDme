@@ -1,4 +1,4 @@
-app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', 'AuthInterceptor', 'LocalService', 'flash', function($scope, $http, $upload, $state, AuthInterceptor, LocalService, flash) {
+app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', 'AuthInterceptor', 'LocalService', 'flare', function($scope, $http, $upload, $state, AuthInterceptor, LocalService, flare) {
   $scope.patient = {};
   $scope.avatar = [];
   $scope.patient.id = LocalService.get('userId');
@@ -30,10 +30,10 @@ app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', 'A
     req = AuthInterceptor.request(req);
     $upload.upload(req)
         .success(function(data) {
-          flash.success = data.status;
-          $state.go('user.home', flash);
+          flare.success(data.status, 10000);
+          $state.go('user.home');
         }).error(function(err) {
-          flash.error = err.errors;
+          flare.error(err.errors, 10000);
         });
   };
 

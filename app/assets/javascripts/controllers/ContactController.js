@@ -1,4 +1,4 @@
-angular.module('mdme').controller('ContactController', ['$scope', '$http', 'flash', function($scope, $http, flash) {
+angular.module('mdme').controller('ContactController', ['$scope', '$http', 'flare', function($scope, $http, flare) {
   $scope.client = {};
   $scope.sendComment = function() {
     $http({
@@ -8,13 +8,13 @@ angular.module('mdme').controller('ContactController', ['$scope', '$http', 'flas
     }).success(function(data, status, headers) {
       if (data.status) {
         $scope.client = {};
-        flash.success = "Comments submitted";
+        flare.success("Comments submitted", 10000);
       }
       else {
-        flash.error = data.message;
+        flare.error(data.message, 10000);
       }
     }).error(function(data, status, headers) {
-      flash.error = "Connection error";
+      flare.error("Connection error", 10000);
     });
   };
 }]);

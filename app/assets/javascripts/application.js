@@ -17,9 +17,9 @@
 //= require angular-route/angular-route
 //= require angular-rails-templates
 //= require angular-resource/angular-resource
-//= require angular-flash/dist/angular-flash
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-local-storage/dist/angular-local-storage
 //= require ng-file-upload/angular-file-upload-all
+//= require angular-flare/dist/angular-flare
 //= require mdme-ang
 //= require_tree .

@@ -6,6 +6,6 @@ asset 'angular-local-storage'
 asset 'angular-mocks'
 asset 'angular-jwt'
 asset 'bootstrap-sass-official'
-asset 'angular-flash'
 asset 'ng-file-upload'
+asset 'angular-flare'
 # vim: ft=ruby
