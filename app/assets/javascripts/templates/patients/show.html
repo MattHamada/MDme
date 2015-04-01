@@ -1,4 +1,9 @@
 <div class="container">
+  <aside class="flash row">
+    <article flash-alert duration="5000" active-class="in" class="col-md-6 col-md-offset-3 col-sm-12 alert fade">
+      {{flash.message}}
+    </article>
+  </aside>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="row">
@@ -12,7 +17,7 @@
               <b>Last Name:</b> {{patient.last_name}}<br/>
               <b>Email:</b> {{patient.email}}<br/>
               <b>Home Phone #:</b> {{patient.home_phone}}<br/>
-              <b>Work Phone #:</b> <{{patient.work_phone}}<br/>
+              <b>Work Phone #:</b> {{patient.work_phone}}<br/>
             </div>
           </div>
         </div>

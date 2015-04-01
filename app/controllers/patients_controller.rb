@@ -49,7 +49,7 @@ class PatientsController < ApplicationController
         render json: { status: 'error', errors: @patient.errors.full_messages }
       end
     else
-      render json: { status: 'Invalid password entered' }
+      render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
     end
     # @current_user = @patient
     # #skip password validation on update if validated here

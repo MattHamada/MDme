@@ -4,6 +4,11 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Edit Profile</h4></div>
         <div class="panel-body panel-inverse">
+          <aside class="flash row">
+            <article flash-alert duration="5000" active-class="in" class="col-md-6 col-md-offset-3 col-sm-12 alert fade">
+              {{flash.message}}
+            </article>
+          </aside>
           <form name="patientEditForm" ng-submit="updatePatient()">
             <fieldset>
               <div class="row">

@@ -1,4 +1,4 @@
-app.controller('PatientsController', ['$scope', '$http', '$upload', 'AuthInterceptor', 'LocalService', function($scope, $http, $upload, AuthInterceptor, LocalService) {
+app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', 'AuthInterceptor', 'LocalService', 'flash', function($scope, $http, $upload, $state, AuthInterceptor, LocalService, flash) {
   $scope.patient = {};
   $scope.avatar = [];
   $scope.patient.id = LocalService.get('userId');
@@ -11,7 +11,6 @@ app.controller('PatientsController', ['$scope', '$http', '$upload', 'AuthInterce
   $http(req)
     .success(function(data) {
       $scope.patient = data.patient;
-      console.log($scope.patient);
     }).error(function(err) {
       console.log(err);
     });
@@ -21,21 +20,21 @@ app.controller('PatientsController', ['$scope', '$http', '$upload', 'AuthInterce
       method: 'PATCH',
       url: '/patients/' + $scope.patient.id,
       headers: $http.defaults.headers.patch,
-      fields: {
-        first_name: $scope.patient.first_name,
-        last_name: $scope.patient.last_name
+      fields: $scope.patient,
+      formDataAppender: function(fd, key, val) {
+        fd.append('patient['+key+']', val);
       },
       file: $scope.avatar,
-      fileFormDataName: 'avatar'
+      fileFormDataName: 'patient[avatar]'
     };
     req = AuthInterceptor.request(req);
-    $upload.upload(req);
-//    $http(req)
-//        .success(function(data) {
-//          console.log(data);
-//        }).error(function(error) {
-//          console.log(error);
-//        });
+    $upload.upload(req)
+        .success(function(data) {
+          flash.success = data.status;
+          $state.go('user.home', flash);
+        }).error(function(err) {
+          flash.error = err.errors;
+        });
   };
 
 
