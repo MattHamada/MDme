@@ -1,7 +1,7 @@
-app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', 'AuthInterceptor', 'LocalService', 'flare', function($scope, $http, $upload, $state, AuthInterceptor, LocalService, flare) {
+app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', '$stateParams', 'AuthInterceptor', 'LocalService', 'flare', function($scope, $http, $upload, $state, $stateParams, AuthInterceptor, LocalService, flare) {
   $scope.patient = {};
   $scope.avatar = [];
-  $scope.patient.id = LocalService.get('userId');
+  $scope.patient.id = $stateParams.patientId  ;
   var req = {
     method: 'GET',
     url: '/patients/' + $scope.patient.id + '.json',

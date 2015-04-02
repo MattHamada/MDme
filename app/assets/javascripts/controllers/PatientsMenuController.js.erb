@@ -1,8 +1,9 @@
-angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state', '$timeout', '$http', 'Auth', 'AuthInterceptor', function($scope, $state, $timeout, $http, Auth, AuthInterceptor) {
+angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state', '$timeout', '$http', 'Auth', 'AuthInterceptor', 'LocalService', function($scope, $state, $timeout, $http, Auth, AuthInterceptor, LocalService) {
   $scope.logoSrc = '<%= asset_path("full_logo_white.png") %>';
   $scope.upcommingAppointment = {};
   $scope.progressBar = {};
   $scope.showProgressBar = false;
+  $scope.patient = {id: LocalService.get('userId') };
 //  $scope.color = '';
 //  $scope.barClass = 'progress-bar-';
 //  $scope.percent = 0;
