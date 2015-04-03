@@ -182,16 +182,7 @@ class PatientsController < ApplicationController
       results
     end
 
-    def authenticate_header
-      begin
-        token = request.headers['Authorization'].split(' ').last
-        payload, header = AuthToken.valid?(token)
-        @patient = Patient.find_by(id: payload['user_id'])
-      rescue
-        render json: { error: 'Could not authenticate your request.  Please login'},
-               status: :unauthorized
-      end
-    end
+
 
 
 end

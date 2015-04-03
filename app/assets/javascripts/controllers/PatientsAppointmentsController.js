@@ -1,3 +1,22 @@
-app.controller('PatientsAppointmentsController', ['$scope', function($scope) {
+app.controller('PatientsAppointmentsController', ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', function($scope, $location, $stateParams, $http, AuthInterceptor) {
+  $scope.appointments = {};
+  $scope.patient = { id: $stateParams.patientId };
+
+  if ($location.path() == '/patients/' + $stateParams.patientId + '/appointments') {
+    var req = {
+      method: 'GET',
+      url: '/patients/' + $stateParams.patientId + '/appointments.json',
+      headers: $http.defaults.headers.common
+    };
+    req = AuthInterceptor.request(req);
+    $http(req)
+      .success(function(data) {
+        $scope.appointments = data.appointments;
+        console.log(data);
+      })
+      .error(function(error) {
+        console.log(error);
+      });
+  }
 
 }]);

@@ -9,10 +9,7 @@
 # for mdme.us/patients/:patient_id/appointments
 class Patients::AppointmentsController < ApplicationController
 
-  before_filter :find_patient, except: [:open_appointments]
-  before_filter :require_patient_login
-  before_filter :set_active_navbar_and_crumbs
-  before_filter :load_upcoming_appointment
+  before_action :authenticate_header
 
   # GET mdme.us/patients/:patient_id/appointments
   def index

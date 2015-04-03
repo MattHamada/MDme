@@ -50,6 +50,16 @@ class ApplicationController < ActionController::Base
   # success is green; warning is yellow; danger is red
 
   protected
+    def authenticate_header
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        @patient = Patient.find_by(id: payload['user_id'])
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
+    end
 
     def verified_request?
       super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
