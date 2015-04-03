@@ -4,13 +4,6 @@ angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state',
   $scope.progressBar = {};
   $scope.showProgressBar = false;
   $scope.patient = {id: LocalService.get('userId') };
-//  $scope.color = '';
-//  $scope.barClass = 'progress-bar-';
-//  $scope.percent = 0;
-//  $scope.date = '';
-//  $scope.time = '';
-//  $scope.timeLeft = '';
-//  $scope.minutesLeft = 0;
 
   $scope.logout = function() {
     Auth.logout();
