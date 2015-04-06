@@ -1,73 +1,73 @@
-# Author: Matt Hamada
-# Copyright MDme 2014
+## Author: Matt Hamada
+## Copyright MDme 2014
+##
+##This file used for various javascript powered ajax calls on appointments sites
+##will show a calendar for date picking
+##Will shows ajax popup windows for appointment and user info
+##
 #
-#This file used for various javascript powered ajax calls on appointments sites
-#will show a calendar for date picking
-#Will shows ajax popup windows for appointment and user info
+##calendars for picking date
+#jQuery ->
+#  $('#appointment_date').datepicker
+#    dateFormat: 'yy-mm-dd'
+#    changeMonth: true
+#    changeYear: true
 #
-
-#calendars for picking date
-jQuery ->
-  $('#appointment_date').datepicker
-    dateFormat: 'yy-mm-dd'
-    changeMonth: true
-    changeYear: true
-
-jQuery ->
-  $('#appointment_day').datepicker
-    dateFormat: 'yy-mm-dd'
-    changeMonth: true
-    changeYear: true
-
-
-jQuery ->
-  $('#date_day').datepicker
-    dateFormat: 'yy-mm-dd'
-    changeMonth: true
-    changeYear: true
-
-jQuery ->
-  $('#patient_birthday').datepicker
-    dateFormat: 'yy-mm-dd'
-    changeMonth: true
-    changeYear: true
-
-
-
-
-
-#used for popup windows
-APTS = {}
-APTS.setup = ->
-  #for confirm/deny buttons
-  $(".approve").on "click", "a", APTS.getApproveInfo
-  $(".deny").on "click", "a", APTS.getApproveInfo
-
-
-  false
-
-#load doctors in selectbox
-APTS.loadDoctors = ->
-    $.ajax
-      type: "GET"
-      url: "http://www.lvh.me:3000/patients/getdoctors"
-      data: $("select#appointment_clinic_id").text()
-      timeout: 5000
-      success: ->
-        alert('success')
-      error: ->
-        alert('failure')
-    false
-
-#ajax calls for approving/denying appointments
-APTS.getApproveInfo = ->
-    $.ajax
-      type: "GET"
-      url: $(this).attr("href")
-      timeout: 5000
-      error: ->
-          alert "Error processing request"
-
-    false
-
-$ APTS.setup
+#jQuery ->
+#  $('#appointment_day').datepicker
+#    dateFormat: 'yy-mm-dd'
+#    changeMonth: true
+#    changeYear: true
+#
+#
+#jQuery ->
+#  $('#date_day').datepicker
+#    dateFormat: 'yy-mm-dd'
+#    changeMonth: true
+#    changeYear: true
+#
+#jQuery ->
+#  $('#patient_birthday').datepicker
+#    dateFormat: 'yy-mm-dd'
+#    changeMonth: true
+#    changeYear: true
+#
+#
+#
+#
+#
+##used for popup windows
+#APTS = {}
+#APTS.setup = ->
+#  #for confirm/deny buttons
+#  $(".approve").on "click", "a", APTS.getApproveInfo
+#  $(".deny").on "click", "a", APTS.getApproveInfo
+#
+#
+#  false
+#
+##load doctors in selectbox
+#APTS.loadDoctors = ->
+#    $.ajax
+#      type: "GET"
+#      url: "http://www.lvh.me:3000/patients/getdoctors"
+#      data: $("select#appointment_clinic_id").text()
+#      timeout: 5000
+#      success: ->
+#        alert('success')
+#      error: ->
+#        alert('failure')
+#    false
+#
+##ajax calls for approving/denying appointments
+#APTS.getApproveInfo = ->
+#    $.ajax
+#      type: "GET"
+#      url: $(this).attr("href")
+#      timeout: 5000
+#      error: ->
+#          alert "Error processing request"
+#
+#    false
+#
+#$ APTS.setup

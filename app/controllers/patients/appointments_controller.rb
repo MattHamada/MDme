@@ -112,7 +112,8 @@ class Patients::AppointmentsController < ApplicationController
   # GET mdme.us/patients/:patient_id/appointments/:id
   def show
     @appointment = appointment
-    render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
+    @doctor = Doctor.find(@appointment.doctor.id)
+    # render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
 

@@ -52,6 +52,11 @@ angular.module('mdme')
         url: '/patients/:patientId/appointments',
         templateUrl: 'patients/appointments/index.html',
         controller: 'PatientsAppointmentsController'
+      })
+      .state('user.appointment', {
+        url: '/patients/:patientId/appointments/:appointmentId',
+        templateUrl: 'patients/appointments/show.html',
+        controller :'PatientsAppointmentController'
       });
 
     $urlRouterProvider.otherwise('/');
