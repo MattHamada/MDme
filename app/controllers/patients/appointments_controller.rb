@@ -101,11 +101,9 @@ class Patients::AppointmentsController < ApplicationController
       Appointment.fill_canceled_appointment(@appointment.appointment_time, @appointment.appointment_time) if Date.parse(@appointment.date) == Date.today
     end
     if @appointment.destroy
-      flash[:success] = "Appointment deleted"
-      redirect_to patient_appointments_path(@patient)
+      render status: 200, json: {status: 'Appointment Deleted'}
     else
-      flash.now[:danger] = "An error has occured"
-      render open_requests_path(@patient)
+      render status: 500, json: {}
     end
   end
 
