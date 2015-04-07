@@ -23,8 +23,11 @@
         <div class="col-xs-3 col-md-3" ng-class="currentNav('/contact')">
           <a href="#/contact">CONTACT</a>
         </div>
-        <div class="col-xs-3 col-md-3" ng-class="currentNav('/signin')">
+        <div  ng-hide='loggedIn()' class="col-xs-3 col-md-3" ng-class="currentNav('/signin')">
           <a href="#/signin">SIGN IN</a>
+        </div>
+        <div ng-show="loggedIn()" class="col-xs-3 col-md-3" ng-class="currentNav('/patients')">
+          <a href="#/patients">MY ACCOUNT</a>
         </div>
       </div>
     </div>
