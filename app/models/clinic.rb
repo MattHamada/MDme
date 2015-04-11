@@ -25,6 +25,10 @@ class Clinic < ActiveRecord::Base
   # Order clinics alphabetically by name
   scope :ordered_name, -> { order(name: :asc) }
 
+  def open_appointment_times(date, doctor)
+    times = []
+  end
+
   # Called on clinic creation
   # Calls google geolocation api for latitude/longitude coordinates of
   # the clinic address.  Grabs NE and SW viewport coordinates for easier

@@ -4,6 +4,11 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
   $scope.doctor = {};
   $scope.clinics = {};
   $scope.doctors = {};
+  $scope.times1 = [];
+  $scope.times2 = [];
+  $scope.selectedIndex = -1;
+  var times = [];
+
 
   if ($state.current.name == 'user.appointment') {
     var req = {
@@ -32,7 +37,6 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     $http(reqClinics)
       .success(function(data) {
         $scope.clinics = data.clinics;
-        console.log($scope.clinics);
       })
       .error(function(err) {
         console.log(err);
@@ -60,4 +64,96 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
         });
     }
   };
+
+  $scope.loadDoctors = function(clinic) {
+    console.log(clinic);
+    var docReq = {
+      method: 'GET',
+      url: '/patients/' + $stateParams.patientId + '/clinics/get-doctors.json?id=' + clinic.id,
+      headers: $http.defaults.headers.common
+    };
+    docReq = AuthInterceptor.request(docReq);
+    $http(docReq)
+      .success(function(data) {
+        console.log(data);
+        $scope.doctors = data.doctors;
+      })
+      .error(function(err) {
+        console.log(err);
+      });
+    console.log(clinic);
+  };
+
+  $scope.loadTimes = function(doctor) {
+    //TODO make real api call
+    var timeReq = {
+      method: 'GET',
+      params:  {
+        date: $scope.appointment.date,
+        doctor_id: $scope.appointment.doctor.id,
+        clinic_id: $scope.appointment.clinic.id
+      },
+      url: '/doctors/opentimes.json',
+      headers: $http.defaults.headers.common
+    };
+    timeReq = AuthInterceptor.request(timeReq);
+    $http(timeReq)
+      .success(function(data) {
+        times = data.times;
+        setTimeVars(times);
+      })
+      .error(function(err) {
+        console.log(err);
+      });
+  };
+
+  $scope.getTimeClass = function(time) {
+    if (!time.enabled) {
+      return 'list-group-item-danger';
+    } else {
+      if (time.selected) {
+        return 'list-group-item-success';
+      } else {
+        return 'list-group-item-warning';
+      }
+    }
+  };
+
+  $scope.timeOpen = function(time) {
+    if (time.enabled) {
+      return 'list-group-item-warning';
+    }
+    return 'list-group-item-danger';
+  };
+
+  $scope.selectTime = function(time) {
+    if (time.enabled) {
+      for (var j = 0; j < times.length; j++) {
+        times[j].selected = false;
+      }
+      times[time.index].selected = true;
+      setTimeVars(times);
+    }
+  };
+  var setTimeVars = function(times) {
+    $scope.times1 = [];
+    $scope.times2 = [];
+    var length = times.length;
+    var half = Math.floor(length / 2);
+    var split = 0;
+    if (length % 2 == 0) {
+      split = length - half;
+    } else {
+      split = length - half - 1;
+    }
+    for (var i = 0; i < half; i++) {
+      $scope.times1.push(times[i]);
+    }
+    for(var i = split; i< length; i++) {
+      $scope.times2.push(times[i]);
+    }
+    console.log($scope.times1);
+    console.log($scope.times2);
+
+  }
 }]);

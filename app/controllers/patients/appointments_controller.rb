@@ -114,19 +114,6 @@ class Patients::AppointmentsController < ApplicationController
     # render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
-
-  # TODO is this method depricated? Can it be removed?
-  # ajax load when creating new appointment to see open times when given a date
-  def open_appointments
-    # input = appointment_params
-    # @date = Date.parse(input[:date])
-    # @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
-    # @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
-    # @open_times = @doctor.open_appointment_times(@date)
-    # #@appointment = Appointment.new
-    # render json: {open_times: @open_times}
-  end
-
   #mobile
   def menu
     render 'patients/appointments/menu'
