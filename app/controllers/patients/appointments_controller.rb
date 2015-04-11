@@ -31,12 +31,9 @@ class Patients::AppointmentsController < ApplicationController
   def create
     input = appointment_params
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
-    time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
-    date = DateTime.parse("#{input[:date]} #{time}")
-    inform = false
-    if input[:inform_earlier_time] == '1'
-      inform = true
-    end
+    time = input[:time]
+    day = Date.parse(input[:date])
+    date = Time.zone.parse("#{day.strftime('%F')} #{time}")
 
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: @patient.id,
@@ -44,15 +41,11 @@ class Patients::AppointmentsController < ApplicationController
                                    description: input[:description],
                                    request: true,
                                    clinic_id: input[:clinic_id],
-                                   inform_earlier_time: inform)
+                                   inform_earlier_time: input[:inform_earlier_time])
     if @appointment.save
-      flash[:success] = "Appointment Requested"
-      redirect_to patient_path(@patient)
+      render status: 201, json: {message: 'Appointment requested'}
     else
-      @appointment.errors.each do |attribute, message|
-        flash[:danger] = message
-      end
-      redirect_to new_patient_appointment_path(@patient)
+      render status: 400, json: {errors: @appointment.errors.full_messages.join(", ")}
     end
   end
 

@@ -29,6 +29,7 @@ class Appointment < ActiveRecord::Base
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
   validates :clinic_id,  presence: true
+  validates :description, length: {maximum: 2048}
 
   # Set delayed_time to set time when created to avoid nulls
   before_create { self.appointment_delayed_time = appointment_time }

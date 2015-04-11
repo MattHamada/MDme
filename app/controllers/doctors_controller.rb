@@ -88,8 +88,13 @@ class DoctorsController < ApplicationController
     date = Date.parse(params[:date])
     clinic = Clinic.find(params[:clinic_id])
     doctor = Doctor.find(params[:doctor_id])
-    @times = doctor.open_appointment_times(date)
-    @time = clinic.open_appointment_times(date, doctor)
+    # @times = doctor.open_appointment_times(date)
+    @times = clinic.open_appointment_times(date, doctor)
+    if @times.is_a?(Hash)
+      render json: {status: 1, error: @times[:error]}
+    else
+      render json: { status: 0, times: @times }
+    end
     #@appointment = Appointment.new
     #render json: {open_times: @open_times}
     # render json: {times: [

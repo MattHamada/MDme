@@ -99,8 +99,13 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     timeReq = AuthInterceptor.request(timeReq);
     $http(timeReq)
       .success(function(data) {
-        times = data.times;
-        setTimeVars(times);
+        if (data.status == 0) { //success
+          times = data.times;
+          setTimeVars(times);
+        } else if (data.status == 1) {
+          flare.error(data.error, 10000);
+        }
+
       })
       .error(function(err) {
         console.log(err);
@@ -119,19 +124,13 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     }
   };
 
-  $scope.timeOpen = function(time) {
-    if (time.enabled) {
-      return 'list-group-item-warning';
-    }
-    return 'list-group-item-danger';
-  };
-
   $scope.selectTime = function(time) {
     if (time.enabled) {
       for (var j = 0; j < times.length; j++) {
         times[j].selected = false;
       }
       times[time.index].selected = true;
+      $scope.appointment.time = times[time.index].time;
       setTimeVars(times);
     }
   };
@@ -155,5 +154,32 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     console.log($scope.times1);
     console.log($scope.times2);
 
-  }
+  };
+
+  $scope.createAppointment = function() {
+    var newApptReq = {
+      method: 'POST',
+      data: {
+        'appointment': {
+          'doctor_id': $scope.appointment.doctor.id,
+          'date': $scope.appointment.date,
+          'time': $scope.appointment.time,
+          'inform_earlier_time': $scope.appointment.notify_earlier,
+          'description':  $scope.appointment.description,
+          'clinic_id': $scope.appointment.clinic.id
+        }
+      },
+      url: '/patients/' + $stateParams.id  + '/appointments',
+      headers: $http.defaults.headers.post
+    };
+    newApptReq = AuthInterceptor.request(newApptReq);
+    $http(newApptReq)
+      .success(function(data) {
+        $state.go('user.appointments', {patientId: $stateParams.patientId});
+        flare.success('Appointment requested', 10000);
+      })
+      .error(function(data) {
+        flare.error(data.error, 10000);
+      })
+  };
 }]);

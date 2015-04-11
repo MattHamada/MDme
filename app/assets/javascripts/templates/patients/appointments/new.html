@@ -29,23 +29,47 @@
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <ul class="list-group">
+                      <li ng-repeat="time in times1"class="list-group-item" ng-click="selectTime(time)" ng-class="getTimeClass(time)">{{time.time}}</li>
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="list-group">
+                      <li ng-repeat="time in times2"class="list-group-item list-group-item-warning" ng-click="selectTime(time)" ng-class="getTimeClass(time)">{{time.time}}</li>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="appointment_description">Description</label>
+                          <textarea ng-maxlength="2048" ng-model="appointment.description" rows="5" placeholder="I think I'm dying..." class="form-control" id="appointment_description"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="appointment_notify_earlier">Notify if earlier time becomes available?</label>
+                          <input type="checkbox" name="notifyEarlier" ng-model="appointment.notify_earlier" id="appointment_notify_earlier">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 col-md-offset-5">
+                        <button type="submit" class="btn btn-large btn-primary">Request</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </fieldset>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <ul class="list-group">
-          <li ng-repeat="time in times1"class="list-group-item" ng-click="selectTime(time)" ng-class="getTimeClass(time)">{{time.time}}</li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <div class="list-group">
-          <li ng-repeat="time in times2"class="list-group-item list-group-item-warning" ng-click="selectTime(time)" ng-class="getTimeClass(time)">{{time.time}}</li>
-        </div>
-      </div>
-    </div>
+
   </div>
 </div>
