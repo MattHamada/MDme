@@ -9,6 +9,13 @@
 # for mdme.us/patients/:patient_id/clinics
 class Patients::ClinicsController < ApplicationController
 
+  #TODO remove getdoctors exception
+  before_action :authenticate_header, except: :getdoctors
+
+  def index
+    @clinics = @patient.clinics.ordered_name
+  end
+
   # GET mdme.us/patients/:patient_id/clinics/getdoctors
   # TODO is this method for api?  Should it return a redirect and json?
   def getdoctors

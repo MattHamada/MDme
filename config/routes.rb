@@ -77,6 +77,7 @@ MDme::Application.routes.draw do
   resources :patients do
     resources :appointments, controller: 'patients/appointments'
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
+    resources :clinics, only: [:index, :show], controller: 'patients/clinics'
   end
 
   get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
