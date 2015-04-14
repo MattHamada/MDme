@@ -53,8 +53,13 @@ angular.module('mdme')
         templateUrl: 'patients/appointments/index.html',
         controller: 'PatientsAppointmentsController'
       })
+      .state('user.newappointment', {
+        url: '/patients/:patientId/appointments/new',
+        templateUrl: 'patients/appointments/new.html',
+        controller: 'PatientsAppointmentController'
+      })
       .state('user.appointment', {
-        url: '/patients/:patientId/appointments/:appointmentId',
+        url: '/patients/:patientId/appointments/{appointmentId:[0-9]+}',
         templateUrl: 'patients/appointments/show.html',
         controller :'PatientsAppointmentController'
       });

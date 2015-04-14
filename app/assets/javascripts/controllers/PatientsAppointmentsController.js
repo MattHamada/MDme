@@ -12,7 +12,6 @@ app.controller('PatientsAppointmentsController', ['$scope', '$location', '$state
     $http(req)
       .success(function(data) {
         $scope.appointments = data.appointments;
-        console.log(data);
       })
       .error(function(error) {
         console.log(error);
