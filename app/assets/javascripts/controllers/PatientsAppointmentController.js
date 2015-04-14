@@ -2,7 +2,13 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
   $scope.patient = { id: $stateParams.patientId };
   $scope.appointment = {};
   $scope.doctor = {};
+<<<<<<< HEAD
                  s
+=======
+  $scope.clinics = {};
+  $scope.doctors = {};
+
+>>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
   if ($state.current.name == 'user.appointment') {
     var req = {
       method: 'GET',
@@ -19,6 +25,26 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
         console.log(err);
       });
   }
+<<<<<<< HEAD
+=======
+
+  if ($state.current.name == 'user.newAppointment') {
+    var reqClinics = {
+      method: 'GET',
+      url: '/patients/' + $stateParams.patientId + '/clinics.json',
+      headers: $http.defaults.headers.common
+    };
+    reqClinics = AuthInterceptor.request(reqClinics);
+    $http(reqClinics)
+      .success(function(data) {
+        $scope.clinics = data.clinics;
+        console.log($scope.clinics);
+      })
+      .error(function(err) {
+        console.log(err);
+      });
+  }
+>>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
 
   $scope.cancel = function() {
     var check = confirm('Are you sure you want to delete this appointment?');

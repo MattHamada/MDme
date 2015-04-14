@@ -53,7 +53,11 @@ angular.module('mdme')
         templateUrl: 'patients/appointments/index.html',
         controller: 'PatientsAppointmentsController'
       })
+<<<<<<< HEAD
       .state('user.newappointment', {
+=======
+      .state('user.newAppointment', {
+>>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
         url: '/patients/:patientId/appointments/new',
         templateUrl: 'patients/appointments/new.html',
         controller: 'PatientsAppointmentController'
