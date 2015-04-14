@@ -104,6 +104,7 @@ class Doctor < ActiveRecord::Base
   # on a web form for creating/editing appointments
   #===== Parameters
   # * +date+ - A Date object
+  #TODO this does not handle filtering times if doctor works at two locations
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date).confirmed
     times = []
