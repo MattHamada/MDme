@@ -5,11 +5,7 @@
         <div class="panel panel-default">
           <div class="panel-heading"><h4>Add Appointment</h4></div>
           <div class="panel-body panel-inverse">
-<<<<<<< HEAD
-            <form name="newAppointmentForm" class="form-inline" ng-submit="grabTimes()">
-=======
             <form name="newAppointmentForm" class="form-inline" ng-submit="createAppointment()">
->>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
               <fieldset>
                 <div class="form-group">
                   <label for="appointment_date">Date</label>
@@ -17,12 +13,8 @@
                 </div>
                 <div class="form-group">
                   <label for="appointment_clinic">Clinic</label>
-<<<<<<< HEAD
-                  <select class="form-control" id="appointment_clinic">
-=======
                   <select ng-change="loadDoctors()" ng-options="clinic.clinic.name for clinic in clinics" ng-model="clinic" class="form-control" id="appointment_clinic">
 
->>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
                   </select>
                 </div>
                 <div class="form-group">
@@ -30,11 +22,7 @@
                   <select class="form-control" id="appointment_doctor">
                   </select>
                 </div>
-<<<<<<< HEAD
-                <button type="submit" class="btn btn-primary">Find open times</button>
-=======
                 <button ng-click="loadTimes()" class="btn btn-primary">Find open times</button>
->>>>>>> 3e8b3da660a7bb291f16eb696c85a296391417f6
               </fieldset>
             </form>
           </div>
