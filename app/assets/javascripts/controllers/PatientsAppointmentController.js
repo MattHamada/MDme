@@ -64,9 +64,6 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
         });
     }
   };
-<<<<<<< HEAD
-}]);
-=======
 
   $scope.loadDoctors = function(clinic) {
     console.log(clinic);
@@ -186,4 +183,3 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
       })
   };
 }]);
->>>>>>> bower-angular

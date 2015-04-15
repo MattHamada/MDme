@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411173038) do
+ActiveRecord::Schema.define(version: 20150319163640) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",           limit: 255
@@ -47,46 +47,24 @@ ActiveRecord::Schema.define(version: 20150411173038) do
   add_index "appointments", ["request"], name: "index_appointments_on_request"
 
   create_table "clinics", force: :cascade do |t|
-    t.string   "name",                       limit: 255
+    t.string   "name",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "slug",                       limit: 255
-    t.string   "address1",                   limit: 255
-    t.string   "address2",                   limit: 255
-    t.string   "address3",                   limit: 255
-    t.string   "city",                       limit: 255
-    t.string   "state",                      limit: 255
-    t.string   "zipcode",                    limit: 255
-    t.string   "country",                    limit: 255
-    t.string   "phone_number",               limit: 255
-    t.string   "fax_number",                 limit: 255
+    t.string   "slug",         limit: 255
+    t.string   "address1",     limit: 255
+    t.string   "address2",     limit: 255
+    t.string   "address3",     limit: 255
+    t.string   "city",         limit: 255
+    t.string   "state",        limit: 255
+    t.string   "zipcode",      limit: 255
+    t.string   "country",      limit: 255
+    t.string   "phone_number", limit: 255
+    t.string   "fax_number",   limit: 255
     t.float    "ne_latitude"
     t.float    "ne_longitude"
     t.float    "sw_latitude"
     t.float    "sw_longitude"
     t.string   "timezone"
-    t.string   "sunday_open_time"
-    t.string   "sunday_close_time"
-    t.boolean  "is_open_sunday"
-    t.string   "monday_open_time"
-    t.string   "monday_close_time"
-    t.boolean  "is_open_monday"
-    t.string   "tuesday_open_time"
-    t.string   "tuesday_close_time"
-    t.boolean  "is_open_tuesday"
-    t.string   "wednesday_open_time"
-    t.string   "wednesday_close_time"
-    t.boolean  "is_open_wednesday"
-    t.string   "thursday_open_time"
-    t.string   "thursday_close_time"
-    t.boolean  "is_open_thursday"
-    t.string   "friday_open_time"
-    t.string   "friday_close_time"
-    t.boolean  "is_open_friday"
-    t.string   "saturday_open_time"
-    t.string   "saturday_close_time"
-    t.boolean  "is_open_saturday"
-    t.integer  "appointment_time_increment"
   end
 
   add_index "clinics", ["name"], name: "index_clinics_on_name"
