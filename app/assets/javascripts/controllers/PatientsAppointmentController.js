@@ -8,7 +8,16 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
   $scope.times2 = [];
   $scope.selectedIndex = -1;
   var times = [];
+  var dateChange = false;
+  var clinicChange = false;
 
+  $scope.dateChosen = function() {
+    dateChange = true;
+  };
+
+  $scope.clinicChosen = function() {
+    clinicChange = true;
+  };
 
   if ($state.current.name == 'user.appointment') {
     var req = {
@@ -86,30 +95,32 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
 
   $scope.loadTimes = function(doctor) {
     //TODO make real api call
-    var timeReq = {
-      method: 'GET',
-      params:  {
-        date: $scope.appointment.date,
-        doctor_id: $scope.appointment.doctor.id,
-        clinic_id: $scope.appointment.clinic.id
-      },
-      url: '/doctors/opentimes.json',
-      headers: $http.defaults.headers.common
-    };
-    timeReq = AuthInterceptor.request(timeReq);
-    $http(timeReq)
-      .success(function(data) {
-        if (data.status == 0) { //success
-          times = data.times;
-          setTimeVars(times);
-        } else if (data.status == 1) {
-          flare.error(data.error, 10000);
-        }
+    if (dateChange && clinicChange) {
+      var timeReq = {
+        method: 'GET',
+        params:  {
+          date: $scope.appointment.date,
+          doctor_id: $scope.appointment.doctor.id,
+          clinic_id: $scope.appointment.clinic.id
+        },
+        url: '/doctors/opentimes.json',
+        headers: $http.defaults.headers.common
+      };
+      timeReq = AuthInterceptor.request(timeReq);
+      $http(timeReq)
+        .success(function(data) {
+          if (data.status == 0) { //success
+            times = data.times;
+            setTimeVars(times);
+          } else if (data.status == 1) {
+            flare.error(data.error, 10000);
+          }
 
-      })
-      .error(function(err) {
-        console.log(err);
-      });
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+    }
   };
 
   $scope.getTimeClass = function(time) {

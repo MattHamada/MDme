@@ -11,13 +11,13 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="appointment_date">Date</label>
-                      <input type="date" required ng-maxlength="20" ng-model="appointment.date" class="form-control" id="appointment_date">
+                      <input type="date" required ng-maxlength="20" ng-click="dateChosen()" ng-change="loadTimes()" ng-model="appointment.date" class="form-control" id="appointment_date">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="appointment_clinic">Clinic</label>
-                      <select ng-change="loadDoctors(appointment.clinic)" ng-options="clinic.name for clinic in clinics" ng-model="appointment.clinic" class="form-control" id="appointment_clinic">
+                      <select ng-change="loadDoctors(appointment.clinic)" ng-click="clinicChosen()" ng-change="loadTimes()" ng-options="clinic.name for clinic in clinics" ng-model="appointment.clinic" class="form-control" id="appointment_clinic">
                       </select>
                     </div>
                   </div>
