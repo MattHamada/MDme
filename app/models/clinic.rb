@@ -27,161 +27,27 @@ class Clinic < ActiveRecord::Base
 
   def open_appointment_times(date, doctor)
     times = []
-    case date.wday
-      when 0
-        if self.is_open_sunday?
-          open_time = Time.zone.parse(self.sunday_open_time)
-          close_time = Time.zone.parse(self.sunday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 1
-        if self.is_open_monday?
-          open_time = Time.zone.parse(self.monday_open_time)
-          close_time = Time.zone.parse(self.monday_close_time)
-          cursor = open_time.clone
-          taken_appointments = doctor.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            e = true
-            e = false if taken_times.include?(cursor.strftime('%I:%M %p'))
-            times << {
-                time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                enabled: e,
-                selected: false,
-                index: n }
-            n+= 1
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 2
-        if self.is_open_tuesday?
-          open_time = Time.zone.parse(self.tuesday_open_time)
-          close_time = Time.zone.parse(self.tuesday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 3
-        if self.is_open_wednesday?
-          open_time = Time.zone.parse(self.wednesday_open_time)
-          close_time = Time.zone.parse(self.wednesday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 4
-        if self.is_open_thursday?
-          open_time = Time.zone.parse(self.thursday_open_time)
-          close_time = Time.zone.parse(self.thursday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 5
-        if self.is_open_friday?
-          open_time = Time.zone.parse(self.friday_open_time)
-          close_time = Time.zone.parse(self.friday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
-      when 6
-        if self.is_open_saturday?
-          open_time = Time.zone.parse(self.saturday_open_time)
-          close_time = Time.zone.parse(self.saturday_close_time)
-          cursor = open_time.clone
-          taken_appointments = self.appointments.given_date(date).confirmed
-          taken_times = find_taken_times(taken_appointments)
-          n = 0
-          while cursor < close_time
-            unless taken_times.include?(cursor.strftime('%I:%M %p'))
-              times << {
-                  time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
-                  enabled: true,
-                  selected: false,
-                  index: n }
-              n+= 1
-            end
-            cursor += self.appointment_time_increment.minutes
-          end
-        else
-          return {error: "Clinic is closed on #{date.strftime('%F')}"}
-        end
+    day = (Date::DAYNAMES[date.wday]).downcase
+    if self.send("is_open_#{day}?")
+      open_time = Time.zone.parse(self.send("#{day}_open_time"))
+      close_time = Time.zone.parse(self.send("#{day}_close_time"))
+      cursor = open_time.clone
+      taken_appointments = doctor.appointments.given_date(date).confirmed
+      taken_times = find_taken_times(taken_appointments)
+      n = 0
+      while cursor < close_time
+        e = true
+        e = false if taken_times.include?(cursor.strftime('%I:%M %p'))
+        times << {
+            time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
+            enabled: e,
+            selected: false,
+            index: n }
+        n+= 1
+        cursor += self.appointment_time_increment.minutes
+      end
+    else
+      return {error: "Clinic is closed on #{date.strftime('%F')}"}
     end
     times
   end
