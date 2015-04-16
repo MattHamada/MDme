@@ -61,6 +61,7 @@ MDme::Application.routes.draw do
   get 'clinics/:id/checkin/:patient_id'                  => 'clinics#checkin',                         as: :clinic_checkin
 
   get 'appointments/:id/fill_appointment'                => 'appointments#fill_appointment',           as: :fill_appointment
+  get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
@@ -80,7 +81,6 @@ MDme::Application.routes.draw do
     resources :clinics, only: [:index, :show], controller: 'patients/clinics'
   end
 
-  get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
 
 
   resources :admins do
