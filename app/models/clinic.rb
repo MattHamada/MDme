@@ -32,7 +32,7 @@ class Clinic < ActiveRecord::Base
       open_time = Time.zone.parse(self.send("#{day}_open_time"))
       close_time = Time.zone.parse(self.send("#{day}_close_time"))
       cursor = open_time.clone
-      taken_appointments = doctor.appointments.given_date(date).confirmed
+      taken_appointments = doctor.appointments.given_date(date)
       taken_times = find_taken_times(taken_appointments)
       n = 0
       while cursor < close_time
