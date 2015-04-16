@@ -8,6 +8,7 @@
 # +Appointment+ model
 require 'appointment_time_formatting'
 
+#TODO make scope for denied requests so they dont take up open times
 class Appointment < ActiveRecord::Base
   include AppointmentTimeFormatting
 
