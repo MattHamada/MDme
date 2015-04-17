@@ -62,6 +62,11 @@ angular.module('mdme')
         url: '/patients/:patientId/appointments/{appointmentId:[0-9]+}',
         templateUrl: 'patients/appointments/show.html',
         controller :'PatientsAppointmentController'
+      })
+      .state('user.openRequests', {
+        url: '/patients/:patientId/appointments/requests',
+        templateUrl: 'patients/appointments/requests.html',
+        controller: 'PatientsAppointmentsController'
       });
 
     $urlRouterProvider.otherwise('/');
