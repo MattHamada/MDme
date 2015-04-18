@@ -88,7 +88,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'selenium-webdriver', '2.35.1'
+  gem 'selenium-webdriver', '2.45'
   #gem 'rspec-its'
   #gem 'ZenTest'
   gem 'capybara'
@@ -101,7 +101,7 @@ group :test do
   # gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
   gem 'timecop'
-  gem 'capybara-slow_finder_errors'
+  # gem 'capybara-slow_finder_errors'
 end
 
 group :production, :staging do

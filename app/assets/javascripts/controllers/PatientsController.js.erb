@@ -33,7 +33,9 @@ app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', '$
           flare.success(data.status, 10000);
           $state.go('user.home');
         }).error(function(err) {
-          flare.error(err.errors, 10000);
+            for (var i = 0; i < err.errors.length; i++) {
+              flare.error(err.errors[i], 10000);
+            }
         });
   };
 

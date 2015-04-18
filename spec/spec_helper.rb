@@ -47,7 +47,8 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.include Capybara::DSL
-  Capybara.javascript_driver = :webkit
+  # Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :selenium
 
   #add helpers from app
   config.include ApplicationHelper
@@ -82,6 +83,11 @@ RSpec.configure do |config|
 
   #for invalid api requests
   config.include ApiHelpers
+
+  config.before :each do
+    @session = Capybara::Session.new(:selenium)
+  end
+
 
 
 end

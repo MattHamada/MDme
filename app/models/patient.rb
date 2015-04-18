@@ -146,6 +146,10 @@ class Patient < ActiveRecord::Base
     'xxx-xx-' + social_security_number[-4..-1]
   end
 
+  def birthday_form_format
+    birthday.strftime("%m/%d/%Y")
+  end
+
   module MaritalStatus
     SINGLE = 0
     MARRIED = 1
