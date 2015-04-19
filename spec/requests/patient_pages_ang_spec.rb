@@ -105,6 +105,7 @@ describe 'Patient Pages', :js => true do
       end
       describe 'with valid credentials' do
         before do
+          patient.save!
           sign_in_patient
         end
         it { is_expected.to have_link 'Sign Out' }
@@ -123,6 +124,51 @@ describe 'Patient Pages', :js => true do
     it { is_expected.to have_text patient.home_phone }
     it { is_expected.to have_text patient.work_phone }
     # it { is_expected.to have_image patient.avatar_thumb_url }
+
+    describe 'Upcoming appointment stats' do
+      before do
+        clinic.save
+        doctor.save
+      end
+      describe 'with no upcoming appointment' do
+        before { click_link 'MY PROFILE' }
+        it { is_expected.to have_content 'No upcoming appointments' }
+      end
+
+      describe '3 hours left on appointment' do
+        let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                        appointment_time: DateTime.now + 3.hours) }
+        before do
+          upcoming_appointment.save
+          click_link 'MY PROFILE'
+        end
+        it { is_expected.to have_content 'No upcoming appointments' }
+      end
+
+      describe '50 minutes left on Appointment' do
+        let(:upcoming_appointment) { FactoryGirl.create(:appointment,
+                                                        appointment_time: Time.zone.now + 50.minutes) }
+        describe 'progress bar present and green' do
+          before do
+            upcoming_appointment.save!
+            click_link 'MY PROFILE'
+          end
+          it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
+        end
+        describe 'progress bar precentage' do
+          before do
+            upcoming_appointment.save!
+            click_link 'MY PROFILE'
+          end
+          it 'has correct percentage filled' do
+            expect(page.find('div.progress-bar.progress-bar-success')['style']).to eq('width: 51%;')
+          end
+        end
+
+
+      end
+
+    end
   end
 
   describe 'Editing Patient profile' do
