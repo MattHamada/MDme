@@ -18,4 +18,19 @@ app.controller('PatientsAppointmentsController', ['$scope', '$location', '$state
       });
   }
 
+  if ($location.path() == '/patients/' + $stateParams.patientId + '/appointments/requests') {
+    var req = {
+      method: 'GET',
+      url: '/patients/' + $stateParams.patientId + '/appointments/requests.json',
+      headers: $http.defaults.headers.common
+    };
+    req = AuthInterceptor.request(req);
+    $http(req)
+      .success(function(data) {
+        $scope.appointments = data.appointments;
+      })
+      .error(function(error) {
+        console.log(error);
+      });
+  }
 }]);
