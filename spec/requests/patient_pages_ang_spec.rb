@@ -192,14 +192,12 @@ describe 'Patient Pages', :js => true do
     before do
       sign_in_patient
       sleep 1
-      screenshot_and_open_image
       click_link 'edit profile'
     end
     it { is_expected.to have_text 'Edit Profile' }
 
     describe 'When no password entered' do
       before do
-        screenshot_and_open_image
         click_button 'Update'
       end
       it 'should be on edit profile page', js: true do
@@ -212,6 +210,9 @@ describe 'Patient Pages', :js => true do
         fill_in 'patient_birthday', with: 5
         fill_in 'patient_password', with: patient.password
         click_button 'Update'
+        wait_for_ajax
+        screenshot_and_open_image
+
       end
       it { is_expected.to have_selector 'div.alert.alert-danger', text: "Birthday can't be blank"}
     end

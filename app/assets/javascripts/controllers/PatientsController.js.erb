@@ -18,7 +18,7 @@ app.controller('PatientsController', ['$location','$scope', '$http', '$upload', 
 
   $scope.updatePatient = function() {
     var req = {
-      method: 'PATCH',
+      method: 'PUT',
       url: '/patients/' + $scope.patient.id,
       headers: $http.defaults.headers.patch,
       fields: $scope.patient,
