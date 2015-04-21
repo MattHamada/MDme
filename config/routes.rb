@@ -37,7 +37,7 @@ MDme::Application.routes.draw do
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
   get  'patients/:patient_id/appointments/requests'      => 'patients/appointments#open_requests',     as: :open_requests
   get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
-  post 'patients/:id/updatepassword'                     => 'patients#update_password',                as: :patient_update_password
+  patch 'patients/:id/update-password'                     => 'patients#update_password',                as: :patient_update_password
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search

@@ -48,6 +48,11 @@ angular.module('mdme')
         templateUrl: 'patients/edit.html',
         controller: 'PatientsController'
       })
+      .state('user.changePassword', {
+        url: '/patients/:patientId/change-password',
+        templateUrl: 'patients/change_password.html',
+        controller: 'PatientsController'
+      })
       .state('user.appointments', {
         url: '/patients/:patientId/appointments',
         templateUrl: 'patients/appointments/index.html',

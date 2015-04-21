@@ -37,5 +37,23 @@ app.controller('PatientsController', ['$scope', '$http', '$upload', '$state', '$
         });
   };
 
+  $scope.updatePassword = function() {
+    var req = {
+      method: 'PATCH',
+      url: '/patients/' + $scope.patient.id + '/update-password',
+      headers: $http.defaults.headers.patch,
+      data: $scope.patient
+    };
+    req = AuthInterceptor.request(req);
+    $http(req)
+        .success(function(data) {
+          flare.success(data.status, 10000);
+          $state.go('user.home');
+        }).error(function(err) {
+          flare.error(err.status, 10000)
+        });
+  };
+
+
 
 }]);
