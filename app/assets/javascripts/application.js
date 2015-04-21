@@ -21,5 +21,6 @@
 //= require angular-local-storage/dist/angular-local-storage
 //= require ng-file-upload/angular-file-upload-all
 //= require angular-flare/dist/angular-flare
+//= require angular-ui-utils/ui-utils
 //= require mdme-ang
 //= require_tree .

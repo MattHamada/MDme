@@ -84,20 +84,17 @@ class PatientsController < ApplicationController
     add_breadcrumb 'Change Password', patient_password_path(@patient)
   end
 
-  # POST www.mdme.us/patients/:id/updatepassword
+  # PATCH www.mdme.us/patients/:id/updatepassword
   def update_password
-    if @patient.authenticate(params[:old_password])
-      if @patient.update_attributes(password: params[:new_password],
-                                   password_confirmation: params[:new_password_confirm])
-        flash[:success] = 'Password updated'
-        redirect_to patient_path(@patient)
+    if @patient.authenticate(params[:oldPassword])
+      if @patient.update_attributes(password: params[:newPassword],
+                                   password_confirmation: params[:newPasswordConf])
+        render status: 201, json: {status: 'Password Changed'}
       else
-        flash[:danger] = 'Unable to change password'
-        render 'change_password'
+        render status: 401, json:{status: @patient.errors.full_messages[0]}
       end
     else
-      flash[:danger] = 'Old password invalid'
-      render 'change_password'
+      render status: 401, json: {status: 'Old password invalid'}
     end
   end
 
@@ -149,6 +146,7 @@ class PatientsController < ApplicationController
     # end
     # helper_method :find_patient
 
+    #TODO might belong in appointment model
     def get_appointment_progress_bar(upcoming_appointment)
       results = {
           date: upcoming_appointment.date,

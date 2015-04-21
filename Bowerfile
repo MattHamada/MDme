@@ -8,4 +8,5 @@ asset 'angular-jwt'
 asset 'bootstrap-sass-official'
 asset 'ng-file-upload'
 asset 'angular-flare'
+asset 'angular-ui-utils'
 # vim: ft=ruby
