@@ -7,6 +7,10 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 #require 'rspec/autorun'
 require 'subdomains'
+require 'database_cleaner'
+require 'capybara/poltergeist'
+require 'capybara-screenshot/rspec'
+
 #require 'factory_girl_rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -44,7 +48,7 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
   # Capybara.javascript_driver = :webkit
-  Capybara.javascript_driver = :selenium
+  Capybara.javascript_driver = :poltergeist
 
   #add helpers from app
   config.include ApplicationHelper
@@ -116,9 +120,10 @@ RSpec.configure do |config|
   config.include ApiHelpers
 
   config.before :each do
-    @session = Capybara::Session.new(:selenium)
+    @session = Capybara::Session.new(:poltergeist)
   end
 
+  config.include WaitForAjax
 
 
 end

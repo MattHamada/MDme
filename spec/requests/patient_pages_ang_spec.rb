@@ -88,10 +88,16 @@ describe 'Patient Pages', :js => true do
   end
 
   describe 'Sign in Page' do
-    it { is_expected.to have_button 'SIGN IN' }
-    it { is_expected.to have_link 'forgot password?'}
-    it { is_expected.to have_field 'signin_email'}
-    it { is_expected.to have_field 'signin_password'}
+    it 'should have these items on page' do
+      expect(page).to have_button 'SIGN IN'
+      expect(page).to have_link 'forgot password?'
+      expect(page).to have_field 'signin_email'
+      expect(page).to have_field 'signin_password'
+    end
+    # it { is_expected.to have_button 'SIGN IN' }
+    # it { is_expected.to have_link 'forgot password?'}
+    # it { is_expected.to have_field 'signin_email'}
+    # it { is_expected.to have_field 'signin_password'}
 
     describe 'signin with invalid information' do
       describe 'with invalid credentials' do
@@ -100,29 +106,47 @@ describe 'Patient Pages', :js => true do
           fill_in 'signin_password', with: patient.password
           click_button 'SIGN IN'
         end
-        it { is_expected.to have_text 'forgot password?'}
-        it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
+        it 'should still be on sign on page with flash error' do
+          expect(page).to have_text 'forgot password?'
+          expect(page).to have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'
+        end
+        # it { is_expected.to have_text 'forgot password?'}
+        # it { is_expected.to have_selector 'div.alert.alert-danger', text: 'Invalid email/password combination'}
       end
       describe 'with valid credentials' do
         before do
           patient.save!
           sign_in_patient
         end
-        it { is_expected.to have_link 'Sign Out' }
-        it { is_expected.not_to have_link 'SIGN IN' }
+        it 'should have links for sign out but not sign in' do
+          expect(page).to have_text 'Sign Out'
+          expect(page).not_to have_text 'SIGN IN'
+        end
+        # it { is_expected.to have_link 'Sign Out' }
+        # it { is_expected.not_to have_link 'SIGN IN' }
       end
     end
   end
   describe 'patient homepage' do
     before { sign_in_patient }
-    it { is_expected.to have_link 'MY PROFILE' }
-    it { is_expected.to have_link 'MY RESULTS' }
-    it { is_expected.to have_link 'MY APPOINTMENTS' }
-    it { is_expected.to have_text patient.first_name }
-    it { is_expected.to have_text patient.last_name }
-    it { is_expected.to have_text patient.email }
-    it { is_expected.to have_text patient.home_phone }
-    it { is_expected.to have_text patient.work_phone }
+    it 'should have these items' do
+      expect(page).to have_link 'MY PROFILE'
+      expect(page).to have_link 'MY RESULTS'
+      expect(page).to have_link 'MY APPOINTMENTS'
+      expect(page).to have_text patient.first_name
+      expect(page).to have_text patient.last_name
+      expect(page).to have_text patient.email
+      expect(page).to have_text patient.home_phone
+      expect(page).to have_text patient.work_phone
+    end
+    # it { is_expected.to have_link 'MY PROFILE' }
+    # it { is_expected.to have_link 'MY RESULTS' }
+    # it { is_expected.to have_link 'MY APPOINTMENTS' }
+    # it { is_expected.to have_text patient.first_name }
+    # it { is_expected.to have_text patient.last_name }
+    # it { is_expected.to have_text patient.email }
+    # it { is_expected.to have_text patient.home_phone }
+    # it { is_expected.to have_text patient.work_phone }
     # it { is_expected.to have_image patient.avatar_thumb_url }
 
     describe 'Upcoming appointment stats' do
@@ -152,35 +176,35 @@ describe 'Patient Pages', :js => true do
           before do
             upcoming_appointment.save!
             click_link 'MY PROFILE'
+            wait_for_ajax
+          end
+          it 'should have a progress bar at 51%' do
+            expect(page).to have_selector 'div.progress-bar.progress-bar-success'
+            expect(page.find('div.progress-bar.progress-bar-success')['style']).to match(/51%/)
           end
           it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
         end
-        describe 'progress bar precentage' do
-          before do
-            upcoming_appointment.save!
-            click_link 'MY PROFILE'
-          end
-          it 'has correct percentage filled' do
-            expect(page.find('div.progress-bar.progress-bar-success')['style']).to eq('width: 51%;')
-          end
-        end
-
-
       end
-
     end
   end
 
   describe 'Editing Patient profile' do
     before do
       sign_in_patient
+      sleep 1
+      screenshot_and_open_image
       click_link 'edit profile'
     end
     it { is_expected.to have_text 'Edit Profile' }
 
     describe 'When no password entered' do
-      before { click_button 'Update' }
-      it { is_expected.to have_text 'Edit Profile'}
+      before do
+        screenshot_and_open_image
+        click_button 'Update'
+      end
+      it 'should be on edit profile page', js: true do
+        is_expected.to have_text 'Edit Profile'
+      end
     end
 
     describe 'When field is invalid but gets to submit' do
@@ -198,8 +222,12 @@ describe 'Patient Pages', :js => true do
         fill_in 'patient_password', with: patient.password
         click_button 'Update'
       end
-      it { is_expected.to have_selector 'div.alert.alert-success', text: 'patient updated' }
-      it { is_expected.to have_text 'James'}
+      it 'should show the update was successful and the new name shown' do
+        expect(page).to have_selector 'div.alert.alert-success', text: 'patient updated'
+        expect(page).to have_text 'James'
+      end
+      # it { is_expected.to have_selector 'div.alert.alert-success', text: 'patient updated' }
+      # it { is_expected.to have_text 'James'}
     end
   end
 end

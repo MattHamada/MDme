@@ -102,6 +102,9 @@ group :test do
   gem 'simplecov', :require => false
   gem 'timecop'
   # gem 'capybara-slow_finder_errors'
+  gem 'poltergeist'
+  gem 'capybara-angular', github: 'wrozka/capybara-angular'
+  gem 'capybara-screenshot'
 end
 
 group :production, :staging do

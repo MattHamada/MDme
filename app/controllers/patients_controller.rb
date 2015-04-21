@@ -40,7 +40,8 @@ class PatientsController < ApplicationController
   # POST www.mdme.us/patients/:id
   def update
     p = patient_params
-    if @patient.authenticate(p[:password])
+    unless p.nil?
+      if p.has_key? :password && @patient.authenticate(p[:password])
       @patient.attributes = p
 
       if @patient.save
@@ -48,9 +49,11 @@ class PatientsController < ApplicationController
       else
         render status: 400, json: { status: 'error', errors: @patient.errors.full_messages }
       end
-    else
-      render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
+      else
+        render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
+      end
     end
+
     # @current_user = @patient
     # #skip password validation on update if validated here
     # if @patient.authenticate(params[:verify][:verify_password])
