@@ -214,4 +214,43 @@ describe 'Patient Pages', :js => true do
       end
     end
   end
+
+  describe 'changing patient password' do
+    before do
+      sign_in_patient
+      sleep 1
+      click_link 'change password'
+    end
+    describe 'page should not change if nothing entered' do
+      before { click_button 'Change' }
+      it { should have_text 'Change Password' }
+    end
+    describe 'invalid old password prevents change' do
+      before do
+        fill_in 'patient_old_password', with: 'fakePass'
+        fill_in 'patient_new_password', with: 'newPass123'
+        fill_in 'patient_new_password_conf', with: 'newPass123'
+        click_button 'Change'
+      end
+      it { should have_selector 'div.alert.alert-danger', text: 'Old password invalid'}
+    end
+    describe 'invalid password format prevents changes' do
+      before do
+        fill_in 'patient_old_password', with: patient.password
+        fill_in 'patient_new_password', with: 'new'
+        fill_in 'patient_new_password_conf', with: 'new'
+        click_button 'Change'
+      end
+      it { should have_selector 'div.alert.alert-danger', text: 'Password must include at least one lowercase letter, one uppercase letter, and one digit'}
+    end
+    describe 'good input changes password' do
+      before do
+        fill_in 'patient_old_password', with: patient.password
+        fill_in 'patient_new_password', with: 'newPass123'
+        fill_in 'patient_new_password_conf', with: 'newPass123'
+        click_button 'Change'
+      end
+      it { should have_selector 'div.alert.alert-success' }
+    end
+  end
 end

@@ -42,7 +42,7 @@ app.controller('PatientsController', ['$location','$scope', '$http', '$upload', 
 
   $scope.updatePassword = function() {
     var req = {
-      method: 'PATCH',
+      method: 'PUT',
       url: '/patients/' + $scope.patient.id + '/update-password',
       headers: $http.defaults.headers.patch,
       data: $scope.patient

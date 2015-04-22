@@ -56,23 +56,6 @@ class PatientsController < ApplicationController
       render status: 401, json: { status: 'error', errors: 'No password entered' }
     end
 
-    # @current_user = @patient
-    # #skip password validation on update if validated here
-    # if @patient.authenticate(params[:verify][:verify_password])
-    #   @patient.bypass_password_validation = true
-    #   @patient.attributes = patient_params
-    #   if @patient.save
-    #     flash[:success] = 'Patient Successfully Updated'
-    #     redirect_to patient_path(@patient)
-    #   else
-    #     flash.now[:danger] = 'Invalid parameters entered'
-    #     render 'edit'
-    #   end
-    # else
-    #   flash[:danger] = 'Invalid password entered'
-    #   render 'edit'
-    # end
-
   end
 
   # GET www.mdme.us/patients
