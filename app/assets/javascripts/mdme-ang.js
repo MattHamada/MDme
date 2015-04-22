@@ -4,7 +4,8 @@ var app = angular.module('mdme',[
   'ngResource',
   'ui.router',
   'ngFileUpload',
-  'angular-flare'
+  'angular-flare',
+  'ui.validate'
 ]);
 
 app.constant('AccessLevels', {
