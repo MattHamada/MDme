@@ -198,8 +198,6 @@ describe 'Patient Pages', :js => true do
         fill_in 'patient_password', with: patient.password
         click_button 'Update'
         wait_for_ajax
-        screenshot_and_open_image
-
       end
       it { is_expected.to have_selector 'div.alert.alert-danger', text: "Birthday can't be blank"}
     end
@@ -214,8 +212,6 @@ describe 'Patient Pages', :js => true do
         expect(page).to have_selector 'div.alert.alert-success', text: 'patient updated'
         expect(page).to have_text 'James'
       end
-      # it { is_expected.to have_selector 'div.alert.alert-success', text: 'patient updated' }
-      # it { is_expected.to have_text 'James'}
     end
   end
 end

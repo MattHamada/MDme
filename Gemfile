@@ -93,7 +93,6 @@ group :test do
   #gem 'ZenTest'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'capybara-angular'
   gem 'factory_girl_rails', '4.2.0'
   # gem 'cucumber-rails', '1.4.0', :require => false
   # gem 'cucumber-rails-training-wheels' #premade stepdefs
@@ -104,7 +103,6 @@ group :test do
   gem 'timecop'
   # gem 'capybara-slow_finder_errors'
   gem 'poltergeist'
-  gem 'capybara-angular', github: 'wrozka/capybara-angular'
   gem 'capybara-screenshot'
 end
 
