@@ -94,10 +94,6 @@ describe 'Patient Pages', :js => true do
       expect(page).to have_field 'signin_email'
       expect(page).to have_field 'signin_password'
     end
-    # it { is_expected.to have_button 'SIGN IN' }
-    # it { is_expected.to have_link 'forgot password?'}
-    # it { is_expected.to have_field 'signin_email'}
-    # it { is_expected.to have_field 'signin_password'}
 
     describe 'signin with invalid information' do
       describe 'with invalid credentials' do
@@ -139,15 +135,6 @@ describe 'Patient Pages', :js => true do
       expect(page).to have_text patient.home_phone
       expect(page).to have_text patient.work_phone
     end
-    # it { is_expected.to have_link 'MY PROFILE' }
-    # it { is_expected.to have_link 'MY RESULTS' }
-    # it { is_expected.to have_link 'MY APPOINTMENTS' }
-    # it { is_expected.to have_text patient.first_name }
-    # it { is_expected.to have_text patient.last_name }
-    # it { is_expected.to have_text patient.email }
-    # it { is_expected.to have_text patient.home_phone }
-    # it { is_expected.to have_text patient.work_phone }
-    # it { is_expected.to have_image patient.avatar_thumb_url }
 
     describe 'Upcoming appointment stats' do
       before do
