@@ -12,7 +12,7 @@
               <tbody>
                 <base href="">
                 <tr ng-repeat="clinic in clinics">
-                  <td><a href="/#" ng-click="loadClinic(clinic)">{{clinic.name}}</a></td>
+                  <td><a ui-sref="user.clinicShow({clinicId: {{clinic.id}}})">{{clinic.name}}</a></td>
                 </tr>
                 </base>
               </tbody>
@@ -25,7 +25,7 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Clinic Info</h4></div>
         <div class="panel-body panel-inverse">
-          fill in here
+          <div ui-view></div>
         </div>
       </div>
     </div>

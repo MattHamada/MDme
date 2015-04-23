@@ -77,6 +77,12 @@ angular.module('mdme')
         url: '/patients/:patientId/clinics',
         templateUrl: 'patients/clinics/index.html',
         controller: 'PatientsClinicsController'
+      })
+      .state('user.clinicShow', {
+        url: '/patients/:patientId/clinics/:clinicId',
+        templateUrl: 'patients/clinics/_show.html',
+        controller: 'PatientsClinicController',
+        parent: 'user.clinics'
       });
 
     $urlRouterProvider.otherwise('/');

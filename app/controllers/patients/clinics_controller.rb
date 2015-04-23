@@ -16,6 +16,11 @@ class Patients::ClinicsController < ApplicationController
     @clinics = @patient.clinics.ordered_name
   end
 
+  def show
+    @clinic = Clinic.find(params[:id])
+    @doctors = @clinic.doctors
+  end
+
   # GET mdme.us/patients/:patient_id/clinics/get-doctors
   def get_doctors
     @clinic = Clinic.find(params[:id])

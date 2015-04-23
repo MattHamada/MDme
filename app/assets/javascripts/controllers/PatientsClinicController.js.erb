@@ -1,0 +1,21 @@
+app.controller('PatientsClinicController', ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', function($scope, $location, $stateParams, $http, AuthInterceptor) {
+  $scope.clinic = {};
+  $scope.doctors = [];
+  var clinicReq = {
+    method: 'GET',
+    url: '/patients/' + $stateParams.patientId + '/clinics/' + $stateParams.clinicId + '.json',
+    headers: $http.defaults.headers.common
+  };
+  clinicReq = AuthInterceptor.request(clinicReq);
+  $http(clinicReq)
+    .success(function(data) {
+      console.log(data);
+      $scope.clinic = data.clinic;
+      $scope.doctors = data.doctors;
+    })
+    .error(function(err) {
+      console.log(err);
+    });
+
+
+}]);
