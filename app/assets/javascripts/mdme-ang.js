@@ -5,7 +5,8 @@ var app = angular.module('mdme',[
   'ui.router',
   'ngFileUpload',
   'angular-flare',
-  'ui.validate'
+  'ui.validate',
+  'uiGmapgoogle-maps'
 ]);
 
 app.constant('AccessLevels', {
@@ -19,5 +20,13 @@ app.run(['$rootScope', '$state', 'Auth', function($rootScope, $state, Auth) {
       event.preventDefault();
       $state.go('anon.login');
     }
+  });
+}]);
+
+app.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
+  uiGmapGoogleMapApiProvider.configure({
+    key: 'AIzaSyCDq1TX2uqhSDpRrtcebHzuNogcPPhKT0k',
+    v: '3.17',
+    libraries: 'weather,geometry,visualization'
   });
 }]);

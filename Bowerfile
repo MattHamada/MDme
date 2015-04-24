@@ -9,4 +9,5 @@ asset 'bootstrap-sass-official'
 asset 'ng-file-upload'
 asset 'angular-flare'
 asset 'angular-ui-utils'
+asset 'angular-google-maps'
 # vim: ft=ruby
