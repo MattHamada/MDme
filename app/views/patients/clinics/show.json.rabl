@@ -10,6 +10,8 @@ child @clinic, :object_root => false do
               :zipcode,
               :phone_number,
               :fax_number,
+              :latitude,
+              :longitude,
               :ne_latitude,
               :ne_longitude,
               :sw_latitude,
@@ -39,5 +41,6 @@ end
 
 child @doctors, :object_root => false do
 attributes :id,
-           :full_name
+           :full_name,
+           :avatar_thumb_url
 end

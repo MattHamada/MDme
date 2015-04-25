@@ -1,6 +1,10 @@
-app.controller('PatientsClinicController', ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', function($scope, $location, $stateParams, $http, AuthInterceptor) {
+app.controller('PatientsClinicController',
+        ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', 'uiGmapGoogleMapApi', 'SplitArrayService',
+          function($scope, $location, $stateParams, $http, AuthInterceptor, uiGmapGoogleMapApi, SplitArrayService) {
   $scope.clinic = {};
   $scope.doctors = [];
+  $scope.docRows = [];
+  $scope.map = {};
   var clinicReq = {
     method: 'GET',
     url: '/patients/' + $stateParams.patientId + '/clinics/' + $stateParams.clinicId + '.json',
@@ -12,6 +16,19 @@ app.controller('PatientsClinicController', ['$scope', '$location', '$stateParams
       console.log(data);
       $scope.clinic = data.clinic;
       $scope.doctors = data.doctors;
+      $scope.docRows = SplitArrayService.SplitArray($scope.doctors, 4);
+      $scope.map = {
+        center: {
+          latitude: $scope.clinic.latitude,
+          longitude: $scope.clinic.longitude},
+        markers: [{
+          latitude: $scope.clinic.latitude,
+          longitude: $scope.clinic.longitude
+        }],
+        zoom: 14 };
+      uiGmapGoogleMapApi.then(function(maps) {
+
+      });
     })
     .error(function(err) {
       console.log(err);

@@ -68,12 +68,14 @@ class Clinic < ActiveRecord::Base
     response = call_google_api_for_location(address)
     json = JSON.parse(response)
     unless json['results'].empty?
-      #latitude = json['results'][0]['geometry']['location']['lat']
-      #longitude = json['results'][0]['geometry']['location']['lng']
+      latitude = json['results'][0]['geometry']['location']['lat']
+      longitude = json['results'][0]['geometry']['location']['lng']
       ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
       ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
       sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
       sw_longitude = json['results'][0]['geometry']['viewport']['southwest']['lng']
+      self.latitude     = latitude     unless latitude.nil?
+      self.longitude    = longitude    unless longitude.nil?
       self.ne_latitude  = ne_latitude  unless ne_latitude.nil?
       self.ne_longitude = ne_longitude unless ne_longitude.nil?
       self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
