@@ -33,7 +33,7 @@ class Admins::PatientsController < ApplicationController
     @current_user = @admin
     p = patient_params
     p[:password] = p[:password_confirmation] = generate_random_password
-    p[:doctor_id] = params[:doctor][:doctor_id]
+    p[:doctor_id] = params[:doctors][:doctor_id]
     @patient = Patient.new(p)
     @patient.clinics <<  Clinic.find(@admin.clinic_id)
     if @patient.save

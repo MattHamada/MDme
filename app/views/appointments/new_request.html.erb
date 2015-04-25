@@ -53,8 +53,8 @@
               <br/>
               <br/>
               <div class='form-group'>
-                <%= f.label(:doctor, "Select Doctor") %>
-                <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
+                <%= f.label(:doctors, "Select Doctor") %>
+                <%= collection_select(:doctors, :doctor_id, Doctor.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
               <div class='form-group'>
                 <%= f.label(:patient, "Select patient") %>

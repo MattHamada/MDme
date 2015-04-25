@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     if request.subdomain == 'doctors'
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
       if doctor && doctor.authenticate(params[:session][:password])
-        sign_in doctor, :doctor
+        sign_in doctor, :doctors
         # token = AuthToken.issue_token({user_id: doctor.id})
         redirect_to doctor_path(doctor)
       else
@@ -65,7 +65,7 @@ class SessionsController < ApplicationController
   # DELETE www.mdme.us/sessions/:id
   def destroy
     if request.subdomain == 'doctors'
-      sign_out :doctor
+      sign_out :doctors
     elsif request.subdomain =='admin'
       sign_out :admin
     else

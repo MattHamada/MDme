@@ -19,7 +19,7 @@ class Admins::AppointmentsController < ApplicationController
       flash.now[:warning] = "Appointments waiting for approval."
     end
     @appointments = Appointment.in_clinic(@admin).today.confirmed.
-        order('appointment_time ASC').load.includes([:doctor, :patient])
+        order('appointment_time ASC').load.includes([:doctors, :patient])
   end
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
@@ -92,7 +92,7 @@ class Admins::AppointmentsController < ApplicationController
     #   redirect_to admin_appointments_path(@admin)
     # else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
-          confirmed.order('appointment_time ASC').load.includes([:doctor,
+          confirmed.order('appointment_time ASC').load.includes([:doctors,
                                                                  :patient])
     # end
   end
@@ -127,7 +127,7 @@ class Admins::AppointmentsController < ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments/approval
   def approval
     @appointments = Appointment.in_clinic(@admin).requests.
-        order_by_time.includes(:doctor, :patient).not_past
+        order_by_time.includes(:doctors, :patient).not_past
   end
 
   # Allows admin to see what appointments are already on a

@@ -2,51 +2,51 @@
 
 <div class='form-group'>
   <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:doctor, 'First Name') %>
-    <%= text_field :doctor, :first_name, class: 'form-control' %>
+    <%= f.label(:doctors, 'First Name') %>
+    <%= text_field :doctors, :first_name, class: 'form-control' %>
   </div>
 </div>
 
 <div class='form-group'>
   <div class='col-xs-6 col-xs-offset-3'>
-    <%= f.label(:doctor, 'Last Name') %>
-    <%= text_field(:doctor, :last_name, class: 'form-control') %>
+    <%= f.label(:doctors, 'Last Name') %>
+    <%= text_field(:doctors, :last_name, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Email') %>
-    <%= text_field(:doctor, :email, class: 'form-control') %>
+    <%= f.label(:doctors, 'Email') %>
+    <%= text_field(:doctors, :email, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Phone Number') %>
-    <%= text_field(:doctor, :phone_number, class: 'form-control') %>
+    <%= f.label(:doctors, 'Phone Number') %>
+    <%= text_field(:doctors, :phone_number, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Degree') %>
-    <%= text_field(:doctor, :degree, class: 'form-control') %>
+    <%= f.label(:doctors, 'Degree') %>
+    <%= text_field(:doctors, :degree, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Alma Mater') %>
-    <%= text_field(:doctor, :alma_mater, class: 'form-control') %>
+    <%= f.label(:doctors, 'Alma Mater') %>
+    <%= text_field(:doctors, :alma_mater, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Description') %>
-    <%= text_area(:doctor, :description, class: 'form-control') %>
+    <%= f.label(:doctors, 'Description') %>
+    <%= text_area(:doctors, :description, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
   <div class="col-xs-6 col-xs-offset-3">
-    <%= f.label(:doctor, 'Department') %>
-    <%= collection_select(:doctor, :department_id, Department.in_clinic(@current_user), :id, :name, {}, { class: 'form-control'}) %>
+    <%= f.label(:doctors, 'Department') %>
+    <%= collection_select(:doctors, :department_id, Department.in_clinic(@current_user), :id, :name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 

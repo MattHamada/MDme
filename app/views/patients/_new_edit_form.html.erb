@@ -122,7 +122,7 @@
 <div class='form-group'>
   <div class='col-xs-6 col-xs-offset-3'>
     <%= f.label(:patient, 'Doctor') %>
-    <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(@current_user).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
+    <%= collection_select(:doctors, :doctor_id, Doctor.in_clinic(@current_user).ordered_last_name, :id, :full_name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 

@@ -50,7 +50,7 @@ module SessionsHelper
     user.update_attribute(:remember_token, my_encrypt(remember_token))
     self.current_patient = user
 
-    elsif type == :doctor
+    elsif type == :doctors
       remember_token = new_remember_token
       cookies.permanent[:remember_token] = remember_token
       user.update_attribute(:remember_token, my_encrypt(remember_token))
@@ -82,7 +82,7 @@ module SessionsHelper
     cookies.delete(:remember_token)
     if type == :patient
       self.current_patient = nil
-    elsif type == :doctor
+    elsif type == :doctors
       self.current_doctor = nil
     elsif type == :admin
       self.current_admin = nil

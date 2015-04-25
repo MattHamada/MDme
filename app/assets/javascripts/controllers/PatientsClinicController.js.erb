@@ -1,6 +1,6 @@
 app.controller('PatientsClinicController',
-        ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', 'uiGmapGoogleMapApi', 'SplitArrayService',
-          function($scope, $location, $stateParams, $http, AuthInterceptor, uiGmapGoogleMapApi, SplitArrayService) {
+        ['$scope', '$location', '$state', '$stateParams', '$http', 'AuthInterceptor', 'uiGmapGoogleMapApi', 'SplitArrayService',
+          function($scope, $location, $state, $stateParams, $http, AuthInterceptor, uiGmapGoogleMapApi, SplitArrayService) {
   $scope.clinic = {};
   $scope.doctors = [];
   $scope.docRows = [];
@@ -34,5 +34,8 @@ app.controller('PatientsClinicController',
       console.log(err);
     });
 
+  $scope.loadDoctor = function(doctor) {
+    $state.go('user.doctor', {doctorId: doctor.id, patientId: $stateParams.patientId});
+  };
 
 }]);

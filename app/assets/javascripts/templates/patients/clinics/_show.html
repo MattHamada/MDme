@@ -128,7 +128,7 @@
 <hr/>
 <div class="row" ng-repeat="row in docRows" style="margin-top: 2em; margin-bottom: 2em;">
   <div class="col-md-3" ng-repeat="doctor in row">
-    <div class="doc-box">
+    <div class="doc-box" ng-click="loadDoctor(doctor)">
       <div class="row">
         <div class="col-md-12" style="text-align: center; margin-top: 1em; margin-bottom: 1em;">
           <img ng-src="{{doctor.avatar_thumb_url}}"/>
