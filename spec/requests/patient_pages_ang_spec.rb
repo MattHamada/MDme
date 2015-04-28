@@ -4,7 +4,7 @@ describe 'Patient Pages', :js => true do
   subject { page }
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
-  let(:doctors) { FactoryGirl.create(:doctors) }
+  let(:doctor) { FactoryGirl.create(:doctor) }
   before do
     #comment out stub to call real api
     allow(clinic).to receive(:call_google_api_for_location).and_return(
@@ -126,9 +126,10 @@ describe 'Patient Pages', :js => true do
   describe 'patient homepage' do
     before { sign_in_patient }
     it 'should have these items' do
-      expect(page).to have_link 'MY PROFILE'
-      expect(page).to have_link 'MY RESULTS'
-      expect(page).to have_link 'MY APPOINTMENTS'
+      expect(page).to have_link 'PROFILE'
+      expect(page).to have_link 'RESULTS'
+      expect(page).to have_link 'APPOINTMENTS'
+      expect(page).to have_link 'CLINICS'
       expect(page).to have_text patient.first_name
       expect(page).to have_text patient.last_name
       expect(page).to have_text patient.email
@@ -142,7 +143,7 @@ describe 'Patient Pages', :js => true do
         doctor.save
       end
       describe 'with no upcoming appointment' do
-        before { click_link 'MY PROFILE' }
+        before { click_link 'PROFILE' }
         it { is_expected.to have_content 'No upcoming appointments' }
       end
 
@@ -151,7 +152,7 @@ describe 'Patient Pages', :js => true do
                                                         appointment_time: DateTime.now + 3.hours) }
         before do
           upcoming_appointment.save
-          click_link 'MY PROFILE'
+          click_link 'PROFILE'
         end
         it { is_expected.to have_content 'No upcoming appointments' }
       end
@@ -162,7 +163,7 @@ describe 'Patient Pages', :js => true do
         describe 'progress bar present and green' do
           before do
             upcoming_appointment.save!
-            click_link 'MY PROFILE'
+            click_link 'PROFILE'
             wait_for_ajax
           end
           it 'should have a progress bar at 51%' do
@@ -198,7 +199,7 @@ describe 'Patient Pages', :js => true do
         fill_in 'patient_password', with: patient.password
         click_button 'Update'
         wait_for_ajax
-        screenshot_and_open_image
+        # screenshot_and_open_image
 
       end
       it { is_expected.to have_selector 'div.alert.alert-danger', text: "Birthday can't be blank"}

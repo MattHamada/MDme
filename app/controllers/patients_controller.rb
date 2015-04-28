@@ -46,7 +46,7 @@ class PatientsController < ApplicationController
       if @patient.save
         render json: { status: 'patient updated' }
       else
-        render json: { status: 'error', errors: @patient.errors.full_messages }
+        render status: 400, json: { status: 'error', errors: @patient.errors.full_messages }
       end
     else
       render status: 401, json: { status: 'error', errors: 'Invalid password entered' }

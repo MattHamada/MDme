@@ -18,7 +18,7 @@ FactoryGirl.define do
     social_security_number '123-12-1212'
   end
 
-  factory :doctors do
+  factory :doctor do
     first_name            'healthy'
     last_name             'doctor'
     email                 'doctor@example.com'

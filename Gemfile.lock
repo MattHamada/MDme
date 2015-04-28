@@ -4,13 +4,6 @@ GIT
   specs:
     database_cleaner (1.4.1)
 
-GIT
-  remote: git://github.com/wrozka/capybara-angular.git
-  revision: fe65f63fa7caba578fedfdf607517b2498bc762e
-  specs:
-    capybara-angular (0.1.1)
-      capybara
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -325,7 +318,6 @@ DEPENDENCIES
   breadcrumbs_on_rails
   bullet
   capybara
-  capybara-angular!
   capybara-screenshot
   capybara-webkit
   coffee-rails (~> 4.0.0)
