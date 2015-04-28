@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Appointment do
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   let(:patient) { FactoryGirl.create(:patient) }
   let(:clinic) { FactoryGirl.create(:clinic) }
   before do
@@ -48,7 +48,7 @@ describe Appointment do
 
 
     describe 'when appointment at the same time with different doctor' do
-      let(:doctor2) { FactoryGirl.create(:doctor, email: 'fff@bbb.com') }
+      let(:doctor2) { FactoryGirl.create(:doctors, email: 'fff@bbb.com') }
       before do
         doctor2.save!
         @appointment.save

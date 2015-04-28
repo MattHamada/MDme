@@ -537,6 +537,56 @@ input, select, textarea{
   background: #000000;
 }
 
+.addr-align {
+ margin-left: 61px;
+}
+
+
+.open-time-day-first-align {
+  display: inline-block;
+  width: 80px;
+  margin-right: 3px;
+  text-align: right;
+}
+
+.open-time-day-align {
+  margin-left: 49px;
+  display: inline-block;
+  width: 80px;
+  margin-right: 3px;
+  text-align: right;
+}
+
+.open-time-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+  margin-right: 7px;
+}
+
+.close-time-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+}
+
+.closed-day-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+}
+
+.angular-google-map-container {
+  height: 300px;
+  width:  300px;
+  margin-right: 100px;
+}
+
+.doc-box {
+  height: 175px;
+  width: 150px;
+}
+
 
 
 

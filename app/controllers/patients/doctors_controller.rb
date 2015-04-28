@@ -1,11 +1,12 @@
 class Patients::DoctorsController < ApplicationController
 
-  before_filter :find_patient
-  before_filter :require_patient_login
+  # before_filter :find_patient
+  # before_filter :require_patient_login
+  before_filter :authenticate_header
 
   def show
-    @doctor = Doctor.find_by_slug(params[:id])
-    render partial: 'patients/doctors/ajax_show' if request.xhr?
+    @doctor = Doctor.find(params[:id])
+    # render partial: 'patients/doctors/ajax_show' if request.xhr?
   end
 
   def index

@@ -170,11 +170,11 @@ class Doctor < ActiveRecord::Base
 
   # View helpers
   def avatar_thumb_url
-    avatar.url(:thumb)
+    ActionController::Base.helpers.asset_path(avatar.url(:thumb))
   end
 
   def avatar_medium_url
-    avatar.url(:medium)
+    ActionController::Base.helpers.asset_path(avatar.url(:medium))
   end
 
   def education

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PatientMailer do
   describe 'appointment_delayed_email' do
     let(:patient) { FactoryGirl.create(:patient) }
-    let(:doctor) { FactoryGirl.create(:doctor) }
+    let(:doctors) { FactoryGirl.create(:doctors) }
     let(:appointment) { FactoryGirl.create(:appointment) }
     let(:mail) { PatientMailer.appointment_delayed_email(patient,
                                      appointment.appointment_delayed_time) }

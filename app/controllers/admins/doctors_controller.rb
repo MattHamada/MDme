@@ -82,16 +82,16 @@ class Admins::DoctorsController < ApplicationController
   def search
     @doctors = Doctor.in_clinic(@admin).includes(:department)
     @doctors = @doctors.where(
-        "lower(last_name) = ?", params[:doctor][:last_name].downcase).
-        includes(:department) unless params[:doctor][:last_name].empty?
+        "lower(last_name) = ?", params[:doctors][:last_name].downcase).
+        includes(:department) unless params[:doctors][:last_name].empty?
     @doctors = @doctors.where(
-        "lower(first_name) = ?", params[:doctor][:first_name].downcase).
-        includes(:department) unless params[:doctor][:first_name].empty?
+        "lower(first_name) = ?", params[:doctors][:first_name].downcase).
+        includes(:department) unless params[:doctors][:first_name].empty?
     @doctors = @doctors.where(
         department:  Department.where(
-            "lower(name) = ?", params[:doctor][:department].downcase).
+            "lower(name) = ?", params[:doctors][:department].downcase).
             in_clinic(@admin).first).includes(:department) unless
-                params[:doctor][:department].empty?
+                params[:doctors][:department].empty?
   end
 
 
@@ -99,7 +99,7 @@ class Admins::DoctorsController < ApplicationController
   private
 
     def doctor_params
-      params.require(:doctor).permit(:first_name, :last_name, :email,
+      params.require(:doctors).permit(:first_name, :last_name, :email,
                                      :department_id, :phone_number, :degree,
                                      :alma_mater, :description, :password,
                                      :password_confirmation, :avatar)

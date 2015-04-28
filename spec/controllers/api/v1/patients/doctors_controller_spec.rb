@@ -7,10 +7,10 @@ describe Api::V1::Patients::DoctorsController do
   let(:department)   { FactoryGirl.build(:department) }
   let(:department2)  { FactoryGirl.build(:department, name: 'Genetics') }
   let(:department3)  { FactoryGirl.build(:department, clinic_id: 2) }
-  let(:doctor)       { FactoryGirl.build(:doctor) }
-  let(:doctor2)      { FactoryGirl.build(:doctor, email: 'doc2@doc.com') }
-  let(:doctor3)      { FactoryGirl.build(:doctor, email: 'doc3@doc.com', clinic_id: 2) }
-  let(:doctor4)      { FactoryGirl.build(:doctor, email: 'doc4@doc.com', department_id: 2)}
+  let(:doctors)       { FactoryGirl.build(:doctors) }
+  let(:doctor2)      { FactoryGirl.build(:doctors, email: 'doc2@doc.com') }
+  let(:doctor3)      { FactoryGirl.build(:doctors, email: 'doc3@doc.com', clinic_id: 2) }
+  let(:doctor4)      { FactoryGirl.build(:doctors, email: 'doc4@doc.com', department_id: 2)}
   before :each do
     department.save
     department2.save

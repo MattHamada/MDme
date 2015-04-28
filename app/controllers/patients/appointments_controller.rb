@@ -16,7 +16,7 @@ class Patients::AppointmentsController < ApplicationController
     @appointments = @patient.appointments.
                              confirmed.
                              not_past.
-                             includes([:doctor, :clinic]).order_by_time
+                             includes([:doctors, :clinic]).order_by_time
   end
 
   # GET mdme.us/patients/:patient_id/appointments/new
@@ -52,7 +52,7 @@ class Patients::AppointmentsController < ApplicationController
   # Shows patient's requests that have not yet been confirmed.
   # GET mdme.us/patients/:patient_id/appointments/open_requests
   def open_requests
-    @appointments = @patient.appointments.requests.not_past.includes(:doctor)
+    @appointments = @patient.appointments.requests.not_past.includes(:doctors)
   end
 
   # GET mdme.us/patients/:patient_id/appointments/:id/edit

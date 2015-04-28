@@ -22,5 +22,7 @@
 //= require ng-file-upload/angular-file-upload-all
 //= require angular-flare/dist/angular-flare
 //= require angular-ui-utils/ui-utils
+//= require lodash/dist/lodash
+//= require angular-google-maps/dist/angular-google-maps
 //= require mdme-ang
 //= require_tree .

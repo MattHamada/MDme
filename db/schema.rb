@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411173038) do
+ActiveRecord::Schema.define(version: 20150425162839) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email"
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 20150411173038) do
     t.string   "saturday_close_time"
     t.boolean  "is_open_saturday"
     t.integer  "appointment_time_increment"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "clinics", ["name"], name: "index_clinics_on_name"

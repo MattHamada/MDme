@@ -5,7 +5,7 @@ describe 'DoctorsPages' do
   before { switch_to_subdomain('doctors') }
 
   describe 'Must be signed in to view doctor pages' do
-    let(:doctor) { FactoryGirl.create(:doctor) }
+    let(:doctors) { FactoryGirl.create(:doctors) }
 
     before { visit doctor_path(doctor) }
     it { is_expected.to have_content 'Sign In' }
@@ -29,7 +29,7 @@ describe 'DoctorsPages' do
 
       describe 'with valid information' do
         let(:department) { FactoryGirl.create(:department) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:doctors) { FactoryGirl.create(:doctors) }
         before do
           department.save!
           doctor.save!
@@ -46,7 +46,7 @@ describe 'DoctorsPages' do
         end
 
         describe 'cannot visit another doctors pages' do
-          let(:doctor2) { FactoryGirl.create(:doctor,
+          let(:doctor2) { FactoryGirl.create(:doctors,
                                              email: 'testDoctor@example.com') }
           before do
             doctor2.save
@@ -146,7 +146,7 @@ describe 'DoctorsPages' do
     end
 
     describe 'Forgot Password Page' do
-      let(:doctor) { FactoryGirl.create(:doctor) }
+      let(:doctors) { FactoryGirl.create(:doctors) }
       before do
         click_link 'Forgot Password'
       end

@@ -4,7 +4,7 @@ describe 'Patient Pages', :js => true do
   subject { page }
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   before do
     #comment out stub to call real api
     allow(clinic).to receive(:call_google_api_for_location).and_return(
