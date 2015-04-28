@@ -60,6 +60,7 @@ class PatientsController < ApplicationController
   end
 
   # GET www.mdme.us/patients/:id/changepassword
+  #DEPRICATED
   def change_password
     @active = :profile
     add_breadcrumb 'Home', patients_path

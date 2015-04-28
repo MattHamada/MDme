@@ -123,6 +123,7 @@ describe 'Patient Pages', :js => true do
       end
     end
   end
+
   describe 'patient homepage' do
     before { sign_in_patient }
     it 'should have these items' do
@@ -173,6 +174,54 @@ describe 'Patient Pages', :js => true do
           it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
         end
       end
+    end
+  end
+
+  describe 'Change password page' do
+    before do
+      sign_in_patient
+      sleep 1
+      click_link 'change password'
+    end
+    it {should have_text 'Change Password'}
+
+    describe 'it should warn in new password doesnt match' do
+      before do
+        fill_in 'patient_new_password', with: 'abc'
+        fill_in 'patient_new_password_conf', with: 'def'
+      end
+      it { should have_text 'Passwords do not match'}
+    end
+    describe 'submitting when old password invalid' do
+      before do
+        fill_in 'patient_old_password', with: 'notRight'
+        fill_in 'patient_new_password', with: 'Abcdef123!'
+        fill_in 'patient_new_password_conf', with: 'Abcdef123!'
+        click_button 'Change'
+        wait_for_ajax
+      end
+      it { should have_selector 'div.alert.alert-danger', text: 'Old password invalid'}
+    end
+    describe 'submitting when passwords dont match' do
+      before do
+        fill_in 'patient_old_password', with: patient.password
+        fill_in 'patient_new_password', with: 'Abcdef123'
+        fill_in 'patient_new_password_conf', with: 'Abcdef123!'
+        click_button 'Change'
+        wait_for_ajax
+      end
+      it { should have_selector 'div.alert.alert-danger', text: "Password confirmation doesn't match Password"}
+    end
+    describe 'valid inputs should change password' do
+      before do
+        fill_in 'patient_old_password', with: patient.password
+        fill_in 'patient_new_password', with: 'Abcdef123!'
+        fill_in 'patient_new_password_conf', with: 'Abcdef123!'
+        click_button 'Change'
+        wait_for_ajax
+        screenshot_and_open_image
+      end
+      it { should have_selector 'div.alert.alert-success', text: "Password changed"}
     end
   end
 
