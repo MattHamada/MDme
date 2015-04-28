@@ -7,5 +7,5 @@ attributes  :id,
             :alma_mater,
             :description,
             :email,
-            :avatar_medium_url
+            :avatar_thumb_url
 end
