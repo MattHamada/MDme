@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html ng-app="mdme">
+<% if request.subdomain == 'admin' %>
+  <html ng-app="mdme-admin">
+<% else %>
+  <html ng-app="mdme">
+<% end %>
 <head>
   <%= favicon_link_tag %>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>

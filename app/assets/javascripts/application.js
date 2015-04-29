@@ -24,5 +24,6 @@
 //= require angular-ui-utils/ui-utils
 //= require lodash/dist/lodash
 //= require angular-google-maps/dist/angular-google-maps
-//= require mdme-ang
+//= require mdme-ang/mdme-ang
+//= require mdme-admin-ang/mdme-admin-ang
 //= require_tree .

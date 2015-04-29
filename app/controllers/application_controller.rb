@@ -61,6 +61,17 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def authenticate_admin_header
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        @patient = Patient.find_by(id: payload['admin_id'])
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
+    end
+
     def verified_request?
       super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
     end

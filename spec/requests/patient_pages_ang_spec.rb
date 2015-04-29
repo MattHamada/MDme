@@ -171,7 +171,6 @@ describe 'Patient Pages', :js => true do
             expect(page).to have_selector 'div.progress-bar.progress-bar-success'
             expect(page.find('div.progress-bar.progress-bar-success')['style']).to match(/51%/)
           end
-          it { is_expected.to have_selector 'div.progress-bar.progress-bar-success' }
         end
       end
     end
@@ -209,6 +208,7 @@ describe 'Patient Pages', :js => true do
         fill_in 'patient_new_password_conf', with: 'Abcdef123!'
         click_button 'Change'
         wait_for_ajax
+        screenshot_and_open_image
       end
       it { should have_selector 'div.alert.alert-danger', text: "Password confirmation doesn't match Password"}
     end

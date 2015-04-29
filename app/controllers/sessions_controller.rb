@@ -37,13 +37,19 @@ class SessionsController < ApplicationController
         render 'doctors/signin'
       end
     elsif request.subdomain == 'admin'
-      admin = Admin.find_by(email: params[:session][:email].downcase)
-      if admin && admin.authenticate(params[:session][:password])
-        sign_in admin, :admin
-        redirect_to admins_path
+      admin = Admin.find_by(email: params[:email].downcase)
+      if admin && admin.authenticate(params[:password])
+        # sign_in admin, :admin
+        # redirect_to admins_path
+        token = AuthToken.issue_token({admin_id: admin.id})
+        render json: {
+                   admin_id: admin.id,
+                   api_token: {
+                       token: token
+                   }
+               }
       else
-        flash[:danger] = 'Access Denied'
-        redirect_to root_path
+        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
       end
     else
       patient = Patient.find_by(email: params[:email].downcase)
