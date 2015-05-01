@@ -27,6 +27,11 @@ angular.module('mdme-admin')
         url: '/admins',
         templateUrl: 'admins/index.html',
         controller: 'AdminsController'
+      })
+      .state('admin.appointments', {
+        url: '/admins/:adminId/appointments',
+        templateUrl: 'admins/appointments/index.html',
+        controller: 'AdminsAppointmentsController'
       });
 
     $urlRouterProvider.otherwise('/');
