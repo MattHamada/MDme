@@ -9,9 +9,10 @@
 # for admin.mdme.us/admins/:admin_id/appointments
 class Admins::AppointmentsController < ApplicationController
 
-  before_filter :find_admin
-  before_filter :require_admin_login
-  before_filter :set_active_navbar
+  # before_filter :find_admin
+  # before_filter :require_admin_login
+  # before_filter :set_active_navbar
+  before_action :authenticate_admin_header
 
   # GET admin.mdme.us/admins/:admin_id/appointments
   def index
@@ -160,7 +161,9 @@ class Admins::AppointmentsController < ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments/:id
   def show
     @appointment = appointment
-    render partial: 'ajax_show' if request.xhr?
+    @doctor = @appointment.doctor
+    @patient = @appointment.patient
+    # render partial: 'ajax_show' if request.xhr?
   end
 
   # Shows a list of appointments occurring today for setting delays

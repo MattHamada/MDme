@@ -1,4 +1,6 @@
-angular.module('mdme-admin').controller('AdminsController', ['$scope', '$state', 'AdminAuthInterceptor', '$http', 'flare', function($scope, $state, AdminAuthInterceptor, $http, flare) {
+angular.module('mdme-admin').controller('AdminsController', ['$scope', '$state', '$stateParams', 'AdminAuthInterceptor', '$http', 'flare', function($scope, $state, $stateParams, AdminAuthInterceptor, $http, flare) {
+  $scope.admin = {id: $stateParams.adminId};
+
   var todaysApptsReq = {
     method: 'GET',
     url: '/admins.json',

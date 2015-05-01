@@ -1,8 +1,10 @@
 angular.module('mdme-admin').controller('AdminsAppointmentsController',
-  ['$scope', '$state', 'AdminAuthInterceptor', '$http', 'flare',
-  function($scope, $state, AdminAuthInterceptor, $http, flare) {
+  ['$scope', '$state', '$stateParams', 'AdminAuthInterceptor', '$http', 'flare',
+  function($scope, $state, $stateParams, AdminAuthInterceptor, $http, flare) {
 
-  if ($state.current.name == 'admin.appointments') {
+    $scope.admin = {id: $stateParams.adminId};
+
+    if ($state.current.name == 'admin.appointments') {
     var todaysApptsReq = {
       method: 'GET',
       url: '/admins.json',
