@@ -35,23 +35,21 @@ class Admins::AppointmentsController < ApplicationController
   def edit
     @appointment = appointment
     @open_times = @appointment.doctor.open_appointment_times(@appointment.appointment_time.to_date)
-    @open_times << @appointment.time_selector
+    # @open_times << @appointment.time_selector
+    render status: 200, json: {open_times: @open_times}
   end
 
   # PATCH admin.mdme.us/admins/:admin_id/appointments/:id/
   def update
     @appointment = appointment
     input_params = appointment_params
-    date = DateTime.parse("#{@appointment.date} #{input_params[:time]}")
-    if @appointment.update_attributes(doctor_id: input_params[:doctor_id],
-                                      patient_id: input_params[:patient_id],
-                                      appointment_time: date,
+    datetime = Time.zone.parse("#{@appointment.date} #{input_params[:time]}")
+    if @appointment.update_attributes(appointment_time: datetime,
                                       description: input_params[:description])
-      flash[:success] = "Appointment was successfully updated."
-      redirect_to admins_path
+      render status: 201, json: {status: "Appointment was successfully updated."}
     else
       flash.now[:danger] = "Invalid parameters in update"
-      render 'edit'
+      render status: 400, json: {status: @appointment.errors.full_messages}
     end
   end
 
@@ -213,7 +211,7 @@ class Admins::AppointmentsController < ApplicationController
 
     def appointment_params
       params.require(:appointment).
-          permit(:date, :day, :hour, :minute, :time, :doctor_id, :patient_id, :description)
+          permit(:date, :appointment_time,  :day, :hour, :minute, :time, :doctor_id, :patient_id, :description)
     end
 
     def find_admin

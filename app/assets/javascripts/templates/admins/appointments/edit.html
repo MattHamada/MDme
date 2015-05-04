@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Edit Appointment</h4></div>
+        <div class="panel-body panel-inverse">
+          <flare-messages></flare-messages>
+          <div class="alert alert-info">To change doctor or date, please delete and remake the appointment</div>
+          <form name="editAppointmentForm" class="form" ng-submit="editAppointment()">
+            <fieldset>
+              <div class="row">
+                <div class='form-group'>
+                  <div class="col-xs-6 col-xs-offset-3">
+                    <label for="appointment_date_time">Select Appointment Time</label>
+                    <select class="form-control" id="appointment_date_time" name="appointment_date_time" ng-options="time for time in openTimes" ng-model="appointment.time">
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                  <div class="form-group">
+                    <label for="appointment_description">Notes</label>
+                    <textarea id="appointment_description" class="form-control" ng-model="appointment.description" rows="5" style="width: 100%;"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12" style="text-align: center;">
+                  <button type="submit" class="btn btn-success">Update</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

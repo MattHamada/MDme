@@ -107,10 +107,11 @@ class Doctor < ActiveRecord::Base
   #TODO this does not handle filtering times if doctor works at two locations
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date).confirmed
+    increment = self.clinic.appointment_time_increment
+    stop_time = 60 - increment
     times = []
     (9..16).each do |h|
-      (0..45).step(15) do |m|
-
+      (0..stop_time).step(increment) do |m|
         ampm = ''
         if h < 12
           ampm = 'AM'
@@ -130,7 +131,6 @@ class Doctor < ActiveRecord::Base
         else
           min = m
         end
-        #h = h % 12 if h != 12
 
         times.append("#{hr}:#{min} #{ampm}")
       end

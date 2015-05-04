@@ -3,7 +3,10 @@ child @appointment, :object_root => false do
              :date_time_ampm,
              :doctor_full_name,
              :patient_full_name,
-             :description
+             :description,
+             :appointment_time
+
+  attribute  :time_selector => :time
 end
 
 child @doctor, :object_root => false do

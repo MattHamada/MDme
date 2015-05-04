@@ -20,9 +20,8 @@ module AppointmentTimeFormatting
   end
 
   def time_selector
-    ampm = appointment_time.strftime('%p')
-    hour = appointment_time_hour
-    "#{hour}:#{appointment_time_minute} #{ampm}"
+    last = appointment_time.strftime(":%M %p")
+    "#{appointment_time_hour}#{last}"
   end
 
   def appointment_time_hour
