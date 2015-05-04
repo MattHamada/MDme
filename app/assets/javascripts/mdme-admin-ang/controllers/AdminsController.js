@@ -1,5 +1,5 @@
-angular.module('mdme-admin').controller('AdminsController', ['$scope', '$state', '$stateParams', 'AdminAuthInterceptor', '$http', 'flare', function($scope, $state, $stateParams, AdminAuthInterceptor, $http, flare) {
-  $scope.admin = {id: $stateParams.adminId};
+angular.module('mdme-admin').controller('AdminsController', ['$scope', '$state', '$stateParams', 'AdminAuthInterceptor', 'AdminLocalService', '$http', 'flare', function($scope, $state, $stateParams, AdminAuthInterceptor, AdminLocalService, $http, flare) {
+  $scope.admin = {id: AdminLocalService.get("adminId")};
 
   var todaysApptsReq = {
     method: 'GET',

@@ -19,7 +19,7 @@
                     </tr>
                     <tbody>
                     <tr ng-repeat="appt in appointments">
-                      <td><a href="#">{{$index + 1}}</a></td>
+                      <td><a ui-sref="admin.appointment({adminId: {{admin.id}}, appointmentId: {{appt.id}}})">{{$index + 1}}</a></td>
                       <td>{{appt.time_am_pm}}</td>
                       <td>{{appt.delayed_time_ampm}}</td>
                       <td>{{appt.doctor_full_name}}</td>
