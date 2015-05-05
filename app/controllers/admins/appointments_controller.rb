@@ -76,22 +76,17 @@ class Admins::AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
-  def browse
-
-  end
-
   # Ajax load - Shows all confirmed appointments on a given date for  index page
   # Expects the param :day passed as a string date to parse
   # GET admin.mdme.us/admins/:admin_id/appointments/browse
-  def ajax_browse
-    input = appointment_params
-    date = Date.parse(input[:day])
+  def browse
+    date = Date.parse(params[:date])
     # if date < Date.today
     #   flash[:danger] = 'Time must be set in the future'
     #   redirect_to admin_appointments_path(@admin)
     # else
       @appointments = Appointment.in_clinic(@admin).given_date(date).
-          confirmed.order('appointment_time ASC').load.includes([:doctors,
+          confirmed.order('appointment_time ASC').load.includes([:doctor,
                                                                  :patient])
     # end
   end
