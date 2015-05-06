@@ -3,6 +3,7 @@ angular.module('mdme-admin').controller('AdminsAppointmentController', ['$scope'
   $scope.appointment = {id: $stateParams.appointmentId};
   $scope.openTimes = [];
 
+
   var apptReq = {
     method: 'GET',
     url: '/admins/' + $stateParams.adminId + '/appointments/' + $stateParams.appointmentId + '.json',

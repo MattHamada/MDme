@@ -5,25 +5,27 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential.
 
-# <tt>Admins::ClinicsController</tt> for admin.mdme.us/admins/:admin_id/clinics
+# <tt>Admins::DoctorsController</tt> for admin.mdme.us/admins/:admin_id/clinics
 class Admins::DoctorsController < ApplicationController
 
-  before_filter :find_admin
-  before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
-  before_filter :require_admin_login
+  # before_filter :find_admin
+  # before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
+  # before_filter :require_admin_login
+  before_action :authenticate_admin_header
 
-  # GET admin.mdme.us/admins/:admin_id/clinics
+  # GET admin.mdme.us/admins/:admin_id/doctors
   def index
+    @doctors = Doctor.in_clinic(@admin.clinic)
   end
 
-  # GET admin.mdme.us/admins/:admin_id/clinics/new
+  # GET admin.mdme.us/admins/:admin_id/doctors/new
   def new
     @current_user = @admin
     @doctor = Doctor.new
     @doctor.department_id = params[:department_id] unless params[:department_id].nil?
   end
 
-  #POST admin.mdme.us/admins/:admin_id/clinics
+  #POST admin.mdme.us/admins/:admin_id/doctors
   def create
     @current_user = @admin
     p = doctor_params
@@ -41,12 +43,12 @@ class Admins::DoctorsController < ApplicationController
 
   end
 
-  # GET admin.mdme.us/admins/:admin_id/clinics/:id/edit
+  # GET admin.mdme.us/admins/:admin_id/doctors/:id/edit
   def edit
     @current_user = @admin
   end
 
-  # POST admin.mdme.us/admins/:admin_id/clinics/:id
+  # POST admin.mdme.us/admins/:admin_id/doctors/:id
   def update
     @current_user = @admin
     @doctor.bypass_password_validation = true
@@ -61,12 +63,12 @@ class Admins::DoctorsController < ApplicationController
     end
   end
 
-  # GET admin.mdme.us/admins/:admin_id/clinics/:id
+  # GET admin.mdme.us/admins/:admin_id/doctors/:id
   def show
     render partial: 'admins/doctors/ajax_show', object: @doctor if request.xhr?
   end
 
-  # DELETE admin.mdme.us/admins/:admin_id/clinics/:id
+  # DELETE admin.mdme.us/admins/:admin_id/doctors/:id
   def destroy
     if @doctor.destroy
       flash[:warning] = 'Doctor deleted'
@@ -78,7 +80,7 @@ class Admins::DoctorsController < ApplicationController
   end
 
   # Allows searching for doctor(s) by department, first name, and/or last name
-  # GET admin.mdme.us/admins/:admin_id/clinics/search
+  # GET admin.mdme.us/admins/:admin_id/doctors/search
   def search
     @doctors = Doctor.in_clinic(@admin).includes(:department)
     @doctors = @doctors.where(
@@ -93,6 +95,8 @@ class Admins::DoctorsController < ApplicationController
             in_clinic(@admin).first).includes(:department) unless
                 params[:doctors][:department].empty?
   end
+
+
 
 
 

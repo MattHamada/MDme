@@ -44,6 +44,7 @@ class SessionsController < ApplicationController
         token = AuthToken.issue_token({admin_id: admin.id})
         render json: {
                    admin_id: admin.id,
+                   clinic_id: admin.clinic.id,
                    api_token: {
                        token: token
                    }

@@ -94,27 +94,26 @@ class Admins::AppointmentsController < ApplicationController
   # POST admin.mdme.us/admins/:admin_id/appointments
   def create
     input = appointment_params
-    time = Doctor.find(input[:doctor_id]).open_appointment_times(
-        Date.parse(input[:date]))[(input[:time].to_i)-1]
-    #TODO make this less hacky; shouldnt need to convert timezone and shift hours
-    date = DateTime.parse(
-        "#{input[:date]} #{time}").in_time_zone('Arizona') + 7.hours
-    @appointment = Appointment.new(doctor_id: input[:doctor_id],
-                                   patient_id: input[:patient_id],
-                                   appointment_time: date,
-                                   description: input[:description],
-                                   request: false,
-                                   clinic_id: @admin.clinic_id)
-    if @appointment.save
-      flash[:success] = "Appointment Created"
-      redirect_to admin_appointments_path(@admin)
-    else
-      @appointment.errors.each do |attribute, message|
-        flash.now[:danger] = message
+    if input.has_key? :time
+      time = Doctor.find(input[:doctor_id]).open_appointment_times(
+          Date.parse(input[:date]))[(input[:time].to_i)-1]
+      date = Time.zone.parse("#{input[:date]} #{time}")
+      @appointment = Appointment.new(doctor_id: input[:doctor_id],
+                                     patient_id: input[:patient_id],
+                                     appointment_time: date,
+                                     description: input[:description],
+                                     request: false,
+                                     clinic_id: @admin.clinic_id,
+                                     inform_earlier_time: input[:inform_earlier_time])
+      if @appointment.save
+        render status: 201, json: {status: 'Appointment Created'}
+      else
+        render status: 400, json: {errors: @appointment.errors.full_messages}
       end
-      @open_times = []
-      render 'new'
+    else
+      render status: 400, json: {errors: ['No time selected']}
     end
+
   end
 
   # Shows list of appointments awaiting approval
@@ -206,7 +205,16 @@ class Admins::AppointmentsController < ApplicationController
 
     def appointment_params
       params.require(:appointment).
-          permit(:date, :appointment_time,  :day, :hour, :minute, :time, :doctor_id, :patient_id, :description)
+          permit(:date,
+                 :appointment_time,
+                 :day,
+                 :hour,
+                 :minute,
+                 :time,
+                 :doctor_id,
+                 :patient_id,
+                 :description,
+                 :inform_earlier_time)
     end
 
     def find_admin

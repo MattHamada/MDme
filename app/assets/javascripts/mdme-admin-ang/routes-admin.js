@@ -33,6 +33,11 @@ angular.module('mdme-admin')
         templateUrl: 'admins/appointments/browse.html',
         controller: 'AdminsAppointmentsController'
       })
+      .state('admin.appointmentNew', {
+        url: '/admins/:adminId/appointments/new',
+        templateUrl: 'admins/appointments/new.html',
+        controller: 'AdminsAppointmentCreateController'
+      })
       .state('admin.appointment', {
         url: '/admins/:adminId/appointments/:appointmentId',
         templateUrl: 'admins/appointments/show.html',

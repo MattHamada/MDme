@@ -52,7 +52,9 @@ MDme::Application.routes.draw do
   post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
   post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
   post 'admins/:admin_id/appointments/notify_ready'      => 'admins/appointments#notify_ready',        as: :notify_appointment_ready
-
+  get  'admins/:admin_id/doctors/opentimes'              => 'admins/doctors#open_times',               as: :admin_doctors_opentimes
+  get  'patients/:admin_id/doctors/opentimes'            => 'patients/appointments#open_times',        as: :patients_doctors_opentimes
+  get  'clinics/:clinic_id/doctors/opentimes'            => 'clinics/doctors#open_times',              as: :clinics_doctor_opentimes
   get  'doctors/opentimes'                               => 'doctors#open_appointments',               as: :doctor_open_appointments
   get  'doctors/:id/public'                              => 'doctors#show_public',                     as: :doctor_public_show
   get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
@@ -79,6 +81,10 @@ MDme::Application.routes.draw do
     resources :appointments, controller: 'patients/appointments'
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
     resources :clinics, only: [:index, :show], controller: 'patients/clinics'
+  end
+
+  resources :clinics do
+    resources :doctors, controller: 'clinics/doctors'
   end
 
 

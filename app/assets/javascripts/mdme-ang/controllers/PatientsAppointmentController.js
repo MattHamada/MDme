@@ -7,9 +7,12 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
   $scope.times1 = [];
   $scope.times2 = [];
   $scope.selectedIndex = -1;
-  var times = [];
   var dateChange = false;
   var clinicChange = false;
+  var dateChange = false;
+  var clinicChange = false;
+  var times = [];
+
 
   $scope.dateChosen = function() {
     dateChange = true;
@@ -78,7 +81,8 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     console.log(clinic);
     var docReq = {
       method: 'GET',
-      url: '/patients/' + $stateParams.patientId + '/clinics/get-doctors.json?id=' + clinic.id,
+      url: '/clinics/' + $scope.appointment.clinic.id + '/doctors.json',
+      //url: '/patients/' + $stateParams.patientId + '/clinics/get-doctors.json?id=' + clinic.id,
       headers: $http.defaults.headers.common
     };
     docReq = AuthInterceptor.request(docReq);
@@ -93,8 +97,7 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
     console.log(clinic);
   };
 
-  $scope.loadTimes = function(doctor) {
-    //TODO make real api call
+  $scope.loadTimes = function() {
     if (dateChange && clinicChange) {
       var timeReq = {
         method: 'GET',
@@ -103,7 +106,7 @@ app.controller('PatientsAppointmentController', ['$scope', '$location', '$state'
           doctor_id: $scope.appointment.doctor.id,
           clinic_id: $scope.appointment.clinic.id
         },
-        url: '/doctors/opentimes.json',
+        url: '/clinics/' + $scope.appointment.clinic.id + '/doctors/opentimes.json',
         headers: $http.defaults.headers.common
       };
       timeReq = AuthInterceptor.request(timeReq);

@@ -10,7 +10,7 @@
 class Patients::ClinicsController < ApplicationController
 
   #TODO remove getdoctors exception
-  before_action :authenticate_header, except: :getdoctors
+  before_action :authenticate_header
 
   def index
     @clinics = @patient.clinics.ordered_name

@@ -15,7 +15,8 @@ angular.module('mdme-admin').factory('AdminAuth', ['$http', 'AdminLocalService',
       var login = $http.post('/sessions', credentials);
       login.success(function(result) {
         AdminLocalService.set('admin_auth_token', JSON.stringify(result.api_token));
-        AdminLocalService.set('adminId', JSON.stringify(result.admin_id))
+        AdminLocalService.set('adminId', JSON.stringify(result.admin_id));
+        AdminLocalService.set('clinicId', JSON.stringify(result.clinic_id));
       });
       return login;
     },
@@ -28,6 +29,7 @@ angular.module('mdme-admin').factory('AdminAuth', ['$http', 'AdminLocalService',
       register.success(function(result) {
         AdminLocalService.set('admin_auth_token', JSON.stringify(result.api_token));
         AdminLocalService.set('adminId', JSON.stringify(result.admin_id));
+        AdminLocalService.set('clinicId', JSON.stringify(result.clinic_id));
       });
       return register;
     }

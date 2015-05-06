@@ -13,6 +13,19 @@ class Patients::DoctorsController < ApplicationController
     @doctors = Doctor.in_clinic(@patient).includes(:department)
   end
 
+  def open_times
+    date = Date.parse(params[:date])
+    clinic = Clinic.find(params[:clinic_id])
+    doctor = Doctor.find(params[:doctor_id])
+    # @times = doctor.open_appointment_times(date)
+    @times = clinic.open_appointment_times(date, doctor)
+    if @times.is_a?(Hash)
+      render json: {status: 1, error: @times[:error]}
+    else
+      render json: { status: 0, times: @times }
+    end
+  end
+
   private
 
     def find_patient
