@@ -74,7 +74,7 @@ angular.module('mdme').controller('PatientsMenuController', ['$scope', '$state',
           $scope.progressBar.barClass = 'progress-bar-danger';
 //          $scope.progressBar.percent = '90';
         }
-        $scope.progressBar.timeLeft = $scope.progressBar.minutesLeft + ' minutes until appointment';
+        $scope.progressBar.timeLeft = $scope.progressBar.minutesLeft + ' '+ 'minutes until appointment';
         setupCountDown();
       }
     }, 60000);
