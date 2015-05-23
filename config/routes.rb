@@ -47,7 +47,7 @@ MDme::Application.routes.draw do
   get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
   get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
-  get  'admins/:admin_id/appointments/ondate'            => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
+  get  'admins/:admin_id/appointments/requests/ondate/:date'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
   get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
   post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
   post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny

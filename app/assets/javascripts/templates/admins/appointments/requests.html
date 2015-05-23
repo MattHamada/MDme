@@ -17,7 +17,7 @@
               <tbody>
               <tr ng-repeat="appt in appointments" id="appt-request-{{appt.id}}">
                 <td class="day_appointments"><a ui-sref="admin.appointment({adminId: {{admin.id}}, appointmentId: {{appt.id}}})">{{$index+1}}</a></td>
-                <td class="day_appointments"><a href="#">otherApptPopup</a></td>
+                <td class="day_appointments"><a ui-sref="admin.appointmentRequestsOthers({adminId: {{admin.id}}, date: {{appt.date}}})">{{appt.date}}</a></td>
                 <td>{{appt.doctor_full_name}}</td>
                 <td>{{appt.patient_full_name}}</td>
                 <td class="button_links">
@@ -32,5 +32,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="popup-window" ui-view>
 
 </div>
