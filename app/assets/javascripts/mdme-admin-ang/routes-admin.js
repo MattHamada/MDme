@@ -28,6 +28,11 @@ angular.module('mdme-admin')
         templateUrl: 'admins/index.html',
         controller: 'AdminsController'
       })
+      .state('admin.appointmentRequests', {
+        url: '/admins/:adminId/appointments/requests',
+        templateUrl: 'admins/appointments/requests.html',
+        controller: 'AdminsAppointmentRequestsController'
+      })
       .state('admin.appointmentsBrowse', {
         url: '/admins/:adminId/appointments/browse',
         templateUrl: 'admins/appointments/browse.html',
@@ -53,6 +58,5 @@ angular.module('mdme-admin')
         templateUrl: 'admins/appointments/index.html',
         controller: 'AdminsAppointmentsController'
       });
-
     $urlRouterProvider.otherwise('/');
   }]);

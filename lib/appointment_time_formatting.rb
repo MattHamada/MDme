@@ -18,6 +18,7 @@ module AppointmentTimeFormatting
   def time_am_pm
     appointment_time.strftime('%I:%M %p')
   end
+  alias_method :time_ampm, :time_am_pm
 
   def time_selector
     last = appointment_time.strftime(":%M %p")

@@ -120,7 +120,7 @@ class Admins::AppointmentsController < ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments/approval
   def approval
     @appointments = Appointment.in_clinic(@admin).requests.
-        order_by_time.includes(:doctors, :patient).not_past
+        order_by_time.includes(:doctor, :patient).not_past
   end
 
   # Allows admin to see what appointments are already on a
