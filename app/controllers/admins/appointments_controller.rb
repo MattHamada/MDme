@@ -139,15 +139,30 @@ class Admins::AppointmentsController < ApplicationController
   # POST admin.mdme.us/admins/:admin_id/appointments
   def approve_deny
     appointment = Appointment.find(params[:appointment_id])
-    if params.has_key?(:approve)
-      appointment.request = false
-      appointment.save!
+    if params[:confirmed]
+      appointment.update_attribute(:request, false)
       appointment.email_confirmation_to_patient(:approve)
-    elsif params.has_key?(:deny)
+      render status: 200, json: {
+                            status: :confirmed,
+                            message: 'Appointment confirmed'
+                        }
+    else
       appointment.email_confirmation_to_patient(:deny)
       appointment.destroy
+      render status: 200, json: {
+                            status: :deleted,
+                            message: 'Appointment denied'
+                        }
     end
-    redirect_to appointment_approval_path(@admin.id)
+    # if params.has_key?(:approve)
+    #   appointment.request = false
+    #   appointment.save!
+    #   appointment.email_confirmation_to_patient(:approve)
+    # elsif params.has_key?(:deny)
+    #   appointment.email_confirmation_to_patient(:deny)
+    #   appointment.destroy
+    # end
+    # redirect_to appointment_approval_path(@admin.id)
   end
 
   # GET admin.mdme.us/admins/:admin_id/appointments/:id
