@@ -3,6 +3,10 @@ module AppointmentTimeFormatting
     appointment_time.strftime('%F')
   end
 
+  def underscore_date
+    appointment_time.strftime('%F').gsub('-','_')
+  end
+
   def date_time_ampm
     appointment_time.strftime('%F %I:%M%p')
   end

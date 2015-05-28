@@ -1,9 +1,5 @@
 angular.module('mdme-admin').controller('AdminsAppointmentRequestsController', ['$scope', '$location', '$state', '$stateParams', '$http', 'AdminAuthInterceptor', 'flare', function($scope, $location, $state, $stateParams, $http, AdminAuthInterceptor, flare) {
   $scope.admin = {id: $stateParams.adminId};
-  var popup = angular.element('<div id=\"ajaxPopupInfo\" ui-view></div>');
-  var body = angular.element(document).find('body').eq(0);;
-  body.append(popup);
-  angular.element('div#ajaxPopupInfo').hide();
 
   var apptsReq = {
     method: 'GET',
@@ -14,7 +10,6 @@ angular.module('mdme-admin').controller('AdminsAppointmentRequestsController', [
   $http(apptsReq)
     .success(function(data) {
       $scope.appointments = data.appointments;
-      $scope.dd = $scope.appointments[0].date;
     })
     .error(function(err) {
       console.log(err);

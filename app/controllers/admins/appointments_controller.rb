@@ -127,12 +127,13 @@ class Admins::AppointmentsController < ApplicationController
   # specific date with a specific doctor before Accepting/denying request
   # GET admin.mdme.us/admins/:admin_id/appointments/show_on_date
   def show_on_date
-    @date = Date.parse(params[:date])
+    @date = Date.parse(params[:date].gsub!('_','-'))
     @doctor = Doctor.find(params[:doctor_id]).full_name
-    @appointments = Appointment.in_clinic(current_admin).
+    @appointments = Appointment.in_clinic(@admin).
         given_date(@date).confirmed.with_doctor(params[:doctor_id]).
         order('appointment_time ASC').load
-    render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
+    1 == 1
+    # render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
   end
 
   # run when admin hits approve or deny on approval page

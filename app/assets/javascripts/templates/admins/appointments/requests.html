@@ -3,7 +3,7 @@
     <div class="col-md-8 col-md-offset-2">
       <flare-messages></flare-messages>
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Appointments needing approval/h4></div>
+        <div class="panel-heading"><h4>Appointments needing approval</h4></div>
         <div class="panel-body panel-inverse">
           <table class='table table-striped table-bordered table-hover table-inverse'>
             <thread>
@@ -16,8 +16,8 @@
               </tr>
               <tbody>
               <tr ng-repeat="appt in appointments" id="appt-request-{{appt.id}}">
-                <td class="day_appointments"><a ui-sref="admin.appointment({adminId: {{admin.id}}, appointmentId: {{appt.id}}})">{{$index+1}}</a></td>
-                <td class="day_appointments"><a ui-sref="admin.appointmentRequestsOthers({adminId: {{admin.id}}, date: {{appt.date}}})>{{appt.date}}</a></td>
+                <td><a ui-sref="admin.appointment({adminId: {{admin.id}}, appointmentId: {{appt.id}}})">{{$index+1}}</a></td>
+                <td><a ui-sref="admin.appointmentRequestsOthers({adminId: {{admin.id}}, date: '{{appt.underscore_date}}', doctor_id: {{appt.doctor_id}}})">{{appt.date_time_ampm}}</a></td>
                 <td>{{appt.doctor_full_name}}</td>
                 <td>{{appt.patient_full_name}}</td>
                 <td class="button_links">

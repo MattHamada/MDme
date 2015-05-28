@@ -34,7 +34,7 @@ angular.module('mdme-admin')
         controller: 'AdminsAppointmentRequestsController'
       })
       .state('admin.appointmentRequestsOthers', {
-        url: '/ondate/:date',
+        url: '/ondate/:date?doctor_id',
         templateUrl: 'admins/appointments/_show_on_date.html',
         controller: 'AdminsAppointmentRequestsOthersController',
         parent: 'admin.appointmentRequests'
