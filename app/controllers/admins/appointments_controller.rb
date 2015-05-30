@@ -177,7 +177,7 @@ class Admins::AppointmentsController < ApplicationController
   # Shows a list of appointments occurring today for setting delays
   # GET admin.mdme.us/admins/:admin_id/appointments/manage_delays
   def manage_delays
-    @doctors = Doctor.in_clinic(current_admin).with_appointments_today
+    @doctors = Doctor.in_clinic(@admin).with_appointments_today.includes(:appointments)
   end
 
   # POST to add delay to appointment.
