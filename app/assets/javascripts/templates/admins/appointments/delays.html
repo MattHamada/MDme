@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="panel panel-default">
-            <div class="panel-heading"><h4><%= doctor.full_name %></h4></div>
+            <div class="panel-heading"><h4>{{doctor.full_name}}</h4></div>
             <div class="panel-body panel-inverse">
               <table class='table table-striped table-bordered table-hover table-inverse'>
                 <thread>
@@ -18,14 +18,14 @@
                     <th>Confirm</th>
                   </tr>
                   <tbody>
-                  <tr ng-repeat="appt in doctor.appointments">
+                  <tr ng-repeat="appt in doctor.appointments track by appt.id">
                     <td><a ui-sref="admin.appointment({adminId: {{admin.id}}, appointmentId: {{appt.id}}})">{{$index}}</a></td>
                     <td>{{appt.date_time_ampm}}</td>
                     <td>{{appt.delayed_date_time_ampm}}</td>
                     <td>{{appt.patient_full_name}}</td>
-                    <%= form_tag(url: add_delay_path, method: :post, html: { role: 'form' }) do %>
-                    <%= hidden_field_tag(:doctor_id, doctor.id) %>
-                    <%= hidden_field_tag(:appointment_id, appointment.id) %>
+                    <!--<%= form_tag(url: add_delay_path, method: :post, html: { role: 'form' }) do %>-->
+                    <!--<%= hidden_field_tag(:doctor_id, doctor.id) %>-->
+                    <!--<%= hidden_field_tag(:appointment_id, appointment.id) %>-->
                     <form>
                       <td>
                         <div class='form-group' ng-model="delay.minutes">

@@ -8,7 +8,7 @@ angular.module('mdme-admin').controller('AdminsAppointmentDelaysController', ['$
   };
 
   req = AdminAuthInterceptor.request(req);
-  http(req)
+  $http(req)
     .success(function(data) {
       console.log(data);
       $scope.doctors = data.doctors;
