@@ -26,8 +26,10 @@ angular.module('mdme-admin').controller('AdminsAppointmentRequestsController', [
     $http(confReq)
       .success(function(data) {
         if (data.status == 'confirmed') {
+          flare.empty();
           flare.success(data.message);
         } else {
+          flare.empty();
           flare.warn(data.message);
         }
         angular.element('tr#appt-request-' + appointment.id).hide();

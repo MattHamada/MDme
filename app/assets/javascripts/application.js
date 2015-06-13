@@ -19,10 +19,10 @@
 //= require angular-resource/angular-resource
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-local-storage/dist/angular-local-storage
-//= require ng-file-upload/angular-file-upload-all
+//= require ng-file-upload/ng-file-upload-all
 //= require angular-flare/dist/angular-flare
 //= require angular-ui-utils/ui-utils
-//= require lodash/dist/lodash
+//= require lodash/lodash
 //= require angular-google-maps/dist/angular-google-maps
 //= require mdme-ang/mdme-ang
 //= require mdme-admin-ang/mdme-admin-ang
