@@ -15,4 +15,24 @@ angular.module('mdme-admin').controller('AdminsAppointmentDelaysController', ['$
     }).error(function(err) {
       console.log(err);
     });
+
+  $scope.addDelay = function(appointment) {
+    var delayReq = {
+      method: 'POST',
+      url: '/admins/' + $scope.admin.id + '/appointments/add_delay',
+      headers: $http.defaults.headers.post,
+      data: {
+        appointment_id: appointment.id,
+        delay_time: appointment.delay.minutes,
+        apply_to_all: appointment.delay.apply_all
+      }
+    };
+    delayReq = AdminAuthInterceptor.request(delayReq);
+    $http(delayReq)
+      .success(function(data) {
+        flare.success(data.message, 10000);
+      }).error(function(err) {
+        flare.error(data.message, 10000);
+    });
+  };
 }]);

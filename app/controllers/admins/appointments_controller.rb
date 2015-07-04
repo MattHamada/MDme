@@ -185,20 +185,23 @@ class Admins::AppointmentsController < ApplicationController
   # POST admin.mdme.us/admins/:admin_id/appointments/add_delay
   def add_delay
     appointment = Appointment.find(params[:appointment_id])
-    time_to_add = Appointment.get_added_time(params[:delay_time].to_i)
+    time_to_add = params[:delay_time].to_i
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
     if appointment.update_attribute(:appointment_delayed_time, new_time)
       flash[:success] = "Appointments updated"
       appointment.send_delay_email
       appointment.push_delay_notification
+      if params.keys.include?("apply_to_all")
+        appointment.update_remaining_appointments!(time_to_add)
+      end
+      render status: 200, json: {
+                           message: 'Appointments updated'
+                       }
     else
-      flash[:warning] = "An error has occured please try again."
+      render status: 400, json: {
+                            message: 'An error has occured please try again'
+                        }
     end
-
-    if params.values.include?("apply_to_all")
-      appointment.update_remaining_appointments!(time_to_add)
-    end
-    redirect_to manage_delays_path(@admin)
   end
 
   # POST to notify patient appointment is ready

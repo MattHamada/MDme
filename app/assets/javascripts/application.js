@@ -21,7 +21,8 @@
 //= require angular-local-storage/dist/angular-local-storage
 //= require ng-file-upload/ng-file-upload-all
 //= require angular-flare/dist/angular-flare
-//= require angular-ui-utils/ui-utils
+//= require angular-ui-utils/modules/utils
+//= require angular-ui-utils/modules/validate/validate
 //= require lodash/lodash
 //= require angular-google-maps/dist/angular-google-maps
 //= require mdme-ang/mdme-ang

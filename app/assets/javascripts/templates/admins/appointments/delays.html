@@ -1,8 +1,13 @@
 <div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <flare-messages></flare-messages>
+    </div>
+  </div>
   <div class="row" ng-repeat="doctor in doctors">
-    <div class="col-xs-8 col-xs-offset-2">
+    <div class="col-md-8 col-md-offset-2">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
           <div class="panel panel-default">
             <div class="panel-heading"><h4>{{doctor.full_name}}</h4></div>
             <div class="panel-body panel-inverse">
@@ -26,33 +31,29 @@
                     <!--<%= form_tag(url: add_delay_path, method: :post, html: { role: 'form' }) do %>-->
                     <!--<%= hidden_field_tag(:doctor_id, doctor.id) %>-->
                     <!--<%= hidden_field_tag(:appointment_id, appointment.id) %>-->
-                    <form>
-                      <td>
-                        <div class='form-group' ng-model="delay.minutes">
-                         <select class="form-control">
-                           <option value="5">5</option>
-                           <option value="10">10</option>
-                           <option value="15">15</option>
-                           <option value="20">20</option>
-                           <option value="30">30</option>
-                           <option value="45">45</option>
-                           <option value="60">60</option>
-                         </select>
-                        </div>
-                      </td>
-                      <td>
-                        <div class='form-group'>
-                          <label>Apply to all</label>
-                          <input type="checkbox" ng-model="delay.apply_all" class="form-control">
-                        </div>
-                      </td>
-                      <td>
-                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                      </td>
-
-                    </form>
+                    <td>
+                      <div class='form-group' >
+                       <select  ng-model="appt.delay.minutes" class="form-control">
+                         <option value="5">5</option>
+                         <option value="10">10</option>
+                         <option value="15">15</option>
+                         <option value="20">20</option>
+                         <option value="30">30</option>
+                         <option value="45">45</option>
+                         <option value="60">60</option>
+                       </select>
+                      </div>
+                    </td>
+                    <td>
+                      <div class='form-group'>
+                        <label>Apply to all</label>
+                        <input type="checkbox" ng-model="appt.delay.apply_all" class="form-control">
+                      </div>
+                    </td>
+                    <td>
+                      <button ng-click="addDelay(appt)" class="btn btn-sm btn-primary">Update</button>
+                    </td>
                   </tr>
-                  <% end %>
                   </tbody>
                 </thread>
               </table>
