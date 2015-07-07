@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>Doctos</h4>
+        </div>
+        <div class="panel-body panel-inverse">
+          <div class="row" ng-repeat="row in docRows" style="margin-top: 2em; margin-bottom: 2em;">
+            <div class="col-md-3" ng-repeat="doctor in row">
+              <div class="doc-box" ng-click="loadDoctor(doctor)">
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center; margin-top: 1em; margin-bottom: 1em;">
+                    <img ng-src="{{doctor.avatar_thumb_url}}"/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center;">
+                    {{doctor.full_name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

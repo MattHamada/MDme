@@ -13,9 +13,11 @@ class Admins::DoctorsController < ApplicationController
   # before_filter :require_admin_login
   before_action :authenticate_admin_header
 
+
   # GET admin.mdme.us/admins/:admin_id/doctors
   def index
     @doctors = Doctor.in_clinic(@admin.clinic)
+
   end
 
   # GET admin.mdme.us/admins/:admin_id/doctors/new

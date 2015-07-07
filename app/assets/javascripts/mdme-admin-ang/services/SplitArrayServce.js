@@ -1,11 +1,11 @@
 //Splits an array into an array of arrays of set length
 
-app.service('SplitArrayService', function () {
+angular.module('mdme-admin').service('SplitArrayService', function () {
   return {
     SplitArray: function (array, columns) {
       if (array.length <= columns) {
         return [array];
-      };
+      }
 
       var rowsNum = Math.ceil(array.length / columns);
 
