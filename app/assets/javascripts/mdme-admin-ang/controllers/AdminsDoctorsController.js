@@ -13,10 +13,14 @@ angular.module('mdme-admin').controller('AdminsDoctorsController',
     $http(req)
       .success(function(data) {
         $scope.doctors = data.doctors;
-        $scope.docRows = SplitArrayService.SplitArray($scope.doctors, 6);
+        $scope.docRows = SplitArrayService.SplitArray($scope.doctors, 4);
       })
       .error(function(err) {
         console.log(err);
-      })
+    });
+
+    $scope.loadDoctor = function(doctor) {
+      $state.go('admin.doctor', {doctorId: doctor.id, adminId: $scope.admin.id});
+    };
 
 }]);

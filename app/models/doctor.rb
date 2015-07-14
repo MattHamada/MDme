@@ -22,9 +22,11 @@ class Doctor < ActiveRecord::Base
 
   delegate :name, to: :department, prefix: true
 
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
-  validates :clinic_id, presence: true
+  validates :first_name,    presence: true, length: {maximum: 50, minimum: 2}
+  validates :last_name,     presence: true, length: {maximum: 50, minimum: 2}
+  validates :phone_number,  presence: true, length: {maximum: 20}
+  validates :clinic_id,     presence: true
+  validates :department_id, presence: true
 
 
   attr_accessor :is_admin_applying_update

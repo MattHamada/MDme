@@ -23,8 +23,7 @@ gem 'bcrypt-ruby', '3.1.2'
 #text populator
 gem 'faker', '1.1.2'
 
-#generating patient ids
-gem 'uuid'
+#generating patient idsd
 
 #push notifications
 gem 'pushmeup'
@@ -118,7 +117,6 @@ group :production do
 end
 
 #haml markup templates
-gem 'haml'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 4.0.0'
 gem 'sass', '3.2.19'

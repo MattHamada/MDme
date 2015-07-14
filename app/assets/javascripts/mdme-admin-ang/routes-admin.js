@@ -69,10 +69,20 @@ angular.module('mdme-admin')
         templateUrl: 'admins/appointments/index.html',
         controller: 'AdminsAppointmentsController'
       })
+      .state('admin.doctorNew', {
+        url: '/admins/:adminId/doctors/new',
+        templateUrl: 'admins/doctors/new.html',
+        controller: 'AdminsDoctorCreateController'
+      })
       .state('admin.doctors', {
         url: '/admins/:adminId/doctors',
         templateUrl: 'admins/doctors/index.html',
         controller: 'AdminsDoctorsController'
+      })
+      .state('admin.doctor', {
+        url: '/admins/:adminId/doctors/:doctorId',
+        templateUrl: 'admins/doctors/show.html',
+        controller: 'AdminsDoctorController'
       });
     $urlRouterProvider.otherwise('/');
   }]);

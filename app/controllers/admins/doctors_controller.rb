@@ -9,7 +9,7 @@
 class Admins::DoctorsController < ApplicationController
 
   # before_filter :find_admin
-  # before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
+  before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
   # before_filter :require_admin_login
   before_action :authenticate_admin_header
 
@@ -29,18 +29,19 @@ class Admins::DoctorsController < ApplicationController
 
   #POST admin.mdme.us/admins/:admin_id/doctors
   def create
-    @current_user = @admin
     p = doctor_params
     p[:password] =  p[:password_confirmation] = generate_random_password
-    @doctor = Doctor.new(p, bypass_password_validation: true)
+    @doctor = Doctor.new(p)
     @doctor.clinic_id = @admin.clinic_id
 
     if @doctor.save
-      flash[:success] = 'Doctor Successfully Created.'
-      redirect_to admin_doctors_path(@admin)
+      render status: 201, json: {
+                 message: 'Doctor Successfully Created'
+                        }
     else
-      flash[:danger] = 'Error creating doctor'
-      render 'new'
+      render status: 400, json: {
+                 message: @doctor.errors.full_messages
+                        }
     end
 
   end
@@ -67,7 +68,7 @@ class Admins::DoctorsController < ApplicationController
 
   # GET admin.mdme.us/admins/:admin_id/doctors/:id
   def show
-    render partial: 'admins/doctors/ajax_show', object: @doctor if request.xhr?
+    # render partial: 'admins/doctors/ajax_show', object: @doctor if request.xhr?
   end
 
   # DELETE admin.mdme.us/admins/:admin_id/doctors/:id
@@ -105,14 +106,14 @@ class Admins::DoctorsController < ApplicationController
   private
 
     def doctor_params
-      params.require(:doctors).permit(:first_name, :last_name, :email,
+      params.require(:doctor).permit(:first_name, :last_name, :email,
                                      :department_id, :phone_number, :degree,
                                      :alma_mater, :description, :password,
                                      :password_confirmation, :avatar)
     end
 
     def find_doctor
-      @doctor ||= Doctor.find_by_slug(params[:id])
+      @doctor ||= Doctor.find(params[:id])
     end
     helper_method :find_doctor
 
