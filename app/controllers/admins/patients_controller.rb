@@ -9,9 +9,9 @@
 # for admin.mdme.us/admins/:admin_id/patients
 class Admins::PatientsController < ApplicationController
 
-  # before_filter :find_admin
-  # before_filter :find_patient, only: [:show, :edit, :update,
-  #                                     :destroy, :registration_form]
+  before_filter :find_admin
+  before_filter :find_patient, only: [:show, :edit, :update,
+                                      :destroy, :registration_form]
   # before_filter :require_admin_login
   before_action :authenticate_admin_header
 
@@ -47,7 +47,7 @@ class Admins::PatientsController < ApplicationController
   end
 
   def show
-    render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
+    # render partial: 'admins/patients/ajax_show', object: @patient if request.xhr?
   end
 
   def registration_form
@@ -141,7 +141,7 @@ class Admins::PatientsController < ApplicationController
     end
 
   def find_patient
-      @patient ||= Patient.find_by_slug!(params[:id])
+      @patient ||= Patient.find(params[:id])
     end
     helper_method :find_patient
 

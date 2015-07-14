@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <flare-messages></flare-messages>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>Patients</h4>
+        </div>
+        <div class="panel-body panel-inverse">
+          <div class="row" ng-repeat="row in patientRows" style="margin-top: 2em; margin-bottom: 2em;">
+            <div class="col-md-3" ng-repeat="patient in row">
+              <div class="doc-box" ng-click="loadPatient(patient)">
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center; margin-top: 1em; margin-bottom: 1em;">
+                    <img ng-src="{{patient.avatar_thumb_url}}"/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center;">
+                    {{patient.full_name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+      <div class="row">
+        <div class="col-md-12 inverse-color">
+          <a ui-sref="admin.patientNew({adminId: {{admin.id}}})">Add Patient</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
