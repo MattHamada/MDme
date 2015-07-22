@@ -8,7 +8,7 @@ gem 'rails', '4.2.1'
 
 #gem 'activejob_time_serialize', '0.1.1'
 
-#gem 'bootstrap-sass', '3.3.1'
+gem 'bootstrap-sass', '3.3.1'
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'
 
