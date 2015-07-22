@@ -339,6 +339,7 @@ DEPENDENCIES
   rabl
   rails (= 4.2.1)
   rails_12factor (= 0.0.2)
+  rails_serve_static_assets
   rdoc
   responders
   rqrcode-rails3
