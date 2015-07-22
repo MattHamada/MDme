@@ -1,0 +1,39 @@
+<div ng-controller="StaticMenuController">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" style="text-align: center;">
+        <a href="#/"><img class="logo img-responsive" ng-src="{{logoSrc}}"></a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <hr id="menu-topbar-black"/>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom: 9em;">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row top-links home-menu-links">
+        <div class="col-xs-3 col-md-3" ng-class="currentNav('/about')">
+          <a href="#/about">ABOUT</a>
+        </div>
+        <div class="col-xs-3 col-md-3" ng-class="currentNav('/services')">
+          <a href="#/services">SERVICES</a>
+        </div>
+        <div class="col-xs-3 col-md-3" ng-class="currentNav('/contact')">
+          <a href="#/contact">CONTACT</a>
+        </div>
+        <div  ng-hide='loggedIn()' class="col-xs-3 col-md-3" ng-class="currentNav('/signin')">
+          <a href="#/signin">SIGN IN</a>
+        </div>
+        <div ng-show="loggedIn()" class="col-xs-3 col-md-3" ng-class="currentNav('/patients')">
+          <a href="#/patients">MY ACCOUNT</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div ui-view class="view-frame animate-view"></div>
+</div>
+

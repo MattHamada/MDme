@@ -9,24 +9,23 @@
 # www.mdme.us/patients
 class PatientsController < ApplicationController
 
-  before_filter :find_patient
-  before_filter :require_patient_login
-  before_filter :get_upcoming_appointment
+  # before_filter :find_patient
+  # before_filter :require_patient_login
+  # before_filter :get_upcoming_appointment
+
+  before_action :authenticate_header
 
   # GET www.mdme.us/patients/:id
   def show
-    @active = :profile
-    add_breadcrumb 'Home', patients_path
-    add_breadcrumb 'My Profile', patient_path(@patient)
-    respond_to do |format|
-      format.html do |variant|
-        variant.mobile { render 'patients/mobile/show' }
-      end
-      format.json  { render :json => @patient, except: [:created_at,
-                                                        :updated_at,
-                                                        :password_digest,
-                                                        :remember_token] }
-    end
+    # respond_to do |format|
+    #   format.html do |variant|
+    #     variant.mobile { render 'patients/mobile/show' }
+    #   end
+    #   format.json  { render :json => @patient, except: [:created_at,
+    #                                                     :updated_at,
+    #                                                     :password_digest,
+    #                                                     :remember_token] }
+    # end
   end
 
   # GET www.mdme.us/patients/:id/edit
@@ -40,23 +39,18 @@ class PatientsController < ApplicationController
 
   # POST www.mdme.us/patients/:id
   def update
-    @current_user = @patient
-    #skip password validation on update if validated here
-    if @patient.authenticate(params[:verify][:verify_password])
-      @patient.bypass_password_validation = true
-      @patient.attributes = patient_params
+    p = patient_params
+    if @patient.authenticate(p[:password])
+      @patient.attributes = p
+
       if @patient.save
-        flash[:success] = 'Patient Successfully Updated'
-        redirect_to patient_path(@patient)
+        render json: { status: 'patient updated' }
       else
-        flash.now[:danger] = 'Invalid parameters entered'
-        render 'edit'
+        render status: 400, json: { status: 'error', errors: @patient.errors.full_messages }
       end
     else
-      flash[:danger] = 'Invalid password entered'
-      render 'edit'
+      render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
     end
-
   end
 
   # GET www.mdme.us/patients
@@ -66,6 +60,7 @@ class PatientsController < ApplicationController
   end
 
   # GET www.mdme.us/patients/:id/changepassword
+  #DEPRICATED
   def change_password
     @active = :profile
     add_breadcrumb 'Home', patients_path
@@ -73,20 +68,26 @@ class PatientsController < ApplicationController
     add_breadcrumb 'Change Password', patient_password_path(@patient)
   end
 
-  # POST www.mdme.us/patients/:id/updatepassword
+  # PATCH www.mdme.us/patients/:id/updatepassword
   def update_password
-    if @patient.authenticate(params[:old_password])
-      if @patient.update_attributes(password: params[:new_password],
-                                   password_confirmation: params[:new_password_confirm])
-        flash[:success] = 'Password updated'
-        redirect_to patient_path(@patient)
+    if @patient.authenticate(params[:oldPassword])
+      if @patient.update_attributes(password: params[:newPassword],
+                                   password_confirmation: params[:newPasswordConf])
+        render status: 201, json: {status: 'Password Changed'}
       else
-        flash[:danger] = 'Unable to change password'
-        render 'change_password'
+        render status: 401, json:{status: @patient.errors.full_messages[0]}
       end
     else
-      flash[:danger] = 'Old password invalid'
-      render 'change_password'
+      render status: 401, json: {status: 'Old password invalid'}
+    end
+  end
+
+  def get_upcoming_appointment
+    upcoming_appointment = @patient.upcoming_appointment
+    if upcoming_appointment
+      render json:  get_appointment_progress_bar(upcoming_appointment).to_json
+    else
+      render json: {}
     end
   end
 
@@ -111,7 +112,7 @@ class PatientsController < ApplicationController
                                       :doctor_id,
                                       :home_phone,
                                       :work_phone,
-                                      :cell_phone,
+                                      :mobile_phone,
                                       :work_phone_extension,
                                       :sex,
                                       :social_security_number,
@@ -124,16 +125,46 @@ class PatientsController < ApplicationController
                                       :avatar)
       end
 
-    def find_patient
-      @patient ||= current_patient || Patient.find_by_slug!(params[:id])
+    # def find_patient
+    #   @patient ||= current_patient || Patient.find_by_slug!(params[:id])
+    # end
+    # helper_method :find_patient
+
+    #TODO might belong in appointment model
+    def get_appointment_progress_bar(upcoming_appointment)
+      results = {
+          date: upcoming_appointment.date,
+          time: upcoming_appointment.delayed_time_ampm
+      }
+      minutes_left =
+          ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+      results[:minutesLeft] = minutes_left
+      results[:percent] = 100-minutes_left
+      case minutes_left
+        when 21..120
+          results[:color] = 'success'
+        when 6..20
+          results[:color] = 'warning'
+        when 0..5
+          results[:color] = 'danger'
+        else
+          results[:color] = 'success'
+          results[:percent] = 0
+      end
+      if minutes_left < 60
+       results[:timeLeft] = "#{minutes_left} minutes until appointment"
+      else
+        hours_left = minutes_left / 60
+        if hours_left == 1 then h = 'hour' else h = 'hours' end
+       results[:timeLeft] =
+            "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
+      end
+      results[:barClass] = 'progress-bar-' + results[:color]
+      results[:timeLeft] = minutes_left.to_s + 'minutes until appointment'
+      results
     end
-    helper_method :find_patient
 
 
-    def get_upcoming_appointment
-      @upcoming_appointment = @patient.upcoming_appointment
-      get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
-    end
 
 
 end

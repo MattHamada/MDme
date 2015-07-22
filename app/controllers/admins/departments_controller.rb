@@ -10,7 +10,7 @@
 class Admins::DepartmentsController < ApplicationController
 
   before_filter :find_admin
-  before_filter :require_admin_login
+  before_filter :authenticate_admin_header
 
   # GET admin.mdme.us/admins/:admin_id/departments
   def index

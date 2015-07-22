@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'Patient Pages' do
+describe 'Patient Pages', :js => true do
   subject { page }
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   before do
     #comment out stub to call real api
     allow(clinic).to receive(:call_google_api_for_location).and_return(
@@ -314,7 +314,7 @@ describe 'Patient Pages' do
 
       describe 'editing requests pages' do
         let(:appointment) { FactoryGirl.create(:appointment_request) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:doctors) { FactoryGirl.create(:doctors) }
         before do
           doctor.save
           appointment.save
@@ -396,7 +396,7 @@ describe 'Patient Pages' do
   #separated due to swtich to webkit from rack
   describe 'Request an appointment', :js => true do
     let(:appointment) { FactoryGirl.create(:appointment_request) }
-    let(:doctor)  { FactoryGirl.create(:doctor) }
+    let(:doctors)  { FactoryGirl.create(:doctors) }
     before do
       doctor.save!
       patient.save!
@@ -426,7 +426,7 @@ describe 'Patient Pages' do
     end
 
     describe 'Can only choose doctors in same clinic' do
-      let(:doctor2) { FactoryGirl.create(:doctor,
+      let(:doctor2) { FactoryGirl.create(:doctors,
                                          email: 'newDoc@doc.com',
                                          clinic_id: 2) }
       before do

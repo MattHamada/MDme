@@ -7,16 +7,16 @@
   <div class="col-md-8 col-md-offset-2">
     <div class="row top-links home-menu-links">
       <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :about %>">
-      <%= link_to 'ABOUT', about_path %>
+      <%= link_to 'ABOUT', "#/about" %>
     </div>
     <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :services %>">
-      <a href="#">SERVICES</a>
+      <a href="#/services">SERVICES</a>
     </div>
     <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :contact %>">
-      <%= link_to 'CONTACT', contact_path %>
+      <%= link_to 'CONTACT', '#/contact' %>
     </div>
     <div class="col-xs-3 col-md-3 <%= 'top-links-active' if @active == :signin %>">
-      <%= link_to 'SIGN IN', signin_path %>
+      <%= link_to 'SIGN IN', '#/signin' %>
     </div>
   </div>
   </div>

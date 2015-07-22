@@ -40,13 +40,16 @@ module MDme
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
+    config.assets.paths << Rails.root.join("vendor", "assets", "bower_components")
+    config.assets.paths << Rails.root.join("vendor","assets",  "bower_components", "bootstrap-sass-official", "assets", "fonts")
+    config.assets.precompile << %r(.*.(?:eot|svg|ttf|woff)$)
+    Rails.application.config.assets.precompile += %w( bootstrap/glyphicons-halflings-regular.woff2 )
 
-    #for fonts
-    config.assets.precompile << Proc.new { |path|
-      if path =~ /\.(eot|svg|ttf|woff)\z/
-        true
-      end
-    }
+    config.assets.precompile += %w(
+      teaspoon.css
+      teaspoon-teaspoon.js
+      teaspoon-jasmine.js
+    )
 
     #set default time zone - used for appointments
     config.time_zone = 'Arizona'

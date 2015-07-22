@@ -7,6 +7,7 @@
 
 # +SessionsController+ for sessions and cookies; handles logging in/out
 class SessionsController < ApplicationController
+  include AuthToken
 
   # Signin page for patients on www subdomain
   # GET www.mdme.us/signin
@@ -28,34 +29,42 @@ class SessionsController < ApplicationController
     if request.subdomain == 'doctors'
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
       if doctor && doctor.authenticate(params[:session][:password])
-        sign_in doctor, :doctor
+        sign_in doctor, :doctors
+        # token = AuthToken.issue_token({user_id: doctor.id})
         redirect_to doctor_path(doctor)
       else
         flash.now[:danger] = 'Invalid email/password combination'
         render 'doctors/signin'
       end
     elsif request.subdomain == 'admin'
-      admin = Admin.find_by(email: params[:session][:email].downcase)
-      if admin && admin.authenticate(params[:session][:password])
-        sign_in admin, :admin
-        redirect_to admins_path
+      admin = Admin.find_by(email: params[:email].downcase)
+      if admin && admin.authenticate(params[:password])
+        # sign_in admin, :admin
+        # redirect_to admins_path
+        token = AuthToken.issue_token({admin_id: admin.id})
+        render json: {
+                   admin_id: admin.id,
+                   clinic_id: admin.clinic.id,
+                   api_token: {
+                       token: token
+                   }
+               }
       else
-        flash[:danger] = 'Access Denied'
-        redirect_to root_path
+        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
       end
     else
-      patient = Patient.find_by(email: params[:session][:email].downcase)
-      if patient && patient.authenticate(params[:session][:password])
-        sign_in patient, :patient
-
-        if request.variant.include? :mobile
-          redirect_to patient_mobile_menu_path(patient)
-        else
-          redirect_to patients_path
-        end
+      patient = Patient.find_by(email: params[:email].downcase)
+      if patient && patient.authenticate(params[:password])
+        # sign_in patient, :patient
+        token = AuthToken.issue_token({user_id: patient.id})
+        render json: {
+                   user_id: patient.id,
+                   api_token: {
+                     token: token
+                   }
+               }
       else
-        flash.now[:danger] = 'Invalid email/password combination'
-        render 'new'
+        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
       end
     end
   end
@@ -63,7 +72,7 @@ class SessionsController < ApplicationController
   # DELETE www.mdme.us/sessions/:id
   def destroy
     if request.subdomain == 'doctors'
-      sign_out :doctor
+      sign_out :doctors
     elsif request.subdomain =='admin'
       sign_out :admin
     else

@@ -10,12 +10,19 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  protect_from_forgery #with: :exception
 
   include SessionsHelper
 
   before_action :set_variant
   before_filter :expire_hsts
+
+
+  after_filter :set_csrf_cookie_for_ng
+
+  def set_csrf_cookie_for_ng
+    cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
+  end
 
   # Used to define if user is on mobile browser
   def set_variant
@@ -30,55 +37,59 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Used for making ajax calls between subdomains
-  def allows_cors
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
-    headers['Access-Control-Request-Method'] = '*'
-    headers['Access-Control-Allow-Headers'] =
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  end
+  # # Used for making ajax calls between subdomains
+  # def allows_cors
+  #   headers['Access-Control-Allow-Origin'] = '*'
+  #   headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+  #   headers['Access-Control-Request-Method'] = '*'
+  #   headers['Access-Control-Allow-Headers'] =
+  #       'Origi, X-Requested-With, Content-Type, Accept, Authorization'
+  # end
 
   # Sets bootstrap variables for filling and coloring the progress bar
   # success is green; warning is yellow; danger is red
-  def get_appointment_progress_bar(upcoming_appointment)
-    minutes_left =
-      ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
-    case minutes_left
-      when 81..120
-        @color = 'success'
-        @percent = 20
-      when 70..81
-        @color = 'success'
-        @percent = 40
-      when 59..69
-        @color = 'success'
-        @percent = 50
-      when 35..58
-        @color = 'success'
-        @percent = 65
-      when 21..34
-        @color = 'success'
-        @percent = 75
-      when 6..20
-        @color = 'warning'
-        @percent = 80
-      when 0..5
-        @color = 'danger'
-        @percent = 90
-      else
-        @color = 'success'
-        @percent = 0
+
+  protected
+    def authenticate_header
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        @patient = Patient.find_by(id: payload['user_id'])
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
     end
-    if minutes_left < 60
-      @humanized_time_left = "#{minutes_left} minutes until appointment"
-    else
-      hours_left = minutes_left / 60
-      if hours_left == 1 then h = 'hour' else h = 'hours' end
-      @humanized_time_left =
-          "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
+
+    def authenticate_admin_header
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        @admin = Admin.find_by(id: payload['admin_id'])
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
     end
-  end
+
+    def poly_authenticate_header
+      begin
+        token = request.headers['Authorization'].split(' ').last
+        payload, header = AuthToken.valid?(token)
+        if payload.has_key? 'admin_id'
+          @admin = Admin.find_by(id: payload['admin_id'])
+        elsif payload.has_key? 'user_id'
+          @patient = Patient.find_by(id: payload['user_id'])
+        end
+      rescue
+        render json: { error: 'Could not authenticate your request.  Please login'},
+               status: :unauthorized
+      end
+    end
+
+    def verified_request?
+      super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
+    end
 
   private
     # Makes browsers not think site is sketchy when ssl turned off.

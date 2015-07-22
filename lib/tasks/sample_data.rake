@@ -18,7 +18,24 @@ namespace :db do
                        state:    'Ma',
                        zipcode:  '02114',
                        country:  'United States',
-                       timezone: 'America/New_York')
+                       is_open_sunday: false,
+                       is_open_monday: true,
+                       is_open_tuesday: true,
+                       is_open_wednesday: true,
+                       is_open_thursday: true,
+                       is_open_friday: true,
+                       is_open_saturday: false,
+                       monday_open_time: '8:00 AM',
+                       monday_close_time: '4:00PM',
+                       tuesday_open_time: '8:00 AM',
+                       tuesday_close_time: '4:00PM',
+                       wednesday_open_time: '8:00 AM',
+                       wednesday_close_time: '4:00PM',
+                       thursday_open_time: '8:00 AM',
+                       thursday_close_time: '4:00PM',
+                       friday_open_time: '8:00 AM',
+                       friday_close_time: '4:00PM',
+                       appointment_time_increment: 20)
 
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
@@ -47,8 +64,8 @@ namespace :db do
     Doctor.create!(first_name: 'Healthy',
                    last_name: 'doctorson',
                    email: 'doctor@example.com',
-                   password: 'Qwerty123!',
-                   password_confirmation: 'Qwerty123!',
+                   password: 'AndrewMattMDME3000!',
+                   password_confirmation: 'AndrewMattMDME3000!',
                    department_id: 1,
                    degree: 'MD',
                    alma_mater: 'Harvard',
@@ -62,8 +79,8 @@ namespace :db do
                         clinic_id: 1)
 
     Admin.create!(email: 'admin@example.com',
-                  password: 'Qwerty123!',
-                  password_confirmation: 'Qwerty123!',
+                  password: 'AndrewMattMDME3000!',
+                  password_confirmation: 'AndrewMattMDME3000!',
                   clinic_id: 1)
 
 
@@ -71,7 +88,7 @@ namespace :db do
     60.times do |n|
       name = Faker::Name.name.split(' ')
       email = "examplePatient#{n+1}@example.com"
-      password = 'Qwerty123!'
+      password = 'AndrewMattMDME3000!'
       doctor_id = rand_int(1,6)
       sex = rand_int(0,1)
       social_security_number = "#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}-#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}#{rand_int(0,9)}"
@@ -101,7 +118,7 @@ namespace :db do
     6.times do |n|
       name = Faker::Name.name.split(' ')
       email = "exampleDoctor#{n+1}@example.com"
-      password = 'Qwerty123!'
+      password = 'AndrewMattMDME3000!'
       department_id = rand_int(1,4)
       phone_number = rand_int(0,9).to_s + rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s +
                      rand_int(0,9).to_s + rand_int(0,9).to_s + '-' + rand_int(0,9).to_s + rand_int(0,9).to_s +

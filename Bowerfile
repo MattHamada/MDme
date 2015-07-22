@@ -1,0 +1,13 @@
+asset 'angular'
+asset 'angular-route'
+asset 'angular-resource'
+asset 'angular-ui-router'
+asset 'angular-local-storage'
+asset 'angular-mocks'
+asset 'angular-jwt'
+asset 'bootstrap-sass-official'
+asset 'ng-file-upload'
+asset 'angular-flare'
+asset 'angular-ui-utils'
+asset 'angular-google-maps'
+# vim: ft=ruby

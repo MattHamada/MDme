@@ -9,17 +9,14 @@
 # for mdme.us/patients/:patient_id/appointments
 class Patients::AppointmentsController < ApplicationController
 
-  before_filter :find_patient, except: [:open_appointments]
-  before_filter :require_patient_login
-  before_filter :set_active_navbar_and_crumbs
-  before_filter :load_upcoming_appointment
+  before_action :authenticate_header
 
   # GET mdme.us/patients/:patient_id/appointments
   def index
     @appointments = @patient.appointments.
                              confirmed.
                              not_past.
-                             includes([:doctor, :clinic]).order_by_time
+                             includes([:doctors, :clinic]).order_by_time
   end
 
   # GET mdme.us/patients/:patient_id/appointments/new
@@ -34,13 +31,9 @@ class Patients::AppointmentsController < ApplicationController
   def create
     input = appointment_params
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
-    time = Doctor.find(input[:doctor_id]).open_appointment_times(Date.parse(input[:date]))[(input[:time].to_i)-1]
-    timezone = Clinic.find(input[:clinic_id]).timezone
-    date = Time.zone.parse("#{input[:date]} #{time} #{timezone}")
-    inform = false
-    if input[:inform_earlier_time] == '1'
-      inform = true
-    end
+    time = input[:time]
+    day = Date.parse(input[:date])
+    date = Time.zone.parse("#{day.strftime('%F')} #{time}")
 
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
                                    patient_id: @patient.id,
@@ -48,22 +41,18 @@ class Patients::AppointmentsController < ApplicationController
                                    description: input[:description],
                                    request: true,
                                    clinic_id: input[:clinic_id],
-                                   inform_earlier_time: inform)
+                                   inform_earlier_time: input[:inform_earlier_time])
     if @appointment.save
-      flash[:success] = "Appointment Requested"
-      redirect_to patient_path(@patient)
+      render status: 201, json: {message: 'Appointment requested'}
     else
-      @appointment.errors.each do |attribute, message|
-        flash[:danger] = message
-      end
-      redirect_to new_patient_appointment_path(@patient)
+      render status: 400, json: {errors: @appointment.errors.full_messages.join(", ")}
     end
   end
 
   # Shows patient's requests that have not yet been confirmed.
   # GET mdme.us/patients/:patient_id/appointments/open_requests
   def open_requests
-    @appointments = @patient.appointments.requests.not_past.includes(:doctor)
+    @appointments = @patient.appointments.requests.not_past.includes(:doctors)
   end
 
   # GET mdme.us/patients/:patient_id/appointments/:id/edit
@@ -105,31 +94,17 @@ class Patients::AppointmentsController < ApplicationController
       Appointment.fill_canceled_appointment(@appointment.appointment_time, @appointment.appointment_time) if Date.parse(@appointment.date) == Date.today
     end
     if @appointment.destroy
-      flash[:success] = "Appointment deleted"
-      redirect_to patient_appointments_path(@patient)
+      render status: 200, json: {status: 'Appointment Deleted'}
     else
-      flash.now[:danger] = "An error has occured"
-      render open_requests_path(@patient)
+      render status: 500, json: {}
     end
   end
 
   # GET mdme.us/patients/:patient_id/appointments/:id
   def show
     @appointment = appointment
-    render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
-  end
-
-
-  # TODO is this method depricated? Can it be removed?
-  # ajax load when creating new appointment to see open times when given a date
-  def open_appointments
-    # input = appointment_params
-    # @date = Date.parse(input[:date])
-    # @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
-    # @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
-    # @open_times = @doctor.open_appointment_times(@date)
-    # #@appointment = Appointment.new
-    # render json: {open_times: @open_times}
+    @doctor = Doctor.find(@appointment.doctor.id)
+    # render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
   end
 
   #mobile

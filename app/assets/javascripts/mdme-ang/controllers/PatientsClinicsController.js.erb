@@ -1,0 +1,39 @@
+app.controller('PatientsClinicsController', ['$scope', '$location', '$stateParams', '$http', 'AuthInterceptor', 'uiGmapGoogleMapApi', function($scope, $location, $stateParams, $http, AuthInterceptor, uiGmapGoogleMapApi) {
+  $scope.patient = { id: $stateParams.patientId };
+  $scope.clinics = [];
+  $scope.path = $location.url();
+  $scope.map = {
+      bounds: {
+        northeast: {
+          latitude: 42.3645098802915,
+          longitude: -71.0674605197085
+        },
+        southwest: {
+          latitude: 42.3618119197085,
+          longitude: -71.07015848029151
+        }
+      },
+      zoom: 8
+  };
+
+  var loadClinicsReq = {
+    method: 'GET',
+    url: '/patients/' + $scope.patient.id + '/clinics.json',
+    headers: $http.defaults.headers.common
+  };
+  loadClinicsReq = AuthInterceptor.request(loadClinicsReq);
+  $http(loadClinicsReq)
+    .success(function(data) {
+      $scope.clinics = data.clinics;
+    })
+    .error(function(err) {
+      console.log(err);
+  });
+
+  uiGmapGoogleMapApi.then(function(maps) {
+
+  });
+
+
+}]);
+

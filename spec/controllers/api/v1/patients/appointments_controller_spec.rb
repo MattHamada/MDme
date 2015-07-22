@@ -11,7 +11,7 @@ include ApiHelpers
 describe Api::V1::Patients::AppointmentsController do
   render_views
   let(:patient)              { FactoryGirl.build(:patient) }
-  let(:doctor)               { FactoryGirl.create(:doctor) }
+  let(:doctors)               { FactoryGirl.create(:doctors) }
   let(:appointment)          { FactoryGirl.create(:appointment) }
   let(:appointment_request)  { FactoryGirl.create(:appointment_request) }
   let(:clinic)               { FactoryGirl.build(:clinic) }

@@ -28,13 +28,16 @@ MDme::Application.routes.draw do
   match '/forgot_password', to: 'password_reset#new',    via: 'get',    as: :forgot_password
   match '/forgot_password', to: 'password_reset#create', via: 'post',   as: :password_reset
 
-  get  'patients/:patient_id/clinics/getdoctors'         => 'patients/clinics#getdoctors',             as: :patient_clinic_get_doctors
+
+  post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
+
+  get  'patients/:patient_id/clinics/get-doctors'        => 'patients/clinics#get_doctors',            as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
-  get  'patients/:patient_id/appointments/open_requests' => 'patients/appointments#open_requests',     as: :open_requests
+  get  'patients/:patient_id/appointments/requests'      => 'patients/appointments#open_requests',     as: :open_requests
   get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
-  post 'patients/:id/updatepassword'                     => 'patients#update_password',                as: :patient_update_password
+  patch 'patients/:id/update-password'                     => 'patients#update_password',                as: :patient_update_password
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search
@@ -44,12 +47,14 @@ MDme::Application.routes.draw do
   get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
   get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
-  get  'admins/:admin_id/appointments/ondate'            => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
+  get  'admins/:admin_id/appointments/requests/ondate/:date'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
   get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
-  post 'admins/:admin_id/appointments/delays'            => 'admins/appointments#add_delay',           as: :add_delay
+  post 'admins/:admin_id/appointments/add_delay'         => 'admins/appointments#add_delay',           as: :add_delay
   post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
   post 'admins/:admin_id/appointments/notify_ready'      => 'admins/appointments#notify_ready',        as: :notify_appointment_ready
-
+  get  'admins/:admin_id/doctors/opentimes'              => 'admins/doctors#open_times',               as: :admin_doctors_opentimes
+  get  'patients/:admin_id/doctors/opentimes'            => 'patients/appointments#open_times',        as: :patients_doctors_opentimes
+  get  'clinics/:clinic_id/doctors/opentimes'            => 'clinics/doctors#open_times',              as: :clinics_doctor_opentimes
   get  'doctors/opentimes'                               => 'doctors#open_appointments',               as: :doctor_open_appointments
   get  'doctors/:id/public'                              => 'doctors#show_public',                     as: :doctor_public_show
   get  'doctors/:id/changepassword'                      => 'doctors#change_password',                 as: :doctor_password
@@ -58,6 +63,7 @@ MDme::Application.routes.draw do
   get 'clinics/:id/checkin/:patient_id'                  => 'clinics#checkin',                         as: :clinic_checkin
 
   get 'appointments/:id/fill_appointment'                => 'appointments#fill_appointment',           as: :fill_appointment
+  get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
@@ -74,7 +80,14 @@ MDme::Application.routes.draw do
   resources :patients do
     resources :appointments, controller: 'patients/appointments'
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
+    resources :clinics, only: [:index, :show], controller: 'patients/clinics'
   end
+
+  resources :clinics do
+    resources :doctors, controller: 'clinics/doctors'
+  end
+
+
 
   resources :admins do
     resources :departments,  controller: 'admins/departments'

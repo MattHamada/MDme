@@ -4,7 +4,7 @@ describe 'AdministrationPages' do
   let(:clinic)      { FactoryGirl.build(:clinic) }
   let(:admin)       { FactoryGirl.create(:admin) }
   let(:appointment) { FactoryGirl.create(:appointment) }
-  let(:doctor)      { FactoryGirl.create(:doctor) }
+  let(:doctors)      { FactoryGirl.create(:doctors) }
   let(:department)  { FactoryGirl.create(:department) }
   let(:patient)     { FactoryGirl.create(:patient, clinics: [clinic]) }
   let(:device)      { FactoryGirl.create(:device) }
@@ -160,7 +160,7 @@ describe 'AdministrationPages' do
 
             describe 'Should only see doctors in dept in same clinic' do
               let(:clinic2) { FactoryGirl.build(:clinic) }
-              let(:doctor2) { FactoryGirl.create(:doctor,
+              let(:doctor2) { FactoryGirl.create(:doctors,
                                                  first_name: 'Billiam',
                                                  email: 'doc2@doc2.com',
                                                  clinic_id: 2)}
@@ -326,7 +326,7 @@ describe 'AdministrationPages' do
 
             describe 'can only see doctors in own clinic' do
               let(:clinic2) { FactoryGirl.create(:clinic) }
-              let(:doctor2) { FactoryGirl.create(:doctor, clinic_id: 2,
+              let(:doctor2) { FactoryGirl.create(:doctors, clinic_id: 2,
                                               email: 'docEmailTest.@test.com',
                                               first_name: 'healthier')}
               before do

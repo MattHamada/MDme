@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ClinicsController do
   let(:clinic) { FactoryGirl.build(:clinic) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   let(:patient) { FactoryGirl.create(:patient) }
   let(:appointment) { FactoryGirl.create(:appointment_today) }
   before do

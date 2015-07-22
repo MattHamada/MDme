@@ -31,7 +31,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     @appointments = @patient.appointments.
                                  requests.
                                  not_past.
-                                 includes([:doctor])
+                                 includes([:doctors])
     if @appointments.empty?
       render json: { success: true,
                      info: 'No upcoming appointments',
@@ -45,7 +45,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     @appointments = @patient.appointments.
                                 confirmed.
                                  not_past.
-                                 includes([:doctor])
+                                 includes([:doctors])
     if @appointments.empty?
       render json: { success: true,
                      info: 'No upcoming appointments',
