@@ -44,6 +44,16 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #efefef;
 }
 
+.non-responsive {
+  /* Margin/padding copied from Bootstrap */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  /* Set width to your desired site width */
+}
+
 a:hover {
   text-decoration: none;
   font-weight: bold;
@@ -61,13 +71,13 @@ a:hover {
 }
 
 .field_with_errors {
-  @extend .has-error;
+  @extend .has-error !optional;
 }
 
 .container-black-logo {
   background-image: image-url('MDME_logo.svg');
   background-repeat: no-repeat;
-  background-position: 95% 50%;
+  background-position: 95% -45%;
 
 }
 
@@ -242,7 +252,6 @@ input.signin-form{
 .container-smaller-sized {
   height: 400px;
 }
-
 .container-white {
   background-color: white;
 }
@@ -528,7 +537,55 @@ input, select, textarea{
   background: #000000;
 }
 
+.addr-align {
+ margin-left: 61px;
+}
 
+
+.open-time-day-first-align {
+  display: inline-block;
+  width: 80px;
+  margin-right: 3px;
+  text-align: right;
+}
+
+.open-time-day-align {
+  margin-left: 49px;
+  display: inline-block;
+  width: 80px;
+  margin-right: 3px;
+  text-align: right;
+}
+
+.open-time-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+  margin-right: 7px;
+}
+
+.close-time-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+}
+
+.closed-day-align {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+}
+
+.angular-google-map-container {
+  height: 300px;
+  width:  300px;
+  margin-right: 100px;
+}
+
+.doc-box {
+  height: 175px;
+  width: 150px;
+}
 
 
 

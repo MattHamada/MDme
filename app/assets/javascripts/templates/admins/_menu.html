@@ -1,0 +1,41 @@
+<div ng-controller="AdminsMenuController">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12" style="text-align: right">
+        <a ng-click="logout()" href="#">Sign Out</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" style="text-align: center;">
+        <img class="logo img-responsive" ng-src="{{logoSrc}}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <hr id="menu-topbar-black"/>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom: 9em;">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row top-links home-menu-links">
+        <div class="col-xs-2 col-md-2 col-xs-offset-1 col-md-offset-1">
+          <a ng-href="#/admins/{{admin.id}}/appointments">APPOINTMENTS</a>
+        </div>
+        <div class="col-xs-2 col-md-2">
+          <a ng-href="#/admins/{{admin.id}}/doctors">DOCTORS</a>
+        </div>
+        <div class="col-xs-2 col-md-2">
+          <a ng-href="#/admins/{{admin.id}}/patients">PATIENTS</a>
+        </div>
+        <div class="col-xs-2 col-md-2">
+          <a href="#">DEPARTMENTS</a>
+        </div>
+        <div class="col-xs-2 col-md-xs-2">
+          <a href="#">ADMINISTRATION</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ui-view></div>

@@ -8,6 +8,7 @@
 # +Appointment+ model
 require 'appointment_time_formatting'
 
+#TODO make scope for denied requests so they dont take up open times
 class Appointment < ActiveRecord::Base
   include AppointmentTimeFormatting
 
@@ -19,6 +20,7 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :patient, prefix: true
   delegate :name,      to: :clinic,  prefix: true
   delegate :avatar_thumb_url, to: :doctor, prefix: true
+  delegate :timezone, to: :clinic, prefix: true
 
 
   # Appointments must be at a unique time for patient and doctor in the future
@@ -29,6 +31,7 @@ class Appointment < ActiveRecord::Base
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
   validates :clinic_id,  presence: true
+  validates :description, length: {maximum: 2048}
 
   # Set delayed_time to set time when created to avoid nulls
   before_create { self.appointment_delayed_time = appointment_time }
@@ -244,7 +247,7 @@ class Appointment < ActiveRecord::Base
       errors.add(:appointment_time, "No Date/time entered.")
     else
       errors.add(:appointment_time, "Date/Time must be set in the future.") if
-          appointment_time < DateTime.now
+          appointment_time < DateTime.now.in_time_zone(clinic_timezone)
     end
   end
 

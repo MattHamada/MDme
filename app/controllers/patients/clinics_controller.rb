@@ -9,7 +9,26 @@
 # for mdme.us/patients/:patient_id/clinics
 class Patients::ClinicsController < ApplicationController
 
+  #TODO remove getdoctors exception
+  before_action :authenticate_header
+
+  def index
+    @clinics = @patient.clinics.ordered_name
+  end
+
+  def show
+    @clinic = Clinic.find(params[:id])
+    @doctors = @clinic.doctors
+  end
+
+  # GET mdme.us/patients/:patient_id/clinics/get-doctors
+  def get_doctors
+    @clinic = Clinic.find(params[:id])
+    @doctors = @clinic.doctors
+  end
+
   # GET mdme.us/patients/:patient_id/clinics/getdoctors
+  #DEPRICATED
   # TODO is this method for api?  Should it return a redirect and json?
   def getdoctors
     #verify user in slug is logged in

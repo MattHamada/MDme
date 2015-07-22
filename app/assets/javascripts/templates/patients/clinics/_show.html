@@ -1,0 +1,145 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12">
+        <b>name:</b> {{clinic.name}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <b>address:</b> {{clinic.address1}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="addr-align">{{clinic.address2}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+         <div class="addr-align">{{clinic.address3}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="addr-align">{{clinic.city}}, {{clinic.state}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="addr-align">{{clinic.zipcode}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <b>Phone:</b> {{clinic.phone_number}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <b>Fax:</b> {{clinic.fax_number}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <b>Hours:</b>
+        <span>
+          <div class="open-time-day-first-align">
+            <b> Sunday:</b>
+          </div>
+          <div class="open-time-align">{{clinic.sunday_open_time}}</div> - <div class="close-time-align">{{clinic.sunday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Monday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_monday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_monday">
+          <div class="open-time-align">{{clinic.monday_open_time}}</div> - <div class="close-time-align">{{clinic.monday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Tuesday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_tuesday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_tuesday">
+          <div class="open-time-align">{{clinic.tuesday_open_time}}</div> - <div class="close-time-align">{{clinic.tuesday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Wednesday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_wednesday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_wednesday">
+          <div class="open-time-align">{{clinic.wednesday_open_time}}</div> - <div class="close-time-align">{{clinic.wednesday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Thursday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_thursday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_thursday">
+          <div class="open-time-align">{{clinic.thursday_open_time}}</div> - <div class="close-time-align">{{clinic.thursday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Friday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_friday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_friday">
+          <div class="open-time-align">{{clinic.friday_open_time}}</div> - <div class="close-time-align">{{clinic.friday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="open-time-day-align">
+          <b>Saturday:</b>
+        </div>
+        <span ng-hide="clinic.is_open_saturday"><div class="closed-day-align">Closed</div></span>
+        <span ng-show="clinic.is_open_saturday">
+          <div class="open-time-align">{{clinic.saturday_open_time}}</div> - <div class="close-time-align">{{clinic.saturday_close_time}}</div>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div>
+      <ui-gmap-google-map center="map.center" zoom='map.zoom'>
+        <ui-gmap-marker coords="map.center" idKey="1"></ui-gmap-marker>
+      </ui-gmap-google-map>
+    </div>
+  </div>
+</div>
+<hr/>
+<div class="row" ng-repeat="row in docRows" style="margin-top: 2em; margin-bottom: 2em;">
+  <div class="col-md-3" ng-repeat="doctor in row">
+    <div class="doc-box" ng-click="loadDoctor(doctor)">
+      <div class="row">
+        <div class="col-md-12" style="text-align: center; margin-top: 1em; margin-bottom: 1em;">
+          <img ng-src="{{doctor.avatar_thumb_url}}"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+          {{doctor.full_name}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

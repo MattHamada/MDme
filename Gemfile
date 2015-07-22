@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
-ruby '2.2.0'
-#ruby-gemset=mdme-rails4.2
+ruby '2.2.1'
+#ruby-gemset=mdme
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.1'
 
 #gem 'activejob_time_serialize', '0.1.1'
 
-gem 'bootstrap-sass', '3.3.1'
+#gem 'bootstrap-sass', '3.3.1'
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'
 
@@ -18,13 +18,12 @@ gem 'autoprefixer-rails'
 #                              :branch => '3.0.0'
 
 #for encrypting cookies
-gem 'bcrypt-ruby', '3.1.2'
+gem 'bcrypt-ruby'
 
 #text populator
 gem 'faker', '1.1.2'
 
-#generating patient ids
-gem 'uuid'
+#generating patient idsd
 
 #push notifications
 gem 'pushmeup'
@@ -54,7 +53,18 @@ gem 'attr_encrypted'
 #adds respond_to calls
 gem 'responders'
 
+gem 'tzinfo'
+gem 'tzinfo-data'
+
 gem 'rdoc'
+
+#front end js package manager
+gem 'bower-rails'
+#precaches angular views
+gem 'angular-rails-templates'
+
+#json web token lib
+gem 'jwt'
 
 group :development do
   #nicer error page
@@ -64,6 +74,8 @@ group :development do
   gem 'bullet'
   #for viewing emails sent
   gem 'letter_opener'
+  #security auditing
+  gem 'brakeman', require: false
 end
 
 group :development, :test do
@@ -71,6 +83,8 @@ group :development, :test do
   gem 'sqlite3', '1.3.9'
   #gem 'rspec-rails', '2.14.2'
   gem 'rspec-rails'
+  gem 'teaspoon'
+  gem 'phantomjs'
   # gem 'guard-rspec' #rspec generation and autotest
   #gem 'guard-livereload'
   #gem 'ruby-debug19'  #allow ruby debugger
@@ -78,20 +92,24 @@ group :development, :test do
 end
 
 group :test do
-  gem 'selenium-webdriver', '2.35.1'
+  gem 'selenium-webdriver', '2.45'
   #gem 'rspec-its'
   #gem 'ZenTest'
   gem 'capybara'
   gem 'capybara-webkit'
+  # gem 'capybara-angular'
   gem 'factory_girl_rails', '4.2.0'
-  gem 'cucumber-rails', '1.4.0', :require => false
-  gem 'cucumber-rails-training-wheels' #premade stepdefs
+  # gem 'cucumber-rails', '1.4.0', :require => false
+  # gem 'cucumber-rails-training-wheels' #premade stepdefs
   gem 'database_cleaner', github: 'bmabey/database_cleaner' #reset cucumber db after test
   gem 'libnotify', '0.8.0'
-  gem 'launchy' #debug tool for user stories
+  # gem 'launchy' #debug tool for user stories
   gem 'simplecov', :require => false
   gem 'timecop'
-  gem 'capybara-slow_finder_errors'
+  # gem 'capybara-slow_finder_errors'
+  gem 'poltergeist'
+  # gem 'capybara-angular', github: 'wrozka/capybara-angular'
+  gem 'capybara-screenshot'
 end
 
 group :production, :staging do
@@ -104,9 +122,9 @@ group :production do
 end
 
 #haml markup templates
-gem 'haml'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+# gem 'sass-rails', '~> 4.0.0'
+gem 'sass', '3.2.19'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '2.1.1'
@@ -139,8 +157,6 @@ group :doc do
   gem 'sdoc', '0.3.20', require: false
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the app server
 # gem 'unicorn'

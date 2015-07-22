@@ -3,6 +3,10 @@ module AppointmentTimeFormatting
     appointment_time.strftime('%F')
   end
 
+  def underscore_date
+    appointment_time.strftime('%F').gsub('-','_')
+  end
+
   def date_time_ampm
     appointment_time.strftime('%F %I:%M%p')
   end
@@ -18,11 +22,11 @@ module AppointmentTimeFormatting
   def time_am_pm
     appointment_time.strftime('%I:%M %p')
   end
+  alias_method :time_ampm, :time_am_pm
 
   def time_selector
-    ampm = appointment_time.strftime('%p')
-    hour = appointment_time_hour
-    "#{hour}:#{appointment_time_minute} #{ampm}"
+    last = appointment_time.strftime(":%M %p")
+    "#{appointment_time_hour}#{last}"
   end
 
   def appointment_time_hour

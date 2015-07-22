@@ -8,8 +8,10 @@
 # +AdminsController+ runs on the admins subdomain  admins.mdme.us/admins
 class AdminsController < ApplicationController
 
-  before_filter :find_admin, except: [:signin]
-  before_filter :require_admin_login, except: :signin
+  # before_filter :find_admin, except: [:signin]
+  # before_filter :require_admin_login, except: :signin
+
+  before_action :authenticate_admin_header, except: :signin
 
   # Cannot visit signin page when signed in
   # GET admin.mdme.us/admins/signin
@@ -23,7 +25,7 @@ class AdminsController < ApplicationController
   # Shows a list of all confirmed appointments for the current day
   # GET admin.mdme.us/admins
   def index
-    @appointments = Appointment.in_clinic(current_admin).
+    @appointments = Appointment.in_clinic(@admin).
         today.confirmed.order('appointment_time ASC').load.includes([:patient, :doctor])
   end
 

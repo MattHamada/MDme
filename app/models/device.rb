@@ -4,7 +4,7 @@ class Device < ActiveRecord::Base
 
   def self.test_notifications
     destination = Device.first.token
-    data = {:key => "value", :key2 => ["array", "value"]}
+    data = {:appointment_id => 1, :type => 'READY', message: 'Your appointment with Dr. Denson is ready.'}
     GCM.send_notification(destination, data)
   end
 end

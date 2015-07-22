@@ -1,0 +1,18 @@
+angular.module('mdme-admin').controller('AdminSessionsController', ['$scope', '$state', 'AdminAuth', 'flare', function($scope, $state, AdminAuth, flare) {
+  $scope.logoSrc = '<%= asset_path("full_logo_white.png") %>';
+
+  if (AdminAuth.isAuthenticated()) {
+    $state.go('admin.home');
+  }
+  $scope.signin = function() {
+    if ($scope.signinForm.$valid) {
+      $scope.errors = [];
+      AdminAuth.login($scope.admin).success(function(result) {
+        $state.go('admin.home');
+      }).error(function(err) {
+        $scope.admin = {};
+        flare.error(err.error, 10000);
+      });
+    }
+  };
+}]);

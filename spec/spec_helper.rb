@@ -7,6 +7,10 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 #require 'rspec/autorun'
 require 'subdomains'
+require 'database_cleaner'
+require 'capybara/poltergeist'
+require 'capybara-screenshot/rspec'
+
 #require 'factory_girl_rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -30,10 +34,6 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -47,7 +47,8 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.include Capybara::DSL
-  Capybara.javascript_driver = :webkit
+  # Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :poltergeist
 
   #add helpers from app
   config.include ApplicationHelper
@@ -60,16 +61,51 @@ RSpec.configure do |config|
   #found http://stackoverflow.com/questions/8178120/capybara-with-js-true-causes-test-to-fail
   config.use_transactional_fixtures = false
 
-  config.before :each do
-    if Capybara.current_driver == :rack_test
-      DatabaseCleaner.strategy = :transaction
-    else
-      DatabaseCleaner.strategy = :truncation
-    end
+  # config.before :each do
+  #   if Capybara.current_driver == :rack_test
+  #     DatabaseCleaner.strategy = :transaction
+  #   else
+  #     DatabaseCleaner.strategy = :truncation
+  #   end
+  #   DatabaseCleaner.start
+  # end
+  #
+  #
+  # config.after do
+  #   DatabaseCleaner.clean
+  # end
+  #
+  # config.before(:suite) do
+  #   DatabaseCleaner.clean_with :truncation
+  #   DatabaseCleaner.clean_with :transaction
+  # end
+  #
+  # config.around(:each, type: :feature, js: true) do |ex|
+  #   DatabaseCleaner.strategy = :truncation
+  #   DatabaseCleaner.start
+  #   self.use_transactional_fixtures = false
+  #   ex.run
+  #   self.use_transactional_fixtures = true
+  #   DatabaseCleaner.clean
+  # end
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
     DatabaseCleaner.start
   end
 
-  config.after do
+  config.after(:each) do
     DatabaseCleaner.clean
   end
 
@@ -82,6 +118,12 @@ RSpec.configure do |config|
 
   #for invalid api requests
   config.include ApiHelpers
+
+  config.before :each do
+    @session = Capybara::Session.new(:poltergeist)
+  end
+
+  config.include WaitForAjax
 
 
 end

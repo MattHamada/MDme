@@ -22,9 +22,11 @@ class Doctor < ActiveRecord::Base
 
   delegate :name, to: :department, prefix: true
 
-  validates :first_name, presence: true, length: {maximum: 50}
-  validates :last_name, presence: true, length: {maximum: 50}
-  validates :clinic_id, presence: true
+  validates :first_name,    presence: true, length: {maximum: 50, minimum: 2}
+  validates :last_name,     presence: true, length: {maximum: 50, minimum: 2}
+  validates :phone_number,  presence: true, length: {maximum: 20}
+  validates :clinic_id,     presence: true
+  validates :department_id, presence: true
 
 
   attr_accessor :is_admin_applying_update
@@ -104,12 +106,14 @@ class Doctor < ActiveRecord::Base
   # on a web form for creating/editing appointments
   #===== Parameters
   # * +date+ - A Date object
+  #TODO this does not handle filtering times if doctor works at two locations
   def open_appointment_times(date)
     appointments = self.appointments.given_date(date).confirmed
+    increment = self.clinic.appointment_time_increment
+    stop_time = 60 - increment
     times = []
     (9..16).each do |h|
-      (0..45).step(15) do |m|
-
+      (0..stop_time).step(increment) do |m|
         ampm = ''
         if h < 12
           ampm = 'AM'
@@ -129,7 +133,6 @@ class Doctor < ActiveRecord::Base
         else
           min = m
         end
-        #h = h % 12 if h != 12
 
         times.append("#{hr}:#{min} #{ampm}")
       end
@@ -169,11 +172,11 @@ class Doctor < ActiveRecord::Base
 
   # View helpers
   def avatar_thumb_url
-    avatar.url(:thumb)
+    ActionController::Base.helpers.asset_path(avatar.url(:thumb))
   end
 
   def avatar_medium_url
-    avatar.url(:medium)
+    ActionController::Base.helpers.asset_path(avatar.url(:medium))
   end
 
   def education

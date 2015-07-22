@@ -80,29 +80,51 @@ class DoctorsController < ApplicationController
 
   #TODO move to an API controller?
   #TODO rename method or route to be the same
+  #TODO should really be part of clinic::doctors since doctor could work multiple places
   # API orphan to get open appointment times for a given doctor for
   # creating appointments
   # GET doctors.mdme.us/doctors/opentimes
   def open_appointments
-    input = params[:appointment]
-    @date = Date.parse(input[:date])
-    #clinic_name only present on patient page
-    @clinic_id = 0
-    if  !input[:clinic_name].empty?
-      @clinic_id = Clinic.find_by_name(input[:clinic_name]).id
+    date = Date.parse(params[:date])
+    clinic = Clinic.find(params[:clinic_id])
+    doctor = Doctor.find(params[:doctor_id])
+    # @times = doctor.open_appointment_times(date)
+    @times = clinic.open_appointment_times(date, doctor)
+    if @times.is_a?(Hash)
+      render json: {status: 1, error: @times[:error]}
     else
-      @clinic_id = input[:clinic_id]
+      render json: { status: 0, times: @times }
     end
-    @doctor = Doctor.find_by_full_name(input[:doctor_full_name], @clinic_id)
-    @open_times = @doctor.open_appointment_times(@date)
     #@appointment = Appointment.new
-    render json: {open_times: @open_times}
+    #render json: {open_times: @open_times}
+    # render json: {times: [
+    #     {time: '8:00 AM', enabled: true, selected: false, index: 0},
+    #     {time: '8:30 AM', enabled: false, selected: false, index: 1},
+    #     {time: '9:00 AM', enabled: true, selected: false, index: 2},
+    #     {time: '9:30 AM', enabled: true, selected: false, index: 3},
+    #     {time: '10:00 AM', enabled: false, selected: false, index: 4},
+    #     {time: '10:30 AM', enabled: false, selected: false, index: 5},
+    #     {time: '11:00 AM', enabled: false, selected: false, index: 6},
+    #     {time: '11:30 AM', enabled: true, selected: false, index: 7},
+    #     {time: '12:00 PM', enabled: true, selected: false, index: 8},
+    #     {time: '12:30 PM', enabled: true, selected: false, index: 9},
+    #     {time: '1:00 PM', enabled: false, selected: false, index: 10},
+    #     {time: '1:30 PM', enabled: true, selected: false, index: 11},
+    #     {time: '2:00 PM', enabled: false, selected: false, index: 12},
+    #     {time: '2:30 PM', enabled: false, selected: false, index: 13},
+    #     {time: '3:00 PM', enabled: true, selected: false, index: 14},
+    #     {time: '3:30 PM', enabled: true, selected: false, index: 15},
+    #     {time: '4:00 PM', enabled: true, selected: false, index: 16},
+    #     {time: '4:30 PM', enabled: false, selected: false, index: 17},
+    #     {time: '5:00 PM', enabled: true, selected: false, index: 18},
+    #     {time: '5:30 PM', enabled: true, selected: false, index: 19}]}
+
   end
 
   private
 
     def doctor_params
-      params.require(:doctor).permit(:first_name, :last_name, :email,
+      params.require(:doctors).permit(:first_name, :last_name, :email,
                                      :department_id, :phone_number, :degree,
                                      :alma_mater, :description, :password,
                                      :password_confirmation, :avatar)

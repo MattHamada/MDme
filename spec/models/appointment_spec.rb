@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe Appointment do
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   let(:patient) { FactoryGirl.create(:patient) }
   let(:clinic) { FactoryGirl.create(:clinic) }
   before do
+    clinic.save
+    patient.save
     @appointment = Appointment.new(doctor_id: doctor.id,
                                    patient_id: patient.id,
                                    appointment_time: DateTime.now + 30.minutes,
@@ -48,7 +50,7 @@ describe Appointment do
 
 
     describe 'when appointment at the same time with different doctor' do
-      let(:doctor2) { FactoryGirl.create(:doctor, email: 'fff@bbb.com') }
+      let(:doctor2) { FactoryGirl.create(:doctors, email: 'fff@bbb.com') }
       before do
         doctor2.save!
         @appointment.save
@@ -63,6 +65,7 @@ describe Appointment do
     describe 'when appointment at the same time in different clinic' do
       let(:clinic2) { FactoryGirl.create(:clinic) }
       before do
+        clinic2.save
         @appointment2.clinic_id = 2
         @appointment.save
         @appointment2.save

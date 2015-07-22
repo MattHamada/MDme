@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'Patient Pages' do
+describe 'Patient Pages', :js => true do
   subject { page }
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   before do
     #comment out stub to call real api
     allow(clinic).to receive(:call_google_api_for_location).and_return(
@@ -149,8 +149,6 @@ describe 'Patient Pages' do
             expect(page.find('div.progress-bar.progress-bar-success')['style']).to eq('width: 65%')
           end
         end
-
-
 
         describe '1 hours left on Appointment' do
           let(:upcoming_appointment) { FactoryGirl.create(:appointment,
@@ -316,7 +314,7 @@ describe 'Patient Pages' do
 
       describe 'editing requests pages' do
         let(:appointment) { FactoryGirl.create(:appointment_request) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:doctors) { FactoryGirl.create(:doctors) }
         before do
           doctor.save
           appointment.save
@@ -353,6 +351,7 @@ describe 'Patient Pages' do
           it 'should change appointment count' do
             expect do
               click_link('Delete Request')
+              Appointment.all.reload
             end.to change(Appointment, :count).by(-1)
           end
         end
@@ -378,10 +377,9 @@ describe 'Patient Pages' do
           click_button 'Submit'
         end
         it { is_expected.to have_content 'An email has been sent containing your new password'}
-        # TODO get this working with rails 4.2 deliver_later
-        # it 'Email should be sent to user' do
-        #   last_email.to.should include(patient.email)
-        # end
+        it 'Email should be sent to user' do
+          expect(last_email.to).to include(patient.email)
+        end
       end
     end
   end
@@ -398,7 +396,7 @@ describe 'Patient Pages' do
   #separated due to swtich to webkit from rack
   describe 'Request an appointment', :js => true do
     let(:appointment) { FactoryGirl.create(:appointment_request) }
-    let(:doctor)  { FactoryGirl.create(:doctor) }
+    let(:doctors)  { FactoryGirl.create(:doctors) }
     before do
       doctor.save!
       patient.save!
@@ -428,7 +426,7 @@ describe 'Patient Pages' do
     end
 
     describe 'Can only choose doctors in same clinic' do
-      let(:doctor2) { FactoryGirl.create(:doctor,
+      let(:doctor2) { FactoryGirl.create(:doctors,
                                          email: 'newDoc@doc.com',
                                          clinic_id: 2) }
       before do

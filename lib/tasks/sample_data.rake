@@ -11,7 +11,32 @@ namespace :db do
   desc 'Fill database with sample data'
   task populate: :environment do
     #create first doctor and patient and appointment and clinic
-    c = Clinic.create!(name: 'MDME clinic')
+    c = Clinic.create!(name: 'MGH',
+                       address1: '55 Fruit Street',
+                       address2: '9th floor',
+                       city:     'Boston',
+                       state:    'Ma',
+                       zipcode:  '02114',
+                       country:  'United States',
+                       is_open_sunday: false,
+                       is_open_monday: true,
+                       is_open_tuesday: true,
+                       is_open_wednesday: true,
+                       is_open_thursday: true,
+                       is_open_friday: true,
+                       is_open_saturday: false,
+                       monday_open_time: '8:00 AM',
+                       monday_close_time: '4:00PM',
+                       tuesday_open_time: '8:00 AM',
+                       tuesday_close_time: '4:00PM',
+                       wednesday_open_time: '8:00 AM',
+                       wednesday_close_time: '4:00PM',
+                       thursday_open_time: '8:00 AM',
+                       thursday_close_time: '4:00PM',
+                       friday_open_time: '8:00 AM',
+                       friday_close_time: '4:00PM',
+                       appointment_time_increment: 20)
+
     p = Patient.create!(first_name: 'John',
                     last_name: 'Doeseph',
                     middle_initial: 'A',

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AppointmentsController do
   let(:clinic) { FactoryGirl.build(:clinic) }
   let(:patient) { FactoryGirl.create(:patient, clinics: [clinic]) }
-  let(:doctor) { FactoryGirl.create(:doctor) }
+  let(:doctors) { FactoryGirl.create(:doctors) }
   let(:appointment) { FactoryGirl.create(:appointment) }
   before do
     #comment out stub to call real api

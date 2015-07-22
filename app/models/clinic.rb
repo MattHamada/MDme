@@ -17,13 +17,40 @@ class Clinic < ActiveRecord::Base
 
 
   validates  :name, presence: true, length: { maximum: 30 }
-  validates  :slug, presence: true, uniqueness: true;
+  validates  :slug, presence: true, uniqueness: true
 
   before_validation :generate_slug
   before_save :set_location_coordinates
 
   # Order clinics alphabetically by name
   scope :ordered_name, -> { order(name: :asc) }
+
+  def open_appointment_times(date, doctor)
+    times = []
+    day = (Date::DAYNAMES[date.wday]).downcase
+    if self.send("is_open_#{day}?")
+      open_time = Time.zone.parse(self.send("#{day}_open_time"))
+      close_time = Time.zone.parse(self.send("#{day}_close_time"))
+      cursor = open_time.clone
+      taken_appointments = doctor.appointments.given_date(date)
+      taken_times = find_taken_times(taken_appointments)
+      n = 0
+      while cursor < close_time
+        e = true
+        e = false if taken_times.include?(cursor.strftime('%I:%M %p'))
+        times << {
+            time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
+            enabled: e,
+            selected: false,
+            index: n }
+        n+= 1
+        cursor += self.appointment_time_increment.minutes
+      end
+    else
+      return {error: "Clinic is closed on #{date.strftime('%F')}"}
+    end
+    times
+  end
 
   # Called on clinic creation
   # Calls google geolocation api for latitude/longitude coordinates of
@@ -41,12 +68,14 @@ class Clinic < ActiveRecord::Base
     response = call_google_api_for_location(address)
     json = JSON.parse(response)
     unless json['results'].empty?
-      #latitude = json['results'][0]['geometry']['location']['lat']
-      #longitude = json['results'][0]['geometry']['location']['lng']
+      latitude = json['results'][0]['geometry']['location']['lat']
+      longitude = json['results'][0]['geometry']['location']['lng']
       ne_latitude  = json['results'][0]['geometry']['viewport']['northeast']['lat']
       ne_longitude = json['results'][0]['geometry']['viewport']['northeast']['lng']
       sw_latitude  = json['results'][0]['geometry']['viewport']['southwest']['lat']
       sw_longitude = json['results'][0]['geometry']['viewport']['southwest']['lng']
+      self.latitude     = latitude     unless latitude.nil?
+      self.longitude    = longitude    unless longitude.nil?
       self.ne_latitude  = ne_latitude  unless ne_latitude.nil?
       self.ne_longitude = ne_longitude unless ne_longitude.nil?
       self.sw_latitude  = sw_latitude  unless sw_latitude.nil?
@@ -92,5 +121,15 @@ class Clinic < ActiveRecord::Base
   def to_param
     slug
   end
+
+  private
+    #given list of appointments, will return times in strftime('%I:%M %p')
+    def find_taken_times(taken_appointments)
+      times = []
+      taken_appointments.find_each do |appt|
+        times << appt.appointment_time.strftime('%I:%M %p')
+      end
+      times
+    end
 end
 

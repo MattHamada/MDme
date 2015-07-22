@@ -3,7 +3,7 @@
 
 <div class="col-xs-8">
   <div class="row">
-    <div class="col-xs-12">
+    <div cla<ss="col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading"><h4>Add Appointment</h4></div>
         <div class="panel-body">
@@ -53,8 +53,8 @@
               <br/>
               <br/>
               <div class='form-group'>
-                <%= f.label(:doctor, "Select Doctor") %>
-                <%= collection_select(:doctor, :doctor_id, Doctor.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
+                <%= f.label(:doctors, "Select Doctor") %>
+                <%= collection_select(:doctors, :doctor_id, Doctor.in_clinic(current_admin), :id, :full_name, {}, { class: 'form-control'}) %>
               </div>
               <div class='form-group'>
                 <%= f.label(:patient, "Select patient") %>

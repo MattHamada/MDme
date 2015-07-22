@@ -1,0 +1,42 @@
+<div ng-controller="AdminSessionsController">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" style="text-align: center;">
+        <img class="logo img-responsive" ng-src="{{logoSrc}}">
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Sign In</h4></div>
+        <div class="panel-body panel-inverse">
+          <flare-messages></flare-messages>
+          <form name="signinForm" ng-submit="signin()">
+            <fieldset>
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="form-group">
+                    <input type="email" class="form-control" placeholder="email" ng-model="admin.email" ng-maxlength="50" required id="signin_email" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="form-group">
+                    <input type="password" class="form-control" placeholder="password" ng-model="admin.password" ng-maxlength="50" required id="signin_password" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div  style="text-align: center">
+                  <button type="submit" class="btn btn-lg btn-default signin-button">SIGN IN</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

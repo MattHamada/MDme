@@ -31,7 +31,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     @appointments = @patient.appointments.
                                  requests.
                                  not_past.
-                                 includes([:doctor])
+                                 includes([:doctors])
     if @appointments.empty?
       render json: { success: true,
                      info: 'No upcoming appointments',
@@ -40,12 +40,12 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     end
   end
 
-  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/confirmed_appointments
+  # GET www.mdme.us/api/v1/patients/:patient_id/appointments/confirmed
   def confirmed_appointments
     @appointments = @patient.appointments.
-        confirmed.
-        not_past.
-        includes([:doctor])
+                                confirmed.
+                                 not_past.
+                                 includes([:doctors])
     if @appointments.empty?
       render json: { success: true,
                      info: 'No upcoming appointments',

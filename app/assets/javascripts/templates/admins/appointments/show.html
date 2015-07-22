@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Appointment Details</h4></div>
+        <div class="panel-body panel-inverse">
+          <div class="row">
+            <div col-md-12>
+              <b>Doctor: </b><a href="#">{{appointment.doctor_full_name}}</a>
+            </div>
+          </div>
+          <div class="row">
+            <div col-md-12>
+              <b>Patient: </b><a href="#">{{appointment.patient_full_name}}</a>
+            </div>
+          </div>
+          <div class="row">
+            <div col-md-12>
+              <b>Time: </b>{{appointment.date_time_ampm}}
+            </div>
+          </div>
+          <div class="row">
+            <div col-md-12>
+              <b>Notes: </b>{{appointment.description}}
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-md-12">
+              <a ui-sref="admin.appointmentEdit({appointmentId: {{appointment.id}}, adminId: {{admin.id}}})">Edit Appointment</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <a href="#">Delete Appointment</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

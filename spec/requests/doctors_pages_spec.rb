@@ -5,7 +5,7 @@ describe 'DoctorsPages' do
   before { switch_to_subdomain('doctors') }
 
   describe 'Must be signed in to view doctor pages' do
-    let(:doctor) { FactoryGirl.create(:doctor) }
+    let(:doctors) { FactoryGirl.create(:doctors) }
 
     before { visit doctor_path(doctor) }
     it { is_expected.to have_content 'Sign In' }
@@ -19,9 +19,6 @@ describe 'DoctorsPages' do
     }
     it { is_expected.to have_content('Sign In') }
 
-
-
-
     describe 'Doctor signing in' do
       describe 'with invalid information' do
         before { click_button 'SIGN IN' }
@@ -32,7 +29,7 @@ describe 'DoctorsPages' do
 
       describe 'with valid information' do
         let(:department) { FactoryGirl.create(:department) }
-        let(:doctor) { FactoryGirl.create(:doctor) }
+        let(:doctors) { FactoryGirl.create(:doctors) }
         before do
           department.save!
           doctor.save!
@@ -49,7 +46,7 @@ describe 'DoctorsPages' do
         end
 
         describe 'cannot visit another doctors pages' do
-          let(:doctor2) { FactoryGirl.create(:doctor,
+          let(:doctor2) { FactoryGirl.create(:doctors,
                                              email: 'testDoctor@example.com') }
           before do
             doctor2.save
@@ -149,7 +146,7 @@ describe 'DoctorsPages' do
     end
 
     describe 'Forgot Password Page' do
-      let(:doctor) { FactoryGirl.create(:doctor) }
+      let(:doctors) { FactoryGirl.create(:doctors) }
       before do
         click_link 'Forgot Password'
       end
@@ -163,9 +160,9 @@ describe 'DoctorsPages' do
         end
         it { is_expected.to have_content 'An email has been sent containing your new password'}
         #TODO update for rails 4.2 deliver_later (returning last email array as empty)
-        # it 'Email should be sent to user' do
-        #   last_email.to.should include(doctor.email)
-        # end
+        it 'Email should be sent to user' do
+          expect(last_email.to).to include(doctor.email)
+        end
       end
     end
   end
