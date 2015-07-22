@@ -13,13 +13,12 @@ MDme::Application.routes.draw do
   #doctor subdomain
   match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
 
+
   #admin subdomain
-  match '/',     to: 'admins#signin', via: 'get',    constraints: { subdomain: 'admin' }
-  match '/', to: 'static_pages#home', via: 'get'
+  match '/',     to: 'admins#signin',           via: 'get',    constraints: { subdomain: 'admin' }
   #constraints(RootDomain) do
   #constraints subdomain: false do
   root 'static_pages#home', constraints: { subdomain: 'www' }
-
   #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
   match '/help',            to: 'static_pages#help',     via: 'get'#,    constraints: { subdomain: 'www' }
   match '/about',           to: 'static_pages#about',    via: 'get'#,    constraints: { subdomain: 'www' }
