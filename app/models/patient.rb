@@ -142,12 +142,24 @@ class Patient < ActiveRecord::Base
     ActionController::Base.helpers.asset_path(avatar.url(:medium))
   end
 
-  def social_last_four
+  def soial_last_four
     'xxx-xx-' + social_security_number[-4..-1]
   end
 
   def birthday_form_format
     birthday.strftime("%m/%d/%Y")
+  end
+
+  def sex_humanize
+    "Female" if sex else "Male"
+  end
+
+  def location
+    if state.nil?
+    "#{city}, #{country}"
+    else
+      "#{city}, #{state}"
+    end
   end
 
   module MaritalStatus
