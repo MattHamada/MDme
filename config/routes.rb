@@ -117,11 +117,14 @@ MDme::Application.routes.draw do
 
       end
     end
-    namespace :v2 do
-      post 'login' => 'sessions#create', :as => 'login'
-      post 'api_login' => 'sessions#api_login', as: 'api_login'
-      get 'get_token' => 'sessions#get_token', as: 'get_token'
-      delete 'sessions' => 'sessions#destroy', :as => 'logout'
+    namespace :mobile do
+      post 'login' => 'sessions#create'
+      delete 'sessions' => 'sessions#destroy'
+      get  'patients/get-upcoming-appointment'> 'patients#get_upcoming_appointment'
+      resources :patients, controller: 'patients', only: [:show, :edit, :update, :destroy]
+      namespace :patients do
+        resources :devices, controller: 'devices', only: [:create]
+      end
     end
   end
 
