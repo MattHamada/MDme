@@ -142,7 +142,7 @@ class Patient < ActiveRecord::Base
     ActionController::Base.helpers.asset_path(avatar.url(:medium))
   end
 
-  def soial_last_four
+  def social_last_four
     'xxx-xx-' + social_security_number[-4..-1]
   end
 
