@@ -17,7 +17,9 @@ json.patient do
         :city,
         :sex,
         :address1,
+        :address2,
         :city,
         :state,
+        :country,
         :zipcode)
 end

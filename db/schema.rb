@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425162839) do
+ActiveRecord::Schema.define(version: 20150728021004) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",           limit: 255
@@ -184,6 +184,7 @@ ActiveRecord::Schema.define(version: 20150425162839) do
     t.string   "work_phone_extension",             limit: 255
     t.integer  "preferred_daytime_phone"
     t.integer  "sex"
+    t.string   "country"
   end
 
   add_index "patients", ["api_key"], name: "index_patients_on_api_key"

@@ -120,7 +120,7 @@ MDme::Application.routes.draw do
     namespace :mobile do
       post 'login' => 'sessions#create'
       delete 'sessions' => 'sessions#destroy'
-      get  'patients/get-upcoming-appointment'> 'patients#get_upcoming_appointment'
+      get  'patients/get-upcoming-appointment' => 'patients#get_upcoming_appointment'
       resources :patients, controller: 'patients', only: [:show, :edit, :update, :destroy]
       namespace :patients do
         resources :devices, controller: 'devices', only: [:create]
