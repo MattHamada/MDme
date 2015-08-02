@@ -39,7 +39,8 @@ gem 'prawn'
 gem "breadcrumbs_on_rails"
 
 #generate qr code images
-gem 'rqrcode-rails3'
+# gem 'rqrcode-rails3'
+gem 'rqrcode'
 gem 'mini_magick'
 
 #help in calling 3rd party apis

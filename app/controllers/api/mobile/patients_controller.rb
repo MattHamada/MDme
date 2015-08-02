@@ -9,7 +9,6 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
   before_action :authenticate_header
 
   def show
-
   end
 
   def get_upcoming_appointment
@@ -20,6 +19,19 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
       render json: {}
     end
   end
+
+  def upcoming_appointment_qrcode
+    @patient = Patient.first
+    upcoming_appointment = @patient.upcoming_appointment
+    if upcoming_appointment
+      url = "https://www.mdme.us/clinics/#{upcoming_appointment.checkin_key}/checkin"
+      @qrcode = RQRCode::QRCode.new(url)
+      respond_to do |format|
+        format.png { send_data @qrcode.as_png(color: '#0097A7'), disposition: 'inline' }
+      end
+    end
+  end
+
 
   private
     #TODO might belong in appointment model
@@ -55,5 +67,4 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
       results[:timeLeft] = minutes_left.to_s + 'minutes until appointment'
       results
     end
-
 end

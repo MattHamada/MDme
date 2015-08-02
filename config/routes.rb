@@ -30,14 +30,14 @@ MDme::Application.routes.draw do
 
 
   post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
-
+  post 'appointments/check-in'                           => 'admins/appointments#check-in',            as: :admin_appointment_check_in
   get  'patients/:patient_id/clinics/get-doctors'        => 'patients/clinics#get_doctors',            as: :patient_clinic_get_doctors
   get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
   get  'patients/:patient_id/appointments/requests'      => 'patients/appointments#open_requests',     as: :open_requests
   get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
-  patch 'patients/:id/update-password'                     => 'patients#update_password',                as: :patient_update_password
+  patch 'patients/:id/update-password'                    => 'patients#update_password',                as: :patient_update_password
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search
@@ -118,6 +118,7 @@ MDme::Application.routes.draw do
       end
     end
     namespace :mobile do
+      get  'patients/:patient_id/upcoming-appointment-qrcode'=> 'patients#upcoming_appointment_qrcode',     as: :upcoming_appointment_qrcode
       post 'login' => 'sessions#create'
       delete 'sessions' => 'sessions#destroy'
       get  'patients/get-upcoming-appointment' => 'patients#get_upcoming_appointment'

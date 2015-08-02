@@ -37,6 +37,7 @@ class Appointment < ActiveRecord::Base
   before_create { self.appointment_delayed_time = appointment_time }
 
   before_create { generate_access_key }
+  before_create { generate_checkin_key }
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :within_2_hours, -> { where(
@@ -166,6 +167,10 @@ class Appointment < ActiveRecord::Base
   # See AppointmentsController#fill_appointments
   def generate_access_key
     self.access_key = Digest::SHA1.hexdigest(SecureRandom.urlsafe_base64)
+  end
+
+  def generate_checkin_key
+    self.checkin_key = Digest::SHA1.hexdigest(SecureRandom.urlsafe_base64)
   end
 
 

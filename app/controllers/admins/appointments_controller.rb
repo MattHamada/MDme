@@ -219,7 +219,6 @@ class Admins::AppointmentsController < ApplicationController
 
 
 
-
   private
 
     def appointment_params
@@ -233,7 +232,8 @@ class Admins::AppointmentsController < ApplicationController
                  :doctor_id,
                  :patient_id,
                  :description,
-                 :inform_earlier_time)
+                 :inform_earlier_time,
+                 :checkin_key)
     end
 
     def find_admin

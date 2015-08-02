@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728021004) do
+ActiveRecord::Schema.define(version: 20150728165948) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",           limit: 255
@@ -39,9 +39,11 @@ ActiveRecord::Schema.define(version: 20150728021004) do
     t.boolean  "checked_in",                           default: false
     t.boolean  "inform_earlier_time"
     t.string   "access_key",               limit: 255
+    t.string   "checkin_key"
   end
 
   add_index "appointments", ["appointment_time"], name: "index_appointments_on_appointment_time"
+  add_index "appointments", ["checkin_key"], name: "index_appointments_on_checkin_key", unique: true
   add_index "appointments", ["clinic_id"], name: "index_appointments_on_clinic_id"
   add_index "appointments", ["doctor_id", "patient_id"], name: "index_appointments_on_doctor_id_and_patient_id"
   add_index "appointments", ["request"], name: "index_appointments_on_request"
