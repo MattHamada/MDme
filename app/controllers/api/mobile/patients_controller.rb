@@ -6,7 +6,7 @@
 # Proprietary and confidential.
 class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
 
-  # before_action :authenticate_header
+  before_action :authenticate_header
 
   def show
   end
