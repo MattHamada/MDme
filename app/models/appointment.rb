@@ -19,6 +19,7 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :doctor,  prefix: true
   delegate :full_name, to: :patient, prefix: true
   delegate :name,      to: :clinic,  prefix: true
+  delegate :mail_address, to: :clinic, prefix: true
   delegate :avatar_thumb_url, to: :doctor, prefix: true
   delegate :timezone, to: :clinic, prefix: true
 
