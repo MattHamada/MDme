@@ -151,7 +151,7 @@ class Patient < ActiveRecord::Base
   end
 
   def sex_humanize
-    if sex
+    if sex == 1
       "Female"
     else
       "Male"
