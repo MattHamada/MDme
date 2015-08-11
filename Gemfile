@@ -65,6 +65,23 @@ gem 'angular-rails-templates'
 #json web token lib
 gem 'jwt'
 
+#bower assets in gem form
+source 'https://rails-assets.org' do
+  gem 'rails-assets-bootstrap-sass', '3.3.5'
+  gem 'rails-assets-angular', '1.4.3'
+  gem 'rails-assets-angular-route' , '1.4.3'
+  gem 'rails-assets-angular-resource', '1.4.3'
+  gem 'rails-assets-angular-ui-router', '0.2.9'
+  gem 'rails-assets-angular-local-storage', '0.2.2'
+  gem 'rails-assets-angular-mocks', '1.4.3'
+  gem 'rails-assets-angular-jwt', '0.0.9'
+  gem 'rails-assets-ng-file-upload', '6.0.4'
+  # gem 'rails-assets-angular-flare'
+  gem 'rails-assets-angular-ui-utils', '3.0.0'
+  gem 'rails-assets-angular-google-maps', '2.1.5'
+  gem 'rails-assets-angular-ui-validate', '1.1.1'
+end
+
 group :development do
   #nicer error page
   gem 'better_errors'
