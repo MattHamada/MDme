@@ -118,7 +118,7 @@ class Clinic < ActiveRecord::Base
   end
 
   def mail_address
-      name + "\n" + "#{address1} #{address2} #{address3} #{city}, #{state} + #{zipcode}"
+      name + "\n" + "#{address1} #{address2} #{address3} #{city}, #{state} #{zipcode}"
   end
 
   # +slug+ used in URL opposed to +id+

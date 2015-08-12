@@ -413,6 +413,3 @@ DEPENDENCIES
   tzinfo-data
   uglifier (= 2.1.1)
   unicorn
-
-BUNDLED WITH
-   1.10.5

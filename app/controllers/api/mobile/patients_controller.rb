@@ -20,7 +20,7 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
     end
   end
 
-  #TODO gives render error with no appointment, figure what to do with no appt on mobile end
+  #TODO gives render error with no appointment, figure what to do with no appt on mobile end - error image
   def upcoming_appointment_qrcode
     @patient = Patient.first
     upcoming_appointment = @patient.upcoming_appointment
@@ -28,7 +28,7 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
       url = "https://www.mdme.us/clinics/#{upcoming_appointment.checkin_key}/checkin"
       @qrcode = RQRCode::QRCode.new(url)
       respond_to do |format|
-        format.png { send_data @qrcode.as_png(color: '#0097A7'), disposition: 'inline' }
+        format.png { send_data @qrcode.as_png(color: '#00E5FF', size: 800), disposition: 'inline' }
       end
     end
   end
