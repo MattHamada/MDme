@@ -183,17 +183,15 @@ namespace :db do
                          clinic_id: 1)
     end
 
-    puts 'Creating 10 over 2 hours for first patient'
-    10.times do |n|
-      patient_id = 1
+    puts 'Creating 20 over 2 hours for first patient'
+    20.times do |n|
       doctor_id = rand_int(1, 7)
-      appointment_time = rand_time_with_intervals(DateTime.now + 2.hours, DateTime.now + 5.minutes)
-      request = false
-      Appointment.create(patient_id: patient_id,
+      appointment_time = Time.zone.now + ((n*20) + 1).minutes
+      Appointment.create!(patient_id: 1,
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         request: request,
+                         request: false,
                          clinic_id: 1)
     end
 

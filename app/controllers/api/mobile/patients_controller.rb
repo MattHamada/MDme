@@ -28,7 +28,7 @@ class Api::Mobile::PatientsController < Api::Mobile::MobileApplicationController
       url = "https://www.mdme.us/clinics/#{upcoming_appointment.checkin_key}/checkin"
       @qrcode = RQRCode::QRCode.new(url)
       respond_to do |format|
-        format.png { send_data @qrcode.as_png(color: '#00E5FF', size: 800), disposition: 'inline' }
+        format.png { send_data @qrcode.as_png(color: '#0097A7', size: 800), disposition: 'inline' }
       end
     end
   end
