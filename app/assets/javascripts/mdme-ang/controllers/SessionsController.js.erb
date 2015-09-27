@@ -1,4 +1,5 @@
 angular.module('mdme').controller('SessionsController', ['$scope', '$state', 'Auth', 'flare', function($scope, $state, Auth, flare) {
+  $scope.logoSrc = '<%= asset_path("full_logo.png") %>';
   if (Auth.isAuthenticated()) {
     $state.go('user.home');
   }

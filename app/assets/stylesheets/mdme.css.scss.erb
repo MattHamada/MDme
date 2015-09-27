@@ -1,0 +1,155 @@
+//colors
+$mdmeBlue: #3fc3d5;
+$mdmeLightBlue: #41edff;
+//mixins
+@mixin vertical-align($position: relative) {
+  position: $position;
+  top: 50%;
+}
+
+body {
+  font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+//global links
+a {
+  color: $mdmeBlue;
+  text-decoration: none
+}
+
+a:link {
+  color: $mdmeBlue;
+  text-decoration: none;
+}
+
+a:visited {
+  color: $mdmeBlue;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $mdmeBlue;
+  font-weight: bold;
+}
+
+a:active {
+  color: $mdmeBlue;
+  text-decoration: none;
+}
+
+//static pages
+#header {
+  @include vertical-align();
+  background-color:  $mdmeBlue;
+  height: 3em;
+  margin-bottom: 3em;
+}
+
+.static-pages-menu-links {
+  text-align: center;
+  font-size: 18px;
+  a {
+    color: #a6a6ad;
+    text-decoration: none;
+  }
+  a:link {
+    color: #a6a6ad;
+    text-decoration: none;
+  }
+  a:visited {
+    color: #a6a6ad;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #a6a6ad;
+    text-decoration: none;
+  }
+  a:active {
+    color: #a6a6ad;
+    text-decoration: none;
+  }
+}
+
+.static-pages-footer {
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  padding-bottom: 2em;
+}
+
+//signin page
+#signin-logo {
+  height: 180px;
+  display:block;
+  margin:auto;
+
+}
+
+.patient-signin-input {
+  padding: 10px;
+  border: none;
+  transition: border 0.3s;
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  color: $mdmeBlue;
+}
+#patient-signin-email:focus, #patient-signin-email.focus {
+  border-bottom: solid 3px $mdmeBlue;
+}
+
+#patient-signin-email {
+  border-bottom: solid 3px $mdmeBlue;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.blue-input-placeholder {
+  font-size: 16px;
+  input::-webkit-input-placeholder {
+    color: $mdmeBlue;
+  }
+  input:-moz-placeholder {
+    /* FF 4-18 */
+    color: $mdmeBlue;
+  }
+  input::-moz-placeholder {
+    /* FF 19+ */
+    color: $mdmeBlue;
+  }
+  input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: $mdmeBlue;
+  }
+}
+
+#patient-signin-password {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.signin-button {
+  background-color: $mdmeBlue;
+  color: white;
+  width: 10em;
+}
+
+.signin-button:hover {
+  color: white;
+  font-weight: bold;
+}
+
+//contact page
+.contact-logo {
+  background-image: asset-url('contact-image.svg');
+  background-repeat: no-repeat;
+  height: 300px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+//Patient pages
+
