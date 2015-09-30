@@ -1,0 +1,29 @@
+<div id="footer">
+  <div class="row-fluid ">
+    <div class="static-pages-menu-links">
+      <div class="col-sm-4" ng-class="currentNav('/about')">
+        <a href="#/about">about</a>
+      </div>
+      <div class="col-sm-4" ng-class="currentNav('/contact')">
+        <%= link_to 'contact', contact_path %>
+      </div>
+      <% if @current_patient.nil? %>
+        <div  ng-hide='loggedIn()' class="col-sm-4" ng-class="currentNav('/signin')">
+          <%= link_to 'sign in', signin_path %>
+        </div>
+      <% else %>
+        <div ng-show="loggedIn()" class="col-sm- col-xs-4" ng-class="currentNav('/patients')">
+          <a href="#/patients">my account</a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <% debug(params) if Rails.env.development? %>
+    </div>
+  </div>
+
+</div>
+
+

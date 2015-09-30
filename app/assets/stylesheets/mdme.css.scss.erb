@@ -1,14 +1,27 @@
 //colors
 $mdmeBlue: #3fc3d5;
 $mdmeLightBlue: #41edff;
+$mdmeDarkBlue: #0097A7;
 //mixins
 @mixin vertical-align($position: relative) {
   position: $position;
   top: 50%;
 }
 
+html,body {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
 body {
   font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+.form-control-fixed-size {
+  min-width: 20em;
+  width: auto;
+  display: inline;
 }
 
 //global links
@@ -38,14 +51,43 @@ a:active {
 }
 
 //static pages
-#header {
-  @include vertical-align();
+
+#static-wrapper {
+  min-height:100%;
+  position:relative;
+}
+
+#static-content {
+  padding-bottom:100px; /* Height of the footer element */
+}
+
+#header-content {
   background-color:  $mdmeBlue;
-  height: 3em;
-  margin-bottom: 3em;
+  height: 4em;
+  line-height: 4em;
+  margin-bottom: 1.5em;
+  text-align: center;
+}
+
+#footer {
+  padding-top: 2em;
+}
+
+#content {
+  padding-bottom:100px;
+}
+
+.container-black-logo {
+  /*background-image: image-url('MDME_logo.svg');*/
+  /*background-repeat: no-repeat;*/
+  /*background-position: 75% 15%;*/
+  /*height: 30em;*/
+  min-height: 20em;
 }
 
 .static-pages-menu-links {
+  margin-top: 1em;
+  margin-bottom: 1em;
   text-align: center;
   font-size: 18px;
   a {
@@ -68,14 +110,6 @@ a:active {
     color: #a6a6ad;
     text-decoration: none;
   }
-}
-
-.static-pages-footer {
-  position:fixed;
-  left:0;
-  bottom:0;
-  width:100%;
-  padding-bottom: 2em;
 }
 
 //signin page
@@ -131,25 +165,53 @@ a:active {
 }
 
 .signin-button {
-  background-color: $mdmeBlue;
   color: white;
   width: 10em;
 }
 
 .signin-button:hover {
   color: white;
-  font-weight: bold;
 }
 
 //contact page
 .contact-logo {
-  background-image: asset-url('contact-image.svg');
-  background-repeat: no-repeat;
-  height: 300px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+  /*background-image: asset-url('contact-image.svg');*/
+  /*background-repeat: no-repeat;*/
+  height: 100px;
+  display:block;
+  margin: auto;
 }
+
+.btn-primary {
+  background-color: $mdmeBlue;
+  border-color: $mdmeBlue;
+}
+.btn-primary:hover {
+  background-color: $mdmeDarkBlue;
+  border-color: $mdmeDarkBlue;
+}
+  a.btn {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  a.btn:link {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  a.btn:visited {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  a.btn:hover {
+    color: #ffffff;
+    font-weight: normal;
+    text-decoration: none;
+  }
+  a.btn:active {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
 
 //Patient pages
 

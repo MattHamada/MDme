@@ -9,12 +9,11 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require bootstrap-sass
+ *= require bootstrap
  *= require font-awesome
  *= require jquery-ui/datepicker
  *# require_tree .
  *= require mdme.css.scss.erb
  */
-
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap";

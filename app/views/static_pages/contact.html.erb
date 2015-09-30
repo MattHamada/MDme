@@ -1,27 +1,42 @@
-<%= render 'static_pages/header' %>
-<div class="row" style="margin-top: -2em;">
-  <div class="col-md-5 col-md-offset-1" style="text-align: center;">
+<div class="row">
+  <div class="col-sm-6" style="text-align: center;">
     <div class="row">
-      <div class="col-md-6 col-md-offset-4">
-        <div class="contact-logo"></div>
+      <div class="col-sm-12">
+        <%= image_tag "contact-image.png", id: 'contact-logo', class: 'img-responsive center-block ' %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 col-md-offset-4">
+      <div class="12" style="text-align: center;">
         55 Fruit Street<br/>
         Boston, Ma 02114<br/><br/>
         Telephone: 617-724-7285<br/>
         Email: foo@bar.com
       </div>
     </div>
-
   </div>
-  <div class="col-md-4" style="text-align: center;">
-    <h4 style="text-decoration: underline;">EMAIL US</h4> <br/><br/>
-    <%= text_field_tag(:name, '', placeholder: 'Name', class: 'form-inverse form-control') %><br/>
-    <%= text_field_tag(:email, '', placeholder: 'Email', class: 'form-inverse form-control') %><br/>
-    <%= text_field_tag(:phone, '', placeholder: 'Telephone', class: 'form-inverse form-control') %><br/>
-    <%= text_area_tag(:comment, '', placeholder:  'Comments', class: 'form-inverse form-control') %><br/><br/>
-    <%= submit_tag('Submit', class: 'btn btn-medium btn-primary') %>
+  <div class="col-sm-4" style="text-align: center;">
+    <h4 style="text-decoration: underline; text-align: center;">EMAIL US</h4> <br/><br/>
+    <div class="message"></div>
+    <%= form_tag url_for(controller:'static_pages', action:'submit_comment'), method: 'POST', remote: true do %>
+      <fieldset class="form-group">
+        <%= label_tag 'client[name]', '', class:'sr-only'%>
+        <%= text_field_tag 'client[:name]', '', class: 'form-control', placeholder:'name', required: true %>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= label_tag 'client[email]', '', class:'sr-only'%>
+        <%= email_field_tag 'client[:email]', '', class:'form-control', placeholder: 'email', required: true %>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= label_tag 'client[telephone]', '', class:'sr-only'%>
+        <%= text_field_tag 'client[:telephone]', '', class: 'form-control', placeholder: 'Phone', type:'tel' %>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= label_tag 'client[comment]', '', class:'sr-only'%>
+        <%= text_area_tag 'client[:name]', '', class:'form-control', rows: 4, style:'text-align: left; display: block; margin-left: auto; margin-right: auto;', placeholder:'Comments', required: true %>
+      </fieldset>
+      <div style="text-align: center; margin-top: 2em;">
+        <%= submit_tag 'Submit', class:'btn btn-medium btn-primary', id:'contact-submit' %>
+      </div>
+    <% end %>
   </div>
 </div>

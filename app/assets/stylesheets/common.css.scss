@@ -75,7 +75,7 @@ a:hover {
 }
 
 .container-black-logo {
-  background-image: image-url('MDME_logo.svg');
+  background-image: asset-url('MDME_logo.svg');
   background-repeat: no-repeat;
   background-position: 95% -45%;
 
@@ -90,8 +90,6 @@ a:hover {
   margin-right: auto;
 
 }
-
-
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;

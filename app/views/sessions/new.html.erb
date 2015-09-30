@@ -1,0 +1,35 @@
+<div class="row" style="margin-top: 5em;">
+  <div class="col-sm-8 col-sm-offset-2">
+    <%= image_tag('full_logo_small.png', alt: 'logo', class:"img-responsive center-block", style:'max-height: 10em')  %>
+  </div>
+</div>
+<div class="row" style="margin-top: 2em;">
+  <div class="col-sm-8 col-sm-offset-2 ">
+    <%= form_for(:session, url:sessions_path) do |f| %>
+      <%= render 'shared/flash' %>
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 blue-input-placeholder">
+          <%= f.text_field :email, placeholder: 'email', class: 'patient-signin-input form-control', id:"patient-signin-email", required: true %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 blue-input-placeholder">
+          <div class="form-group">
+            <%= f.password_field :password, placeholder: 'password', class: 'patient-signin-input form-control', id:"patient-signin-password", required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div  style="text-align: center">
+          <%= f.submit 'login', class: '"btn btn-lg btn-primary signin-button'  %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 forgot-password-link" style="text-align: center;">
+    <%= link_to 'forgot password?', forgot_password_path %>
+  </div>
+</div>
+

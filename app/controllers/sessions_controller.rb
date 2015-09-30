@@ -54,17 +54,30 @@ class SessionsController < ApplicationController
       end
     else
       patient = Patient.find_by(email: params[:email].downcase)
-      if patient && patient.authenticate(params[:password])
-        # sign_in patient, :patient
-        token = AuthToken.issue_token({user_id: patient.id})
-        render json: {
-                   user_id: patient.id,
-                   api_token: {
-                     token: token
+      respond_to do |format|
+        if patient && patient.authenticate(params[:password])
+          format.html do
+            sign_in patient, :patient
+            redirect_to patient
+          end
+          format.json do
+            token = AuthToken.issue_token({user_id: patient.id})
+            render json: {
+                       user_id: patient.id,
+                       api_token: {
+                           token: token
+                       }
                    }
-               }
-      else
-        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+          end
+        else
+          format.html do
+            flash.now[:danger] = 'Invalid email/password combination'
+            render request.path
+          end
+          format.json do
+            render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+          end
+        end
       end
     end
   end

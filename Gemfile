@@ -58,28 +58,28 @@ gem 'tzinfo-data'
 gem 'rdoc'
 
 #front end js package manager
-gem 'bower-rails'
+# gem 'bower-rails'
 #precaches angular views
-gem 'angular-rails-templates'
+# gem 'angular-rails-templates'
 
 #json web token lib
 gem 'jwt'
 
 #bower assets in gem form
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap-sass', '3.3.5'
-  gem 'rails-assets-angular', '1.4.3'
-  gem 'rails-assets-angular-route' , '1.4.3'
-  gem 'rails-assets-angular-resource', '1.4.3'
-  gem 'rails-assets-angular-ui-router', '0.2.9'
-  gem 'rails-assets-angular-local-storage', '0.2.2'
-  gem 'rails-assets-angular-mocks', '1.4.3'
-  gem 'rails-assets-angular-jwt', '0.0.9'
-  gem 'rails-assets-ng-file-upload', '6.0.4'
+  gem 'rails-assets-bootstrap', '4.0.0.alpha'
+  # gem 'rails-assets-angular', '1.4.3'
+  # gem 'rails-assets-angular-route' , '1.4.3'
+  # gem 'rails-assets-angular-resource', '1.4.3'
+  # gem 'rails-assets-angular-ui-router', '0.2.9'
+  # gem 'rails-assets-angular-local-storage', '0.2.2'
+  # gem 'rails-assets-angular-mocks', '1.4.3'
+  # gem 'rails-assets-angular-jwt', '0.0.9'
+  # gem 'rails-assets-ng-file-upload', '6.0.4'
   # gem 'rails-assets-angular-flare'
-  gem 'rails-assets-angular-ui-utils', '3.0.0'
-  gem 'rails-assets-angular-google-maps', '2.1.5'
-  gem 'rails-assets-angular-ui-validate', '1.1.1'
+  # gem 'rails-assets-angular-ui-utils', '3.0.0'
+  # gem 'rails-assets-angular-google-maps', '2.1.5'
+  # gem 'rails-assets-angular-ui-validate', '1.1.1'
 end
 
 group :development do
@@ -140,8 +140,8 @@ end
 
 #haml markup templates
 # Use SCSS for stylesheets
-# gem 'sass-rails', '~> 4.0.0'
-gem 'sass', '3.2.19'
+gem 'sass-rails', '~> 5.0.4'
+gem 'sass', '3.4.18'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '2.1.1'
@@ -153,13 +153,13 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '3.0.4'
-gem 'jquery-ui-rails', '5.0.3'
+gem 'jquery-rails', '4.0.5'
+gem 'jquery-ui-rails'
 gem 'jquery-turbolinks'
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '2.3.0'
+gem 'turbolinks', '2.5.3'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

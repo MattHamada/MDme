@@ -1,0 +1,4 @@
+$('.message').html('<div class="alert alert-<%= @status.to_s %>"><%= @message %></div>');
+<% if @status == :success %>
+  $('form')[0].reset();
+<% end %>
