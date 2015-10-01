@@ -65,6 +65,10 @@ gem 'rdoc'
 #json web token lib
 gem 'jwt'
 
+#pg for all env
+gem 'pg', '0.18.3'
+
+
 #bower assets in gem form
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap', '4.0.0.alpha'
@@ -96,7 +100,7 @@ end
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '1.3.9'
+  # gem 'sqlite3', '1.3.9'
   #gem 'rspec-rails', '2.14.2'
   gem 'rspec-rails'
   gem 'teaspoon'
@@ -129,7 +133,6 @@ group :test do
 end
 
 group :production, :staging do
-  gem 'pg', '0.15.1'
   gem 'unicorn'
 end
 
