@@ -5,7 +5,7 @@ development:
   pool: 5
   timeout: 5000
   username: ermacaz
-  password:
+  password: qwerty123
 
 test:
   adapter: postgresql
@@ -14,16 +14,16 @@ test:
   pool: 5
   timeout: 5000
   username: ermacaz
-  password:
+  password: qwerty123
 
-test:
+production:
   adapter: postgresql
   encoding: unicode
   database: MDme_production
   pool: 5
   timeout: 5000
   username: ermacaz
-  password:
+  password: qwerty123
 
 
 
