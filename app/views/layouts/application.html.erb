@@ -29,9 +29,9 @@
       <div id="main-content">
         <%= yield %>
       </div>
-      <% if ['static_pages', 'sessions'].include? controller_name %>
+      <%# if ['static_pages', 'sessions'].include? controller_name %>
         <%= render 'layouts/static_pages_footer' %>
-      <% end %>
+      <%# end %>
     </div>
   </body>
 </html>

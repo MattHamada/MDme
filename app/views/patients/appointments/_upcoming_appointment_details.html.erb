@@ -1,0 +1,24 @@
+<% if @upcoming_appointment.nil? %>
+  <div style="text-align: center">
+    <h5>No upcoming appointment</h5>
+  </div>
+<% else %>
+  <div id="upcoming-appointment-details">
+    <strong>Upcoming Appointment Details</strong><br/>
+    <b>Time:</b> <%= @upcoming_appointment.time_am_pm %><br/>
+    <b>Location:</b> <%= @upcoming_appointment.clinic.name %><br/>
+    <div style="margin-left: 6em;">
+      <%= @upcoming_appointment.clinic.address1 %><br/>
+      <% if @upcoming_appointment.clinic.address2.present? %>
+        <%= @upcoming_appointment.clinic.address2 %><br/>
+      <% end %>
+      <% if @upcoming_appointment.clinic.address3.present? %>
+        <%= @upcoming_appointment.clinic.address3 %><br/>
+      <% end %>
+      <%= @upcoming_appointment.clinic.city %>,
+      <%= @upcoming_appointment.clinic.state %>
+      <%= @upcoming_appointment.clinic.zipcode %><br/>
+    </div>
+  </div>
+
+<% end %>

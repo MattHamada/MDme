@@ -12,7 +12,7 @@ class StaticPagesController < ApplicationController
   # GET www.mdme.us
   def home
     if patient_signed_in?
-      redirect_to patients_path
+      redirect_to patient_path(current_patient)
     end
 
   end
