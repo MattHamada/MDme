@@ -9,14 +9,15 @@
 # www.mdme.us/patients
 class PatientsController < ApplicationController
 
-  # before_filter :find_patient
-  # before_filter :require_patient_login
-  # before_filter :get_upcoming_appointment
+  before_filter :find_patient
+  before_filter :require_patient_login
+  before_filter :get_upcoming_appointment
 
-  before_action :authenticate_header
+  # before_action :authenticate_header
 
   # GET www.mdme.us/patients/:id
   def show
+    add_breadcrumb @patient.full_name
     # respond_to do |format|
     #   format.html do |variant|
     #     variant.mobile { render 'patients/mobile/show' }
@@ -83,12 +84,21 @@ class PatientsController < ApplicationController
   end
 
   def get_upcoming_appointment
-    upcoming_appointment = @patient.upcoming_appointment
-    if upcoming_appointment
-      render json:  get_appointment_progress_bar(upcoming_appointment).to_json
-    else
-      render json: {}
+    @upcoming_appointment = @patient.upcoming_appointment
+    respond_to do |format|
+      format.json do
+        if @upcoming_appointment
+          render json:  get_appointment_progress_bar_json(@upcoming_appointment)
+        else
+          render json: {}
+        end
+      end
+      format.html do
+        get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
+      end
+
     end
+
   end
 
   #mobile stuff below
@@ -98,6 +108,10 @@ class PatientsController < ApplicationController
   end
 
   private
+
+  def find_patient
+    @patient ||= current_patient || Patient.find_by_slug!(params[:id])
+  end
 
     def patient_params
       params.require(:patient).permit(:first_name,
@@ -131,7 +145,7 @@ class PatientsController < ApplicationController
     # helper_method :find_patient
 
     #TODO might belong in appointment model
-    def get_appointment_progress_bar(upcoming_appointment)
+    def get_appointment_progress_bar_json(upcoming_appointment)
       results = {
           date: upcoming_appointment.date,
           time: upcoming_appointment.delayed_time_ampm
@@ -161,8 +175,42 @@ class PatientsController < ApplicationController
       end
       results[:barClass] = 'progress-bar-' + results[:color]
       results[:timeLeft] = minutes_left.to_s + 'minutes until appointment'
-      results
+      results.json
     end
+
+  def get_appointment_progress_bar(upcoming_appointment)
+    @minutes_left =
+        ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
+    @percent = 120 - @minutes_left
+    case @minutes_left
+      when 26...120
+        @color = 'info'
+      # when 70..81
+      #   @color = 'info'
+      # when 60...69
+      #   @color = 'info'
+      # when 35...59
+      #   @color = 'info'
+      # when 21...34
+      #   @color = 'info'
+      when 6...25
+        @color = 'warning'
+      when 0...5
+        @color = 'danger'
+      else
+        @color = 'info'
+        @percent = 0
+    end
+
+    if @minutes_left < 60
+      @humanized_time_left = "#{@minutes_left} minutes until appointment"
+    else
+      hours_left = @minutes_left / 60
+      if hours_left == 1 then h = 'hour' else h = 'hours' end
+      @humanized_time_left =
+          "#{@minutes_left / 60} #{h} and #{@minutes_left % 60} minutes left"
+    end
+  end
 
 
 
