@@ -147,7 +147,7 @@ gem 'sass-rails', '~> 5.0.4'
 gem 'sass', '3.4.18'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '2.1.1'
+gem 'uglifier', '2.7.2'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
@@ -169,7 +169,7 @@ gem 'turbolinks', '2.5.3'
 gem 'jbuilder', '1.0.2'
 
 #for file uploads
-gem 'paperclip', '~> 4.1'
+gem 'paperclip', '4.2.2'
 
 
 group :doc do
