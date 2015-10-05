@@ -1,49 +1,23 @@
 <%= provide(:title, "#{full_name(@patient)} |") %>
 <div class="container-fluid" style="background-color: #f5f5f5; padding-top: 2em; padding-bottom: 2em;">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="row" style="padding-left: 4em;">
-        <div class="col-xs-3">
-          <%= image_tag(@patient.avatar_thumb_url, alt: 'logo', class:"img-responsive center-block", style:'max-height: 10em')  %>
-        </div>
-        <div class="col-xs-9 blue-text">
-          <div class="row">
-            <div class="col-md-12">
-              <h4><%= @patient.full_name %></h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <%= @patient.sex_humanize %>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              DOB: <%= @patient.birthday.strftime('%m/%d/%Y') %>
-            </div>
-         </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <%= render 'patients/appointments/upcoming_appointment_details' %>
-    </div>
-  </div>
+  <%= render 'patients/profile_upcoming_appointment_section' %>
   <div class="row portal-groups">
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline btn btn-primary-outline">
-      <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "calendar 3x", class: 'mdme-icon' %>
+      <%= link_to home_patient_appointments_path(@patient) do %>
+         <div class="row">
+          <div class="col-xs-2">
+            <%= fa_icon "calendar 2x", class: 'mdme-icon img-responsive' %>
+          </div>
+          <div class="col-xs-10">
+             My Appointments
+          </div>
         </div>
-        <div class="col-xs-10">
-           My Appointments
-        </div>
-      </div>
+      <% end %>
     </div>
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "medkit 3x", class: 'mdme-icon' %>
+        <div class="col-xs-2">
+          <%= fa_icon "medkit 2x", class: 'mdme-icon img-responsive' %>
         </div>
         <div class="col-xs-10">
           My Medications
@@ -54,8 +28,8 @@
   <div class="row portal-groups">
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "user-md 3x", class: 'mdme-icon' %>
+        <div class="col-xs-2">
+          <%= fa_icon "user-md 2x", class: 'mdme-icon img-responsive' %>
         </div>
         <div class="col-xs-10">
           My Clinicians
@@ -64,8 +38,8 @@
     </div>
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "hospital-o 3x", class: 'mdme-icon' %>
+        <div class="col-xs-2">
+          <%= fa_icon "hospital-o 2x", class: 'mdme-icon img-responsive' %>
         </div>
         <div class="col-xs-10">
           My Clinics
@@ -76,8 +50,8 @@
   <div class="row portal-groups">
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "heart 3x", class: 'mdme-icon' %>
+        <div class="col-xs-2">
+          <%= fa_icon "heart 2x", class: 'mdme-icon img-responsive' %>
         </div>
         <div class="col-xs-10">
           My Records
@@ -86,8 +60,8 @@
     </div>
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">
-        <div class="col-xs-1">
-          <%= fa_icon "qrcode 3x", class: 'mdme-icon' %>
+        <div class="col-xs-2">
+          <%= fa_icon "qrcode 2x", class: 'mdme-icon img-responsive' %>
         </div>
         <div class="col-xs-10">
           Appointment Check-in

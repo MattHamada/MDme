@@ -10,7 +10,7 @@ $(document).on('ready page:change', function() {
     }else if (minutesLeft <= 25 && minutesLeft > 5) {
       color = 'warning'
     } else {
-      color = danger;
+      color = 'danger';
     }
     hiddenMinutesField.val(minutesLeft);
     var text;
@@ -26,7 +26,9 @@ $(document).on('ready page:change', function() {
       '<progress class="progress progress-striped progress-' + color +'" value="' + percent + '" max="120"></progress>'
     );
   }
-  setInterval(updateCounter , 60000);
+  if (minutesLeft >= 0) {
+    setInterval(updateCounter , 60000);
+  }
 });
 
 
