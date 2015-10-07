@@ -24,7 +24,9 @@ class Patients::AppointmentsController < ApplicationController
 
   # GET mdme.us/patients/:patient_id/appointments/new
   def new
-    add_breadcrumb 'New Appointment', new_patient_appointment_path(@patient)
+    add_breadcrumb @patient.full_name, patient_path(@patient)
+    add_breadcrumb 'Appointments', home_patient_appointments_path(@patient)
+    add_breadcrumb 'New Appointment Request'
 
     @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
     @open_times = []

@@ -25,14 +25,16 @@
   </div>
   <div class="row portal-groups">
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
-      <div class="row">
-        <div class="col-xs-2" >
-          <%= fa_icon "calendar 2x", class: 'mdme-icon img-responsive' %>
+      <%= link_to new_patient_appointment_path(@patient) do %>
+        <div class="row">
+          <div class="col-xs-2" >
+            <%= fa_icon "calendar 2x", class: 'mdme-icon img-responsive' %>
+          </div>
+          <div class="col-xs-10">
+            Request an Appointment
+          </div>
         </div>
-        <div class="col-xs-10">
-          Request an Appointment
-        </div>
-      </div>
+      <% end %>
     </div>
     <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
       <div class="row">

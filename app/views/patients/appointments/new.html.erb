@@ -1,65 +1,64 @@
-<%= render 'patients/header' %>
-<div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Request Appointment</h4></div>
-      <div class="panel-body panel-inverse">
-        <%= hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>
+<!--<div class="row">-->
+  <!--<div class="col-xs-8 col-xs-offset-2">-->
+    <!--<div class="panel panel-default">-->
+      <!--<div class="panel-heading"><h4>Request Appointment</h4></div>-->
+      <!--<div class="panel-body panel-inverse">-->
+        <!--<%= hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>-->
 
-        <%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>
-              <div class="form-group">
-                <div class='col-xs-6 col-xs-offset-3'>
-                  <%= f.label(:date, "Select Date", for: 'appointment_date') %>
-                  <%= f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class='col-xs-6 col-xs-offset-3'>
-                  <%= f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>
-                  <%= collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class='col-xs-6 col-xs-offset-3'>
-                <%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>
-                <%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>
-              </div>
-                </div>
-              <div class="form-group">
-                <div class='col-xs-6 col-xs-offset-3'>
+        <!--<%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>-->
+              <!--<div class="form-group">-->
+                <!--<div class='col-xs-6 col-xs-offset-3'>-->
+                  <!--<%= f.label(:date, "Select Date", for: 'appointment_date') %>-->
+                  <!--<%= f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<div class='col-xs-6 col-xs-offset-3'>-->
+                  <!--<%= f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>-->
+                  <!--<%= collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<div class='col-xs-6 col-xs-offset-3'>-->
+                <!--<%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>-->
+                <!--<%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>-->
+              <!--</div>-->
+                <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <%= f.label(:appointment, 'Time', for: 'date_time') %>
-                <select class="form-inverse form-control" id="date_time" name="appointment[time]">
-                  <% @open_times.each do |time| %>
-                    <option value="<%= time %>"><%= time %></option>
-                  <% end %>
-                </select>
-                </div>
-              </div>
+                <!--<%= f.label(:appointment, 'Time', for: 'date_time') %>-->
+                <!--<select class="form-inverse form-control" id="date_time" name="appointment[time]">-->
+                  <!--<% @open_times.each do |time| %>-->
+                    <!--<option value="<%= time %>"><%= time %></option>-->
+                  <!--<% end %>-->
+                <!--</select>-->
+                <!--</div>-->
+              <!--</div>-->
 
-              <div class='form-group'>
-                <div class='col-xs-6 col-xs-offset-3'>
+              <!--<div class='form-group'>-->
+                <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <%= f.label(:description, 'Notes') %>
-                  <%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>
-                 </div>
-              </div>
-              <div class="form-group">
-                <div class="col-xs-6 col-xs-offset-3">
-                  <%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>
-                  <%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>
+                <!--<%= f.label(:description, 'Notes') %>-->
+                  <!--<%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>-->
+                 <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<div class="col-xs-6 col-xs-offset-3">-->
+                  <!--<%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>-->
+                  <!--<%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>-->
 
-                </div>
-              </div>
-             <div class='col-xs-6 col-xs-offset-3'>
-               <div style="text-align: center">
-                 <br/><br/>
-                 <%= f.submit 'Request', class: 'btn btn-success' %>
-               </div>
-             </div>
-         <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+                <!--</div>-->
+              <!--</div>-->
+             <!--<div class='col-xs-6 col-xs-offset-3'>-->
+               <!--<div style="text-align: center">-->
+                 <!--<br/><br/>-->
+                 <!--<%= f.submit 'Request', class: 'btn btn-success' %>-->
+               <!--</div>-->
+             <!--</div>-->
+         <!--<% end %>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 
