@@ -19,6 +19,7 @@ class Appointment < ActiveRecord::Base
   delegate :full_name, to: :doctor,  prefix: true
   delegate :full_name, to: :patient, prefix: true
   delegate :name,      to: :clinic,  prefix: true
+  delegate :mail_address, to: :clinic, prefix: true
   delegate :avatar_thumb_url, to: :doctor, prefix: true
   delegate :timezone, to: :clinic, prefix: true
 
@@ -37,13 +38,13 @@ class Appointment < ActiveRecord::Base
   before_create { self.appointment_delayed_time = appointment_time }
 
   before_create { generate_access_key }
+  before_create { generate_checkin_key }
 
   scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
   scope :within_2_hours, -> { where(
       appointment_time: Time.zone.now...(Time.zone.now + 2.hours)) }
   scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
   scope :order_by_time, -> { order("appointment_time ASC")}
-
 
   # True is a patient request not an admin forcing a new appointment
   scope :requests, -> { where(request: true) }
@@ -166,6 +167,10 @@ class Appointment < ActiveRecord::Base
   # See AppointmentsController#fill_appointments
   def generate_access_key
     self.access_key = Digest::SHA1.hexdigest(SecureRandom.urlsafe_base64)
+  end
+
+  def generate_checkin_key
+    self.checkin_key = Digest::SHA1.hexdigest(SecureRandom.urlsafe_base64)
   end
 
 

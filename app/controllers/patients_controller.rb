@@ -9,14 +9,15 @@
 # www.mdme.us/patients
 class PatientsController < ApplicationController
 
-  # before_filter :find_patient
-  # before_filter :require_patient_login
-  # before_filter :get_upcoming_appointment
+  before_filter :require_patient_login
+  before_filter :find_patient
+  before_filter :get_upcoming_appointment
 
-  before_action :authenticate_header
+  # before_action :authenticate_header
 
   # GET www.mdme.us/patients/:id
   def show
+    add_breadcrumb @patient.full_name
     # respond_to do |format|
     #   format.html do |variant|
     #     variant.mobile { render 'patients/mobile/show' }
@@ -82,14 +83,8 @@ class PatientsController < ApplicationController
     end
   end
 
-  def get_upcoming_appointment
-    upcoming_appointment = @patient.upcoming_appointment
-    if upcoming_appointment
-      render json:  get_appointment_progress_bar(upcoming_appointment).to_json
-    else
-      render json: {}
-    end
-  end
+
+
 
   #mobile stuff below
 
@@ -98,6 +93,10 @@ class PatientsController < ApplicationController
   end
 
   private
+
+  def find_patient
+    @patient ||= current_patient || Patient.find_by_slug!(params[:id])
+  end
 
     def patient_params
       params.require(:patient).permit(:first_name,
@@ -124,47 +123,4 @@ class PatientsController < ApplicationController
                                       :zipcode,
                                       :avatar)
       end
-
-    # def find_patient
-    #   @patient ||= current_patient || Patient.find_by_slug!(params[:id])
-    # end
-    # helper_method :find_patient
-
-    #TODO might belong in appointment model
-    def get_appointment_progress_bar(upcoming_appointment)
-      results = {
-          date: upcoming_appointment.date,
-          time: upcoming_appointment.delayed_time_ampm
-      }
-      minutes_left =
-          ((upcoming_appointment.appointment_delayed_time - DateTime.now) / 60).to_i
-      results[:minutesLeft] = minutes_left
-      results[:percent] = 100-minutes_left
-      case minutes_left
-        when 21..120
-          results[:color] = 'success'
-        when 6..20
-          results[:color] = 'warning'
-        when 0..5
-          results[:color] = 'danger'
-        else
-          results[:color] = 'success'
-          results[:percent] = 0
-      end
-      if minutes_left < 60
-       results[:timeLeft] = "#{minutes_left} minutes until appointment"
-      else
-        hours_left = minutes_left / 60
-        if hours_left == 1 then h = 'hour' else h = 'hours' end
-       results[:timeLeft] =
-            "#{minutes_left / 60} #{h} and #{minutes_left % 60} minutes left"
-      end
-      results[:barClass] = 'progress-bar-' + results[:color]
-      results[:timeLeft] = minutes_left.to_s + 'minutes until appointment'
-      results
-    end
-
-
-
-
 end

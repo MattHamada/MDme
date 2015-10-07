@@ -1,0 +1,18 @@
+<div id="appointment-progress-bar-wrapper">
+  <div class="container">
+    <%= hidden_field_tag :appointment_time_left, @minutes_left %>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2" id="appointment-progress-text" style="text-align: right; padding-right: 2em; margin-bottom: -1.3em; z-index: 1;">
+        <%=@humanized_time_left %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2" id="appointment-progress-bar">
+        <progress  class="progress progress-striped progress-<%=@color%>" value="<%=@percent%>" max="120">50<%=@percent%></progress>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+

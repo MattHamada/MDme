@@ -9,7 +9,10 @@
 # for mdme.us/patients/:patient_id/appointments
 class Patients::AppointmentsController < ApplicationController
 
-  before_action :authenticate_header
+  # before_action :authenticate_header
+  before_filter :require_patient_login
+  before_filter :find_patient
+  before_filter :get_upcoming_appointment
 
   # GET mdme.us/patients/:patient_id/appointments
   def index
@@ -21,7 +24,9 @@ class Patients::AppointmentsController < ApplicationController
 
   # GET mdme.us/patients/:patient_id/appointments/new
   def new
-    add_breadcrumb 'New Appointment', new_patient_appointment_path(@patient)
+    add_breadcrumb @patient.full_name, patient_path(@patient)
+    add_breadcrumb 'Appointments', home_patient_appointments_path(@patient)
+    add_breadcrumb 'New Appointment Request'
 
     @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
     @open_times = []
@@ -105,6 +110,11 @@ class Patients::AppointmentsController < ApplicationController
     @appointment = appointment
     @doctor = Doctor.find(@appointment.doctor.id)
     # render(partial: 'patients/appointments/ajax_show', object: @appointment) if request.xhr?
+  end
+
+  def home
+    add_breadcrumb @patient.full_name, patient_path(@patient)
+    add_breadcrumb 'Appointments'
   end
 
   #mobile

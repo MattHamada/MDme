@@ -1,0 +1,15 @@
+<div class="container-fluid" id="header-content" >
+  <div class="row">
+    <div class="col-xs-6" style="text-align: left" id="breadcrumbs">
+      <%= render_breadcrumbs separator: ' > ' %>
+    </div>
+    <div class="col-xs-6" style="text-align: right">
+      <% unless @patient.nil? %>
+        <%= button_to 'Sign Out', signout_path, class: 'btn btn-warning-outline navbar-btn', id: 'signout-link', :method=> :delete %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% unless @patient.nil? %>
+  <%= render 'patients/appointments/upcoming_progress_bar' unless @patient.upcoming_appointment.nil? %>
+<% end %>

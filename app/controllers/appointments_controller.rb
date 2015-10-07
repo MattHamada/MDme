@@ -38,4 +38,31 @@ class AppointmentsController < ApplicationController
       redirect_to root_path
     end
   end
+
+  # Called when QR code from patient's phone scanned by clinic
+  # will appointment as being checked in
+  # POST admin.mdme.us/appointments/check-in?checkin_key=x
+  def check_in_patient
+    p = appointment_params
+    @appointment = Appointment.find_by_checkin_key(p[:checkin_key])
+    if @appointment.nil?
+      render status: 404, json: {
+                            success: false,
+                            message: 'Invalid checkin key'
+                        }
+    else
+      if @appointment.update_attribute(:checked_in, true)
+        render status: :accepted, json: {
+                                    success: true,
+                                    message: 'Patient checked in'
+                                }
+      end
+
+    end
+  end
+
+  private
+    def appointment_params
+      params.require(:appointment).permit(:checkin_key)
+    end
 end

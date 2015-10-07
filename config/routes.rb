@@ -13,12 +13,13 @@ MDme::Application.routes.draw do
   #doctor subdomain
   match '/', to: 'doctors#signin', via: 'get', constraints: { subdomain: 'doctors' }
 
-
   #admin subdomain
-  match '/',     to: 'admins#signin',           via: 'get',    constraints: { subdomain: 'admin' }
+  match '/',     to: 'admins#signin', via: 'get',    constraints: { subdomain: 'admin' }
+  match '/', to: 'static_pages#home', via: 'get'
   #constraints(RootDomain) do
   #constraints subdomain: false do
   root 'static_pages#home', constraints: { subdomain: 'www' }
+
   #match '/signup',    to: 'patients#new',           via: 'get',    constraints: { subdomain: 'www' }
   match '/help',            to: 'static_pages#help',     via: 'get'#,    constraints: { subdomain: 'www' }
   match '/about',           to: 'static_pages#about',    via: 'get'#,    constraints: { subdomain: 'www' }
@@ -30,14 +31,14 @@ MDme::Application.routes.draw do
 
 
   post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
-
+  post 'appointments/check-in'                           => 'admins/appointments#check-in',            as: :admin_appointment_check_in
   get  'patients/:patient_id/clinics/get-doctors'        => 'patients/clinics#get_doctors',            as: :patient_clinic_get_doctors
-  get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
-  get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
+  # get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
+  # get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
   get  'patients/:patient_id/appointments/requests'      => 'patients/appointments#open_requests',     as: :open_requests
-  get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
-  patch 'patients/:id/update-password'                     => 'patients#update_password',                as: :patient_update_password
+  # get  'patients/:id/changepassword'                     => 'patients#change_password',                as: :patient_password
+  # patch 'patients/:id/update-password'                    => 'patients#update_password',                as: :patient_update_password
 
   get  'admins/:admin_id/doctors/search'                 => 'admins/doctors#search',                   as: :admin_doctors_search
   get  'admins/:admin_id/patients/search'                => 'admins/patients#search',                  as: :admin_patient_search
@@ -63,7 +64,7 @@ MDme::Application.routes.draw do
   get 'clinics/:id/checkin/:patient_id'                  => 'clinics#checkin',                         as: :clinic_checkin
 
   get 'appointments/:id/fill_appointment'                => 'appointments#fill_appointment',           as: :fill_appointment
-  get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
+  # get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
 
   #resources :departments
   resources :patients, except: [:new, :create, :destroy]
@@ -78,9 +79,21 @@ MDme::Application.routes.draw do
   end
 
   resources :patients do
-    resources :appointments, controller: 'patients/appointments'
+    resources :appointments, controller: 'patients/appointments' do
+      collection do
+        get :home
+      end
+    end
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
     resources :clinics, only: [:index, :show], controller: 'patients/clinics'
+    resources :devices, only: [:create],       controller: 'patients/devices'
+    member do
+      get   :change_password
+      patch :update_password
+    end
+    collection do
+      get :get_upcoming_appointment
+    end
   end
 
   resources :clinics do
@@ -116,11 +129,15 @@ MDme::Application.routes.draw do
 
       end
     end
-    namespace :v2 do
-      post 'login' => 'sessions#create', :as => 'login'
-      post 'api_login' => 'sessions#api_login', as: 'api_login'
-      get 'get_token' => 'sessions#get_token', as: 'get_token'
-      delete 'sessions' => 'sessions#destroy', :as => 'logout'
+    namespace :mobile do
+      get  'patients/:patient_id/upcoming-appointment-qrcode'=> 'patients#upcoming_appointment_qrcode',     as: :upcoming_appointment_qrcode
+      post 'login' => 'sessions#create'
+      delete 'sessions' => 'sessions#destroy'
+      get  'patients/get-upcoming-appointment' => 'patients#get_upcoming_appointment'
+      resources :patients, controller: 'patients', only: [:show, :edit, :update, :destroy]
+      namespace :patients do
+        resources :devices, controller: 'devices', only: [:create]
+      end
     end
   end
 

@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
       if request.variant.include?(:mobile)
         redirect_to patient_mobile_menu_path(current_patient)
       else
-        redirect_to patients_path
+        redirect_to current_patient
       end
     end
   end
@@ -53,18 +53,32 @@ class SessionsController < ApplicationController
         render json: { error: 'Invalid email/password combination' }, status: :unauthorized
       end
     else
-      patient = Patient.find_by(email: params[:email].downcase)
-      if patient && patient.authenticate(params[:password])
-        # sign_in patient, :patient
-        token = AuthToken.issue_token({user_id: patient.id})
-        render json: {
-                   user_id: patient.id,
-                   api_token: {
-                     token: token
+      #note, if we go back to angular, it was setup to not have the [:session] part
+      patient = Patient.find_by(email: params[:session][:email].downcase)
+      respond_to do |format|
+        if patient && patient.authenticate(params[:session][:password])
+          format.html do
+            sign_in patient, :patient
+            redirect_to patient
+          end
+          format.json do
+            token = AuthToken.issue_token({user_id: patient.id})
+            render json: {
+                       user_id: patient.id,
+                       api_token: {
+                           token: token
+                       }
                    }
-               }
-      else
-        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+          end
+        else
+          format.html do
+            flash.now[:danger] = 'Invalid email/password combination'
+            render 'sessions/new'
+          end
+          format.json do
+            render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+          end
+        end
       end
     end
   end

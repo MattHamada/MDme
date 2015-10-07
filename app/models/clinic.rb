@@ -117,6 +117,10 @@ class Clinic < ActiveRecord::Base
     end
   end
 
+  def mail_address
+      name + "\n" + "#{address1} #{address2} #{address3} #{city}, #{state} #{zipcode}"
+  end
+
   # +slug+ used in URL opposed to +id+
   def to_param
     slug

@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<% if request.subdomain == 'admin' %>
-  <html ng-app="mdme-admin">
-<% else %>
-  <html ng-app="mdme">
-<% end %>
-<head>
-  <%= favicon_link_tag %>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+<%# if request.subdomain == 'admin' %>
+ <%# <html ng-app="mdme-admin">    %>
+<%# else %>
+ <%# <html ng-app="mdme">  %>
+<%# end %>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <%= csrf_meta_tags %>
+    <meta name="description" content="MDme">
+    <meta name="author" content="MDme">
+    <%= favicon_link_tag %>
+
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+    <%= csrf_meta_tags %>
 
 
-  <meta charset="utf-8">
-  <meta name="description" content="">
-  <meta name="author" content="MDme">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= yield :title %> MD & ME</title>
 
-  <title><%= yield :title %> MD & ME</title>
-
-</head>
-<body>
-  <%= yield %>
-  <%= render 'layouts/footer' %>
-</body>
+  </head>
+  <body>
+    <div  id="wrapper">
+      <%= render 'layouts/header' %>
+      <div id="main-content">
+        <%= yield %>
+      </div>
+      <%# if ['static_pages', 'sessions'].include? controller_name %>
+        <%= render 'layouts/static_pages_footer' %>
+      <%# end %>
+    </div>
+  </body>
 </html>

@@ -20,6 +20,7 @@ class Admins::ClinicsController < ApplicationController
     @qr = RQRCode::QRCode.new(url, size: 6)
   end
 
+
   private
     def find_admin
       @admin ||= Admin.find(params[:admin_id])

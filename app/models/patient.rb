@@ -150,6 +150,18 @@ class Patient < ActiveRecord::Base
     birthday.strftime("%m/%d/%Y")
   end
 
+  def sex_humanize
+    if sex == 1
+      "Female"
+    else
+      "Male"
+    end
+  end
+
+  def location
+    "#{city}, #{country}" if state.nil? else "#{city}, #{state}"
+  end
+
   module MaritalStatus
     SINGLE = 0
     MARRIED = 1
