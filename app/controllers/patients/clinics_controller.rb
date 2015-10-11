@@ -10,7 +10,9 @@
 class Patients::ClinicsController < ApplicationController
 
   #TODO remove getdoctors exception
-  before_action :authenticate_header
+  # before_action :authenticate_header
+  before_action :find_patient, :except=>[:open_times, :get_doctors]
+  before_action :get_upcoming_appointment, except: [:display, :open_times, :get_doctors]
 
   def index
     @clinics = @patient.clinics.ordered_name
@@ -19,6 +21,23 @@ class Patients::ClinicsController < ApplicationController
   def show
     @clinic = Clinic.find(params[:id])
     @doctors = @clinic.doctors
+  end
+
+  def open_times
+    if params.has_key? :clinic_id and params.has_key? :date and params.has_key? :doctor_id
+      @clinic = Clinic.find(params[:clinic_id])
+      date = Date.parse(params[:date])
+      doctor = Doctor.find(params[:doctor_id])
+      @times = @clinic.open_appointment_times(date, doctor)
+      if @times.is_a?(Hash)
+        render json: {status: 1, error: @times[:error]}
+      else
+        render json: { status: 0, times: @times }
+      end
+    else
+      render json: {status: 0, times: []}
+    end
+
   end
 
   # GET mdme.us/patients/:patient_id/clinics/get-doctors
@@ -45,4 +64,16 @@ class Patients::ClinicsController < ApplicationController
       render json: {doctors: docnames}
     end
   end
+
+  def display
+    @clinic = Clinic.find(params[:id])
+    respond_to do |format|
+      format.js {}
+    end
+  end
+
+  private
+    def find_patient
+      @patient ||= current_patient || Patient.includes(:clinics).find_by_slug!(params[:patient_id]).includes(:clinics)
+    end
 end

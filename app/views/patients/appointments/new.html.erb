@@ -1,37 +1,67 @@
+<%= provide(:title, "Appointment Request |") %>
+<div class="container-fluid" style="background-color: #f5f5f5; padding-top: 2em; padding-bottom: 2em;">
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'patients/mini_profile' %>
+    </div>
+    <div class="col-md-6">
+      <%= form_tag open_times_clinics_path, remote: true do %>
+        <fieldset class="form-group row">
+          <label for="appointment_clinic_id" class="col-sm-2 form-control-label">Facility</label>
+          <div class="col-sm-10">
+            <%= select :appointment, :clinic_id, options_from_collection_for_select(@clinics, :id, :name), {:prompt=>"--Select Provider--"}, {:class=>'form-control'} %>
+          </div>
+        </fieldset>
+        <fieldset class="form-group row">
+          <label for="appointment_doctor_id" class="col-sm-2 form-control-label">Provider</label>
+          <div class="col-sm-10">
+            <%= select :appointment, :doctor_id, options_for_select([]), {:prompt => "--Select Doctor--"}, {:class=>'form-control'}  %>
+          </div>
+        </fieldset>
+        <fieldset class="form-group row">
+          <label for="appointment_date" class="col-sm-2 form-control-label">Date</label>
+            <div class="col-sm-10">
+              <%= text_field_tag :week, '', :class=>'week-picker form-control' %>
+            </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+</div>
 <!--<div class="row">-->
   <!--<div class="col-xs-8 col-xs-offset-2">-->
     <!--<div class="panel panel-default">-->
       <!--<div class="panel-heading"><h4>Request Appointment</h4></div>-->
       <!--<div class="panel-body panel-inverse">-->
-        <!--<%= hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>-->
+        <!--<%# hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>-->
 
-        <!--<%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>-->
+        <!--<%#form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                  <!--<%= f.label(:date, "Select Date", for: 'appointment_date') %>-->
-                  <!--<%= f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>-->
+                  <!--<%# f.label(:date, "Select Date", for: 'appointment_date') %>-->
+                  <!--<%# f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>-->
                 <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                  <!--<%= f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>-->
-                  <!--<%= collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>-->
+                  <!--<%# f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>-->
+                  <!--<%# collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>-->
                 <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                <!--<%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>-->
-                <!--<%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>-->
+                <!--<%# f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>-->
+                <!--<%# collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>-->
               <!--</div>-->
                 <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <!--<%= f.label(:appointment, 'Time', for: 'date_time') %>-->
+                <!--<%# f.label(:appointment, 'Time', for: 'date_time') %>-->
                 <!--<select class="form-inverse form-control" id="date_time" name="appointment[time]">-->
-                  <!--<% @open_times.each do |time| %>-->
-                    <!--<option value="<%= time %>"><%= time %></option>-->
-                  <!--<% end %>-->
+                  <!--<%# @open_times.each do |time| %>-->
+                    <!--<option value="<%# time %>"><%# time %></option>-->
+                  <!--<%# end %>-->
                 <!--</select>-->
                 <!--</div>-->
               <!--</div>-->
@@ -39,24 +69,24 @@
               <!--<div class='form-group'>-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <!--<%= f.label(:description, 'Notes') %>-->
-                  <!--<%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>-->
+                <!--<%# f.label(:description, 'Notes') %>-->
+                  <!--<%# f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>-->
                  <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class="col-xs-6 col-xs-offset-3">-->
-                  <!--<%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>-->
-                  <!--<%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>-->
+                  <!--<%# f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>-->
+                  <!--<%# f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>-->
 
                 <!--</div>-->
               <!--</div>-->
              <!--<div class='col-xs-6 col-xs-offset-3'>-->
                <!--<div style="text-align: center">-->
                  <!--<br/><br/>-->
-                 <!--<%= f.submit 'Request', class: 'btn btn-success' %>-->
+                 <!--<%# f.submit 'Request', class: 'btn btn-success' %>-->
                <!--</div>-->
              <!--</div>-->
-         <!--<% end %>-->
+         <!--<%# end %>-->
       <!--</div>-->
     <!--</div>-->
   <!--</div>-->

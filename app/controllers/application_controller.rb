@@ -164,6 +164,7 @@ class ApplicationController < ActionController::Base
       super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
     end
 
+
   private
     # Makes browsers not think site is sketchy when ssl turned off.
     # Disable this when ssl back on

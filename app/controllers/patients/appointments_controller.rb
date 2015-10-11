@@ -29,6 +29,7 @@ class Patients::AppointmentsController < ApplicationController
     add_breadcrumb 'New Appointment Request'
 
     @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
+    @clinics = @patient.clinics
     @open_times = []
   end
 
@@ -149,7 +150,7 @@ class Patients::AppointmentsController < ApplicationController
     helper_method :load_upcoming_appointment
 
     def find_patient
-      @patient ||= current_patient || Patient.find_by_slug!(params[:patient_id])
+      @patient ||= current_patient || Patient.includes(:appointments).find_by_slug!(params[:patient_id])
     end
     helper_method :find_patient
 
