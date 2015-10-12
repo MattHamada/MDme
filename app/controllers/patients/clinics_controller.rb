@@ -37,13 +37,13 @@ class Patients::ClinicsController < ApplicationController
     else
       render json: {status: 0, times: []}
     end
-
   end
 
-  # GET mdme.us/patients/:patient_id/clinics/get-doctors
+  # GET mdme.us/patients/:patient_id/clinics/get_doctors
   def get_doctors
-    @clinic = Clinic.find(params[:id])
+    @clinic = Clinic.includes(:doctors).find(params[:clinic_id])
     @doctors = @clinic.doctors
+    render :partial=>'patients/clinics/doctors_select', :layout=>false;
   end
 
   # GET mdme.us/patients/:patient_id/clinics/getdoctors

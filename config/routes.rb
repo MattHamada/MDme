@@ -32,7 +32,7 @@ MDme::Application.routes.draw do
 
   post '/submit-comment'                                 => 'static_pages#submit_comment',             as: :contact_comment_path
   post 'appointments/check-in'                           => 'admins/appointments#check-in',            as: :admin_appointment_check_in
-  get  'patients/:patient_id/clinics/get-doctors'        => 'patients/clinics#get_doctors',            as: :patient_clinic_get_doctors
+  # get  'patients/:patient_id/clinics/get-doctors'        => 'patients/clinics#get_doctors',            as: :patient_clinic_get_doctors
   # get  'patients/:id/menu'                               => 'patients#menu',                           as: :patient_mobile_menu
   # get  'patients/:patient_id/appointments/menu'          => 'patients/appointments#menu',              as: :patient_appointment_mobile_menu
   get  'patients/:patiend_id/appointments/browse'        => 'patients/appointments#open_appointments', as: :open_appointments_browse
@@ -67,7 +67,7 @@ MDme::Application.routes.draw do
   # get  'patients/get-upcoming-appointment'               => 'patients#get_upcoming_appointment'
 
   #resources :departments
-  resources :patients, except: [:new, :create, :destroy]
+  # resources :patients, except: [:new, :create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :admins, only: [:index]
   #resources :appointments
@@ -86,6 +86,10 @@ MDme::Application.routes.draw do
     end
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
     resources :clinics, only: [:index, :show], controller: 'patients/clinics' do
+      collection do
+        get :open_times
+        get :get_doctors
+      end
       member do
         get :display
       end
@@ -101,9 +105,6 @@ MDme::Application.routes.draw do
   end
 
   resources :clinics do
-    collection do
-      get :open_times
-    end
     resources :doctors, only: [:index], controller: 'clinics/doctors'
   end
 
