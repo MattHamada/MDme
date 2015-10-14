@@ -24,18 +24,47 @@ class Patients::ClinicsController < ApplicationController
   end
 
   def open_times
-    if params.has_key? :clinic_id and params.has_key? :date and params.has_key? :doctor_id
-      @clinic = Clinic.find(params[:clinic_id])
-      date = Date.parse(params[:date])
-      doctor = Doctor.find(params[:doctor_id])
-      @times = @clinic.open_appointment_times(date, doctor)
-      if @times.is_a?(Hash)
-        render json: {status: 1, error: @times[:error]}
-      else
-        render json: { status: 0, times: @times }
+    if params[:appointment].has_key? :clinic_id and params.has_key? :day_start and params.has_key? :day_end and params[:appointment].has_key? :doctor_id
+      @clinic = Clinic.find(params[:appointment][:clinic_id])
+      doctor = Doctor.find(params[:appointment][:doctor_id])
+      # @times = @clinic.open_appointment_times(date, doctor)
+
+      #todo respond with appointments table
+      @days_times = @clinic.open_appointment_times_day_range(
+          Date.parse(Time.at(params[:day_start].to_i).to_s),
+          Date.parse(Time.at(params[:day_end].to_i).to_s),
+          doctor
+      )
+      # @dates_times = []
+      # start_day = @Date.parse(Time.at(params[:day_start].to_i).to_s)
+      # @dates << start_day
+      # @dates << start_day + 1.day
+      # @dates << start_day + 2.days
+      # @dates << @Date.parse(Time.at(params[:day_start].to_i).to_s)
+      # @times = []
+      # @dates.each do |date|
+      #   newTimes = []
+      #   newTimes << @clinic.open_appointment_times(date, doctor)
+      #   @times << newTimes
+      # end
+      respond_to do |format|
+        format.js do
+        end
+        format.json do
+          if @times.is_a?(Hash)
+            render json: {status: 1, error: @times[:error]}
+          else
+            render json: { status: 0, times: @times }
+          end
+        end
       end
     else
-      render json: {status: 0, times: []}
+      respond_to do |format|
+        format.json do
+          render json: {status: 0, times: []}
+        end
+        format.js {}
+      end
     end
   end
 

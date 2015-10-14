@@ -21,7 +21,7 @@
         <fieldset class="form-group row">
           <label for="appointment_date" class="col-sm-3 form-control-label"><small>Date:</small></label>
             <div class="col-sm-9">
-              <%= text_field_tag :week, '', :class=>'week-picker form-control' %>
+              <%= text_field_tag 'date', '', :class=>'date-pick form-control' %>
             </div>
         </fieldset>
         <fieldset class="form-group row">
@@ -31,10 +31,15 @@
           </div>
         </fieldset>
         <fieldset class="form-group" style="text-align: center; margin-top: 1em;">
+          <%= hidden_field_tag :day_start %>
+          <%= hidden_field_tag :day_end %>
           <%= submit_tag 'Search', :class=>'btn btn-primary' %>
         </fieldset>
       <% end %>
     </div>
+  </div>
+  <div id="date_time_slots">
+
   </div>
   <hr/>
 </div>
@@ -46,7 +51,6 @@
         method: 'GET',
         data: {clinic_id: $(this).val()}
       }).success(function(data) {
-        debugger;
         $('#appointment_doctor_id').html(data);
       }).error(function(error){
         console.log(error);

@@ -52,6 +52,38 @@ class Clinic < ActiveRecord::Base
     times
   end
 
+  def open_appointment_times_day_range(date_start, date_end, doctor)
+    date_times = {:dates=>[], :times=>[]}
+    (date_start..date_end).each do |date|
+      date_times[:dates] << date
+      day = (Date::DAYNAMES[date.wday]).downcase
+      if self.send("is_open_#{day}?")
+        open_time = Time.zone.parse(self.send("#{day}_open_time"))
+        close_time = Time.zone.parse(self.send("#{day}_close_time"))
+        cursor = open_time.clone
+        taken_appointments = doctor.appointments.given_date(date)
+        taken_times = find_taken_times(taken_appointments)
+        n = 0
+        times = []
+        while cursor < close_time
+          e = true
+          e = false if taken_times.include?(cursor.strftime('%I:%M %p'))
+          times << {
+              time: cursor.strftime('%I:%M %p'),  #"HH:MM AM"
+              enabled: e,
+              selected: false,
+              index: n }
+          n+= 1
+          cursor += self.appointment_time_increment.minutes
+        end
+        date_times[:times] << times
+      else
+        date_times[:times] << false
+      end
+    end
+    date_times
+  end
+
   # Called on clinic creation
   # Calls google geolocation api for latitude/longitude coordinates of
   # the clinic address.  Grabs NE and SW viewport coordinates for easier

@@ -87,7 +87,7 @@ MDme::Application.routes.draw do
     resources :doctors, only: [:index, :show], controller: 'patients/doctors'
     resources :clinics, only: [:index, :show], controller: 'patients/clinics' do
       collection do
-        get :open_times
+        post :open_times
         get :get_doctors
       end
       member do
