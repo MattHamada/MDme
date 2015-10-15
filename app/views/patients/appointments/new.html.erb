@@ -38,24 +38,43 @@
       <% end %>
     </div>
   </div>
-  <div id="date_time_slots">
-
-  </div>
+  <div id="date_time_slots"></div>
   <hr/>
 </div>
+<div id="appointment-request-popup">
+  <%= form_for @appointment, :id=>'appointment-request-form' do |f| %>
+
+  <% end %>
+</div>
+
 
 <script type="text/javascript">
   $(document).on('change', '#appointment_clinic_id', function() {
-      $.ajax({
-        url: '<%= get_doctors_patient_clinics_path(@patient) %>',
-        method: 'GET',
-        data: {clinic_id: $(this).val()}
-      }).success(function(data) {
-        $('#appointment_doctor_id').html(data);
-      }).error(function(error){
-        console.log(error);
-      });
+    $.ajax({
+      url: '<%= get_doctors_patient_clinics_path(@patient) %>',
+      method: 'GET',
+      data: {clinic_id: $(this).val()}
+    }).success(function(data) {
+      $('#appointment_doctor_id').html(data);
+    }).error(function(error){
+      console.log(error);
     });
+  });
+  $('#appointment-request-form').dialog({
+    autoOpen : false,
+    modal: true,
+    draggable: false,
+    resizable: false,
+    show: 'blind',
+    hide: 'blind',
+    width: 400,
+    dialogClass: 'appointment-request-dialog',
+    buttons: {
+      "Request Appointment": function() {
+        $('form').submit();
+      }
+    }
+  });
 </script>
 <!--<div class="row">-->
   <!--<div class="col-xs-8 col-xs-offset-2">-->
