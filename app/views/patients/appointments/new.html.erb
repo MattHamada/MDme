@@ -33,6 +33,7 @@
         <fieldset class="form-group" style="text-align: center; margin-top: 1em;">
           <%= hidden_field_tag :day_start %>
           <%= hidden_field_tag :day_end %>
+
           <%= submit_tag 'Search', :class=>'btn btn-primary' %>
         </fieldset>
       <% end %>
@@ -41,9 +42,59 @@
   <div id="date_time_slots"></div>
   <hr/>
 </div>
-<div id="appointment-request-popup">
-  <%= form_for @appointment, :id=>'appointment-request-form' do |f| %>
-  <% end %>
+<div class="modal fade" id="appointment-request-modal" tabindex="-1" role="dialog" aria-labelledby="appointment-form-popup" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="appointment-form-popup"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1" id="appointment-modal-facility">
+              Facility:
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1" id="appointment-modal-provider">
+              Provider:
+            </div>
+          </div>
+          <hr/>
+          <div class="row">
+            <div class="col-sm-12">
+              <%= form_for @appointment, url: url_for(controller: 'patients/appointments', action: 'create'), :html=>{:id=>'appointment-request-form'} do |f| %>
+                <%= hidden_field_tag :date %>
+                <%= hidden_field_tag :time %>
+                <%= hidden_field_tag :clinic_id %>
+                <%= hidden_field_tag :doctor_id %>
+                <fieldset class="form-group row">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <label for="appointment_description">Reason for visit:</label>
+                    <%= f.text_area :description, :class=>'form-control', :rows=>'6' %>
+                  </div>
+                </fieldset>
+                <fieldset class="checkbox row">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <%= f.check_box :inform_earlier_time %>  Inform me if earlier time slot opens
+                  </div>
+                </fieldset>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-primary">Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -59,20 +110,19 @@
       console.log(error);
     });
   });
-  $('#appointment-request-form').dialog({
-    autoOpen : false,
-    modal: true,
-    draggable: false,
-    resizable: false,
-    show: 'blind',
-    hide: 'blind',
-    width: 400,
-    dialogClass: 'appointment-request-dialog',
-    buttons: {
-      "Request Appointment": function() {
-        $('form').submit();
-      }
-    }
+
+  $(document).on('click', '.time-slot-button', function() {
+    var openTimesForm = $('#open-times-form');
+    var modalWrapper = $('#appointment-request-modal');
+    var date = openTimesForm.find('input#date').val();
+    var time = $(this).text();
+    modalWrapper.find('input#time').val(time);
+    modalWrapper.find('input#date').val(date);
+    modalWrapper.find('input#clinic_id').val(openTimesForm.find('select#appointment_clinic_id').val());
+    modalWrapper.find('input#doctor_id').val(openTimesForm.find('select#appointment_doctor_id').val());
+    modalWrapper.find('#appointment-modal-facility').html('Facility: ' + openTimesForm.find('select#appointment_clinic_id option:selected').text());
+    modalWrapper.find('#appointment-modal-provider').html('Provider: ' + openTimesForm.find('select#appointment_doctor_id option:selected').text());
+    modalWrapper.find('.modal-title').html(date + ' ' + time);
   });
 </script>
 <!--<div class="row">-->

@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/datepicker
-//= require jquery-ui/dialog
+//# require jquery-ui/dialog
 //= require bootstrap
 //# require angular
 //# require angular-route
