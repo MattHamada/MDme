@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_upcoming_appointment
+
     @upcoming_appointment = @patient.upcoming_appointment
     respond_to do |format|
       format.json do

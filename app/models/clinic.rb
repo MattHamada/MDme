@@ -52,14 +52,23 @@ class Clinic < ActiveRecord::Base
     times
   end
 
-  def open_appointment_times_day_range(date_start, date_end, doctor)
+  def open_appointment_times_day_range(date_start, date_end, doctor, time_of_day)
     date_times = {:dates=>[], :times=>[]}
     (date_start..date_end).each do |date|
       date_times[:dates] << date
       day = (Date::DAYNAMES[date.wday]).downcase
       if self.send("is_open_#{day}?")
-        open_time = Time.zone.parse(self.send("#{day}_open_time"))
-        close_time = Time.zone.parse(self.send("#{day}_close_time"))
+        case time_of_day
+          when 'Morning'
+            open_time = Time.zone.parse(self.send("#{day}_open_time"))
+            close_time = Time.zone.parse("11:59AM")
+          when 'Afternoon'
+            open_time  =  Time.zone.parse("12:00PM")
+            close_time = Time.zone.parse(self.send("#{day}_close_time"))
+          else
+            open_time = Time.zone.parse(self.send("#{day}_open_time"))
+            close_time = Time.zone.parse(self.send("#{day}_close_time"))
+        end
         cursor = open_time.clone
         taken_appointments = doctor.appointments.given_date(date)
         taken_times = find_taken_times(taken_appointments)

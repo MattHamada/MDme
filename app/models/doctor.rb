@@ -101,6 +101,10 @@ class Doctor < ActiveRecord::Base
     Doctor.where(department_id: department.id).where(clinic_id: department.clinic_id)
   end
 
+  def confirmed_and_valid_request_appointments_on_date(date)
+    self.appointments.given_date(date)
+  end
+
   # Returns string array of all open appointment times
   # on a given day in am/pm format.  Used for populating a selection box
   # on a web form for creating/editing appointments

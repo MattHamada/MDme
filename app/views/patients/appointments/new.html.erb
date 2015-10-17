@@ -67,11 +67,11 @@
           <hr/>
           <div class="row">
             <div class="col-sm-12">
-              <%= form_for @appointment, url: url_for(controller: 'patients/appointments', action: 'create'), :html=>{:id=>'appointment-request-form'} do |f| %>
-                <%= hidden_field_tag :date %>
-                <%= hidden_field_tag :time %>
-                <%= hidden_field_tag :clinic_id %>
-                <%= hidden_field_tag :doctor_id %>
+              <%= form_for @appointment, url: url_for(controller: 'patients/appointments', action: 'create', ), :remote=>true, :html=>{:id=>'appointment-request-form'} do |f| %>
+                <%= hidden_field_tag 'appointment[date]' %>
+                <%= hidden_field_tag 'appointment[time]' %>
+                <%= hidden_field_tag 'appointment[clinic_id]' %>
+                <%= hidden_field_tag 'appointment[doctor_id]' %>
                 <fieldset class="form-group row">
                   <div class="col-sm-10 col-sm-offset-1">
                     <label for="appointment_description">Reason for visit:</label>
@@ -83,16 +83,16 @@
                     <%= f.check_box :inform_earlier_time %>  Inform me if earlier time slot opens
                   </div>
                 </fieldset>
-              <% end %>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <div style="text-align: center;">
-          <button type="button" class="btn btn-primary">Request</button>
+          <%= f.submit 'Request', :class=>'btn btn-primary' %>
         </div>
       </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -114,15 +114,28 @@
   $(document).on('click', '.time-slot-button', function() {
     var openTimesForm = $('#open-times-form');
     var modalWrapper = $('#appointment-request-modal');
-    var date = openTimesForm.find('input#date').val();
+    var date = new Date(openTimesForm.find('input#date').val());
+    switch ($(this).data('dateslot')) {
+      case 0:
+        date = new Date(date.setDate(date.getDate()-1));
+        break;
+      case 2:
+        date = new Date(date.setDate(date.getDate()+1));
+        break;
+    }
+    var dateText = $(this).parent().parent().parent().parent().find('.date-slot small').text();
     var time = $(this).text();
-    modalWrapper.find('input#time').val(time);
-    modalWrapper.find('input#date').val(date);
-    modalWrapper.find('input#clinic_id').val(openTimesForm.find('select#appointment_clinic_id').val());
-    modalWrapper.find('input#doctor_id').val(openTimesForm.find('select#appointment_doctor_id').val());
+    modalWrapper.find('input#appointment_time').val(time);
+    modalWrapper.find('input#appointment_date').val("" + (1+date.getMonth()) + '/' + date.getDate() + '/' + date.getFullYear());
+    modalWrapper.find('input#appointment_clinic_id').val(openTimesForm.find('select#appointment_clinic_id').val());
+    modalWrapper.find('input#appointment_doctor_id').val(openTimesForm.find('select#appointment_doctor_id').val());
     modalWrapper.find('#appointment-modal-facility').html('Facility: ' + openTimesForm.find('select#appointment_clinic_id option:selected').text());
     modalWrapper.find('#appointment-modal-provider').html('Provider: ' + openTimesForm.find('select#appointment_doctor_id option:selected').text());
-    modalWrapper.find('.modal-title').html(date + ' ' + time);
+    modalWrapper.find('.modal-title').html(dateText + ' ' + time);
+  });
+
+  $('#appointment-request-modal').on('hidden.bs.modal', function() {
+    $('.appointment-errors').remove();
   });
 </script>
 <!--<div class="row">-->

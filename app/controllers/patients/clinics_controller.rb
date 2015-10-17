@@ -24,7 +24,13 @@ class Patients::ClinicsController < ApplicationController
   end
 
   def open_times
-    if params[:appointment].has_key? :clinic_id and params.has_key? :day_start and params.has_key? :day_end and params[:appointment].has_key? :doctor_id
+
+    if params[:appointment][:clinic_id].present? and
+         params[:day_start].present? and
+         params[:day_end].present? and
+         params[:appointment][:doctor_id].present? and
+         params[:time_of_day].present?
+
       @clinic = Clinic.find(params[:appointment][:clinic_id])
       doctor = Doctor.find(params[:appointment][:doctor_id])
       # @times = @clinic.open_appointment_times(date, doctor)
@@ -33,7 +39,7 @@ class Patients::ClinicsController < ApplicationController
       @days_times = @clinic.open_appointment_times_day_range(
           Date.parse(Time.at(params[:day_start].to_i).to_s),
           Date.parse(Time.at(params[:day_end].to_i).to_s),
-          doctor
+          doctor, params[:time_of_day]
       )
       # @dates_times = []
       # start_day = @Date.parse(Time.at(params[:day_start].to_i).to_s)
@@ -63,7 +69,9 @@ class Patients::ClinicsController < ApplicationController
         format.json do
           render json: {status: 0, times: []}
         end
-        format.js {}
+        format.js do
+          render :nothing=>true
+        end
       end
     end
   end

@@ -1,9 +1,9 @@
-<div class="row" style="margin-top: 5em;">
+<div class="row-fluid" style="margin-top: 5em;">
   <div class="col-sm-8 col-sm-offset-2">
     <%= image_tag('full_logo_small.png', alt: 'logo', class:"img-responsive center-block", style:'max-height: 10em')  %>
   </div>
 </div>
-<div class="row" style="margin-top: 2em;">
+<div class="row-fluid" style="margin-top: 2em;">
   <div class="col-sm-8 col-sm-offset-2 ">
     <%= form_for(:session, url:sessions_path) do |f| %>
       <%= render 'shared/flash' %>
@@ -27,7 +27,7 @@
     <% end %>
   </div>
 </div>
-<div class="row">
+<div class="row-fluid">
   <div class="col-sm-12 forgot-password-link" style="text-align: center;">
     <%= link_to 'forgot password?', forgot_password_path %>
   </div>
