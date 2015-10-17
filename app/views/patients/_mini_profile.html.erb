@@ -1,0 +1,22 @@
+<div class="row" style="padding-left: 4em;">
+  <div class="col-xs-3">
+    <%= image_tag(@patient.avatar_thumb_url, alt: 'logo', class:"img-responsive center-block", style:'max-height: 10em')  %>
+  </div>
+  <div class="col-xs-9 blue-text">
+    <div class="row">
+      <div class="col-md-12">
+        <h4><%= @patient.full_name %></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <%= @patient.sex_humanize %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        DOB: <%= @patient.birthday.strftime('%m/%d/%Y') %>
+      </div>
+    </div>
+  </div>
+</div>

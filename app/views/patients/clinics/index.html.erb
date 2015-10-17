@@ -1,0 +1,20 @@
+<%= provide(:title, "My Clinics |") %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3" style="height: 100%">
+      <table>
+        <tr>
+          <th>Clinic</th>
+        </tr>
+        <tbody>
+        <% @clinics.each do |clinic| %>
+          <tr><td><%= link_to clinic.name, display_patient_clinic_path(@patient, clinic.id), remote: true %></td></tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-9">
+      <div id="clinic-display"></div>
+    </div>
+  </div>
+</div>

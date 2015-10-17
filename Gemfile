@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
-ruby '2.2.1'
+ruby '2.2.3'
 #ruby-gemset=mdme
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.4'
 
 #gem 'activejob_time_serialize', '0.1.1'
 

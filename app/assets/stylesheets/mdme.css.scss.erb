@@ -62,6 +62,7 @@ a:active {
 }
 
 #breadcrumbs {
+  font-size: 10pt;
   a {
     color: black;
     text-decoration: none
@@ -100,9 +101,9 @@ a:active {
 }
 
 #header-content {
+  display: block;
   background-color:  $mdmeBlue;
-  height: 3em;
-  line-height: 3em;
+  min-height: 3em;
   margin-bottom: 1.5em;
   text-align: center;
   box-sizing: inherit;
@@ -296,6 +297,46 @@ a.btn:active {
   vertical-align: middle;
   text-align: center;
   color: $mdmeBlue;
+}
+
+
+//appointment request page
+#open-times-form {
+  padding-right: 3em;
+  padding-left: 1em;
+  .form-group {
+    margin-bottom: 0;
+  }
+}
+
+#date_time_slots{
+
+  margin-top: 2em;
+}
+
+.date-slot-header{
+  text-align: center;
+}
+
+#date-time-slots-wrapper {
+  background-color: white;
+  padding-top: 2em;
+}
+
+.time-slot-button{
+  margin-top: .25em;
+  margin-bottom: .25em;
+  width: 100%;
+}
+#date-time-slots-wrapper > div > div:nth-child(2) {
+  border-left: solid 2px gray;
+  border-right: solid 2px gray;
+}
+
+.date-slot {
+  border-bottom: solid 2px gray;
+  /*margin-left: -2em;*/
+  /*margin-right: -2em;*/
 }
 
 

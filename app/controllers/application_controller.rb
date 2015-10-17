@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_upcoming_appointment
+
     @upcoming_appointment = @patient.upcoming_appointment
     respond_to do |format|
       format.json do
@@ -163,6 +164,7 @@ class ApplicationController < ActionController::Base
     def verified_request?
       super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
     end
+
 
   private
     # Makes browsers not think site is sketchy when ssl turned off.

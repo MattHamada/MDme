@@ -12,7 +12,7 @@ class Patients::AppointmentsController < ApplicationController
   # before_action :authenticate_header
   before_filter :require_patient_login
   before_filter :find_patient
-  before_filter :get_upcoming_appointment
+  before_filter :get_upcoming_appointment, :except=>[:create]
 
   # GET mdme.us/patients/:patient_id/appointments
   def index
@@ -29,6 +29,7 @@ class Patients::AppointmentsController < ApplicationController
     add_breadcrumb 'New Appointment Request'
 
     @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
+    @clinics = @patient.clinics
     @open_times = []
   end
 
@@ -37,7 +38,7 @@ class Patients::AppointmentsController < ApplicationController
     input = appointment_params
     #used to pass time value not select value#, not sure what changed, so need to calculate time again
     time = input[:time]
-    day = Date.parse(input[:date])
+    day = Date.strptime(input[:date], '%m/%d/%Y')
     date = Time.zone.parse("#{day.strftime('%F')} #{time}")
 
     @appointment = Appointment.new(doctor_id: input[:doctor_id],
@@ -47,10 +48,22 @@ class Patients::AppointmentsController < ApplicationController
                                    request: true,
                                    clinic_id: input[:clinic_id],
                                    inform_earlier_time: input[:inform_earlier_time])
-    if @appointment.save
-      render status: 201, json: {message: 'Appointment requested'}
-    else
-      render status: 400, json: {errors: @appointment.errors.full_messages.join(", ")}
+    respond_to do |format|
+      format.json do
+        if @appointment.save
+          render status: 201, json: {message: 'Appointment requested'}
+        else
+          render status: 400, json: {errors: @appointment.errors.full_messages.join(", ")}
+        end
+      end
+      format.js do
+        @error = false
+        if @appointment.save
+        else
+          @error = true
+          @errors = @appointment.errors.full_messages.join("\n")
+        end
+      end
     end
   end
 
@@ -149,7 +162,7 @@ class Patients::AppointmentsController < ApplicationController
     helper_method :load_upcoming_appointment
 
     def find_patient
-      @patient ||= current_patient || Patient.find_by_slug!(params[:patient_id])
+      @patient ||= current_patient || Patient.includes(:appointments).find_by_slug!(params[:patient_id])
     end
     helper_method :find_patient
 

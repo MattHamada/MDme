@@ -1,37 +1,177 @@
+<%= provide(:title, "Appointment Request |") %>
+<div class="container-fluid" style="background-color: #f5f5f5; padding-top: 2em; padding-bottom: 2em;">
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'patients/mini_profile' %>
+    </div>
+    <div class="col-md-6">
+      <%= form_tag open_times_patient_clinics_path(@patient), :remote=>true, :id=>'open-times-form' do %>
+        <fieldset class="form-group row">
+          <label for="appointment_clinic_id" class="col-sm-3 form-control-label"><small>Facility:</small></label>
+          <div class="col-sm-9">
+            <%= select :appointment, :clinic_id, options_from_collection_for_select(@clinics, :id, :name), {:prompt=>"--Select Provider--"}, {:class=>'form-control'} %>
+          </div>
+        </fieldset>
+        <fieldset class="form-group row">
+          <label for="appointment_doctor_id" class="col-sm-3 form-control-label"><small>Provider:</small></label>
+          <div class="col-sm-9">
+            <%= select :appointment, :doctor_id, options_for_select([]), {:prompt => "--Select Doctor--"}, {:class=>'form-control'}  %>
+          </div>
+        </fieldset>
+        <fieldset class="form-group row">
+          <label for="appointment_date" class="col-sm-3 form-control-label"><small>Date:</small></label>
+            <div class="col-sm-9">
+              <%= text_field_tag 'date', '', :class=>'date-pick form-control' %>
+            </div>
+        </fieldset>
+        <fieldset class="form-group row">
+          <label for="appointment_time_of_day" class="col-sm-3 form-control-label" style="white-space: nowrap;"><small>Time of Day:</small></label>
+          <div class="col-sm-9">
+            <%= select_tag :time_of_day, options_for_select(['All', 'Morning', 'Afternoon'], :selected=>'All'), :class=>'form-control' %>
+          </div>
+        </fieldset>
+        <fieldset class="form-group" style="text-align: center; margin-top: 1em;">
+          <%= hidden_field_tag :day_start %>
+          <%= hidden_field_tag :day_end %>
+
+          <%= submit_tag 'Search', :class=>'btn btn-primary' %>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+  <div id="date_time_slots"></div>
+  <hr/>
+</div>
+<div class="modal fade" id="appointment-request-modal" tabindex="-1" role="dialog" aria-labelledby="appointment-form-popup" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="appointment-form-popup"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1" id="appointment-modal-facility">
+              Facility:
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1" id="appointment-modal-provider">
+              Provider:
+            </div>
+          </div>
+          <hr/>
+          <div class="row">
+            <div class="col-sm-12">
+              <%= form_for @appointment, url: url_for(controller: 'patients/appointments', action: 'create', ), :remote=>true, :html=>{:id=>'appointment-request-form'} do |f| %>
+                <%= hidden_field_tag 'appointment[date]' %>
+                <%= hidden_field_tag 'appointment[time]' %>
+                <%= hidden_field_tag 'appointment[clinic_id]' %>
+                <%= hidden_field_tag 'appointment[doctor_id]' %>
+                <fieldset class="form-group row">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <label for="appointment_description">Reason for visit:</label>
+                    <%= f.text_area :description, :class=>'form-control', :rows=>'6' %>
+                  </div>
+                </fieldset>
+                <fieldset class="checkbox row">
+                  <div class="col-sm-10 col-sm-offset-1">
+                    <%= f.check_box :inform_earlier_time %>  Inform me if earlier time slot opens
+                  </div>
+                </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="text-align: center;">
+          <%= f.submit 'Request', :class=>'btn btn-primary' %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).on('change', '#appointment_clinic_id', function() {
+    $.ajax({
+      url: '<%= get_doctors_patient_clinics_path(@patient) %>',
+      method: 'GET',
+      data: {clinic_id: $(this).val()}
+    }).success(function(data) {
+      $('#appointment_doctor_id').html(data);
+    }).error(function(error){
+      console.log(error);
+    });
+  });
+
+  $(document).on('click', '.time-slot-button', function() {
+    var openTimesForm = $('#open-times-form');
+    var modalWrapper = $('#appointment-request-modal');
+    var date = new Date(openTimesForm.find('input#date').val());
+    switch ($(this).data('dateslot')) {
+      case 0:
+        date = new Date(date.setDate(date.getDate()-1));
+        break;
+      case 2:
+        date = new Date(date.setDate(date.getDate()+1));
+        break;
+    }
+    var dateText = $(this).parent().parent().parent().parent().find('.date-slot small').text();
+    var time = $(this).text();
+    modalWrapper.find('input#appointment_time').val(time);
+    modalWrapper.find('input#appointment_date').val("" + (1+date.getMonth()) + '/' + date.getDate() + '/' + date.getFullYear());
+    modalWrapper.find('input#appointment_clinic_id').val(openTimesForm.find('select#appointment_clinic_id').val());
+    modalWrapper.find('input#appointment_doctor_id').val(openTimesForm.find('select#appointment_doctor_id').val());
+    modalWrapper.find('#appointment-modal-facility').html('Facility: ' + openTimesForm.find('select#appointment_clinic_id option:selected').text());
+    modalWrapper.find('#appointment-modal-provider').html('Provider: ' + openTimesForm.find('select#appointment_doctor_id option:selected').text());
+    modalWrapper.find('.modal-title').html(dateText + ' ' + time);
+  });
+
+  $('#appointment-request-modal').on('hidden.bs.modal', function() {
+    $('.appointment-errors').remove();
+  });
+</script>
 <!--<div class="row">-->
   <!--<div class="col-xs-8 col-xs-offset-2">-->
     <!--<div class="panel panel-default">-->
       <!--<div class="panel-heading"><h4>Request Appointment</h4></div>-->
       <!--<div class="panel-body panel-inverse">-->
-        <!--<%= hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>-->
+        <!--<%# hidden_field_tag(:token, my_encrypt(current_patient.remember_token)) %>-->
 
-        <!--<%=form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>-->
+        <!--<%#form_for(@appointment, url: url_for(controller: 'appointments', action: 'create'), html: { class: 'form-group', role: 'form' }) do |f| %>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                  <!--<%= f.label(:date, "Select Date", for: 'appointment_date') %>-->
-                  <!--<%= f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>-->
+                  <!--<%# f.label(:date, "Select Date", for: 'appointment_date') %>-->
+                  <!--<%# f.text_field(:date, class: "form-inverse form-control", placeholder: "Date" ) %>-->
                 <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                  <!--<%= f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>-->
-                  <!--<%= collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>-->
+                  <!--<%# f.label(:appointment, 'Clinic', for: 'appointment_clinic') %>-->
+                  <!--<%# collection_select(:appointment, :clinic_id, current_patient.clinics.ordered_name, :id, :name, {}, { class: 'form-inverse form-control'}) %>-->
                 <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
-                <!--<%= f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>-->
-                <!--<%= collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>-->
+                <!--<%# f.label(:appointment, 'Doctor', for: 'appointment_doctor') %>-->
+                <!--<%# collection_select(:appointment, :doctor_id, Doctor.in_clinic(@patient.clinics.ordered_name.first).ordered_last_name, :id, :full_name, {}, { class: 'form-inverse form-control'}) %>-->
               <!--</div>-->
                 <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <!--<%= f.label(:appointment, 'Time', for: 'date_time') %>-->
+                <!--<%# f.label(:appointment, 'Time', for: 'date_time') %>-->
                 <!--<select class="form-inverse form-control" id="date_time" name="appointment[time]">-->
-                  <!--<% @open_times.each do |time| %>-->
-                    <!--<option value="<%= time %>"><%= time %></option>-->
-                  <!--<% end %>-->
+                  <!--<%# @open_times.each do |time| %>-->
+                    <!--<option value="<%# time %>"><%# time %></option>-->
+                  <!--<%# end %>-->
                 <!--</select>-->
                 <!--</div>-->
               <!--</div>-->
@@ -39,24 +179,24 @@
               <!--<div class='form-group'>-->
                 <!--<div class='col-xs-6 col-xs-offset-3'>-->
 
-                <!--<%= f.label(:description, 'Notes') %>-->
-                  <!--<%= f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>-->
+                <!--<%# f.label(:description, 'Notes') %>-->
+                  <!--<%# f.text_area(:description, class: 'form-inverse form-control', id: 'desc_text', placeholder: 'Appointment notes', rows: '5', style: 'width: 100%;') %>-->
                  <!--</div>-->
               <!--</div>-->
               <!--<div class="form-group">-->
                 <!--<div class="col-xs-6 col-xs-offset-3">-->
-                  <!--<%= f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>-->
-                  <!--<%= f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>-->
+                  <!--<%# f.check_box :inform_earlier_time, {}, checked_value = "1", unchecked_value = "0" %>-->
+                  <!--<%# f.label :appointment, "Notify me if an earlier appointmnet becomes available", for: 'appointment_inform_earlier_time ' %>-->
 
                 <!--</div>-->
               <!--</div>-->
              <!--<div class='col-xs-6 col-xs-offset-3'>-->
                <!--<div style="text-align: center">-->
                  <!--<br/><br/>-->
-                 <!--<%= f.submit 'Request', class: 'btn btn-success' %>-->
+                 <!--<%# f.submit 'Request', class: 'btn btn-success' %>-->
                <!--</div>-->
              <!--</div>-->
-         <!--<% end %>-->
+         <!--<%# end %>-->
       <!--</div>-->
     <!--</div>-->
   <!--</div>-->

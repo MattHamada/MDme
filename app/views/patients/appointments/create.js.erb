@@ -1,0 +1,13 @@
+<% if @error %>
+  var errorDiv = $(document.createElement('div'));
+  errorDiv.addClass('appointment-errors alert alert-danger');
+  errorDiv.html('<%=@errors%>');
+  $('.modal-header').append(errorDiv);
+<% else %>
+  $('#appointment-request-modal').modal('hide');
+  $('#flash').addClass('alert alert-success').html(
+      'Appointment Requested'
+  );
+$('#date_time_slots').html('');
+  window.scrollTo(0, 0);
+<% end %>

@@ -1,15 +1,22 @@
 <div class="container-fluid" id="header-content" >
-  <div class="row">
-    <div class="col-xs-6" style="text-align: left" id="breadcrumbs">
+  <div class="row-fluid">
+    <div class="col-sm-10" id="breadcrumbs" style="text-align: left; padding-top: 1em;">
       <%= render_breadcrumbs separator: ' > ' %>
     </div>
-    <div class="col-xs-6" style="text-align: right">
+    <div class="col-sm-1" style="padding-top: 1em; padding-bottom: 1em; ">
       <% unless @patient.nil? %>
         <%= button_to 'Sign Out', signout_path, class: 'btn btn-warning-outline navbar-btn', id: 'signout-link', :method=> :delete %>
       <% end %>
     </div>
   </div>
 </div>
+<div class="row-fluid">
+  <div class="col-md-8 col-md-offset-2">
+    <div id="flash">
+    </div>
+  </div>
+</div>
+
 <% unless @patient.nil? %>
   <%= render 'patients/appointments/upcoming_progress_bar' unless @patient.upcoming_appointment.nil? %>
 <% end %>

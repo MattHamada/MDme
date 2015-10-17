@@ -3,9 +3,10 @@ class Clinics::DoctorsController < ApplicationController
   before_filter :poly_authenticate_header
 
   def index
-    @doctors = Clinic.find(params[:clinic_id]).doctors
+    @doctors = Clinic.includes(:doctors).find(params[:clinic_id]).doctors
   end
 
+  #this was for angular rails now using one on clinics controller
   def open_times
     if params.has_key? :clinic_id and params.has_key? :date and params.has_key? :doctor_id
       @clinic = Clinic.find(params[:clinic_id])

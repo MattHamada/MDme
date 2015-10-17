@@ -1,0 +1,80 @@
+$(function() {
+  $('.date-pick').datepicker({
+    duration : 0,
+    minDate: 0,
+    onChangeMonthYear: function() {   setTimeout("applyHighlight()", 100); },
+    beforeShow: function() { setTimeout("applyHighlight()", 100); },
+    onSelect: function(dateText, inst) {
+      var dateSeleceted = new Date(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']);
+      var dayBefore = new Date();
+      dayBefore.setDate(dateSeleceted.getDate() - 1);
+      var dayAfter = new Date();
+      dayAfter.setDate(dateSeleceted.getDate() + 1);
+      $('#day_start').val(Math.round(dayBefore.getTime() / 1000));
+      $('#day_end').val(Math.round(dayAfter.getTime() / 1000));
+      $('.date-pick').datepicker("hide");
+    }
+
+  }).keyup(function() { setTimeout("applyHighlight()", 100); });
+});
+
+function applyHighlight()
+{
+
+  $('.ui-datepicker-calendar td').each(function() {
+
+      $(this).mouseover(function() {
+        $(this).find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
+        $(this).find('a').removeClass('ui-state-default');
+        $(this).css('background', '#ffffcc');
+        var dayBefore = $(this).prev('td');
+        dayBefore.find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
+        dayBefore.find('a').removeClass('ui-state-default');
+        dayBefore.css('background', '#ffffcc');
+        var dayAfter = $(this).next('td');
+        dayAfter.find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
+        dayAfter.find('a').removeClass('ui-state-default');
+        dayAfter.css('background', '#ffffcc');
+      });
+      $(this).mouseout(function() {
+        $(this).css('background', '#ffffff');
+        $(this).find('a').css('background','');
+        $(this).find('a').addClass('ui-state-default');
+        var dayBefore = $(this).prev('td');
+        dayBefore.css('background', '#ffffff');
+        dayBefore.find('a').css('background','');
+        dayBefore.find('a').addClass('ui-state-default');
+        var dayAfter = $(this).next('td');
+        dayAfter.css('background', '#ffffff');
+        dayAfter.find('a').css('background','');
+        dayAfter.find('a').addClass('ui-state-default');
+      });
+
+  });
+}
+
+function applyWeeklyHighlight()
+{
+
+  $('.ui-datepicker-calendar tr').each(function() {
+
+    if($(this).parent().get(0).tagName == 'TBODY')
+    {
+      $(this).mouseover(function() {
+        $(this).find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
+        $(this).find('a').removeClass('ui-state-default');
+        $(this).css('background', '#ffffcc');
+      });
+      $(this).mouseout(function() {
+        $(this).css('background', '#ffffff');
+        $(this).find('a').css('background','');
+        $(this).find('a').addClass('ui-state-default');
+      });
+    }
+
+  });
+}
+
+
+
+

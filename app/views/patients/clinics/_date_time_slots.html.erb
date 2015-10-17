@@ -1,0 +1,37 @@
+<div class="container" id="date-time-slots-wrapper">
+  <div class="row">
+    <% @days_times[:dates].each_with_index do |date, index| %>
+      <div class="col-xs-4">
+        <div class="row">
+          <div class="col-md-12 date-slot-header">
+            <div class="date-slot" id="date-slot-<%=index%>">
+              <small><%= date_slot_header_formatter(date) %></small>
+            </div>
+            <div class="time-buttons">
+              <% if  @days_times[:times][index] == false %>
+                <div class="row">
+                  <div class="col-md-12">
+                    CLOSED
+                  </div>
+                </div>
+              <% else %>
+                <% @days_times[:times][index].each do |timeslot| %>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <% if timeslot[:enabled] %>
+                        <button data-dateslot="<%=index%>" data-time="<%= timeslot[:time] %>" data-date="<%= date.to_s.html_safe %>" class="btn btn-sm btn-primary time-slot-button" data-toggle="modal" data-target="#appointment-request-modal"><%= timeslot[:time] %></button>
+                      <% else %>
+                        <button data-dateslot="<%=index%>" class="btn btn-sm btn-secondary" disabled><%= timeslot[:time] %></button>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
