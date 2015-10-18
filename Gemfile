@@ -57,8 +57,6 @@ gem 'responders'
 gem 'tzinfo'
 gem 'tzinfo-data'
 
-gem 'rdoc'
-
 #front end js package manager
 # gem 'bower-rails'
 #precaches angular views
