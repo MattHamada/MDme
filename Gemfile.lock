@@ -341,6 +341,7 @@ DEPENDENCIES
   letter_opener
   libnotify (= 0.8.0)
   mini_magick
+  multi_json
   oj
   paperclip (= 4.2.2)
   pg (= 0.18.3)
