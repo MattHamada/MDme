@@ -105,7 +105,6 @@ group :development, :test do
   # gem 'sqlite3', '1.3.9'
   #gem 'rspec-rails', '2.14.2'
   gem 'rspec-rails'
-  gem 'teaspoon'
   gem 'phantomjs'
   # gem 'guard-rspec' #rspec generation and autotest
   #gem 'guard-livereload'

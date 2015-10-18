@@ -24,7 +24,6 @@ class Patients::ClinicsController < ApplicationController
   end
 
   def open_times
-
     if params[:appointment][:clinic_id].present? and
          params[:day_start].present? and
          params[:day_end].present? and
@@ -36,6 +35,7 @@ class Patients::ClinicsController < ApplicationController
       # @times = @clinic.open_appointment_times(date, doctor)
 
       #todo respond with appointments table
+      puts "--------------\nDAY START: #{params[:day_start]}\nDAY END: #{params[:day_end]}\n----------------------------"
       @days_times = @clinic.open_appointment_times_day_range(
           Date.parse(Time.at(params[:day_start].to_i).to_s),
           Date.parse(Time.at(params[:day_end].to_i).to_s),
