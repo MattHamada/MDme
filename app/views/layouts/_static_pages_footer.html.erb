@@ -12,12 +12,12 @@
           <%= link_to 'contact', contact_path %>
         </div>
         <% if @current_patient.nil? %>
-          <div  ng-hide='loggedIn()' class="col-sm-3">
+          <div class="col-sm-3">
             <%= link_to 'sign in', signin_path %>
           </div>
         <% else %>
-          <div ng-show="loggedIn()" class="col-sm-3">
-            <a href="#/patients">my account</a>
+          <div class="col-sm-3">
+            <%= link_to 'my account', @current_patient %>
           </div>
         <% end %>
       </div>
