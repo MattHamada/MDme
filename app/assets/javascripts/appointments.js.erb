@@ -6,12 +6,12 @@ $(function() {
     beforeShow: function() { setTimeout("applyHighlight()", 100); },
     onSelect: function(dateText, inst) {
       var dateSeleceted = new Date(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']);
-      var dayBefore = new Date();
-      dayBefore.setDate(dateSeleceted.getDate() - 1);
-      var dayAfter = new Date();
-      dayAfter.setDate(dateSeleceted.getDate() + 1);
-      $('#day_start').val(Math.round(dayBefore.getTime() / 1000));
-      $('#day_end').val(Math.round(dayAfter.getTime() / 1000));
+//      var dayBefore = new Date();
+//      dayBefore.setDate(dateSeleceted.getDate() - 1);
+//      var dayAfter = new Date();
+//      dayAfter.setDate(dateSeleceted.getDate() + 1);
+//      $('#day_start').val(Math.round(dayBefore.getTime() / 1000));
+//      $('#day_end').val(Math.round(dayAfter.getTime() / 1000));
       $('.date-pick').datepicker("hide");
     }
 

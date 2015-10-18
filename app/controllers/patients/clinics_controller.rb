@@ -25,21 +25,19 @@ class Patients::ClinicsController < ApplicationController
 
   def open_times
     if params[:appointment][:clinic_id].present? and
-         params[:day_start].present? and
-         params[:day_end].present? and
+         params[:date].present? and
          params[:appointment][:doctor_id].present? and
          params[:time_of_day].present?
 
       @clinic = Clinic.find(params[:appointment][:clinic_id])
       doctor = Doctor.find(params[:appointment][:doctor_id])
+      date = Date.strptime(params[:date], '%m/%d/%Y')
       # @times = @clinic.open_appointment_times(date, doctor)
 
       #todo respond with appointments table
       puts "--------------\nDAY START: #{params[:day_start]}\nDAY END: #{params[:day_end]}\n----------------------------"
       @days_times = @clinic.open_appointment_times_day_range(
-          Date.parse(Time.at(params[:day_start].to_i).to_s),
-          Date.parse(Time.at(params[:day_end].to_i).to_s),
-          doctor, params[:time_of_day]
+          (date - 1.day), (date + 1.day), doctor, params[:time_of_day]
       )
       # @dates_times = []
       # start_day = @Date.parse(Time.at(params[:day_start].to_i).to_s)
