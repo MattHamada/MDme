@@ -1,0 +1,76 @@
+<%= provide(:title, "#{full_name(@patient)} |") %>
+<div class="container-fluid" style="background-color: #f5f5f5; padding-top: 2em; padding-bottom: 2em;">
+  <%= render 'patients/profile_upcoming_appointment_section' %>
+  <div class="row-fluid portal-groups">
+    <div class="col-md-4 col-md-offset-1 ">
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary-outline dropdown-toggle  portal-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          My Appointments
+        </button>
+        <div class="dropdown-menu">
+          <%= link_to 'Request an Appointment', new_patient_appointment_path(@patient), :class=>'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Requested Appointments</a>
+          <a class="dropdown-item" href="#">Appointment Histroy</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-md-offset-1 ">
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary-outline dropdown-toggle  portal-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          My Medications
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Requested Appointments</a>
+          <a class="dropdown-item" href="#">Appointment Histroy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row portal-groups">
+    <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
+      <div class="row">
+        <div class="col-xs-2">
+          <%= fa_icon "user-md 2x", class: 'mdme-icon img-responsive' %>
+        </div>
+        <div class="col-xs-10">
+          My Clinicians
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
+      <%= link_to patient_clinics_path(@patient) do %>
+        <div class="row">
+          <div class="col-xs-2">
+            <%= fa_icon "hospital-o 2x", class: 'mdme-icon img-responsive' %>
+          </div>
+          <div class="col-xs-10">
+            My Clinics
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row portal-groups">
+    <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
+      <div class="row">
+        <div class="col-xs-2">
+          <%= fa_icon "heart 2x", class: 'mdme-icon img-responsive' %>
+        </div>
+        <div class="col-xs-10">
+          My Records
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-md-offset-1 portal-item btn btn-primary-outline">
+      <div class="row">
+        <div class="col-xs-2">
+          <%= fa_icon "qrcode 2x", class: 'mdme-icon img-responsive' %>
+        </div>
+        <div class="col-xs-10">
+          Appointment Check-in
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
