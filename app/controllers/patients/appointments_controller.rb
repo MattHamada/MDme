@@ -28,8 +28,13 @@ class Patients::AppointmentsController < ApplicationController
     add_breadcrumb 'Appointments', home_patient_appointments_path(@patient)
     add_breadcrumb 'New Appointment Request'
 
-    @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
+    if params.has_key? :clinic_id
+      @appointment = Appointment.new(appointment_time: DateTime.tomorrow, :clinic_id=>params[:clinic_id])
+    else
+      @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
+    end
     @clinics = @patient.clinics
+
     @open_times = []
   end
 

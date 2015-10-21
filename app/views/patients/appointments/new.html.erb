@@ -111,6 +111,12 @@
     });
   });
 
+  $(function() {
+    if ($('#appointment_clinic_id option:selected').html() != '--Select Provider--') {
+        $('#appointment_clinic_id').trigger('change');
+    }
+  });
+
   $(document).on('click', '.time-slot-button', function() {
     var openTimesForm = $('#open-times-form');
     var modalWrapper = $('#appointment-request-modal');
