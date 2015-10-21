@@ -1,13 +1,42 @@
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-8">
     <div class="row">
       <div class="col-md-12" style="text-align: center;">
-        <h3><%=@clinic.name%></h3>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="text-align: center;">
+            <%=@clinic.name%>
+          </div>
+          <div class="card-title" >
+            <%= render_gmap_coordinate_picker :static => 'true', :map_width=> '100%', :map_height=> '200px', :zoom_level => 14 , :default_coordinates => [@clinic.latitude,@clinic.longitude]  %>
+          </div>
+          <div class="card-block">
+            <div id="clinic-info">
+              <label>
+                <span><b>Address:</b></span>
+                <%= clinic_address(@clinic) %>
+              </label>
+              <label>
+                <span><b>Phone Number:</b></span>
+                <%= @clinic.phone_number %>
+              </label>
+              <label>
+                <span><b>Hours:</b></span>
+                <div style="margin-left: 1em;">
+                  <%= clinic_hours(@clinic) %>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-offset-1">
       </div>
     </div>
   </div>
-  <div class="col-sm-6">
 
-  </div>
 </div>
-<h5><%=@clinic.name %></h5>

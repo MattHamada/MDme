@@ -124,6 +124,8 @@ GEM
       railties (>= 3.2, < 5.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    gmap_coordinates_picker (0.1.0)
+      rails (>= 3.1.0)
     haml (4.0.7)
       tilt
     highline (1.7.8)
@@ -330,6 +332,7 @@ DEPENDENCIES
   factory_girl_rails (= 4.2.0)
   faker (= 1.1.2)
   font-awesome-rails
+  gmap_coordinates_picker
   httparty
   jbuilder (= 1.0.2)
   jquery-rails (= 4.0.5)

@@ -33,8 +33,10 @@
             My Clinicians
           </li>
           <li class="nav-item">
-            <%= fa_icon "hospital-o", class: 'mdme-icon img-responsive' %>
-            My Clinics
+            <%= link_to patient_clinics_path(@patient) do %>
+              <%= fa_icon "hospital-o", class: 'mdme-icon img-responsive' %>
+              My Clinics
+            <% end %>
           </li>
           <li class="nav-item">
             <%= fa_icon "heart", class: 'mdme-icon img-responsive' %>

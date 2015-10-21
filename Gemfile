@@ -70,6 +70,8 @@ gem 'jwt'
 #pg for all env
 gem 'pg', '0.18.3'
 
+gem "gmap_coordinates_picker"
+
 
 #bower assets in gem form
 source 'https://rails-assets.org' do
