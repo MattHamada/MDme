@@ -151,11 +151,15 @@ class Patient < ActiveRecord::Base
   end
 
   def sex_humanize
-    if sex == 1
-      "Female"
-    else
-      "Male"
-    end
+    Patient::Sex.constants[sex].to_s.titleize unless self.sex.nil?
+  end
+
+  def marital_status_humanize
+    Patient::MaritalStatus.constants[marital_status].to_s.titleize unless self.marital_status.nil?
+  end
+
+  def preferred_phone_humanize
+    self.send("#{Patient::PreferredDaytimePhone.constants[preferred_daytime_phone].to_s.downcase}_phone") unless self.preferred_daytime_phone.nil?
   end
 
   def location
@@ -173,7 +177,7 @@ class Patient < ActiveRecord::Base
   module PreferredDaytimePhone
     HOME = 0
     WORK = 1
-    CELL = 2
+    MOBILE = 2
   end
 
   module Sex

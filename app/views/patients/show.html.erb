@@ -1,5 +1,53 @@
 <%= provide(:title, "#{full_name(@patient)} |") %>
 <div class="container-fluid" style="background-color: #f5f5f5; padding-top: 2em; padding-bottom: 2em;">
   <%= render 'patients/profile_upcoming_appointment_section' %>
-  put insurance and basic personal info here and links to edit
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="card">
+        <div class="card-header">
+          My Information
+          <%= link_to 'Edit', edit_patient_path(@patient) %>
+        </div>
+        <div class="card-block">
+          <div id="patient-show-info">
+            <label>
+              <span><b>Name:</b></span>
+              <%= @patient.full_name %>
+            </label>
+            <label>
+              <span><b>Email:</b></span>
+              <%= @patient.email %>
+            </label>
+            <label>
+              <span><b>Birthday:</b></span>
+              <%= @patient.birthday_form_format %>
+            </label>
+            <label>
+              <span><b>Sex:</b></span>
+              <%= @patient.sex_humanize %>
+            </label>
+            <label>
+              <span><b>Marital Status:</b></span>
+              <%= @patient.marital_status_humanize %>
+            </label>
+            <label>
+              <span><b>Address:</b></span>
+              <%# patient_address(@patient) %>
+            </label>
+            <label>
+              <span><b>Address:</b></span>
+              <%= @patient.preferred_phone_humanize %>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="card">
+        </div>
+      </div>
+     </div>
+  </div>
 </div>
