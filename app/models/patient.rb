@@ -36,8 +36,8 @@ class Patient < ActiveRecord::Base
   validates :address2,                               length: {maximum: 100}
   # validates :address3,                               length: {maximum: 100}
   validates :city,                   presence: true, length: {maximum: 50}
-  validates :state,                  presence: true, length: {maximum: 2}
-  validates :zipcode,                presence: true, length: {maximum: 11}
+  validates :state,                                  length: {maximum: 2}
+  validates :zipcode,                                length: {maximum: 11}
   validates :birthday,               presence: true, length: {maximum: 11}
   validate  :birthday_in_past
   validates :middle_initial,                         length: {maximum: 1}

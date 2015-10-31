@@ -1,28 +1,21 @@
-<%= provide(:title, "Edit Profile | ") %>
-<%= render 'patients/header' %>
-
-<div class="row">
-<div class="col-md-8 col-md-offset-2">
-  <div class="panel panel-default">
-    <div class="panel-heading"><h4>Edit Profile</h4></div>
-    <div class="panel-body panel-inverse">
-
+<div class="col-md-10 col-md-offset-1">
+  <div class="card">
+    <div class="card-header"><h4>Edit Profile</h4></div>
+    <div class="card-block">
       <%= form_for(@patient, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
         <%= render 'patients/new_edit_form', f: f %>
         <div class='form-group'>
           <div class='col-xs-6 col-xs-offset-3'>
-          <%= f.label(:verify, 'Password - required to make changes') %>
-            <%= password_field(:verify, :verify_password, class: 'form-control') %>
+          <%= f.label(:patient, 'Password - required to make changes') %>
+            <%= password_field(:patient, :password, class: 'form-control') %>
           </div>
         </div>
         <div class="form-grop">
-          <div class='col-xs-6 col-xs-offset-5'>
-            <%= f.submit 'Update', class: 'btn btn-success' %>
+          <div class='col-xs-6 col-xs-offset-5' style="margin-top: 1em;">
+            <%= f.submit 'Update', class: 'btn btn-primary' %>
           </div>
         </div>
-
       <% end %>
-
     </div>
   </div>
 </div>

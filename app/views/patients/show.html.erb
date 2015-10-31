@@ -11,43 +11,44 @@
         <div class="card-block">
           <div id="patient-show-info">
             <label>
-              <span><b>Name:</b></span>
+              <b>Name:</b>
               <%= @patient.full_name %>
             </label>
             <label>
-              <span><b>Email:</b></span>
+              <b>Email:</b>
               <%= @patient.email %>
             </label>
             <label>
-              <span><b>Birthday:</b></span>
+              <b>Birthday:</b>
               <%= @patient.birthday_form_format %>
             </label>
             <label>
-              <span><b>Sex:</b></span>
+              <b>Sex:</b>
               <%= @patient.sex_humanize %>
             </label>
             <label>
-              <span><b>Marital Status:</b></span>
+              <b>Marital Status:</b>
               <%= @patient.marital_status_humanize %>
             </label>
             <label>
-              <span><b>Address:</b></span>
-              <%# patient_address(@patient) %>
+              <b>Address:</b>
+              <%= patient_address(@patient) %>
             </label>
-            <label>
-              <span><b>Address:</b></span>
-              <%= @patient.preferred_phone_humanize %>
-            </label>
+            <% if @patient.preferred_phone_humanize.present? %>
+              <label>
+                <b>Preferred Phone:</b>
+                <%= @patient.preferred_phone_humanize %>
+              </label>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div class="card">
-        </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="card">
       </div>
-     </div>
-  </div>
+    </div>
+   </div>
 </div>

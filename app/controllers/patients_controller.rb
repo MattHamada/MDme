@@ -40,17 +40,39 @@ class PatientsController < ApplicationController
 
   # POST www.mdme.us/patients/:id
   def update
-    p = patient_params
-    if @patient.authenticate(p[:password])
-      @patient.attributes = p
-
-      if @patient.save
-        render json: { status: 'patient updated' }
+    if params[:patient].has_key? :password and @patient.authenticate(params[:patient].delete :password)
+      p = patient_params
+      @patient.bypass_password_validation = true
+      if @patient.update_attributes(p)
+        respond_to do |format|
+          format.html do
+            flash[:success] = 'Account updated'
+            redirect_to patient_path(@patient)
+          end
+          format.json { render json: {status: 'patient updated'} }
+        end
       else
-        render status: 400, json: { status: 'error', errors: @patient.errors.full_messages }
+        respond_to do |format|
+          format.html do
+            flash[:error] = ''
+            @patient.errors.full_messages.each do |msg|
+              flash[:error]  += "#{msg}\n"
+            end
+            render 'patients/edit'
+          end
+          format.json { render status: 400, json: { status: 'error', errors: @patient.errors.full_messages } }
+        end
       end
     else
-      render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
+      respond_to do |format|
+        format.html do
+          flash[:error] = 'Invalid password entered'
+          render 'patients/edit'
+        end
+        format.json do
+          render status: 401, json: { status: 'error', errors: 'Invalid password entered' }
+        end
+      end
     end
   end
 
