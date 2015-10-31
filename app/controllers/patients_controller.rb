@@ -41,8 +41,12 @@ class PatientsController < ApplicationController
   # POST www.mdme.us/patients/:id
   def update
     if params[:patient].has_key? :password and @patient.authenticate(params[:patient].delete :password)
-      p = patient_params
       @patient.bypass_password_validation = true
+      #dont save ss with xxx-xx-#### format
+      if params[:patient].has_key? :social_security_number and !valid_ssn_format?(params[:patient][:social_security_number])
+       params[:patient].delete :social_security_number
+      end
+      p = patient_params
       if @patient.update_attributes(p)
         respond_to do |format|
           format.html do
@@ -115,6 +119,9 @@ class PatientsController < ApplicationController
   end
 
   private
+  def valid_ssn_format?(ssn)
+    ssn.match(/[a-zA-Z]/) ? false : true
+  end
 
   def find_patient
     @patient ||= current_patient || Patient.find_by_slug!(params[:id])

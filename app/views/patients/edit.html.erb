@@ -4,14 +4,14 @@
     <div class="card-block">
       <%= form_for(@patient, html: { :multipart => :true, class: "form-horizontal", role: "form" }) do |f| %>
         <%= render 'patients/new_edit_form', f: f %>
-        <div class='form-group'>
-          <div class='col-xs-6 col-xs-offset-3'>
-          <%= f.label(:patient, 'Password - required to make changes') %>
+        <fieldset class='form-group row'>
+          <div class='col-sm-8 col-sm-offset-2'>
+          <%= f.label(:patient, 'Password - required to make changes', :style=>'display: block') %>
             <%= password_field(:patient, :password, class: 'form-control') %>
           </div>
-        </div>
-        <div class="form-grop">
-          <div class='col-xs-6 col-xs-offset-5' style="margin-top: 1em;">
+        </fieldset>
+        <div class="form-group row">
+          <div class='col-sm-12' style="text-align: center; margin-top: 1em;">
             <%= f.submit 'Update', class: 'btn btn-primary' %>
           </div>
         </div>
