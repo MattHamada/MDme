@@ -69,7 +69,7 @@ gem 'tzinfo-data'
 gem 'jwt'
 
 #pg for all env
-gem 'pg', '0.18.3'
+gem 'pg', '0.18.4'
 
 gem "gmap_coordinates_picker"
 
@@ -107,7 +107,12 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   # gem 'sqlite3', '1.3.9'
   #gem 'rspec-rails', '2.14.2'
-  gem 'rspec-rails'
+  gem 'rspec', github: 'rspec/rspec'
+  gem 'rspec-mocks', github: 'rspec/rspec-mocks'
+  gem 'rspec-expectations', github: 'rspec/rspec-expectations'
+  gem 'rspec-support', github: 'rspec/rspec-support'
+  gem 'rspec-core', github: 'rspec/rspec-core'  
+  gem 'rspec-rails', :github=>'rspec/rspec-rails'
   gem 'phantomjs'
   # gem 'guard-rspec' #rspec generation and autotest
   #gem 'guard-livereload'
