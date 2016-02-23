@@ -24,14 +24,15 @@
 
   </head>
   <body>
-    <div  id="wrapper">
       <%= render 'layouts/header' %>
+      <% if ['static_pages', 'sessions'].include? controller_name %>
+        <%= render 'static_pages/static_pages_menu' %>
+      <% end %>
       <div id="main-content">
         <%= yield %>
       </div>
       <%# if ['static_pages', 'sessions'].include? controller_name %>
-        <%= render 'layouts/static_pages_footer' %>
       <%# end %>
-    </div>
+
   </body>
 </html>

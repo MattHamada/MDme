@@ -10,7 +10,7 @@ gem 'multi_json'
 
 #gem 'activejob_time_serialize', '0.1.1'
 
-gem 'bootstrap-sass', '3.3.1'
+# gem 'bootstrap-sass', '3.3.1'
 gem 'font-awesome-rails'
 gem 'autoprefixer-rails'
 
@@ -75,7 +75,7 @@ gem "gmap_coordinates_picker"
 
 #bower assets in gem form
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap', '4.0.0.alpha'
+  gem 'rails-assets-bootstrap', '4.0.0.alpha.2'
   # gem 'rails-assets-angular', '1.4.3'
   # gem 'rails-assets-angular-route' , '1.4.3'
   # gem 'rails-assets-angular-resource', '1.4.3'
