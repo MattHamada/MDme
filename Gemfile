@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
-ruby '2.2.3'
+ruby '2.3.0'
 #ruby-gemset=mdme
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+# gem 'rails', '4.2.5'
+gem 'rails', '5.0.0.beta2'
 
 gem 'multi_json'
 
