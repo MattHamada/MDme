@@ -16,10 +16,10 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   before_action :set_variant
-  before_filter :expire_hsts
+  before_action :expire_hsts
 
 
-  after_filter :set_csrf_cookie_for_ng
+  after_action :set_csrf_cookie_for_ng
 
   def set_csrf_cookie_for_ng
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
@@ -39,7 +39,6 @@ class ApplicationController < ActionController::Base
   end
 
   def get_upcoming_appointment
-
     @upcoming_appointment = @patient.upcoming_appointment
     respond_to do |format|
       format.json do

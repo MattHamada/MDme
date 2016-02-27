@@ -10,10 +10,12 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require turbolinks
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/datepicker
 //# require jquery-ui/dialog
+//= require tether
 //= require bootstrap
 //# require angular
 //# require angular-route

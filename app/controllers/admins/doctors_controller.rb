@@ -6,7 +6,7 @@
 # Proprietary and confidential.
 
 # <tt>Admins::DoctorsController</tt> for admin.mdme.us/admins/:admin_id/clinics
-class Admins::DoctorsController < ApplicationController
+class Admins::DoctorsController < Admins::ApplicationController
 
   # before_filter :find_admin
   before_filter :find_doctor, only: [:edit, :update, :show, :destroy]

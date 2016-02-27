@@ -6,6 +6,7 @@
 <div class="row-fluid" style="margin-top: 2em;">
   <div class="col-sm-8 col-sm-offset-2 ">
     <%= form_for(:session, url:sessions_path) do |f| %>
+      <%= hidden_field_tag :subdomain, request.subdomain %>
       <%= render 'shared/flash' %>
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2 blue-input-placeholder">

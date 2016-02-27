@@ -76,6 +76,7 @@ gem "gmap_coordinates_picker"
 
 #bower assets in gem form
 source 'https://rails-assets.org' do
+  gem 'rails-assets-tether'
   gem 'rails-assets-bootstrap', '4.0.0.alpha.2'
   # gem 'rails-assets-angular', '1.4.3'
   # gem 'rails-assets-angular-route' , '1.4.3'

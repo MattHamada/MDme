@@ -1,27 +1,28 @@
-$(function() {
-  $('.date-pick').datepicker({
-    duration : 0,
-    minDate: 0,
-    onChangeMonthYear: function() {   setTimeout("applyHighlight()", 100); },
-    beforeShow: function() { setTimeout("applyHighlight()", 100); },
-    onSelect: function(dateText, inst) {
-      var dateSeleceted = new Date(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']);
+$(document).on('ready page:load page:change', function() {
+  $(function() {
+    $('.date-pick').datepicker({
+      duration : 0,
+      minDate: 0,
+      onChangeMonthYear: function() {   setTimeout("applyHighlight()", 100); },
+      beforeShow: function() { setTimeout("applyHighlight()", 100); },
+      onSelect: function(dateText, inst) {
+        var dateSeleceted = new Date(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']);
 //      var dayBefore = new Date();
 //      dayBefore.setDate(dateSeleceted.getDate() - 1);
 //      var dayAfter = new Date();
 //      dayAfter.setDate(dateSeleceted.getDate() + 1);
 //      $('#day_start').val(Math.round(dayBefore.getTime() / 1000));
 //      $('#day_end').val(Math.round(dayAfter.getTime() / 1000));
-      $('.date-pick').datepicker("hide");
-    }
+        $('.date-pick').datepicker("hide");
+      }
 
-  }).keyup(function() { setTimeout("applyHighlight()", 100); });
-});
+    }).keyup(function() { setTimeout("applyHighlight()", 100); });
+  });
 
-function applyHighlight()
-{
+  function applyHighlight()
+  {
 
-  $('.ui-datepicker-calendar td').each(function() {
+    $('.ui-datepicker-calendar td').each(function() {
 
       $(this).mouseover(function() {
         $(this).find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
@@ -50,31 +51,28 @@ function applyHighlight()
         dayAfter.find('a').addClass('ui-state-default');
       });
 
-  });
-}
+    });
+  }
 
-function applyWeeklyHighlight()
-{
+  function applyWeeklyHighlight()
+  {
 
-  $('.ui-datepicker-calendar tr').each(function() {
+    $('.ui-datepicker-calendar tr').each(function() {
 
-    if($(this).parent().get(0).tagName == 'TBODY')
-    {
-      $(this).mouseover(function() {
-        $(this).find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
-        $(this).find('a').removeClass('ui-state-default');
-        $(this).css('background', '#ffffcc');
-      });
-      $(this).mouseout(function() {
-        $(this).css('background', '#ffffff');
-        $(this).find('a').css('background','');
-        $(this).find('a').addClass('ui-state-default');
-      });
-    }
+      if($(this).parent().get(0).tagName == 'TBODY')
+      {
+        $(this).mouseover(function() {
+          $(this).find('a').css({'background':'#ffffcc','border':'1px solid #dddddd'});
+          $(this).find('a').removeClass('ui-state-default');
+          $(this).css('background', '#ffffcc');
+        });
+        $(this).mouseout(function() {
+          $(this).css('background', '#ffffff');
+          $(this).find('a').css('background','');
+          $(this).find('a').addClass('ui-state-default');
+        });
+      }
 
-  });
-}
-
-
-
-
+    });
+  }
+});

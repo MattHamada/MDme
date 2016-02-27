@@ -163,7 +163,11 @@ class Patient < ActiveRecord::Base
   end
 
   def location
-    "#{city}, #{country}" if state.nil? else "#{city}, #{state}"
+    if state.nil?
+      "#{city}, #{country}"
+    else
+      "#{city}, #{state}"
+    end
   end
 
   module MaritalStatus

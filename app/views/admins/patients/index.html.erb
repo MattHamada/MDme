@@ -1,5 +1,27 @@
 <%= provide(:title, 'Patients') %>
-<%= render 'admins/header' %>
+<div>
+  <div class="row">
+    <div class="col-md-12"><h2>Patients</h2></div>
+  </div>
+  <div style="margin: 2em">
+    <% @patients.each_with_index do |patient, index| %>
+      <% if index%4 == 0 %>
+        <div class="row">
+      <% end %>
+      <div class="col-md-4">
+        <div class="card" style="text-align: center;">
+          <%= image_tag(patient.avatar_thumb_url, :class=>'card-img-top', :alt=>'patient image') %>
+          <div class="card-block" style="text-align: center;">
+            <h4 class="card-title"><%= patient.full_name %></h4>
+          </div>
+        </div>
+      </div>
+      <% if index%4 == 3 || index == (@patients.length - 1) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">

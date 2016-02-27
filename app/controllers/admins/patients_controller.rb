@@ -7,13 +7,13 @@
 
 # <tt>Admins::PatientsController</tt>
 # for admin.mdme.us/admins/:admin_id/patients
-class Admins::PatientsController < ApplicationController
+class Admins::PatientsController < Admins::ApplicationController
 
   before_filter :find_admin
   before_filter :find_patient, only: [:show, :edit, :update,
                                       :destroy, :registration_form]
   # before_filter :require_admin_login
-  before_action :authenticate_admin_header
+  # before_action :authenticate_admin_header
 
   # GET admin.mdme.us/admins/:admin_id/patients
   def index

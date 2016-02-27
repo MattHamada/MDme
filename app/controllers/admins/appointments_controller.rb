@@ -7,7 +7,7 @@
 
 # <tt>Admins::AppointmentsController</tt>
 # for admin.mdme.us/admins/:admin_id/appointments
-class Admins::AppointmentsController < ApplicationController
+class Admins::AppointmentsController < Admins::ApplicationController
 
   # before_filter :find_admin
   # before_filter :require_admin_login

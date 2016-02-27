@@ -66,7 +66,7 @@
           </div>
           <hr/>
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12" data-turbolinks="false">
               <%= form_for @appointment, url: url_for(controller: 'patients/appointments', action: 'create', ), :remote=>true, :html=>{:id=>'appointment-request-form'} do |f| %>
                 <%= hidden_field_tag 'appointment[date]' %>
                 <%= hidden_field_tag 'appointment[time]' %>

@@ -7,7 +7,7 @@
 
 # <tt>Admins::DepartmentsController</tt>
 # for admin.mdme.us/admins/:admin_id/departments
-class Admins::DepartmentsController < ApplicationController
+class Admins::DepartmentsController < Admins::ApplicationController
 
   before_filter :find_admin
   before_filter :authenticate_admin_header

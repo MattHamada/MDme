@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     if request.subdomain == 'doctors'
       doctor = Doctor.find_by(email: params[:session][:email].downcase)
       if doctor && doctor.authenticate(params[:session][:password])
-        sign_in doctor, :doctors
+        sign_in doctor
         # token = AuthToken.issue_token({user_id: doctor.id})
         redirect_to doctor_path(doctor)
       else
@@ -37,20 +37,34 @@ class SessionsController < ApplicationController
         render 'doctors/signin'
       end
     elsif request.subdomain == 'admin'
-      admin = Admin.find_by(email: params[:email].downcase)
-      if admin && admin.authenticate(params[:password])
-        # sign_in admin, :admin
-        # redirect_to admins_path
-        token = AuthToken.issue_token({admin_id: admin.id})
-        render json: {
-                   admin_id: admin.id,
-                   clinic_id: admin.clinic.id,
-                   api_token: {
-                       token: token
-                   }
-               }
-      else
-        render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+      respond_to do |format|
+        format.html do
+          admin = Admin.find_by(email: params[:session][:email].downcase)
+          if admin && admin.authenticate(params[:session][:password])
+              sign_in admin
+              redirect_to admins_path
+          else
+            flash[:error] = 'Invalid signin'
+            redirect_to '/'
+          end
+        end
+        format.json do
+          admin = Admin.find_by(email: params[:email].downcase)
+          if admin && admin.authenticate(params[:password])
+            # sign_in admin, :admin
+            # redirect_to admins_path
+            token = AuthToken.issue_token({admin_id: admin.id})
+            render json: {
+                admin_id: admin.id,
+                clinic_id: admin.clinic.id,
+                api_token: {
+                    token: token
+                }
+            }
+          else
+            render json: { error: 'Invalid email/password combination' }, status: :unauthorized
+          end
+        end
       end
     else
       #note, if we go back to angular, it was setup to not have the [:session] part
@@ -58,7 +72,7 @@ class SessionsController < ApplicationController
       respond_to do |format|
         if patient && patient.authenticate(params[:session][:password])
           format.html do
-            sign_in patient, :patient
+            sign_in patient
             redirect_to patient
           end
           format.json do

@@ -43,25 +43,31 @@ module SessionsHelper
   # end
 
 
-  def sign_in(user, type)
-    if type == :patient
+  def sign_in(user)
     remember_token = new_remember_token
     cookies.permanent[:remember_token] = remember_token
     user.update_attribute(:remember_token, my_encrypt(remember_token))
-    self.current_patient = user
+    method = "current_#{user.class.to_s.downcase}=".to_sym
+    self.send(method, user)
 
-    elsif type == :doctors
-      remember_token = new_remember_token
-      cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, my_encrypt(remember_token))
-      self.current_doctor = user
-
-    elsif type == :admin
-      remember_token = new_remember_token
-      cookies.permanent[:remember_token] = remember_token
-      user.update_attribute(:remember_token, my_encrypt(remember_token))
-      self.current_admin = user
-    end
+    # if type == :patient
+    # remember_token = new_remember_token
+    # cookies.permanent[:remember_token] = remember_token
+    # user.update_attribute(:remember_token, my_encrypt(remember_token))
+    # self.current_patient = user
+    #
+    # elsif type == :doctors
+    #   remember_token = new_remember_token
+    #   cookies.permanent[:remember_token] = remember_token
+    #   user.update_attribute(:remember_token, my_encrypt(remember_token))
+    #   self.current_doctor = user
+    #
+    # elsif type == :admin
+    #   remember_token = new_remember_token
+    #   cookies.permanent[:remember_token] = remember_token
+    #   user.update_attribute(:remember_token, my_encrypt(remember_token))
+    #   self.current_admin = user
+    # end
   end
 
   def api_sign_in(patient)

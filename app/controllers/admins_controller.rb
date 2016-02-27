@@ -7,17 +7,19 @@
 
 # +AdminsController+ runs on the admins subdomain  admins.mdme.us/admins
 class AdminsController < ApplicationController
-
+  layout "admin", :except=>[:signin]
   # before_filter :find_admin, except: [:signin]
-  # before_filter :require_admin_login, except: :signin
+  before_filter :require_admin_login, except: :signin
 
-  before_action :authenticate_admin_header, except: :signin
+  # before_action :authenticate_admin_header, except: :signin
 
   # Cannot visit signin page when signed in
   # GET admin.mdme.us/admins/signin
   def signin
     if admin_signed_in?
         redirect_to admins_path
+    else
+      render 'sessions/new'
     end
 
   end
