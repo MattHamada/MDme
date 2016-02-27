@@ -7,14 +7,13 @@
 
 # +StaticPagesController+ main pages when not signed in
 class StaticPagesController < ApplicationController
-
   # TODO patients should probably still be able to see home page
   # GET www.mdme.us
   def home
-    if patient_signed_in?
-      redirect_to patient_path(current_patient)
-    end
-
+    # if patient_signed_in?
+    #   redirect_to patient_path(current_patient)
+    # end
+    render 'sessions/new' unless patient_signed_in?
   end
 
   # GET www.mdme.us/help
@@ -23,12 +22,19 @@ class StaticPagesController < ApplicationController
   # GET www.mdme.us/about
   def about
     @active = :about
+    return render 'sessions/new' unless patient_signed_in?
   end
 
   # GET www.mdme.us/contact
   def contact
     @active = :contact
+    return render 'sessions/new' unless patient_signed_in?
   end
+
+  def find_patient
+
+  end
+
 
   #post www.mdme.us/submit-comment
   def submit_comment
