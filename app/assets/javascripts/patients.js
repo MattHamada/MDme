@@ -1,4 +1,4 @@
-$(document).on('ready page:change', function() {
+$(document).on('ready page:change page:load', function() {
   function updateCounter() {
     var hiddenMinutesField = $('#appointment_time_left');
     minutesLeft = parseInt(hiddenMinutesField.val());

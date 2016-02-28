@@ -18,6 +18,13 @@ class Admins::PatientsController < Admins::ApplicationController
   # GET admin.mdme.us/admins/:admin_id/patients
   def index
     @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
+    if params.has_key? :patient_search
+      @patients = @patients.where("first_name LIKE ? OR last_name LIKE ?", 
+                                  "%#{params[:patient_search]}%","%#{params[:patient_search]}%")
+    end
+    if request.xhr?
+      render :partial=>'admins/patients/index_list', :layout=>false
+    end
   end
 
   def browse
@@ -145,7 +152,7 @@ class Admins::PatientsController < Admins::ApplicationController
     end
     helper_method :find_patient
 
-    def find_admin
+    def   find_admin
       @admin ||= Admin.find(params[:admin_id])
     end
     helper_method :find_admin
