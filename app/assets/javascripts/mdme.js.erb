@@ -1,0 +1,18 @@
+$(document).on('ready page:load page:change', function() {
+  //commandKeyDown determines whether to open in new tab
+  var commandKeyDown = false;
+  $(document).keydown(function(event){ if(event.which=="17" || event.which=="91" || event.which=="93") commandKeyDown = true; });
+  $(document).keyup(function(){ commandKeyDown = false; });
+  function openRecord(url) {
+    if(commandKeyDown) {
+      var win = window.open(url, '_blank');
+      win.focus();
+    }
+    else {
+      document.location.href=url;
+    }
+  }
+  $(document).on('click', '.linked', function() {
+    openRecord($(this).data('url'));
+  });
+});

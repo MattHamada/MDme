@@ -26,7 +26,7 @@ class Admins::PatientsController < Admins::ApplicationController
       render :partial=>'admins/patients/index_list', :layout=>false
     end
   end
-
+  
   def browse
   end
 
@@ -148,7 +148,11 @@ class Admins::PatientsController < Admins::ApplicationController
     end
 
   def find_patient
-      @patient ||= Patient.find(params[:id])
+      if params[:id].match(/\D/)
+        @patient = Patient.find_by_slug(params[:id])
+      else
+        @patient =Patient.find_params[:id]
+      end
     end
     helper_method :find_patient
 

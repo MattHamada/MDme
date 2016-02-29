@@ -3,10 +3,10 @@
     <div class="row">
   <% end %>
   <div class="col-md-3">
-    <div class="card" style="text-align: center;">
-      <%= image_tag(patient.avatar_thumb_url, :class=>'card-img-top', :alt=>'patient image') %>
+    <div class="card linked" style="text-align: center;" data-url="<%= admin_patient_path(@admin, patient) %>">
+      <%= image_tag(patient.avatar_thumb_url, :class=>'card-img-top', :alt=>'patient image', :style=>'margin-top: 2em;') %>
       <div class="card-block" style="text-align: center;">
-        <h4 class="card-title"><%= patient.full_name %></h4>
+        <h4 class="card-title"><%= patient.first_name %><br/><%= patient.last_name %></h4>
       </div>
     </div>
   </div>

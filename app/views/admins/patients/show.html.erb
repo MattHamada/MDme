@@ -1,8 +1,49 @@
-<%= provide(:title, 'Patients') %>
-<%= render 'admins/sidebar' %>
-
-<%= render 'patients/shared_show' %>>
-
-
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="card">
+      <div style="text-align: center;">
+        <%= image_tag(@patient.avatar_thumb_url, :class=>'card-img-top', :alt=>'patient image', :style=>'margin-top: 1em; margin-bottom: 1em') %>
+      </div>
+      <div class="card-header">
+        <%= @patient.full_name %>
+      </div>
+      <div class="card-block">
+        <div id="patient-show-info">
+          <label>
+            <b>Name:</b>
+            <%= @patient.full_name %>
+          </label>
+          <label>
+            <b>Email:</b>
+            <%= @patient.email %>
+          </label>
+          <label>
+            <b>Birthday:</b>
+            <%= @patient.birthday_form_format %>
+          </label>
+          <label>
+            <b>Sex:</b>
+            <%= @patient.sex_humanize %>
+          </label>
+          <label>
+            <b>Marital Status:</b>
+            <%= @patient.marital_status_humanize ? @patient.marital_status_humanize : '<br/>'.html_safe %>
+          </label>
+          <label>
+            <b>Address:</b>
+            <%= patient_address(@patient) %>
+          </label>
+          <label>
+            <b>Preferred Phone:</b>
+            <%= @patient.preferred_phone_humanize ? @patient.preferred_phone_humanize : '<br/>'.html_safe %>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-primary">Schedule Appointment</button>
+  </div>
+</div>
