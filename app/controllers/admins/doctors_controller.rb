@@ -11,12 +11,20 @@ class Admins::DoctorsController < Admins::ApplicationController
   # before_filter :find_admin
   before_filter :find_doctor, only: [:edit, :update, :show, :destroy]
   # before_filter :require_admin_login
-  before_action :authenticate_admin_header
+  # before_action :authenticate_admin_header
 
 
   # GET admin.mdme.us/admins/:admin_id/doctors
   def index
-    @doctors = Doctor.in_clinic(@admin.clinic)
+    @doctors = Doctor.in_clinic(@admin.clinic).ordered_last_name
+    if params.has_key? :doctor_search
+      @doctors = @doctors.where("lower(first_name) LIKE ? OR lower(last_name) LIKE ? OR lower(first_name || last_name) LIKE ? OR lower(first_name || ' ' || last_name) LIKE ?",
+                                  "%#{params[:doctor_search]}%".downcase,"%#{params[:doctor_search]}%".downcase,"%#{params[:doctor_search]}%".downcase, "%#{params[:doctor_search]}%".downcase)
+    end
+    @users = @doctors
+    if request.xhr?
+      render :partial=>'admins/shared/user_list', :layout=>false
+    end
 
   end
 

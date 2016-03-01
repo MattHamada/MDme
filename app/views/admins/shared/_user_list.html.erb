@@ -1,0 +1,16 @@
+<% @users.each_with_index do |user, index| %>
+  <% if index%4 == 0 %>
+    <div class="row">
+  <% end %>
+  <div class="col-md-3">
+    <div class="card linked" style="text-align: center;" data-url="<%= url_for(:controller=>"admins/#{user.class.to_s.downcase.pluralize}", :action=>'show', :id=>user.id, :admin_id=>@admin.id) %>">
+      <%= image_tag(user.avatar_thumb_url, :class=>'card-img-top', :alt=>'user image', :style=>'margin-top: 2em;') %>
+      <div class="card-block" style="text-align: center;">
+        <h4 class="card-title"><%= user.first_name %><br/><%= user.last_name %></h4>
+      </div>
+    </div>
+  </div>
+  <% if index%4 == 3 || index == (@users.length - 1) %>
+    </div>
+  <% end %>
+<% end %>

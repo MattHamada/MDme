@@ -19,11 +19,12 @@ class Admins::PatientsController < Admins::ApplicationController
   def index
     @patients = Patient.in_clinic(@admin).ordered_last_name #.includes(:doctor)
     if params.has_key? :patient_search
-      @patients = @patients.where("first_name LIKE ? OR last_name LIKE ?", 
-                                  "%#{params[:patient_search]}%","%#{params[:patient_search]}%")
+      @patients = @patients.where("lower(first_name) LIKE ? OR lower(last_name) LIKE ? OR lower(first_name || last_name) LIKE ? OR lower(first_name || ' ' || last_name) LIKE ?",
+                                "%#{params[:patient_search]}%".downcase,"%#{params[:patient_search]}%".downcase,"%#{params[:patient_search]}%".downcase, "%#{params[:patient_search]}%".downcase)
     end
+    @users = @patients
     if request.xhr?
-      render :partial=>'admins/patients/index_list', :layout=>false
+      render :partial=>'admins/shared/user_list', :layout=>false
     end
   end
   

@@ -1,50 +1,38 @@
-<%= provide(:title, "Doctors | ") %>
-<%= render 'admins/header' %>
-
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Search</h4></div>
-      <div class="panel-body panel-inverse">
-
-        <%= form_for(:doctor, url:admin_doctors_search_path, remote: true, method: :get, html: { class: 'form-horizontal', role: 'form' }) do |f| %>
-          <div class="form-group">
-            <%= f.label(:last_name, 'Last Name:',class: 'col-sm-2 control-label') %>
-            <div class="col-xs-4">
-              <%= f.text_field(:last_name, class: 'form-control') %>
-            </div>
-            <%= f.label(:first_name, 'First Name:',class: 'col-sm-2 control-label') %>
-            <div class="col-xs-4">
-              <%= f.text_field(:first_name, class: 'form-control') %>
-            </div>
-          </div>
-          <div class="form-group">
-            <%= f.label(:department, 'Department:', class: 'col-sm-2 control-label') %>
-            <div class="col-xs-4">
-              <%= f.text_field(:department, class: 'form-control') %>
-            </div>
-          </div>
-
-          <div class='form-group' id="submit" style="text-align: center;">
-            <%= f.submit 'Search' , class: 'btn btn-large btn-primary', id: 'submit_button' %>
-          </div>
-        <% end %>
-
-        <div id="doctors-load">
-
-        </div>
-
-
-
-      </div>
-    </div>
+<%= provide(:title, 'Doctors') %>
+<div>
+  <div class="row">
+    <div class="col-md-6"><h2>Doctors</h2></div>
+    <div class="col-md-6">Search:<input type="text" id="doctors-search"/></div>
   </div>
-
-  <div class="col-md-3">
-    <div class="row">
-      <div class="col-xs-12 inverse-color">
-            <%= link_to "Add Doctor", new_admin_doctor_path(@admin) %>
-      </div>
-    </div>
+  <div id="doctor-index-list" style="margin: 2em">
+    <%= render 'admins/shared/user_list' %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).on('ready page:change page:load', function() {
+    //timeout waits 0.5 seconds for more keypresses before ajax call
+    var timeout;
+    $('#doctors-search').on('keyup', function() {
+      if(timeout){
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(function() {
+        var doctor_search = $('#doctors-search').val();
+        $.ajax({
+          type: "GET",
+          url: '<%= admin_doctors_path(@admin)%>',
+          data: {
+            doctor_search: doctor_search
+          },
+          success: function(data) {
+            $('#doctor-index-list').html(data)
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }, 500);
+    });
+  });
+</script>
