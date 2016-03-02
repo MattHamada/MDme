@@ -102,6 +102,8 @@ group :development do
   gem 'letter_opener'
   #security auditing
   gem 'brakeman', require: false
+  #performance benchmarking
+  gem 'rack-mini-profiler', require: false
 end
 
 group :development, :test do
@@ -168,11 +170,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '4.0.5'
 gem 'jquery-ui-rails'
-gem 'jquery-turbolinks'
+# gem 'jquery-turbolinks', 
 
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '2.5.3'
+gem 'turbolinks' , github: 'rails/turbolinks'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
