@@ -40,9 +40,9 @@ class Appointment < ActiveRecord::Base
   before_create { generate_access_key }
   before_create { generate_checkin_key }
 
-  scope :today, -> { where(appointment_time: Date.today...Date.tomorrow) }
+  scope :today, -> { where(appointment_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
   scope :within_2_hours, -> { where(
-      appointment_time: Time.zone.now...(Time.zone.now + 2.hours)) }
+      appointment_time: Time.zone.now....(Time.zone.now + 2.hours)) }
   scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
   scope :order_by_time, -> { order("appointment_time ASC")}
 
