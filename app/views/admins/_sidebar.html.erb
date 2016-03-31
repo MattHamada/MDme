@@ -1,6 +1,6 @@
 <div class="col-sm-3 col-md-2 sidebar">
   <ul class="nav nav-sidebar">
-    <li class="active"><%= link_to "<i class='fa fa-calendar-o'></i> Today's Appointments".html_safe, admins_path %></a></li>
+    <li class="active"><%= link_to "<i class='fa fa-calendar-o'></i> Today's Appointments".html_safe, todays_appointments_admin_appointments_path(@admin) %></a></li>
     <li><%= link_to "<i class='fa fa-book'></i> Manage Appointments".html_safe, admin_appointments_path(current_admin) %></li>
   </ul>
   <ul class="nav nav-sidebar">

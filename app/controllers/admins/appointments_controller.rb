@@ -18,7 +18,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments
   def index
     @appointments = Appointment.in_clinic(@admin).today.confirmed.
-        order('appointment_time ASC').load.includes([:doctors, :patient])
+        order('appointment_time ASC').load.includes([:doctor, :patient])
 
   end
 
