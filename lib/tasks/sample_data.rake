@@ -226,7 +226,7 @@ def rand_time(end_time, start_time=Time.now+3.hours)
   Time.at(rand_in_range(start_time.to_f, end_time.to_f))
 end
 
-def rand_time_with_intervals(end_date, start_date=Date.tomorrow )
+def rand_time_with_intervals(end_date, start_date=Time.zone.now + 40.minutes )
   day = (start_date..end_date).to_a.sample
   hour = (9..17).to_a.sample
   min = [00, 15, 30, 45].sample
