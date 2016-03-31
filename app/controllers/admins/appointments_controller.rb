@@ -12,15 +12,14 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # before_filter :find_admin
   # before_filter :require_admin_login
   # before_filter :set_active_navbar
-  before_action :authenticate_admin_header
-
+  # before_action :authenticate_admin_header
+  before_filter :require_admin_login
+  before_action :check_appointments_needing_approval
   # GET admin.mdme.us/admins/:admin_id/appointments
   def index
-    if Appointment.requests.in_clinic(@admin).not_past.any?
-      flash.now[:warning] = "Appointments waiting for approval."
-    end
     @appointments = Appointment.in_clinic(@admin).today.confirmed.
         order('appointment_time ASC').load.includes([:doctors, :patient])
+
   end
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
@@ -216,6 +215,19 @@ class Admins::AppointmentsController < Admins::ApplicationController
     redirect_to admin_appointments_path(@admin)
   end
 
+  def todays_appointments
+    if params[:doctor_id]
+      @doctors = Doctor.where(:id=>params[:doctor_id])
+
+    else
+      @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).today.confirmed.pluck(:doctor_id).uniq)
+    end
+    @appointments = @doctors.first.appointments_today.includes(:patient) rescue []
+    if request.xhr?
+      return render :partial=> 'appointments_table', :layout=>false
+    end
+  end
+
 
 
 
@@ -248,4 +260,11 @@ class Admins::AppointmentsController < Admins::ApplicationController
     def set_active_navbar
       @active = :appointments
     end
+
+    def check_appointments_needing_approval
+      if Appointment.requests.in_clinic(@admin).not_past.any?
+        @need_approval = true #"Appointments waiting for approval."
+      end
+    end
+
 end

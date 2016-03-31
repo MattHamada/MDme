@@ -114,7 +114,11 @@ MDme::Application.routes.draw do
     resources :departments,  controller: 'admins/departments'
     resources :patients,     controller: 'admins/patients'
     resources :doctors,      controller: 'admins/doctors'
-    resources :appointments, controller: 'admins/appointments'
+    resources :appointments, controller: 'admins/appointments' do
+      collection do
+        get :todays_appointments
+      end
+    end
     resources :clinics,      controller: 'admins/clinics'
   end
 

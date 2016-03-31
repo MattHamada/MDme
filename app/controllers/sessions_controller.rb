@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
           admin = Admin.find_by(email: params[:session][:email].downcase)
           if admin && admin.authenticate(params[:session][:password])
               sign_in admin
-              redirect_to admins_path
+              redirect_to todays_appointments_admin_appointments_path
           else
             flash[:error] = 'Invalid signin'
             redirect_to '/'

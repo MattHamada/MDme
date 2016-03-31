@@ -1,21 +1,19 @@
 
-<table class='table table-striped table-bordered table-hover table-inverse'>
+<table class='table table-striped table-bordered table-hover'>
   <thread>
     <tr>
-      <th>#</th>
       <th>Time</th>
       <th>Doctor</th>
       <th>Patient</th>
-      <th>Checked In?</th>
+      <th style="width: 8em;">Checked In?</th>
     </tr>
     <tbody>
     <% @appointments.each_with_index do |appointment, index| %>
-        <tr>
-          <td><%= link_to("#{index}", admin_appointment_path(@admin, appointment)) %></td>
+        <tr class="linked" data-url="<%=admin_appointment_path(@admin, appointment) %>">
           <td><%= appointment.time_am_pm %></td>
           <td><%= appointment.doctor_full_name %></td>
           <td><%= appointment.patient_full_name %></td>
-          <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in %> </td>
+          <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in? %> </td>
         </tr>
     <% end %>
     </tbody>

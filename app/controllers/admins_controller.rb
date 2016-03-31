@@ -17,7 +17,7 @@ class AdminsController < ApplicationController
   # GET admin.mdme.us/admins/signin
   def signin
     if admin_signed_in?
-        redirect_to admins_path
+        redirect_to todays_appointments_admin_appointments_path(@current_admin)
     else
       render 'sessions/new'
     end

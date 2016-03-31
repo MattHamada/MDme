@@ -183,6 +183,22 @@ namespace :db do
                          clinic_id: 1)
     end
 
+    puts 'Creating 50 appointments today'
+    #sample appointments
+    100.times do |n|
+      patient_id = rand_int(1,61)
+      doctor_id = rand_int(1, 7)
+      appointment_time = rand_time_with_intervals(Time.zone.now.end_of_day)
+      #appointment_time.change(hour: (9..16).to_a.sample)
+      #appointment_time.change(min: [00, 15, 30, 45].sample)
+      Appointment.create(patient_id: patient_id,
+                         doctor_id: doctor_id,
+                         appointment_time: appointment_time,
+                         description: Faker::Lorem.paragraph(4),
+                         request: false,
+                         clinic_id: 1)
+    end
+
     puts 'Creating 20 over 2 hours for first patient'
     20.times do |n|
       doctor_id = rand_int(1, 7)

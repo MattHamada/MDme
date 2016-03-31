@@ -162,7 +162,7 @@ class Doctor < ActiveRecord::Base
 
   # Return collection of doctor's appointments for hte day
   def appointments_today
-    appointments.today.order('appointment_time ASC')
+    appointments.today.confirmed.order('appointment_time ASC')
   end
 
   # Paperclip sees photos uploaded from android app as

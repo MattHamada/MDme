@@ -1,0 +1,35 @@
+<%= provide(:title, "Today's Appointments") %>
+
+<ul class="nav nav-tabs">
+  <% @doctors.each_with_index do |doctor, index| %>
+    <li data-id="<%= doctor.id %>" class="nav-item doc-tab">
+      <a id="<%= doctor.id %>" class=" doc-tab-link nav-link <%= 'active' if (params[:doctor_id].nil? && index == 0) || params[:doctor_id] == doctor.id %>" href="#">
+        <%= doctor.full_name %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+<div id="appointments-list" style="margin-top: 1em;">
+  <%= render 'appointments_table' %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('li.doc-tab').on('click', function() {
+      doctor_id = $(this).data('id');
+      $.ajax({
+        method: 'get',
+        url: '<%=todays_appointments_admin_appointments_path(@admin) %>',
+        data: {test: 'test', doctor_id: doctor_id },
+        success: function(data) {
+          $('#appointments-list').html(data);
+        },
+        complete: function() {
+          $('a.doc-tab-link').attr('class', 'nav-link doc-tab-link');
+          $('a#' + doctor_id).attr('class', 'nav-link doc-tab-link active');
+        }
+      })
+    })
+  });
+</script>
