@@ -42,7 +42,7 @@ class Appointment < ActiveRecord::Base
 
   scope :today, -> { where(appointment_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
   scope :within_2_hours, -> { where(
-      appointment_time: Time.zone.now....(Time.zone.now + 2.hours)) }
+      appointment_time: Time.zone.now..(Time.zone.now + 2.hours)) }
   scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
   scope :order_by_time, -> { order("appointment_time ASC")}
 
