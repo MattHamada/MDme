@@ -75,7 +75,7 @@ class Appointment < ActiveRecord::Base
   # * +date+ - date object to fine appointments on
   def self.given_date(date)
     date = date.to_date if date.class == DateTime
-    Appointment.where(appointment_time: date...date.at_end_of_day)
+    Appointment.where(appointment_time: date.beginning_of_day...date.at_end_of_day)
   end
 
 

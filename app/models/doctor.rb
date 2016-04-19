@@ -165,6 +165,10 @@ class Doctor < ActiveRecord::Base
     appointments.today.confirmed.order('appointment_time ASC')
   end
 
+  def appointments_on_date(date)
+    appointments.confirmed.where("appointment_time >= ? AND appointment_time <= ?", date.beginning_of_day, date.end_of_day).order('appointment_time ASC')
+  end
+
   # Paperclip sees photos uploaded from android app as
   # octet-stream and not image/jpeg.  This is a work around
   def attachment_content_type

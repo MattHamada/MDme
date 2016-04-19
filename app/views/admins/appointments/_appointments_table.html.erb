@@ -1,3 +1,12 @@
+<ul class="nav nav-tabs">
+  <% @doctors.each_with_index do |doctor, index| %>
+    <li data-id="<%= doctor.id %>" class="nav-item doc-tab">
+      <a id="<%= doctor.id %>" class=" doc-tab-link nav-link <%= 'active' if (params[:doctor_id].nil? && index == 0) || params[:doctor_id] == doctor.id %>" href="#">
+        <%= doctor.full_name %>
+      </a>
+    </li>
+  <% end %>
+</ul>
 
 <table class='table table-striped table-bordered table-hover'>
   <thread>
@@ -20,3 +29,22 @@
   </thread>
 </table>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('li.doc-tab').on('click', function() {
+      doctor_id = $(this).data('id');
+      $.ajax({
+        method: 'get',
+        url: '<%= admin_appointments_path(@admin) %>',
+        data: { doctor_id: doctor_id },
+        success: function(data) {
+          $('#appointments-list').html(data);
+        },
+        complete: function() {
+          $('a.doc-tab-link').attr('class', 'nav-link doc-tab-link');
+          $('a#' + doctor_id).attr('class', 'nav-link doc-tab-link active');
+        }
+      })
+    });
+  })
+</script>

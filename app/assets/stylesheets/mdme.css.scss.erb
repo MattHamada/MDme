@@ -325,11 +325,7 @@ a.btn:active {
   width: 100%;
 }
 
-.mdme-icon {
-  vertical-align: middle;
-  text-align: center;
-  color: $mdmeBlue;
-}
+
 
 
 //appointment request page
@@ -515,6 +511,23 @@ a.btn:active {
   border-radius: 50%;
 }
 
+#schedule-menu-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-block;
+  -webkit-mask: url(<%= asset_path('schedule2.svg') %>) no-repeat 50% 0%;
+  mask: url(<%= asset_path('schedule2.svg') %>) no-repeat 50% 0%;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  background-color: $mdmeDarkBlue;
+}
 
+.mdme-icon {
+  vertical-align: middle;
+  text-align: center;
+  /*color: $mdmeBlue;*/
+  display: inline-block;
+  font-size: 18pt;
+}
 
 

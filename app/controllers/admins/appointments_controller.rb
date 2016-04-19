@@ -17,9 +17,25 @@ class Admins::AppointmentsController < Admins::ApplicationController
   before_action :check_appointments_needing_approval
   # GET admin.mdme.us/admins/:admin_id/appointments
   def index
-    @appointments = Appointment.in_clinic(@admin).today.confirmed.
-        order('appointment_time ASC').load.includes([:doctor, :patient])
-
+    @manage_appts_page = true
+    if params[:date]
+      @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).given_date(Date.strptime(params[:date],"%m/%d/%Y")).confirmed.pluck(:doctor_id).uniq)
+      if params[:doctor_id]
+        @appointments = @doctors.where(:id=>params[:doctor_id]).first.appointments_on_date(Date.strptime(params[:date],"%m/%d/%Y")).includes(:patient) rescue []
+      else
+        @appointments = @doctors.first.appointments_on_date(Date.strptime(params[:date],"%m/%d/%Y")).includes(:patient) rescue []
+      end
+    else
+      @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).today.confirmed.pluck(:doctor_id).uniq)
+      if params[:doctor_id]
+        @appointments = @doctors.where(:id=>params[:doctor_id]).first.appointments_today.includes(:patient) rescue []
+      else
+        @appointments = @doctors.first.appointments_today.includes(:patient) rescue []
+      end
+    end
+    if request.xhr?
+      return render :partial=> 'appointments_table', :layout=>false
+    end
   end
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
