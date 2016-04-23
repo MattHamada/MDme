@@ -8,6 +8,7 @@
 # +ClinicsController+ for mdme.us/clinics
 class ClinicsController < ApplicationController
 
+
   #TODO move this to API
   # GET mdme.us/clinics/:id/checkin/:patient_id'
   def checkin

@@ -119,7 +119,11 @@ MDme::Application.routes.draw do
         get :todays_appointments
       end
     end
-    resources :clinics,      controller: 'admins/clinics'
+    resources :clinics,      controller: 'admins/clinics'  do
+      collection do
+        post :open_times
+      end
+    end
   end
 
   namespace :api do

@@ -40,8 +40,9 @@ class Admins::AppointmentsController < Admins::ApplicationController
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
   def new
-    @appointment = Appointment.new(appointment_time: DateTime.now)
-    @clinic_id = @admin.clinic_id
+    @appointment = Appointment.new(appointment_time: DateTime.now, :clinic_id=>@admin.clinic_id)
+    @doctors = @admin.clinic.doctors
+
     @open_times = []
 
   end

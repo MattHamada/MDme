@@ -20,6 +20,55 @@ class Admins::ClinicsController < Admins::ApplicationController
     @qr = RQRCode::QRCode.new(url, size: 6)
   end
 
+  def open_times
+    if params[:date].present? and
+        params[:appointment][:doctor_id].present? and
+        params[:time_of_day].present?
+
+      @clinic = Clinic.find(params[:appointment][:clinic_id])
+      doctor = Doctor.find(params[:appointment][:doctor_id])
+      date = Date.strptime(params[:date], '%m/%d/%Y')
+      # @times = @clinic.open_appointment_times(date, doctor)
+
+      #todo respond with appointments table
+      @days_times = @clinic.open_appointment_times_day_range(
+          (date - 1.day), (date + 1.day), doctor, params[:time_of_day]
+      )
+      # @dates_times = []
+      # start_day = @Date.parse(Time.at(params[:day_start].to_i).to_s)
+      # @dates << start_day
+      # @dates << start_day + 1.day
+      # @dates << start_day + 2.days
+      # @dates << @Date.parse(Time.at(params[:day_start].to_i).to_s)
+      # @times = []
+      # @dates.each do |date|
+      #   newTimes = []
+      #   newTimes << @clinic.open_appointment_times(date, doctor)
+      #   @times << newTimes
+      # end
+      respond_to do |format|
+        format.js do
+        end
+        format.json do
+          if @times.is_a?(Hash)
+            render json: {status: 1, error: @times[:error]}
+          else
+            render json: { status: 0, times: @times }
+          end
+        end
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: {status: 0, times: []}
+        end
+        format.js do
+          render :nothing=>true
+        end
+      end
+    end
+  end
+
 
   private
     def find_admin
