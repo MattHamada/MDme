@@ -19,7 +19,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   def index
     @manage_appts_page = true
     @find_appointments_page = true
-    if params[:date]
+      if params[:date].present?
       @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).given_date(Date.strptime(params[:date],"%m/%d/%Y")).confirmed.pluck(:doctor_id).uniq)
       if params[:doctor_id]
         @appointments = @doctors.where(:id=>params[:doctor_id]).first.appointments_on_date(Date.strptime(params[:date],"%m/%d/%Y")).includes(:patient) rescue []
@@ -41,6 +41,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
 
   # GET admin.mdme.us/admins/:admin_id/appointments/new
   def new
+    @add_appointment_page = true
     @appointment = Appointment.new(appointment_time: DateTime.now, :clinic_id=>@admin.clinic_id)
     @doctors = @admin.clinic.doctors.order("last_name, first_name")
     @patients = @admin.clinic.patients.order("last_name, first_name")
