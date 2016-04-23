@@ -12,7 +12,7 @@
         <fieldset class="form-group row">
           <label for="appointment_patient_id" class="col-sm-3 form-control-label"><small>Patient:</small></label>
           <div class="col-sm-9">
-            <%= select :appointment, :patient_id, options_from_collection_for_select(@patients, :id, :full_name), {:prompt => "--Select Patient--"}, {:class=>'form-control'}  %>
+            <%= select :appointment, :patient_id, options_from_collection_for_select(@patients, :id, :full_name, :selected=>params[:patient_id]), {:prompt => "--Select Patient--"}, {:class=>'form-control'}  %>
           </div>
         </fieldset>
         <fieldset class="form-group row">

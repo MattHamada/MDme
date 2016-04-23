@@ -437,10 +437,10 @@ a.btn:active {
  */
 
 /* Hide for mobile, show later */
-.sidebar {
-  display: none;
-}
-@media (min-width: 768px) {
+/*.sidebar {*/
+  /*display: none;*/
+/*}*/
+/*@media (min-width: 768px) {*/
   .sidebar {
     position: fixed;
     top: 51px;
@@ -454,7 +454,7 @@ a.btn:active {
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
   }
-}
+/*}*/
 
 /* Sidebar navigation */
 .nav-sidebar {
@@ -527,7 +527,37 @@ a.btn:active {
   text-align: center;
   /*color: $mdmeBlue;*/
   display: inline-block;
-  font-size: 18pt;
+  font-size: 1.4em;
 }
+
+.admin-navbar {
+  background-color: $mdmeDarkBlue;
+}
+
+#admin-nav a {
+  color: white;
+  text-decoration: none
+}
+
+#admin-nav a:link {
+  color: white;
+  text-decoration: none;
+}
+
+#admin-nav a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#admin-nav a:hover {
+  color: white;
+  /*font-weight: bold;*/
+}
+
+#admin-nav a:active {
+  color: white;
+  text-decoration: none;
+}
+
 
 

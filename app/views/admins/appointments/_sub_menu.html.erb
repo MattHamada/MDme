@@ -1,0 +1,18 @@
+<div class="row" style="padding-bottom: 2em; margin-top: 2em;">
+  <div class="col-md-11 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-offset-2">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <%= link_to "Find Appointments", admin_appointments_path(@admin), :class=>"nav-link #{'active' if @find_appointments_page}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Add Appointment", new_admin_appointment_path(@admin), :class=>"nav-link #{'active' if @add_appointment_page}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Manage Requests", appointment_approval_path(@admin), :class=>"nav-link #{'active' if @appointment_requests_page}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Manage Delays", manage_delays_path(@admin), :class=>"nav-link #{'active' if @appointment_delays_page}" %>
+      </li>
+    </ul>
+  </div>
+</div>

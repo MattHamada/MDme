@@ -1,29 +1,23 @@
 <%= provide(:title, "Today's Appointments") %>
+<div class="container-fluid" style="padding-bottom: 2em;">
+  <%= render 'admins/appointments/sub_menu.html.erb' %>
 
-<div class="row">
-  <div class="col-md-12 inverse-color">
-    <%= link_to "Add Appointment", new_admin_appointment_path(@admin) %><br/>
-    <%= link_to "Appointment Requests", appointment_approval_path(@admin) %> <br/>
-    <%= link_to "Manage Delays", manage_delays_path(@admin) %>  <br/>
-  </div>
-</div>
-
-<div class="row" style="margin-bottom: 0.5em;">
-  <div class="col-xs-8">
-    <div class='form-inline'>
-      <div class="form-group">
-        <%= label_tag :date %>
-        <%= text_field_tag :date, nil, :class=>"form-control" %>
+  
+  <div class="row" style="margin-bottom: 0.5em;">
+    <div class="col-xs-8">
+      <div class='form-inline'>
+        <div class="form-group">
+          <%= label_tag :date %>
+          <%= text_field_tag :date, nil, :class=>"form-control" %>
+        </div>
+        <button id="find-button" class="btn btn-primary">Find</button>
       </div>
-      <button id="find-button" class="btn btn-primary">Find</button>
     </div>
   </div>
-</div>
-
-
-
-<div id="appointments-list" style="margin-top: 1em;">
-  <%= render 'appointments_table' %>
+  
+  <div id="appointments-list" style="margin-top: 1em;">
+    <%= render 'appointments_table' %>
+  </div>
 </div>
 
 <script type="text/javascript">

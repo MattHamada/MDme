@@ -44,6 +44,6 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    <button class="btn btn-primary">Schedule Appointment</button>
+    <%= link_to "Schedule Appointment", new_admin_appointment_path(@admin, :patient_id=>@patient.id) , :class=>'btn btn-primary' %>
   </div>
 </div>

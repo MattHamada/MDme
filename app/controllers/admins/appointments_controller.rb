@@ -18,6 +18,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments
   def index
     @manage_appts_page = true
+    @find_appointments_page = true
     if params[:date]
       @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).given_date(Date.strptime(params[:date],"%m/%d/%Y")).confirmed.pluck(:doctor_id).uniq)
       if params[:doctor_id]

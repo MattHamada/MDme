@@ -148,11 +148,11 @@ class Admins::PatientsController < Admins::ApplicationController
                                       :avatar)
     end
 
-  def find_patient
+    def find_patient
       if params[:id].match(/\D/)
         @patient = Patient.find_by_slug(params[:id])
       else
-        @patient =Patient.find_params[:id]
+        @patient =Patient.find(params[:id])
       end
     end
     helper_method :find_patient
