@@ -111,23 +111,53 @@ class Admins::AppointmentsController < Admins::ApplicationController
   def create
     input = appointment_params
     if input.has_key? :time
-      time = Doctor.find(input[:doctor_id]).open_appointment_times(
-          Date.parse(input[:date]))[(input[:time].to_i)-1]
-      date = Time.zone.parse("#{input[:date]} #{time}")
+      time = input[:time]
+      day = Date.strptime(input[:date], '%m/%d/%Y')
+      date = Time.zone.parse("#{day.strftime('%F')} #{time}")
       @appointment = Appointment.new(doctor_id: input[:doctor_id],
-                                     patient_id: input[:patient_id],
+                                     patient_id: @patient.id,
                                      appointment_time: date,
                                      description: input[:description],
                                      request: false,
                                      clinic_id: @admin.clinic_id,
                                      inform_earlier_time: input[:inform_earlier_time])
       if @appointment.save
-        render status: 201, json: {status: 'Appointment Created'}
+        respond_to do |format|
+          format.html do
+            flash[:success] = "Appointment created"
+            redirect_to admin_appointments_path(@admin)
+          end
+          format.json do
+            render status: 201, json: {status: 'Appointment Created'}
+          end
+          format.js {}
+        end
       else
-        render status: 400, json: {errors: @appointment.errors.full_messages}
+        espond_to do |format|
+          format.html do
+            flash[:error] = "Error creating appointment"
+            redirect_to new_admin_appointment_path(@admin)
+          end
+          format.json do
+            render status: 400, json: {errors: @appointment.errors.full_messages}
+          end
+          format.js do
+            @error = true
+            @errors = @appointment.errors.full_messages.join("\n  ")
+          end
+        end
       end
     else
-      render status: 400, json: {errors: ['No time selected']}
+      respond_to do |format|
+        format.json do
+          render status: 400, json: {errors: ['No time selected']}
+        end
+        format.html do
+          flash[:error] = "No time selected"
+          redirect_to new_admin_appointment_path(@admin)
+        end
+        format.js {}
+      end
     end
 
   end

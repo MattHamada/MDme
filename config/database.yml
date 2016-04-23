@@ -4,8 +4,7 @@ development:
   database: MDme_development
   pool: 5
   timeout: 5000
-  username: ermacaz
-  password: qwerty123
+  username: mhamada
 
 test:
   adapter: postgresql
@@ -13,8 +12,7 @@ test:
   database: MDme_test
   pool: 5
   timeout: 5000
-  username: ermacaz
-  password: qwerty123
+  username: mhamada
 
 production:
   adapter: postgresql
@@ -22,8 +20,7 @@ production:
   database: MDme_production
   pool: 5
   timeout: 5000
-  username: ermacaz
-  password: qwerty123
+  username: mhamada
 
 
 

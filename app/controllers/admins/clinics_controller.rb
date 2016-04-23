@@ -24,12 +24,10 @@ class Admins::ClinicsController < Admins::ApplicationController
     if params[:date].present? and
         params[:appointment][:doctor_id].present? and
         params[:time_of_day].present?
-
-      @clinic = Clinic.find(params[:appointment][:clinic_id])
       doctor = Doctor.find(params[:appointment][:doctor_id])
       date = Date.strptime(params[:date], '%m/%d/%Y')
       # @times = @clinic.open_appointment_times(date, doctor)
-
+      @clinic = @admin.clinic
       #todo respond with appointments table
       @days_times = @clinic.open_appointment_times_day_range(
           (date - 1.day), (date + 1.day), doctor, params[:time_of_day]
