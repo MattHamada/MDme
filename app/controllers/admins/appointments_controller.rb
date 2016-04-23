@@ -167,15 +167,25 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # Shows list of appointments awaiting approval
   # GET admin.mdme.us/admins/:admin_id/appointments/approval
   def approval
-    @appointments = Appointment.in_clinic(@admin).requests.
-        order_by_time.includes(:doctor, :patient).not_past
+    @appointment_approval_page = true
+    @appointments = Appointment.in_clinic(@admin).not_past.requests.order("appointment_time, created_at")
+    @doctors = Doctor.where(:id=>@appointments.pluck(:doctor_id).uniq).order("last_name, first_name")
+    if params[:doctor_id]
+      @appointments = @appointments.includes(:patient).where(:doctor_id=>params[:doctor_id])
+    else
+      @appointments = @appointments.includes(:patient).where(:doctor_id=>@doctors.first.id)
+    end
+    @approve_deny_column_set = true
+    if request.xhr?
+      return render :partial=>'appointments_table', :layout=>false
+    end
   end
 
   # Allows admin to see what appointments are already on a
   # specific date with a specific doctor before Accepting/denying request
   # GET admin.mdme.us/admins/:admin_id/appointments/show_on_date
   def show_on_date
-    @date = Date.parse(params[:date].gsub!('_','-'))
+    @date = Date.parse(params[:date])
     @doctor = Doctor.find(params[:doctor_id]).full_name
     @appointments = Appointment.in_clinic(@admin).
         given_date(@date).confirmed.with_doctor(params[:doctor_id]).
@@ -187,21 +197,39 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # run when admin hits approve or deny on approval page
   # POST admin.mdme.us/admins/:admin_id/appointments
   def approve_deny
-    appointment = Appointment.find(params[:appointment_id])
-    if params[:confirmed]
-      appointment.update_attribute(:request, false)
-      appointment.email_confirmation_to_patient(:approve)
-      render status: 200, json: {
-                            status: :confirmed,
-                            message: 'Appointment confirmed'
-                        }
+    @appointment = Appointment.find(params[:id])
+    if params[:confirmed] != 'false'
+      @appointment.update_attribute(:request, false)
+      @appointment.email_confirmation_to_patient(:approve)
+      respond_to do |format|
+        format.html {}
+        format.js do
+          @confirmed = true
+        end
+        format.json do
+          render status: 200, json: {
+              status: :confirmed,
+              message: 'Appointment confirmed'
+          }
+        end
+      end
+      
     else
-      appointment.email_confirmation_to_patient(:deny)
-      appointment.destroy
-      render status: 200, json: {
-                            status: :deleted,
-                            message: 'Appointment denied'
-                        }
+      @appointment.email_confirmation_to_patient(:deny)
+      @appointment.destroy
+      respond_to do |format|
+        format.html {}
+        format.js do
+          @confirmed = false
+        end
+        format.json do
+          render status: 200, json: {
+                status: :deleted,
+              message: 'Appointment denied'
+          }
+        end
+      end
+      
     end
     # if params.has_key?(:approve)
     #   appointment.request = false
@@ -219,7 +247,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
     @appointment = appointment
     @doctor = @appointment.doctor
     @patient = @appointment.patient
-    # render partial: 'ajax_show' if request.xhr?
+    render partial: 'ajax_show', :layout=>false if request.xhr?
   end
 
   # Shows a list of appointments occurring today for setting delays

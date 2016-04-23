@@ -7,4 +7,3 @@
   <%= link_to "Edit Appointment", edit_admin_appointment_path(@admin, @appointment) if request.subdomain == 'admin' %> <br/>
   <%= link_to "Delete Appointment", admin_appointment_path(@admin, @appointment), method: :delete if request.subdomain == 'admin' %> <br/>
   <%= link_to "Delete Appointment", patientappointment_path(@patient, @appointment), method: :delete if request.subdomain == 'www' %> <br/>
-  <%= link_to "Close", "", { id: 'closeLink' } if request.xhr? %>

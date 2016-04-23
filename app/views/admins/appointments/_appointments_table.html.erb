@@ -11,32 +11,86 @@
 <table class='table table-striped table-bordered table-hover'>
   <thread>
     <tr>
+      <% if @approve_deny_column_set %>
+        <th>Date</th>
+      <% end %>
       <th>Time</th>
-      <th>Doctor</th>
+      <% unless @approve_deny_column_set %>
+        <th>Doctor</th>
+      <% end %>  
       <th>Patient</th>
-      <th style="width: 20%;">Checked In?</th>
+      <% if @appprove_deny_column_set %>
+        <th>Options</th>
+      <% else %>
+        <th style="width: 20%;">Checked In?</th>
+      <% end %>  
     </tr>
     <tbody>
     <% @appointments.each_with_index do |appointment, index| %>
-        <tr class="linked" data-url="<%=admin_appointment_path(@admin, appointment) %>">
+        <tr id="<%= appointment.id %>" class="linked-no-url appointment-row" data-toggle="modal" data-target="#approval-popup">
+          <% if @approve_deny_column_set %>
+            <td><%= appointment.date %></td>
+          <% end %>
           <td><%= appointment.time_am_pm %></td>
-          <td><%= appointment.doctor_full_name %></td>
+          <% unless @approve_deny_column_set %>
+            <td><%= appointment.doctor_full_name %></td>
+          <% end %> 
           <td><%= appointment.patient_full_name %></td>
-          <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in? %> </td>
+          <% if @approve_deny_column_set %>
+            <td style="text-align: center;">
+              <%= link_to 'Approve', approve_deny_admin_appointment_path(@admin, appointment, confirmed: true),
+                          remote: true, method: :post, class: 'btn btn-mini btn-success approve' %>
+              <%= link_to 'Deny', approve_deny_admin_appointment_path(@admin, appointment, confirmed: false),
+                          remote: true, method: :post, class: 'btn btn-mini btn-danger deny' %>
+            </td>
+          <% else %>
+            <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in? %> </td>
+          <% end %>  
         </tr>
     <% end %>
     </tbody>
   </thread>
 </table>
 
+<div class="modal" id="approval-popup" tabindex="-1" role="dialog"
+     aria-labelledby="approval-popup" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="popup-title"></h4>
+      </div>
+      <div class="modal-body" id="popup-content">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function() {
+    $('.appointment-row').on('click', function() {
+      appointment_id = $(this).attr('id');
+      $.ajax({
+        method: 'get',
+        url: '/admins/<%=@admin.id%>/appointments/' + appointment_id,
+        success: function(data) {
+          $('#popup-content').html(data);
+          $('#popup-title').html('');
+        }
+      })
+    });
     $('li.doc-tab').on('click', function() {
       doctor_id = $(this).data('id');
       var date  = $('input#date').val();
       $.ajax({
         method: 'get',
-        url: '<%= admin_appointments_path(@admin) %>',
+        url: '<%= request.path %>',
         data: { doctor_id: doctor_id, date: date },
         success: function(data) {
           $('#appointments-list').html(data);

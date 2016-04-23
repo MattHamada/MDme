@@ -1,0 +1,11 @@
+<% if @confirmed %>
+$('#flash').attr('class', 'alert alert-success').html(
+  'Appointment Confirmed'
+);
+<% else %>
+$('#flash').attr('class', 'alert alert-warning').html(
+    'Appointment Denied'
+);
+<% end %>
+$("tr#<%= @appointment.id %>").hide();
+window.scrollTo(0, 0);

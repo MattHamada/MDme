@@ -47,11 +47,11 @@ MDme::Application.routes.draw do
   get  'admins/:admin_id/appointments/browse'            => 'admins/appointments#browse',              as: :admin_appointments_browse
   get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
-  get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
-  get  'admins/:admin_id/appointments/requests/ondate/:date'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
+  # get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
+  get  'admins/:admin_id/appointments/requests/ondate'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
   get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
   post 'admins/:admin_id/appointments/add_delay'         => 'admins/appointments#add_delay',           as: :add_delay
-  post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
+  # post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
   post 'admins/:admin_id/appointments/notify_ready'      => 'admins/appointments#notify_ready',        as: :notify_appointment_ready
   get  'admins/:admin_id/doctors/opentimes'              => 'admins/doctors#open_times',               as: :admin_doctors_opentimes
   get  'patients/:admin_id/doctors/opentimes'            => 'patients/appointments#open_times',        as: :patients_doctors_opentimes
@@ -116,7 +116,10 @@ MDme::Application.routes.draw do
     resources :doctors,      controller: 'admins/doctors'
     resources :appointments, controller: 'admins/appointments' do
       collection do
-        get :todays_appointments
+        get  :approval
+      end
+      member do
+        post :approve_deny
       end
     end
     resources :clinics,      controller: 'admins/clinics'  do
