@@ -41,8 +41,8 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # GET admin.mdme.us/admins/:admin_id/appointments/new
   def new
     @appointment = Appointment.new(appointment_time: DateTime.now, :clinic_id=>@admin.clinic_id)
-    @doctors = @admin.clinic.doctors
-
+    @doctors = @admin.clinic.doctors.order("last_name, first_name")
+    @patients = @admin.clinic.patients.order("last_name, first_name")
     @open_times = []
 
   end
@@ -115,7 +115,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
       day = Date.strptime(input[:date], '%m/%d/%Y')
       date = Time.zone.parse("#{day.strftime('%F')} #{time}")
       @appointment = Appointment.new(doctor_id: input[:doctor_id],
-                                     patient_id: @patient.id,
+                                     patient_id: input[:doctor_id],
                                      appointment_time: date,
                                      description: input[:description],
                                      request: false,
@@ -133,7 +133,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
           format.js {}
         end
       else
-        espond_to do |format|
+        respond_to do |format|
           format.html do
             flash[:error] = "Error creating appointment"
             redirect_to new_admin_appointment_path(@admin)

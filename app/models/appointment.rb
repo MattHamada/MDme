@@ -160,6 +160,10 @@ class Appointment < ActiveRecord::Base
         return 0
     end
   end
+  
+  def confirmed?
+    !self.request
+  end
 
   # This key is used when recycling canceled appointment times
   # It is used to verify that the appointment approved to be moved up in time
