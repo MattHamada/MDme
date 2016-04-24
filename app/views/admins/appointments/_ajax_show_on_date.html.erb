@@ -1,13 +1,20 @@
-<div class="col-xs-12">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h4>Appointments on <%= "#@date with Dr. #@doctor " %></h4></div>
-        <div class="panel-body">
-          <%= render 'appointments/appointments_table'%> <br/>
-          <%= link_to "Close", "", { id: 'closeLink' } %>                        <br/>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<table class='table table-striped table-bordered table-hover'>
+  <thread>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Patient</th>
+    </tr>
+    <tbody>
+    <% @appointments.each_with_index do |appointment, index| %>
+      <tr id="<%= appointment.id %>" class="linked-no-url appointment-row" data-toggle="modal" data-target="#approval-popup">
+        <td><%= "#{appointment.date} (#{link_to 'See schedule', '#', :class=>'show-on-date', 'data-doctor_id'=>appointment.doctor_id, 'data-id'=>appointment.id })".html_safe %></td>
+        <td><%= appointment.time_am_pm %></td>
+        <td><%= appointment.patient_full_name %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </thread>
+</table>
+
+<div style="display:none" id="use-for-title">Appointments on <%= "#@date with Dr. #@doctor " %></div>

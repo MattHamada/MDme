@@ -172,7 +172,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
     @doctors = Doctor.where(:id=>@appointments.pluck(:doctor_id).uniq).order("last_name, first_name")
     if params[:doctor_id]
       @appointments = @appointments.includes(:patient).where(:doctor_id=>params[:doctor_id])
-    else
+    elsif @doctors.any?
       @appointments = @appointments.includes(:patient).where(:doctor_id=>@doctors.first.id)
     end
     @approve_deny_column_set = true
@@ -185,13 +185,14 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # specific date with a specific doctor before Accepting/denying request
   # GET admin.mdme.us/admins/:admin_id/appointments/show_on_date
   def show_on_date
-    @date = Date.parse(params[:date])
+    
+    @date = Appointment.find(params[:appointment_id]).appointment_time.to_date
     @doctor = Doctor.find(params[:doctor_id]).full_name
     @appointments = Appointment.in_clinic(@admin).
         given_date(@date).confirmed.with_doctor(params[:doctor_id]).
-        order('appointment_time ASC').load
-    1 == 1
-    # render(partial: 'ajax_show_on_date', object: @appointments) if request.xhr?
+        order('appointment_time ASC').load  
+    @hide_table_checkin = true
+    render(partial: 'ajax_show_on_date') if request.xhr?
   end
 
   # run when admin hits approve or deny on approval page

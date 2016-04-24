@@ -48,7 +48,7 @@ MDme::Application.routes.draw do
   get  'admins/:admin_id/appointments/ajax-browse'       => 'admins/appointments#ajax_browse',         as: :appointments_ajax_browse
   get  'admins/:admin_id/appointments/new/browse'        => 'admins/appointments#new_browse',          as: :admin_open_appointments_browse
   # get  'admins/:admin_id/appointments/approval'          => 'admins/appointments#approval',            as: :appointment_approval
-  get  'admins/:admin_id/appointments/requests/ondate'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
+  # get  'admins/:admin_id/appointments/requests/ondate'   => 'admins/appointments#show_on_date',        as: :appointment_show_on_date
   get  'admins/:admin_id/appointments/delays'            => 'admins/appointments#manage_delays',       as: :manage_delays
   post 'admins/:admin_id/appointments/add_delay'         => 'admins/appointments#add_delay',           as: :add_delay
   # post 'admins/:admin_id/appointments/approvedeny'       => 'admins/appointments#approve_deny',        as: :appointment_approve_deny
@@ -107,9 +107,7 @@ MDme::Application.routes.draw do
   resources :clinics do
     resources :doctors, only: [:index], controller: 'clinics/doctors'
   end
-
-
-
+  
   resources :admins do
     resources :departments,  controller: 'admins/departments'
     resources :patients,     controller: 'admins/patients'
@@ -117,6 +115,7 @@ MDme::Application.routes.draw do
     resources :appointments, controller: 'admins/appointments' do
       collection do
         get  :approval
+        get  :show_on_date
       end
       member do
         post :approve_deny
