@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" data-turbolinks="false">
   <% @doctors.each_with_index do |doctor, index| %>
     <li data-id="<%= doctor.id %>" class="nav-item doc-tab">
       <a id="<%= doctor.id %>" class=" doc-tab-link nav-link <%= 'active' if (params[:doctor_id].nil? && index == 0) || params[:doctor_id] == doctor.id %>" href="#">

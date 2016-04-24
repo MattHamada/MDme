@@ -21,24 +21,25 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('#date').datepicker({
+  document.addEventListener("turbolinks:load", function() {
+      $(document).ready(function() {
+      $('#date').datepicker({
+      });
+      $('#find-button').click(function() {
+        $.ajax({
+          method: 'get',
+          url: '<%= admin_appointments_path(@admin) %>',
+          data: {date: $('#date').val() },
+          success: function(data) {
+            $('#appointments-list').html(data)
+          },
+          complete: function() {
+            $('a.doc-tab-link').attr('class', 'nav-link doc-tab-link');
+            $($('a.doc-tab-link')[0]).attr('class', 'nav-link doc-tab-link active');
+          }
+        })
+      });
     });
-    $('#find-button').click(function() {
-      $.ajax({
-        method: 'get',
-        url: '<%= admin_appointments_path(@admin) %>',
-        data: {date: $('#date').val() },
-        success: function(data) {
-          $('#appointments-list').html(data)
-        },
-        complete: function() {
-          $('a.doc-tab-link').attr('class', 'nav-link doc-tab-link');
-          $($('a.doc-tab-link')[0]).attr('class', 'nav-link doc-tab-link active');
-        }
-      })
-    });
-
   });
 </script>
 
