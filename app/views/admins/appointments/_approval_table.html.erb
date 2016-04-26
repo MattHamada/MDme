@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs" data-turbolinks="false">
   <% @doctors.each_with_index do |doctor, index| %>
     <li data-id="<%= doctor.id %>" class="nav-item doc-tab">
-      <a id="<%= doctor.id %>" class=" doc-tab-link nav-link <%= 'active' if (params[:doctor_id].nil? && index == 0) || params[:doctor_id] == doctor.id %>" href="#">
+      <a id="<%= doctor.id %>" class=" doc-tab-link nav-link <%= 'active' if (params[:doctor_id].nil? && index == 0) || params[:doctor_id] == doctor.id.to_s %>" href="#">
         <%= doctor.full_name %>
       </a>
     </li>
@@ -19,14 +19,12 @@
     <tbody>
     <% @appointments.each_with_index do |appointment, index| %>
       <tr id="<%= appointment.id %>" class="linked-no-url appointment-row" data-toggle="modal" data-target="#approval-popup">
-        <td><%= "#{appointment.date} (#{link_to 'See schedule', '#', :class=>'show-on-date', "data-toggle"=>"modal", 'data-target'=>"#approval-popup", 'data-doctorid'=>appointment.doctor_id, 'data-id'=>appointment.id })".html_safe %></td>
+        <td><%= appointment.date %><%# "#{appointment.date} (#{link_to 'See schedule', '#', :class=>'show-on-date', "data-toggle"=>"modal", 'data-target'=>"#approval-popup", 'data-doctorid'=>appointment.doctor_id, 'data-id'=>appointment.id })".html_safe %></td>
         <td><%= appointment.time_am_pm %></td>
         <td><%= appointment.patient_full_name %></td>
         <td style="text-align: center;">
-          <%= link_to 'Approve', approve_deny_admin_appointment_path(@admin, appointment, confirmed: true),
-                      remote: true, method: :post, class: 'btn btn-mini btn-success approve' %>
-          <%= link_to 'Deny', approve_deny_admin_appointment_path(@admin, appointment, confirmed: false),
-                      remote: true, method: :post, class: 'btn btn-mini btn-danger deny' %>
+          <%= link_to 'Approve', approve_deny_admin_appointment_path(@admin, appointment, confirmed: true),method: :post, class: 'btn btn-mini btn-success approve' %>
+          <%= link_to 'Deny', approve_deny_admin_appointment_path(@admin, appointment, confirmed: false), method: :post, class: 'btn btn-mini btn-danger deny' %>
         </td>
       </tr>
     <% end %>
@@ -94,8 +92,9 @@
         complete: function() {
           $('a.doc-tab-link').attr('class', 'nav-link doc-tab-link');
           $('a#' + doctor_id).attr('class', 'nav-link doc-tab-link active');
+          $('#flash').html('');
         }
-      })
+      });
     });
   })
 </script>

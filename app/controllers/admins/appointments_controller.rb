@@ -177,7 +177,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
     end
     @approve_deny_column_set = true
     if request.xhr?
-      return render :partial=>'appointments_table', :layout=>false
+      return render :partial=>'approval_table', :layout=>false
     end
   end
 
@@ -200,10 +200,13 @@ class Admins::AppointmentsController < Admins::ApplicationController
   def approve_deny
     @appointment = Appointment.find(params[:id])
     if params[:confirmed] != 'false'
-      @appointment.update_attribute(:request, false)
+      @appointment.update_attributes!(:request=>false)
       @appointment.email_confirmation_to_patient(:approve)
       respond_to do |format|
-        format.html {}
+        format.html do
+          flash[:success] = 'Appointment Confirmed'
+          redirect_to approval_admin_appointments_path(@admin, :doctor_id=>@appointment.doctor_id)
+        end
         format.js do
           @confirmed = true
         end
@@ -216,10 +219,15 @@ class Admins::AppointmentsController < Admins::ApplicationController
       end
       
     else
+      #TODO email is async and will praoblaby not beat the destroy call below
       @appointment.email_confirmation_to_patient(:deny)
+      doctor_id = @appointment.doctor_id
       @appointment.destroy
       respond_to do |format|
-        format.html {}
+        format.html do
+          flash[:warning] = 'Appointment Denied'
+          redirect_to approval_admin_appointments_path(@admin, :doctor_id=>doctor_id)
+        end
         format.js do
           @confirmed = false
         end
