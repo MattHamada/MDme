@@ -78,9 +78,10 @@ namespace :db do
     puts 'Creating first appointment'
     Appointment.create!(patient_id: 1,
                         doctor_id: 1,
-                        request: false,
+                        status: 'confirmed',
                         appointment_time: rand_time_with_intervals(1.day.from_now),
-                        clinic_id: 1)
+                        clinic_id: 1,
+                        status: appt_statuses.sample)
 
     puts 'Creating first admin'
     Admin.create!(email: 'admin@example.com',
@@ -153,13 +154,12 @@ namespace :db do
       appointment_time = rand_time_with_intervals(3.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
-      request = (rand_int(0,2) == 1) ? true : false
       Appointment.create(patient_id: patient_id,
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
-                          request: request,
                           description: Faker::Lorem.paragraph(4),
-                          clinic_id: 1)
+                          clinic_id: 1,
+                         status: appt_statuses.sample)
     end
 
   end
@@ -174,13 +174,12 @@ namespace :db do
       appointment_time = rand_time_with_intervals(5.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
-      request = (rand_int(0,2) == 1) ? true : false
       Appointment.create(patient_id: patient_id,
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         request: request,
-                         clinic_id: 1)
+                         clinic_id: 1,
+                         status: appt_statuses.sample)
     end
 
     puts 'Creating 50 appointments today'
@@ -195,8 +194,8 @@ namespace :db do
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         request: false,
-                         clinic_id: 1)
+                         clinic_id: 1,
+                         status: 'confirmed')
     end
 
     puts 'Creating 20 over 2 hours for first patient'
@@ -207,8 +206,8 @@ namespace :db do
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         request: false,
-                         clinic_id: 1)
+                         clinic_id: 1,
+                          status: 'confirmed')
     end
 
   end
@@ -237,4 +236,8 @@ end
 
 def rand_in_range(from, to)
   rand * (to - from) + from
+end
+
+def appt_statuses
+  ['requested', 'confirmed', 'checked_in', 'denied', 'canceled', 'delayed', 'completed', 'in_progress']
 end

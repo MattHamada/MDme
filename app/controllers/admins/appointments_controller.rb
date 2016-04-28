@@ -120,7 +120,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
                                      patient_id: input[:doctor_id],
                                      appointment_time: date,
                                      description: input[:description],
-                                     request: false,
+                                     status: 'confirmed',
                                      clinic_id: @admin.clinic_id,
                                      inform_earlier_time: input[:inform_earlier_time])
       if @appointment.save
@@ -200,8 +200,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   def approve_deny
     @appointment = Appointment.find(params[:id])
     if params[:confirmed] != 'false'
-      @appointment.update_attributes!(:request=>false)
-      @appointment.email_confirmation_to_patient(:approve)
+      @appointment.confirm
       respond_to do |format|
         format.html do
           flash[:success] = 'Appointment Confirmed'
@@ -219,14 +218,11 @@ class Admins::AppointmentsController < Admins::ApplicationController
       end
       
     else
-      #TODO email is async and will praoblaby not beat the destroy call below
-      @appointment.email_confirmation_to_patient(:deny)
-      doctor_id = @appointment.doctor_id
-      @appointment.destroy
+      @appointment.deny
       respond_to do |format|
         format.html do
           flash[:warning] = 'Appointment Denied'
-          redirect_to approval_admin_appointments_path(@admin, :doctor_id=>doctor_id)
+          redirect_to approval_admin_appointments_path(@admin, :doctor_id=>@appointment.doctor_id)
         end
         format.js do
           @confirmed = false
@@ -272,7 +268,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
     appointment = Appointment.find(params[:appointment_id])
     time_to_add = params[:delay_time].to_i
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
-    if appointment.update_attribute(:appointment_delayed_time, new_time)
+    if appointment.update_attributes(:appointment_delayed_time=>new_time)
       flash[:success] = "Appointments updated"
       appointment.send_delay_email
       appointment.push_delay_notification
@@ -296,7 +292,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # TODO setup some sort of error system if push notfication failed / patient has no device registered to push to.
   def notify_ready
     appointment = Appointment.find(params[:appointment_id])
-    flash[:danger] = 'Patient has not checked in' unless appointment.checked_in?
+    flash[:danger] = 'Patient has not checked in' unless appointment.status == 'checked_in'
     appointment.push_notify_ready
     redirect_to admin_appointments_path(@admin)
   end

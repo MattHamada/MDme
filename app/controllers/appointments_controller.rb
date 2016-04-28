@@ -51,12 +51,11 @@ class AppointmentsController < ApplicationController
                             message: 'Invalid checkin key'
                         }
     else
-      if @appointment.update_attribute(:checked_in, true)
-        render status: :accepted, json: {
-                                    success: true,
-                                    message: 'Patient checked in'
-                                }
-      end
+      @appointment.check_in
+      render status: :accepted, json: {
+                                  success: true,
+                                  message: 'Patient checked in'
+                              }
 
     end
   end

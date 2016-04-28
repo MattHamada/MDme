@@ -22,7 +22,7 @@
       <% if @appprove_deny_column_set %>
         <th>Options</th>
       <% else %>
-        <th style="width: 20%;">Checked In?</th>
+        <th style="width: 20%;">Status</th>
       <% end %>  
     </tr>
     <tbody>
@@ -44,7 +44,7 @@
                           remote: true, method: :post, class: 'btn btn-mini btn-danger deny' %>
             </td>
           <% else %>
-            <td><%= "<i class='fa fa-check'></i>".html_safe if appointment.checked_in? %> </td>
+            <td><%= appointment.status %> </td>
           <% end %>  
         </tr>
     <% end %>

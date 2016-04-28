@@ -86,7 +86,7 @@ describe ClinicsController do
     it 'should check in patient' do
       params = {patient_id: patient.id, id: clinic.slug}
       get :checkin, params
-      expect(appointment.reload.checked_in).to be_truthy
+      expect(appointment.reload.status).to eq 'checked_in'
     end
   end
 end

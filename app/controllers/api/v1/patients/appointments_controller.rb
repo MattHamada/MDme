@@ -59,7 +59,7 @@ class Api::V1::Patients::AppointmentsController < Api::V1::ApplicationController
     p = appointment_params
     date_time = DateTime.parse(p[:appointment_time])
     p[:appointment_time] = date_time
-    @appointment = Appointment.new(p, request: true)
+    @appointment = Appointment.new(p)
     if @appointment.save
       render json: { success: true,
                      info: 'Appointment requested',

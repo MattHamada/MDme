@@ -184,6 +184,9 @@ gem 'jbuilder', '1.0.2'
 #for file uploads
 gem 'paperclip', '4.2.2'
 
+gem 'state_machines'
+gem 'state_machines-activerecord'
+
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

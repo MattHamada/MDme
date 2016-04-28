@@ -11,7 +11,7 @@ describe Appointment do
                                    patient_id: patient.id,
                                    appointment_time: DateTime.now + 30.minutes,
                                    clinic_id: 1,
-                                   request: false)
+                                   status: 'confirmed')
     doctor.save
   end
 
@@ -45,7 +45,7 @@ describe Appointment do
                                       patient_id: patient.id,
                                       appointment_time: @appointment.appointment_time,
                                       clinic_id: 1,
-                                      request: false)
+                                      status: 'confirmed')
     end
 
 

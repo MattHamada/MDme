@@ -8,7 +8,9 @@
 # +Appointment+ model
 require 'appointment_time_formatting'
 
-#TODO make scope for denied requests so they dont take up open times
+#TODO make scope for denied requests so they dont take up open times -is this still valid?
+#TODO 4-28-16 now that appoinments have sattus, imepmenent state machine and get rid of request and checked_in attributes
+
 class Appointment < ActiveRecord::Base
   include AppointmentTimeFormatting
 
@@ -47,14 +49,60 @@ class Appointment < ActiveRecord::Base
   scope :order_by_time, -> { order("appointment_time ASC")}
 
   # True is a patient request not an admin forcing a new appointment
-  scope :requests, -> { where(request: true) }
+  scope :requests, -> { where(status: 'requested') }
 
   # Confirmed appointments are approved requests
-  scope :confirmed, -> { where(request: false) }
+  scope :confirmed, -> { where(status: 'confirmed') }
 
   # When these appointments were created the patient requested
   # notice of earlier availabilities
   scope :looking_for_earlier_time, -> { where(inform_earlier_time: true) }
+  
+  ###
+  # State Machine
+  ###
+  state_machine :status, :initial=> :requested do
+    event :confirm do
+      transition :requested=>:confirmed
+    end
+    event :denied do
+      transition :requested=>:denied
+    end
+    event :cancel do
+      transition  any - :completed => :canceled
+    end
+    event :check_in do
+      transition :confrimed=>:checked_in
+    end
+    event :delay do
+      transition [:confirmed, :checked_in]=>:delayed
+    end
+    event :start_appointment do
+      transition [:delayed, :checked_in]=>:in_progress
+    end
+    event :complete do
+      transition [:in_progress, :checked_in]=>:completed
+    end
+    
+    after_transition :requested=>:confirmed do |appointment|
+      PatientMailer.appointment_confirmation_email(appointment).deliver_later
+    end
+    after_transition :requested=>:denied do |appointment|
+      PatientMailer.appointment_deny_email(appointment).deliver_later
+    end
+    after_transition any => :canceled do |appointment|
+      #TODO make separate cancel mailer
+    end
+    after_transition :confirmed=>:checked_in do |appointment|
+      appointment.update_attributes(:checked_in_time=>Time.zone.now)
+    end
+    after_transition :checked_in=>:in_progress do |appointment|
+      appointment.update_attributes(:admitted_time=>Time.zone.now)
+    end
+    after_transition [:in_progress, :checked_in]=>:completed do
+      appointment.update_attributes(:completed_time=>Time.zone.now)
+    end
+  end
 
   # Part of appointment time recycling
   # Will find next appointment after canceled one and email the patient
@@ -162,7 +210,7 @@ class Appointment < ActiveRecord::Base
   end
   
   def confirmed?
-    !self.request
+    self.status == 'confirmed'
   end
 
   # This key is used when recycling canceled appointment times
@@ -190,21 +238,20 @@ class Appointment < ActiveRecord::Base
   # Uses a separate thread to send the email
   # ==== Parameters
   # * +choice+ - symbol either :approve or :deny
-  def email_confirmation_to_patient(choice)
-    if choice == :approve
-      PatientMailer.appointment_confirmation_email(self).deliver_later
-    elsif choice == :deny
-      PatientMailer.appointment_deny_email(self).deliver_later
-    end
-
-  end
+  # def email_confirmation_to_patient(choice)
+  #   if choice == :approve
+  #     PatientMailer.appointment_confirmation_email(self).deliver_later
+  #   elsif choice == :deny
+  #     PatientMailer.appointment_deny_email(self).deliver_later
+  #   end
+  # 
+  # end
 
   # Emails patient informing them their appointment hsa been delayed.
   # Uses a separate thread
-  def send_delay_email
-    PatientMailer.appointment_delayed_email(patient,
-                                         appointment_delayed_time).deliver_later
-  end
+  # def send_delay_email
+  #   PatientMailer.appointment_delayed_email(patient, appointment_delayed_time).deliver_later
+  # end
 
   # Will send GCM message to android devices registered to patient
   # Informs patient of delay and new time

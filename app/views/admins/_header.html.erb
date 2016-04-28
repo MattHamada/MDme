@@ -10,12 +10,13 @@
     <%= link_to "<i class='icon-man mdme-icon'></i> Patients".html_safe, admin_patients_path(current_admin), :class=>"nav-item nav-link admin-header-nav-link" %>
     <%= link_to "<i class='icon-hospital mdme-icon'></i> Clinic".html_safe, admin_departments_path(current_admin), :class=>"nav-item nav-link admin-header-nav-link" %>
     <a class="nav-item nav-link" href="#"><i class='icon-account mdme-icon'></i> Account</a>
-    <%= link_to "<i class='icon-back mdme-icon'></i> Sign Out".html_safe, signout_path, method: :delete, :class=>"nav-item nav-link" %>
     <form class="pull-sm-right nav-item">
       <input type="text" class="form-control" placeholder="Search...">
-    </form> 
+    </form>
   </nav>
-  
+  <%= button_to "Sign Out".html_safe, signout_path, method: :delete, :class=>"nav-item nav-link btn btn-primary pull-xs-right", :id=>'admin-signout' %>
+
+
 </nav>
 <div class="row-fluid" style="margin-top: 1em;">
   <div class="col-md-10 col-md-offset-1">

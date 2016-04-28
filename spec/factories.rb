@@ -44,7 +44,7 @@ FactoryGirl.define do
     patient_id            '1'
     appointment_time      { (DateTime.now + 3.days).change({hour: 11, minute: 15}) }
     description           'test'
-    request               false
+    status                'confirmed'
     clinic_id             '1'
 
   end
@@ -54,7 +54,7 @@ FactoryGirl.define do
     patient_id            '1'
     appointment_time      { (DateTime.now + 1.hour).change({minute: 30}) } #bracketed to set time on instantiation, required for timecop
     description           'test'
-    request false
+    status                'confirmed'
     clinic_id             '1'
   end
 
@@ -63,7 +63,7 @@ FactoryGirl.define do
     patient_id            '1'
     appointment_time      { (DateTime.now + 3.days).change({hour: 9, minute: 00}) }
     description           'test'
-    request true
+    status                'requested'
     clinic_id             '1'
   end
 

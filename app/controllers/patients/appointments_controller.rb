@@ -50,7 +50,6 @@ class Patients::AppointmentsController < ApplicationController
                                    patient_id: @patient.id,
                                    appointment_time: date,
                                    description: input[:description],
-                                   request: true,
                                    clinic_id: input[:clinic_id],
                                    inform_earlier_time: input[:inform_earlier_time])
     respond_to do |format|
