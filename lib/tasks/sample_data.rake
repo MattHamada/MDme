@@ -80,8 +80,7 @@ namespace :db do
                         doctor_id: 1,
                         status: 'confirmed',
                         appointment_time: rand_time_with_intervals(1.day.from_now),
-                        clinic_id: 1,
-                        status: appt_statuses.sample)
+                        clinic_id: 1)
 
     puts 'Creating first admin'
     Admin.create!(email: 'admin@example.com',
@@ -154,7 +153,7 @@ namespace :db do
       appointment_time = rand_time_with_intervals(3.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
-      Appointment.create(patient_id: patient_id,
+      Appointment.create!(patient_id: patient_id,
                           doctor_id: doctor_id,
                           appointment_time: appointment_time,
                           description: Faker::Lorem.paragraph(4),
@@ -171,20 +170,20 @@ namespace :db do
     100.times do |n|
       patient_id = rand_int(1,61)
       doctor_id = rand_int(1, 7)
-      appointment_time = rand_time_with_intervals(5.days.from_now)
+      appointment_time = appointment_time = rand_time_with_intervals(5.days.from_now)
       #appointment_time.change(hour: (9..16).to_a.sample)
       #appointment_time.change(min: [00, 15, 30, 45].sample)
       Appointment.create(patient_id: patient_id,
-                         doctor_id: doctor_id,
-                         appointment_time: appointment_time,
-                         description: Faker::Lorem.paragraph(4),
-                         clinic_id: 1,
-                         status: appt_statuses.sample)
+                          doctor_id: doctor_id,
+                          appointment_time: appointment_time,
+                          description: Faker::Lorem.paragraph(4),
+                          clinic_id: 1,
+                          status: appt_statuses.sample)
     end
 
     puts 'Creating 50 appointments today'
     #sample appointments
-    100.times do |n|
+    50.times do |n|
       patient_id = rand_int(1,61)
       doctor_id = rand_int(1, 7)
       appointment_time = rand_time_with_intervals(Time.zone.now.end_of_day)
@@ -206,8 +205,8 @@ namespace :db do
                          doctor_id: doctor_id,
                          appointment_time: appointment_time,
                          description: Faker::Lorem.paragraph(4),
-                         clinic_id: 1,
-                          status: 'confirmed')
+                         clinic_id: 1, 
+                         status: 'confirmed')
     end
 
   end
@@ -228,10 +227,10 @@ end
 def rand_time_with_intervals(end_date, start_date=Time.zone.now + 40.minutes )
   start_date = start_date.to_datetime
   end_date = end_date.to_datetime
-  day = (start_date..end_date).to_a.sample
-  hour = (9..17).to_a.sample
+  appt_time = (start_date..end_date).to_a.sample
+  hour = appt_time.hour
   min = [00, 15, 30, 45].sample
-  datetime = DateTime.new(day.year, day.month, day.day, hour, min)
+  datetime = Time.zone.parse("#{appt_time.year}-#{appt_time.month}-#{appt_time.day} #{appt_time.hour}:#{min}")
 end
 
 def rand_in_range(from, to)

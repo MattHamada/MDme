@@ -61,7 +61,15 @@ class Appointment < ActiveRecord::Base
   ###
   # State Machine
   ###
-  state_machine :status, :initial=> :requested do
+  state_machine :status, initial: :requested do
+    state :confirmed
+    state :denied
+    state :canceled
+    state :checked_in
+    state :delayed
+    state :in_progress
+    state :completed
+    
     event :confirm do
       transition :requested=>:confirmed
     end
@@ -102,7 +110,7 @@ class Appointment < ActiveRecord::Base
     after_transition [:in_progress, :checked_in]=>:completed do
       appointment.update_attributes(:completed_time=>Time.zone.now)
     end
-  end
+  end 
 
   # Part of appointment time recycling
   # Will find next appointment after canceled one and email the patient
