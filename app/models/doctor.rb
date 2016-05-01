@@ -91,7 +91,7 @@ class Doctor < ActiveRecord::Base
 
   # Returns doctors who have confirmed appointments today
   def self.with_appointments_today
-    Doctor.joins(:appointments).merge(Appointment.today.confirmed).uniq
+    Doctor.joins(:appointments).merge(Appointment.today.confirmed).distinct
   end
 
   # Returns all doctors in the passed department instance

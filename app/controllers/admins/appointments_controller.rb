@@ -19,7 +19,7 @@ class Admins::AppointmentsController < Admins::ApplicationController
   def index
     @manage_appts_page = true
     @find_appointments_page = true
-      if params[:date].present?
+    if params[:date].present?
       @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).given_date(Date.strptime(params[:date],"%m/%d/%Y")).confirmed.pluck(:doctor_id).uniq)
       if params[:doctor_id]
         @appointments = @doctors.where(:id=>params[:doctor_id]).first.appointments_on_date(Date.strptime(params[:date],"%m/%d/%Y")).includes(:patient) rescue []
@@ -27,15 +27,27 @@ class Admins::AppointmentsController < Admins::ApplicationController
         @appointments = @doctors.first.appointments_on_date(Date.strptime(params[:date],"%m/%d/%Y")).includes(:patient) rescue []
       end
     else
-      @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).today.confirmed.pluck(:doctor_id).uniq)
+      # @doctors = Doctor.where(:id=>Appointment.in_clinic(@admin).today.confirmed.pluck(:doctor_id).uniq)
+      @doctors = Doctor.in_clinic(@admin).with_appointments_today.order("last_name")
       if params[:doctor_id]
-        @appointments = @doctors.where(:id=>params[:doctor_id]).first.appointments_today.includes(:patient) rescue []
+        @appointments = @doctors.find(params[:doctor_id]).appointments_today.includes(:patient) rescue []
       else
         @appointments = @doctors.first.appointments_today.includes(:patient) rescue []
       end
     end
     if request.xhr?
       return render :partial=> 'appointments_table', :layout=>false
+    end
+  end
+
+  # Shows a list of appointments occurring today for setting delays
+  # GET admin.mdme.us/admins/:admin_id/appointments/manage_delays
+  def manage_delays
+    @doctors = Doctor.in_clinic(@admin).with_appointments_today.order("last_name")
+    if params[:doctor_id]
+      @appointments = @doctors.find(params[:doctor_id]).appointments_today.includes(:patient) rescue []
+    else
+      @appointments = @doctors.first.appointments_today.includes(:patient) rescue []
     end
   end
 
@@ -181,11 +193,12 @@ class Admins::AppointmentsController < Admins::ApplicationController
     end
   end
 
+  
+
   # Allows admin to see what appointments are already on a
   # specific date with a specific doctor before Accepting/denying request
   # GET admin.mdme.us/admins/:admin_id/appointments/show_on_date
   def show_on_date
-    
     @date = Appointment.find(params[:appointment_id]).appointment_time.to_date
     @doctor = Doctor.find(params[:doctor_id]).full_name
     @appointments = Appointment.in_clinic(@admin).
@@ -255,16 +268,12 @@ class Admins::AppointmentsController < Admins::ApplicationController
     render partial: 'ajax_show', :layout=>false if request.xhr?
   end
 
-  # Shows a list of appointments occurring today for setting delays
-  # GET admin.mdme.us/admins/:admin_id/appointments/manage_delays
-  def manage_delays
-    @doctors = Doctor.in_clinic(@admin).with_appointments_today.includes(:appointments)
-  end
+  
 
   # POST to add delay to appointment.
   # Can also add delay to subsequent appointments
   # POST admin.mdme.us/admins/:admin_id/appointments/add_delay
-  def add_delay
+  def   add_delay
     appointment = Appointment.find(params[:appointment_id])
     time_to_add = params[:delay_time].to_i
     new_time = appointment.appointment_delayed_time + time_to_add.minutes
@@ -275,13 +284,30 @@ class Admins::AppointmentsController < Admins::ApplicationController
       if params.keys.include?("apply_to_all")
         appointment.update_remaining_appointments!(time_to_add)
       end
-      render status: 200, json: {
-                           message: 'Appointments updated'
-                       }
+      respond_to do |format|
+        format.html do
+          flash[:success] = 'Delay added'
+          redirect_to manage_delays_admin_appointments_path(@admin)
+        end
+        format.json do
+          render status: 200, json: {
+              message: 'Appointments updated'
+          }
+        end
+      end
     else
-      render status: 400, json: {
-                            message: 'An error has occured please try again'
-                        }
+      espond_to do |format|
+        format.html do
+          flash[:error] = 'An error has occurred. Please try again'
+          redirect_to manage_delays_admin_appointments_path(@admin)
+        end
+        format.json do
+          render status: 400, json: {
+              message: 'An error has occured please try again'
+          }
+        end
+      end
+
     end
   end
 

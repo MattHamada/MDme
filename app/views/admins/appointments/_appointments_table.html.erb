@@ -44,7 +44,7 @@
                           remote: true, method: :post, class: 'btn btn-mini btn-danger deny' %>
             </td>
           <% else %>
-            <td><%= appointment.status %> </td>
+              <td><%= appointment.status_name.to_s.humanize %> </td>
           <% end %>  
         </tr>
     <% end %>

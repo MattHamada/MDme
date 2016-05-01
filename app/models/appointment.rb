@@ -29,7 +29,7 @@ class Appointment < ActiveRecord::Base
   # Appointments must be at a unique time for patient and doctor in the future
   validates :appointment_time, presence: true
   validate  :appointment_unique_with_doctor_in_clinic
-  validate  :appointment_time_in_future
+  validate  :appointment_time_in_future, on: :create
   # Must have a clinic, doctor, and patient assigned to each appointment
   validates :doctor_id,  presence: true
   validates :patient_id, presence: true
@@ -257,9 +257,9 @@ class Appointment < ActiveRecord::Base
 
   # Emails patient informing them their appointment hsa been delayed.
   # Uses a separate thread
-  # def send_delay_email
-  #   PatientMailer.appointment_delayed_email(patient, appointment_delayed_time).deliver_later
-  # end
+  def send_delay_email
+    PatientMailer.appointment_delayed_email(patient, appointment_delayed_time).deliver_later
+  end
 
   # Will send GCM message to android devices registered to patient
   # Informs patient of delay and new time
