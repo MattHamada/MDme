@@ -55,6 +55,9 @@ class DoctorsController < ApplicationController
 
   # GET doctors.mdme.us/doctors/:id
   def show
+    if request.xhr?
+      return render 'show', :layout=>false 
+    end
   end
 
   # GET doctors.mdme.us/doctors/:id/changepassword

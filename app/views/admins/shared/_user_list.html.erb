@@ -3,7 +3,7 @@
     <div class="row">
   <% end %>
   <div class="col-md-3">
-    <div class="card linked" style="text-align: center;" data-url="<%= url_for(:controller=>"admins/#{user.class.to_s.downcase.pluralize}", :action=>'show', :id=>user.id, :admin_id=>@admin.id) %>">
+    <div  data-id="<%=user.id %>" data-toggle="modal" data-target="#user-popup" class="card linked-no-url user-card" style="text-align: center;" data-url="<%= url_for(:controller=>"admins/#{user.class.to_s.downcase.pluralize}", :action=>'show', :id=>user.id, :admin_id=>@admin.id) %>">
       <%= image_tag(user.avatar_thumb_url, :class=>'card-img-top', :alt=>'user image', :style=>'margin-top: 2em;') %>
       <div class="card-block" style="text-align: center;">
         <h4 class="card-title"><%= user.first_name %><br/><%= user.last_name %></h4>
@@ -14,3 +14,39 @@
     </div>
   <% end %>
 <% end %>
+
+<div class="modal" id="user-popup" tabindex="-1" role="dialog"
+     aria-labelledby="user-popup" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="popup-title"></h4>
+      </div>
+      <div class="modal-body" id="popup-content">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener("turbolinks:load", function() {
+    $('.user-card').on('click', function() {
+      user_id = $(this).data('id');
+      $.ajax({
+        method: 'get',
+        url: '<%= request.path %>/' + user_id,
+        success: function(data) {
+          $('#popup-content').html(data);
+          $('#popup-title').html('');
+        }
+      })
+    });
+  });
+</script>
