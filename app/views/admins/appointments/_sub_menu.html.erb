@@ -5,13 +5,13 @@
         <%= link_to "Find Appointments", admin_appointments_path(@admin), :class=>"nav-link #{'mdme-active' if @find_appointments_page}" %>
       </li>
       <li class="nav-item">
-        <%= link_to "Add Appointment", new_admin_appointment_path(@admin), :class=>"nav-link #{'mdme-active mdme-active' if @add_appointment_page}" %>
+        <%= link_to "Add Appointment", new_admin_appointment_path(@admin), :class=>"nav-link #{'mdme-active' if @add_appointment_page}" %>
       </li>
       <li class="nav-item">
-        <%= link_to "Manage Requests",  approval_admin_appointments_path(@admin), :class=>"nav-link #{'mdme-active mdme-active' if @appointment_approval_page}" %>
+        <%= link_to "Manage Requests",  approval_admin_appointments_path(@admin), :class=>"nav-link #{'mdme-active' if @appointment_approval_page}" %>
       </li>
       <li class="nav-item">
-        <%= link_to "Manage Delays", manage_delays_admin_appointments_path(@admin), :class=>"nav-link #{'active' if @appointment_delays_page}" %>
+        <%= link_to "Manage Delays", manage_delays_admin_appointments_path(@admin), :class=>"nav-link #{'mdme-active' if @appointment_delays_page}" %>
       </li>
     </ul>
   </div>

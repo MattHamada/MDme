@@ -43,11 +43,15 @@ class Admins::AppointmentsController < Admins::ApplicationController
   # Shows a list of appointments occurring today for setting delays
   # GET admin.mdme.us/admins/:admin_id/appointments/manage_delays
   def manage_delays
+    @appointment_delays_page = true
     @doctors = Doctor.in_clinic(@admin).with_appointments_today.order("last_name")
     if params[:doctor_id]
       @appointments = @doctors.find(params[:doctor_id]).appointments_today.includes(:patient) rescue []
     else
       @appointments = @doctors.first.appointments_today.includes(:patient) rescue []
+    end
+    if request.xhr?
+      return render :partial=>'delay_table', :layout=>false
     end
   end
 

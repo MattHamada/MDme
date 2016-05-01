@@ -20,8 +20,7 @@
     <tbody>
     <% @appointments.each_with_index  do |appointment, index| %>
       <%= form_tag(add_delay_admin_appointment_path(@admin, appointment), html: { role: 'form' }) do %>
-
-    <tr id="<%= appointment.id %>" class="appointment-row">
+        <tr id="<%= appointment.id %>" class="appointment-row">
         <td class="linked-no-url" data-toggle="modal" data-target="#approval-popup"><%= appointment.date_time_ampm %><%# "#{appointment.date} (#{link_to 'See schedule', '#', :class=>'show-on-date', "data-toggle"=>"modal", 'data-target'=>"#approval-popup", 'data-doctorid'=>appointment.doctor_id, 'data-id'=>appointment.id })".html_safe %></td>
         <td class="linked-no-url" data-toggle="modal" data-target="#approval-popup"><%= appointment.delayed_date_time_ampm %></td>
         <td class="linked-no-url" data-toggle="modal" data-target="#approval-popup"><%= appointment.patient_full_name %></td>
@@ -68,31 +67,17 @@
 </div>
 
 <script type="text/javascript">
-//  $(document).ready(function() {
-//    $('.appointment-row').on('click', function() {
-//      appointment_id = $(this).attr('id');
-//      $.ajax({
-//        method: 'get',
-//        url: '/admins/<%=@admin.id%>/appointments/' + appointment_id,
-//        success: function(data) {
-//          $('#popup-content').html(data);
-//          $('#popup-title').html('');
-//        }
-//      })
-//    });
-    $('.show-on-date').on('click', function() {
-      appointment_id = $(this).data('id');
-      doctor_id = $(this).data('doctorid');
+  $(document).ready(function() {
+    $('.appointment-row').on('click', function() {
+      appointment_id = $(this).attr('id');
       $.ajax({
         method: 'get',
-        url: '<%= show_on_date_admin_appointments_path(@admin) %>',
-        data: {appointment_id: appointment_id, doctor_id: doctor_id},
+        url: '/admins/<%=@admin.id%>/appointments/' + appointment_id,
         success: function(data) {
           $('#popup-content').html(data);
-          $('#popup-title').html($('#use-for-title').html());
+          $('#popup-title').html('');
         }
       });
-      return false;
     });
     $('li.doc-tab').on('click', function() {
       doctor_id = $(this).data('id');
