@@ -16,6 +16,7 @@ class Admins::DoctorsController < Admins::ApplicationController
 
   # GET admin.mdme.us/admins/:admin_id/doctors
   def index
+    @browse_doctors_page = true
     @doctors = Doctor.in_clinic(@admin.clinic).ordered_last_name
     if params.has_key? :doctor_search
       @doctors = @doctors.where("lower(first_name) LIKE ? OR lower(last_name) LIKE ? OR lower(first_name || last_name) LIKE ? OR lower(first_name || ' ' || last_name) LIKE ?",
@@ -30,6 +31,7 @@ class Admins::DoctorsController < Admins::ApplicationController
 
   # GET admin.mdme.us/admins/:admin_id/doctors/new
   def new
+    @add_doctor_page = true
     @current_user = @admin
     @doctor = Doctor.new
     @doctor.department_id = params[:department_id] unless params[:department_id].nil?

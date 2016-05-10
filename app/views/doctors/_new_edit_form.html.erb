@@ -1,57 +1,57 @@
 <%= render 'shared/error_messages', object: @doctor %>
 
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
+  <div class='col-md-8 col-md-offset-2 col-xs-12'>
     <%= f.label(:doctors, 'First Name') %>
     <%= text_field :doctors, :first_name, class: 'form-control' %>
   </div>
 </div>
 
 <div class='form-group'>
-  <div class='col-xs-6 col-xs-offset-3'>
+  <div class='col-md-8 col-md-offset-2 col-xs-12'>
     <%= f.label(:doctors, 'Last Name') %>
     <%= text_field(:doctors, :last_name, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Email') %>
     <%= text_field(:doctors, :email, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Phone Number') %>
     <%= text_field(:doctors, :phone_number, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Degree') %>
     <%= text_field(:doctors, :degree, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Alma Mater') %>
     <%= text_field(:doctors, :alma_mater, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Description') %>
     <%= text_area(:doctors, :description, class: 'form-control') %>
   </div>
 </div>
 <div class='form-group'>
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
     <%= f.label(:doctors, 'Department') %>
     <%= collection_select(:doctors, :department_id, Department.in_clinic(@current_user), :id, :name, {}, { class: 'form-control'}) %>
   </div>
 </div>
 
 <div class="form-group">
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
    <b>Picture:</b> <%= f.file_field :avatar %>
   </div>
 </div>

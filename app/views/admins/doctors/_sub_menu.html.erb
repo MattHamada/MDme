@@ -1,0 +1,12 @@
+<div class="row" style="padding-bottom: 2em;">
+  <div class="col-md-6 col-md-offset-4 col-xs-offset-2">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <%= link_to "Browse Doctors", admin_doctors_path(@admin), :class=>"nav-link #{'mdme-active' if @browse_doctors_page}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Add Doctor", new_admin_doctor_path(@admin), :class=>"nav-link #{'mdme-active' if @add_doctor_page}" %>
+      </li>
+    </ul>
+  </div>
+</div>
