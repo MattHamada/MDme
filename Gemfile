@@ -5,7 +5,7 @@ ruby '2.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '4.2.5'
-gem 'rails', '5.0.0.beta4'
+gem 'rails', '5.0.0.rc1'
 
 gem 'multi_json'
 
@@ -185,9 +185,8 @@ gem 'jbuilder', '1.0.2'
 gem 'paperclip', '4.2.2'
 
 gem 'state_machines'
-gem 'state_machines-activemodel', github: 'ermacaz/state_machines-activemodel'
-gem 'state_machines-activerecord', github: 'ermacaz/state_machines-activerecord'
-
+gem 'state_machines-activemodel'
+gem 'state_machines-activerecord'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
