@@ -1,5 +1,5 @@
 <div clas="row-fluid" id="patient-nav" data-turbolinks="false">
-  <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
+  <div class="col-md-12" style="border-bottom: solid 1px lightgrey; padding-left: 0;padding-right: 0;">
     <nav class="navbar navbar-light bg-faded">
       <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
         &#9776;
@@ -15,7 +15,7 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <%= link_to new_patient_appointment_path(@patient) do %>
+                <%= link_to new_patient_appointment_path(@patient), 'data-turbolinks': true do %>
                   <i class="icon-schedule mdme-icon"></i>
                   <%# fa_icon "calendar", class: 'mdme-icon img-responsive' %>
                   Request Appointments
@@ -37,7 +37,7 @@
             My Clinicians
           </li>
           <li class="nav-item">
-            <%= link_to patient_clinics_path(@patient) do %>
+            <%= link_to patient_clinics_path(@patient), 'data-turbolinks': true do %>
               <i class="icon-hospital mdme-icon"></i>
               <%# fa_icon "hospital-o", class: 'mdme-icon img-responsive' %>
               My Clinics

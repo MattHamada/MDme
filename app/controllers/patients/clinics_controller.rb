@@ -35,7 +35,6 @@ class Patients::ClinicsController < ApplicationController
       # @times = @clinic.open_appointment_times(date, doctor)
 
       #todo respond with appointments table
-      puts "--------------\nDAY START: #{params[:day_start]}\nDAY END: #{params[:day_end]}\n----------------------------"
       @days_times = @clinic.open_appointment_times_day_range(
           (date - 1.day), (date + 1.day), doctor, params[:time_of_day]
       )
@@ -78,7 +77,7 @@ class Patients::ClinicsController < ApplicationController
   def get_doctors
     @clinic = Clinic.includes(:doctors).find(params[:clinic_id])
     @doctors = @clinic.doctors
-    render :partial=>'patients/clinics/doctors_select', :layout=>false;
+    render :partial=>'patients/clinics/doctors_select', :layout=>false
   end
 
   # GET mdme.us/patients/:patient_id/clinics/getdoctors
