@@ -32,7 +32,7 @@
         Date: <%= text_field_tag :date, params[:clinic_id], :class=>'date-picker' %>
       </div>
       <div class="col-md-2">
-        Status: <%= select_tag :status, "<option value='0'>--All--</option>".html_safe + options_for_select(@appointments.map(&:status).uniq.map {|o| [o.humanize.titleize,o]}, params[:status]) %>
+        Status: <%= select_tag :status, "<option value='0'>--All--</option>".html_safe + options_for_select(@appointments.map(&:status).uniq.compact.map {|o| [o.humanize.titleize,o]}, params[:status]) %>
       </div>
     </div>
     <div class="row">
