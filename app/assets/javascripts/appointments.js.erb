@@ -106,10 +106,10 @@ $(document).on('turbolinks:load', function() {
 //      $('#day_end').val(Math.round(dayAfter.getTime() / 1000));
         $('.date-pick').datepicker("hide");
       }
-
     }).keyup(function() { setTimeout("applyHighlight()", 100); });
 
-    
+    $('.date-picker').datepicker();
+
   });
 
 

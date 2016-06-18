@@ -12,25 +12,49 @@ class Patients::AppointmentsController < ApplicationController
   # before_action :authenticate_header
   before_filter :require_patient_login
   before_filter :find_patient
-  before_filter :get_upcoming_appointment, :except=>[:create]
+  before_filter :get_upcoming_appointment, :except=>[:create, :update]
 
   # GET mdme.us/patients/:patient_id/appointments
   def index
-    @appointments = @patient.appointments.
-                             confirmed.
-                             not_past.
-                             includes([:doctors, :clinic]).order_by_time
+    @all_appointments = @patient.appointments
+    if params[:clinic_id].present? and params[:clinic_id] != '0'
+      @all_appointments = @all_appointments.where(:clinic_id=>params[:clinic_id])
+    end
+    if params[:status].present? and params[:status] != '0'
+      @all_appointments = @all_appointments.where(:status=>params[:status])
+    end
+    if params[:period].present? and params[:period] != '0'
+      if params[:period] == 'Past'
+        @all_appointments = @all_appointments.past
+      elsif params[:period] == 'Future'
+        @all_appointments = @all_appointments.not_past
+      end
+    end
+    if params[:date].present?
+      date = Date.strptime(params[:date],"%m/%d/%Y")
+      @all_appointments = @all_appointments.where("appointment_time >= ? AND appointment_time <= ?", 
+                            date.beginning_of_day, date.end_of_day)
+    end
+    @all_appointments = @all_appointments.includes([:doctor, :clinic]).order_by_time
+    @per_page = (params[:per_page] || 25)
+    @appointments = @all_appointments.paginate(:page=>params[:page], :per_page=>@per_page)
+    if request.xhr?
+      render :partial=>'list', :layout=>false and return
+    end
+
+    add_breadcrumb @patient.full_name, patient_path(@patient)
+    add_breadcrumb 'Appointments'
   end
 
   # GET mdme.us/patients/:patient_id/appointments/new
   def new
     add_breadcrumb @patient.full_name, patient_path(@patient)
-    add_breadcrumb 'Appointments', home_patient_appointments_path(@patient)
+    add_breadcrumb 'Appointments', patient_appointments_path(@patient)
     add_breadcrumb 'New Appointment Request'
 
     if params.has_key? :clinic_id
       @appointment = Appointment.new(appointment_time: DateTime.tomorrow, :clinic_id=>params[:clinic_id])
-    else
+    else  
       @appointment = Appointment.new(appointment_time: DateTime.tomorrow)
     end
     @clinics = @patient.clinics

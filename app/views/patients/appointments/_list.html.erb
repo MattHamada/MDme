@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-4">
+    <span>Per page: <%= select_tag :per_page, options_for_select(["25", "50", "75", "100"], params[:per_page]|| @per_page.to_s) %> of <span id="total_entries"><%= @appointments.total_entries %></span></span>
+  </div>
+</div>
+<table class="table table-striped table-bordered table-hover" style="text-align: center">
+  <thead>
+  <tr style="color: white; background-color: #3fc3d5">
+    <th style="text-align: center;">Clinic</th>
+    <th style="text-align: center;">Doctor</th>
+    <th style="text-align: center;">Date</th>
+    <th style="text-align: center;">Time</th>
+    <th style="text-align: center;">Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @appointments.each do |appointment| %>
+    <tr class="linked" data-url="<%=patient_appointment_path(@patient, appointment)%>">
+      <td><%=appointment.clinic.name %></td>
+      <td><%=appointment.doctor.full_name %></td>
+      <td><%=appointment.date %></td>
+      <td><%=appointment.time_ampm %></td>
+      <td><%=appointment.status.humanize.titleize %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-md-12" style="text-align: center;" >
+    <%= will_paginate @appointments, :container=>false %>
+  </div>
+</div>

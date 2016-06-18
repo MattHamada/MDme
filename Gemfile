@@ -41,6 +41,8 @@ gem 'prawn'
 #helper for page breadcrumbs
 gem "breadcrumbs_on_rails"
 
+gem 'will_paginate'
+
 #generate qr code images
 # gem 'rqrcode-rails3'
 gem 'rqrcode'

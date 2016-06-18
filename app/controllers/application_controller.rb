@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
 
   def get_upcoming_appointment
     @upcoming_appointment = @patient.upcoming_appointment
+    return if request.xhr?
     respond_to do |format|
       format.json do
         if @upcoming_appointment
@@ -49,6 +50,9 @@ class ApplicationController < ActionController::Base
       end
       format.html do
         get_appointment_progress_bar(@upcoming_appointment) unless @upcoming_appointment.nil?
+      end
+      format.js do
+        
       end
     end
   end

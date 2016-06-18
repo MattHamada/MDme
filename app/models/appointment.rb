@@ -46,6 +46,7 @@ class Appointment < ActiveRecord::Base
   scope :within_2_hours, -> { where(
       appointment_time: Time.zone.now..(Time.zone.now + 2.hours)) }
   scope :not_past, -> { where("appointment_time > ?", Time.zone.now) }
+  scope :past, -> { where("appointment_time < ?", Time.zone.now) }
   scope :order_by_time, -> { order("appointment_time ASC")}
 
   # True is a patient request not an admin forcing a new appointment
