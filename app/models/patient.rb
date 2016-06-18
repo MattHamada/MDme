@@ -21,7 +21,8 @@ class Patient < ActiveRecord::Base
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :clinics
 
-  attr_encrypted :social_security_number, key: ENV['SOCIAL_ENCRYPT_KEY'], algorithm: 'aes-256-cbc'
+  #TODO USE 32 bit key with IV and turn off insecure mode
+  attr_encrypted :social_security_number, key: ENV['SOCIAL_ENCRYPT_KEY'], algorithm: 'aes-256-cbc', insecure_mode: true
 
   validates :first_name,             presence: true, length: {maximum: 50}
   validates :last_name,              presence: true, length: {maximum: 50}
