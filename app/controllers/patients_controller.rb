@@ -17,7 +17,7 @@ class PatientsController < ApplicationController
 
   # GET www.mdme.us/patients/:id
   def show
-    add_breadcrumb @patient.full_name
+    add_breadcrumb 'My Profile'
     # respond_to do |format|
     #   format.html do |variant|
     #     variant.mobile { render 'patients/mobile/show' }
@@ -31,9 +31,8 @@ class PatientsController < ApplicationController
 
   # GET www.mdme.us/patients/:id/edit
   def edit
-    add_breadcrumb 'Home', patients_path
-    add_breadcrumb 'My Profile', patient_path(@patient)
-    add_breadcrumb 'Edit Profile', edit_patient_path(@patient)
+    add_breadcrumb 'My Profile'
+    add_breadcrumb 'Edit', edit_patient_path(@patient)
     @active = :profile
     @current_user = @patient
   end
